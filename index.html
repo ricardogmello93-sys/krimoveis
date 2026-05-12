@@ -1614,6 +1614,17 @@
     .dep-card { flex: 0 0 85vw !important; max-width: 85vw !important; }
   }
 
+
+  /* ── LCP FIX ── */
+  .hero-img {
+    content-visibility: auto;
+    contain-intrinsic-size: 800px 1000px;
+  }
+
+  .hero {
+    contain: layout style;
+  }
+
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -1632,7 +1643,7 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 / loading="lazy"></noscript>
 <!-- End Meta Pixel Code -->
-  <link rel="preload" as="image" href="images/foto-kamila.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/foto-kamila.jpg" fetchpriority="high" imagesizes="100vw" as="image">
   <link rel="preload" as="image" href="images/imovel-2.jpg">
   <link rel="preload" as="image" href="images/logo-kr.png">
 </head>
@@ -1692,8 +1703,8 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       </a>
     </div>
   </div>
-  <div class="hero-right">
-    <img src="images/foto-kamila.jpg" fetchpriority="high" loading="eager" alt="KR Imóveis" class="hero-img">
+  <div class="hero-right" style="background-color:#0d1220">
+    <img src="images/foto-kamila.jpg" fetchpriority="high" decoding="async" alt="KR Imóveis" class="hero-img" elementtiming="lcp-image" width="100%" height="100%" decoding="sync">
     <div class="hero-creci">
       <span class="creci-item">Ricardo · CRECI/RS 082996</span>
       <span class="creci-item">Kamila · CRECI/RS 78710</span>
