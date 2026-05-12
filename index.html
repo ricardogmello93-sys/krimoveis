@@ -6,6 +6,9 @@
   <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <meta name="theme-color" content="#080c14">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
 <style>
@@ -1627,15 +1630,18 @@ fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
-/></noscript>
+/ loading="lazy"></noscript>
 <!-- End Meta Pixel Code -->
+  <link rel="preload" as="image" href="images/foto-kamila.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="images/imovel-2.jpg">
+  <link rel="preload" as="image" href="images/logo-kr.png">
 </head>
 <body>
 
 <!-- HERO -->
 <!-- NAV WITH LOGO -->
 <nav class="site-nav">
-  <img src="images/img.png" alt="KR Imóveis" class="site-logo">
+  <img src="images/img.png" alt="KR Imóveis" class="site-logo" loading="lazy">
   <span class="site-nav-name">KR Imóveis</span>
 </nav>
 
@@ -1687,7 +1693,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
     </div>
   </div>
   <div class="hero-right">
-    <img src="images/foto-kamila.jpg" alt="KR Imóveis" class="hero-img">
+    <img src="images/foto-kamila.jpg" fetchpriority="high" loading="eager" alt="KR Imóveis" class="hero-img">
     <div class="hero-creci">
       <span class="creci-item">Ricardo · CRECI/RS 082996</span>
       <span class="creci-item">Kamila · CRECI/RS 78710</span>
@@ -1836,7 +1842,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <div class="admin-fields">
         <div class="admin-field full">
           <label>Foto do imóvel</label>
-          <img src="images/imovel.jpg" class="admin-img-preview" id="preview_0" style="display: block;">
+          <img src="images/imovel.jpg" class="admin-img-preview" id="preview_0" style="display: block;" loading="lazy">
           <input type="file" accept="image/*" onchange="handleImg(0, this)" style="margin-top:8px; color:var(--muted); font-size:13px">
         </div>
         <div class="admin-field">
@@ -1892,7 +1898,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <div class="admin-fields">
         <div class="admin-field full">
           <label>Foto do imóvel</label>
-          <img src="images/foto-kamila-2.jpg" class="admin-img-preview" id="preview_1" style="display: block;">
+          <img src="images/foto-kamila-2.jpg" class="admin-img-preview" id="preview_1" style="display: block;" loading="lazy">
           <input type="file" accept="image/*" onchange="handleImg(1, this)" style="margin-top:8px; color:var(--muted); font-size:13px">
         </div>
         <div class="admin-field">
@@ -1948,7 +1954,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <div class="admin-fields">
         <div class="admin-field full">
           <label>Foto do imóvel</label>
-          <img src="images/foto-kamila-3.jpg" class="admin-img-preview" id="preview_2" style="display: block;">
+          <img src="images/foto-kamila-3.jpg" class="admin-img-preview" id="preview_2" style="display: block;" loading="lazy">
           <input type="file" accept="image/*" onchange="handleImg(2, this)" style="margin-top:8px; color:var(--muted); font-size:13px">
         </div>
         <div class="admin-field">
@@ -2004,7 +2010,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <div class="admin-fields">
         <div class="admin-field full">
           <label>Foto do imóvel</label>
-          <img src="images/img-2.svg" class="admin-img-preview" id="preview_3">
+          <img src="images/img-2.svg" class="admin-img-preview" id="preview_3" loading="lazy">
           <input type="file" accept="image/*" onchange="handleImg(3, this)" style="margin-top:8px; color:var(--muted); font-size:13px">
         </div>
         <div class="admin-field">
@@ -2060,7 +2066,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <div class="admin-fields">
         <div class="admin-field full">
           <label>Foto do imóvel</label>
-          <img src="images/img-2.svg" class="admin-img-preview" id="preview_4">
+          <img src="images/img-2.svg" class="admin-img-preview" id="preview_4" loading="lazy">
           <input type="file" accept="image/*" onchange="handleImg(4, this)" style="margin-top:8px; color:var(--muted); font-size:13px">
         </div>
         <div class="admin-field">
@@ -2273,7 +2279,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   <p class="section-sub" style="margin:16px auto 48px;text-align:center">Escolha com qual de nós quer conversar — resposta rápida pelo WhatsApp.</p>
   <div class="contact-cards">
     <a href="https://wa.me/5555999147822?text=Olá Ricardo, vim pelo site e quero saber mais sobre financiamento de imóveis." class="contact-card">
-      <div class="contact-photo-wrap"><img src="images/img-3.jpg" alt="Ricardo Mello" class="contact-photo"></div>
+      <div class="contact-photo-wrap"><img src="images/img-3.jpg" alt="Ricardo Mello" class="contact-photo" loading="lazy"></div>
       <div class="contact-name">Ricardo Mello</div>
       <div class="contact-role">CRECI/RS 082996</div>
       <span class="contact-btn">
@@ -2281,7 +2287,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       </span>
     </a>
     <a href="https://wa.me/5555991346393?text=Olá Kamila, vim pelo site e quero saber mais sobre financiamento de imóveis." class="contact-card">
-      <div class="contact-photo-wrap"><img src="images/foto-kamila-4.jpg" alt="Kamila Xavier" class="contact-photo"></div>
+      <div class="contact-photo-wrap"><img src="images/foto-kamila-4.jpg" alt="Kamila Xavier" class="contact-photo" loading="lazy"></div>
       <div class="contact-name">Kamila Xavier</div>
       <div class="contact-role">CRECI/RS 78710</div>
       <span class="contact-btn">
@@ -2294,7 +2300,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-brand-wrap"><img src="images/img.png" alt="KR" class="footer-logo"><span class="footer-brand">KR Imóveis</span></div>
+  <div class="footer-brand-wrap"><img src="images/img.png" alt="KR" class="footer-logo" loading="lazy"><span class="footer-brand">KR Imóveis</span></div>
   <span>© 2026 · KR Imóveis · Santa Maria, RS</p>
     <p style="font-size:11px; color:rgba(255,255,255,0.2); margin-top:8px; letter-spacing:2px;">Design by RM · Ricardo Mello
     <div style="margin-top:24px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
@@ -2550,7 +2556,7 @@ function buildAdminSlots() {
       <div class="admin-fields">
         <div class="admin-field full">
           <label>Foto do imóvel</label>
-          ${p.image ? `<img src="${p.image}" class="admin-img-preview" id="preview_${i}">` : `<img src="" class="admin-img-preview" id="preview_${i}" style="display:none">`}
+          ${p.image ? `<img src="${p.image}" class="admin-img-preview" id="preview_${i}" loading="lazy">` : `<img src="" class="admin-img-preview" id="preview_${i}" style="display:none" loading="lazy">`}
           <input type="file" accept="image/*" onchange="handleImg(${i}, this)" style="margin-top:8px; color:var(--muted); font-size:13px">
         </div>
         <div class="admin-field">
@@ -2713,7 +2719,7 @@ window.addEventListener('DOMContentLoaded', () => {
     <p class="picker-sub">Escolha com quem prefere falar:</p>
     <div class="picker-options">
       <a class="picker-option" id="pickerRicardo" href="#" target="_blank">
-        <img src="images/img-3.jpg" alt="Ricardo" class="picker-option-img">
+        <img src="images/img-3.jpg" alt="Ricardo" class="picker-option-img" loading="lazy">
         <div class="picker-option-info">
           <div class="picker-option-name">Ricardo Mello</div>
           <div class="picker-option-creci">CRECI/RS 082996</div>
@@ -2721,7 +2727,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <span class="picker-option-arrow">›</span>
       </a>
       <a class="picker-option" id="pickerKamila" href="#" target="_blank">
-        <img src="images/foto-kamila-4.jpg" alt="Kamila Xavier" class="picker-option-img">
+        <img src="images/foto-kamila-4.jpg" alt="Kamila Xavier" class="picker-option-img" loading="lazy">
         <div class="picker-option-info">
           <div class="picker-option-name">Kamila Xavier</div>
           <div class="picker-option-creci">CRECI/RS 78710</div>
