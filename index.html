@@ -1575,7 +1575,30 @@
     .footer-brand-wrap { justify-content: center; }
     .footer-logo { height: 22px; }
     .footer-brand { font-size: 16px; }
-    .dep-carousel-dots, .carousel-swipe-hint { display: flex; }
+    .dep-carousel-dots {
+      display: flex !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      margin: 14px auto 0 !important;
+      padding: 0 24px !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .dep-dot {
+      width: 24px !important;
+      height: 3px !important;
+      border-radius: 2px !important;
+      background: rgba(255,255,255,0.12) !important;
+      border: none !important;
+      cursor: pointer !important;
+      transition: background 0.3s, width 0.3s !important;
+      flex-shrink: 0 !important;
+    }
+    .dep-dot.active {
+      background: var(--purple) !important;
+      width: 36px !important;
+    }
+    .carousel-swipe-hint { display: flex; }
   }
 
   @media (max-width: 380px) {
