@@ -1500,21 +1500,24 @@
     .imoveis-grid.carousel-track {
       display: flex !important;
       flex-direction: row !important;
-      overflow-x: auto !important;
+      overflow-x: scroll !important;
       scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
       -webkit-overflow-scrolling: touch !important;
       gap: 12px !important;
       padding: 0 24px 16px !important;
       grid-template-columns: none !important;
+      scroll-padding-left: 24px !important;
     }
     .imoveis-grid::-webkit-scrollbar { display: none; }
     .imovel-card {
-      flex: 0 0 78vw !important;
-      max-width: 78vw !important;
+      flex: 0 0 82vw !important;
+      max-width: 82vw !important;
       scroll-snap-align: start !important;
-      opacity: 0.5 !important;
+      scroll-snap-stop: always !important;
+      opacity: 0.55 !important;
       transform: scale(0.97) !important;
-      transition: opacity 0.3s, transform 0.3s !important;
+      transition: opacity 0.35s ease, transform 0.35s ease !important;
     }
     .imovel-card.active-card { opacity: 1 !important; transform: scale(1) !important; }
 
@@ -1528,22 +1531,25 @@
     .dep-grid.carousel-track {
       display: flex !important;
       flex-direction: row !important;
-      overflow-x: auto !important;
+      overflow-x: scroll !important;
       scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
       -webkit-overflow-scrolling: touch !important;
       gap: 12px !important;
       padding: 0 24px 16px !important;
       grid-template-columns: none !important;
       margin-top: 32px !important;
+      scroll-padding-left: 24px !important;
     }
     .dep-grid::-webkit-scrollbar { display: none; }
     .dep-card {
-      flex: 0 0 78vw !important;
-      max-width: 78vw !important;
+      flex: 0 0 82vw !important;
+      max-width: 82vw !important;
       scroll-snap-align: start !important;
-      opacity: 0.5 !important;
+      scroll-snap-stop: always !important;
+      opacity: 0.55 !important;
       transform: scale(0.97) !important;
-      transition: opacity 0.3s, transform 0.3s !important;
+      transition: opacity 0.35s ease, transform 0.35s ease !important;
       margin-right: 0 !important;
     }
     .dep-card.active-card { opacity: 1 !important; transform: scale(1) !important; }
@@ -2746,6 +2752,21 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     updateActiveCard();
 
+    // Use IntersectionObserver for accurate mobile card tracking
+    if (window.IntersectionObserver) {
+      const iObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            cards.forEach(c => c.classList.remove('active-card'));
+            entry.target.classList.add('active-card');
+            const idx = Array.from(cards).indexOf(entry.target);
+            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          }
+        });
+      }, { root: grid, threshold: 0.5 });
+      cards.forEach(c => iObserver.observe(c));
+    }
+
     let hinted = false;
     grid.addEventListener('scroll', () => {
       updateActiveCard();
@@ -2855,29 +2876,33 @@ window.addEventListener('DOMContentLoaded', () => {
     const hint = document.getElementById('depHint');
     if (!grid || !dotsWrap) return;
 
-    const cards = grid.querySelectorAll('.dep-card');
+    const cards = Array.from(grid.querySelectorAll('.dep-card'));
     if (!cards.length) return;
 
     // Build dots
-    dotsWrap.innerHTML = Array.from(cards).map((_, i) =>
+    dotsWrap.innerHTML = cards.map((_, i) =>
       `<button class="dep-dot${i === 0 ? ' active' : ''}" data-i="${i}"></button>`
     ).join('');
 
-    const dots = dotsWrap.querySelectorAll('.dep-dot');
+    const dots = Array.from(dotsWrap.querySelectorAll('.dep-dot'));
 
-    function updateActive() {
-      const scrollLeft = grid.scrollLeft;
-      const cardWidth = cards[0].offsetWidth + 12;
-      const idx = Math.round(scrollLeft / cardWidth);
-      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-      cards.forEach((c, i) => c.classList.toggle('active-card', i === idx));
-    }
+    // Use IntersectionObserver for accurate dot tracking
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          const idx = cards.indexOf(entry.target);
+          if (idx < 0) return;
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          cards.forEach((c, i) => c.classList.toggle('active-card', i === idx));
+        }
+      });
+    }, { root: grid, threshold: 0.5 });
 
-    updateActive();
+    cards.forEach(c => observer.observe(c));
+    cards[0].classList.add('active-card');
 
     let hinted = false;
     grid.addEventListener('scroll', () => {
-      updateActive();
       if (!hinted && hint) { hint.style.display = 'none'; hinted = true; }
     }, { passive: true });
 
@@ -2888,7 +2913,7 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Drag to scroll
+    // Mouse drag
     let isDown = false, startX, scrollStart;
     grid.addEventListener('mousedown', e => { isDown = true; grid.classList.add('dragging'); startX = e.pageX - grid.offsetLeft; scrollStart = grid.scrollLeft; });
     grid.addEventListener('mouseleave', () => { isDown = false; grid.classList.remove('dragging'); });
