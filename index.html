@@ -1438,10 +1438,7 @@
     letter-spacing: 0.5px;
   }
 
-  @media (max-width: 768px) {
-    #depoimentos { padding: 60px 24px; }
-    .dep-grid { grid-template-columns: 1fr; gap: 14px; }
-  }
+  /* removed conflicting dep-grid mobile rule */
 
 
   @media (max-width: 768px) {
@@ -1650,7 +1647,7 @@
     .carousel-track-wrap::after { display: none; }
     .carousel-progress { display: none; }
     .carousel-track-wrap { overflow: visible; }
-    .carousel-track { display: contents; }
+    .carousel-track { display: flex !important; flex-direction: row; }
   }
 
 
@@ -1711,6 +1708,21 @@
   /* Marquee — sem mudança mas adiciona separador */
   .marquee-wrap {
     background: #0a0f1c;
+  }
+
+
+  @media (max-width: 768px) {
+    #imoveisGrid.carousel-track .imovel-card {
+      flex: 0 0 78vw !important;
+      max-width: 78vw !important;
+    }
+    #imoveisGrid.carousel-track {
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding: 0 24px 16px !important;
+      gap: 12px !important;
+    }
   }
 
 </style>
