@@ -2891,7 +2891,7 @@ window.addEventListener('DOMContentLoaded', () => {
     <p class="picker-title" id="pickerTitle">Quero saber mais</p>
     <p class="picker-sub">Escolha com quem prefere falar:</p>
     <div class="picker-options">
-      <a class="picker-option" id="pickerRicardo" href="#" target="_blank">
+      <a class="picker-option" id="pickerRicardo" href="#" target="_blank" onclick="gtag('event', 'whatsapp_click', {'corretor': 'Ricardo', 'origem': document.title}); fbq('track', 'Lead');">
         <img src="images/img-3.jpg" alt="Ricardo" class="picker-option-img" loading="lazy">
         <div class="picker-option-info">
           <div class="picker-option-name">Ricardo Mello</div>
@@ -2899,7 +2899,7 @@ window.addEventListener('DOMContentLoaded', () => {
         </div>
         <span class="picker-option-arrow">›</span>
       </a>
-      <a class="picker-option" id="pickerKamila" href="#" target="_blank">
+      <a class="picker-option" id="pickerKamila" href="#" target="_blank" onclick="gtag('event', 'whatsapp_click', {'corretor': 'Kamila', 'origem': document.title}); fbq('track', 'Lead');">
         <img src="images/foto-kamila-4.jpg" alt="Kamila Xavier" class="picker-option-img" loading="lazy">
         <div class="picker-option-info">
           <div class="picker-option-name">Kamila Xavier</div>
