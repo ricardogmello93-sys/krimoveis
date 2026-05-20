@@ -1460,19 +1460,19 @@
   @media (max-width: 768px) {
 
     /* NAV */
-    .site-nav { padding: 12px 20px; gap: 10px; }
-    .site-logo { height: 26px; }
+    .site-nav { padding: 10px 16px; gap: 8px; }
+    .site-logo { height: 22px; }
     .site-nav-name { font-size: 20px; }
 
     /* HERO */
     .hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-right { height: 45vh; order: -1; }
-    .hero-left { padding: 36px 24px 48px; text-align: left; }
+    .hero-left { padding: 36px 24px 48px; text-align: left; display: flex; flex-direction: column; align-items: flex-start; }
     .hero-slider { min-height: auto; }
     .hero-title, .hero-subtitle { font-size: clamp(38px, 11vw, 56px); letter-spacing: -1px; }
     .hero-eyebrow { font-size: 20px; }
     .hero-desc { font-size: 18px; margin-bottom: 32px; }
-    .hero-buttons { display: flex; flex-direction: column; gap: 12px; width: 100%; align-items: center; }
+    .hero-buttons { display: flex !important; flex-direction: column !important; gap: 12px !important; width: 100% !important; align-items: center !important; padding: 0 !important; }
     .btn { width: 100%; justify-content: center; padding: 16px 20px; font-size: 20px; }
     .creci-badges { flex-direction: column; gap: 6px; }
     .badge {
@@ -2108,9 +2108,9 @@
 
   @media (max-width: 768px) {
     .site-nav-partner {
-      font-size: 9px;
-      letter-spacing: 1px;
-      padding: 3px 6px;
+      font-size: 8px;
+      letter-spacing: 0.8px;
+      padding: 2px 6px;
       margin-left: 2px;
     }
   }
