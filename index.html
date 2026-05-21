@@ -589,24 +589,30 @@
   /* ── HERO SLIDER ── */
   .hero-slider {
     position: relative;
-    min-height: 260px;
+    width: 100%;
+    overflow: hidden;
     margin-bottom: 8px;
   }
 
   .slide {
     position: absolute;
-    top: 0; left: 0; right: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
     opacity: 0;
+    visibility: hidden;
     transform: translateY(12px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease, visibility 0s linear 0.6s;
     pointer-events: none;
   }
 
   .slide.active {
+    position: relative;
     opacity: 1;
+    visibility: visible;
     transform: translateY(0);
     pointer-events: auto;
-    position: relative;
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
   .slider-dots {
@@ -1468,11 +1474,12 @@
     .hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-right { height: 45vh; order: -1; }
     .hero-left { padding: 36px 24px 48px; text-align: center !important; display: flex; flex-direction: column; align-items: center !important; }
-    .hero-slider { min-height: auto; }
+    .hero-slider { width: 100% !important; overflow: hidden; }
     .hero-title, .hero-subtitle { font-size: clamp(38px, 11vw, 56px); letter-spacing: -1px; }
     .hero-eyebrow { font-size: 20px; }
     .hero-desc { font-size: 18px; margin-bottom: 32px; }
-    .hero-buttons { display: flex !important; flex-direction: column !important; gap: 12px !important; width: 100% !important; align-items: center !important; padding: 0 !important; }
+    .hero-buttons,
+    .cta-group { display: flex !important; flex-direction: column !important; gap: 12px !important; width: 100% !important; align-items: center !important; padding: 0 !important; }
     .btn { width: 100%; justify-content: center; padding: 16px 20px; font-size: 20px; }
     .creci-badges { flex-direction: column; gap: 6px; }
     .badge {
@@ -1498,6 +1505,7 @@
 
     /* SECTIONS */
     section { padding: 56px 24px !important; }
+    section.hero { padding-left: 0 !important; padding-right: 0 !important; }
     .section-title { font-size: clamp(28px, 8vw, 40px); }
     .section-sub { font-size: 18px; }
 
@@ -1638,10 +1646,6 @@
   .hero-img {
     content-visibility: auto;
     contain-intrinsic-size: 800px 1000px;
-  }
-
-  .hero {
-    contain: layout style;
   }
 
 
@@ -2230,18 +2234,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6l-4-4z"></path><path d="M12 2v4h4M7 9h6M7 12h6M7 15h4"></path></svg></span><span class="mtag-title">Documentação</span><span class="mtag-sub">Do início ao fim com suporte</span></div>
       <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h12M13 4l3 3-3 3"></path><path d="M16 13H4M7 10l-3 3 3 3"></path></svg></span><span class="mtag-title">Upgrade de Imóvel</span><span class="mtag-sub">Venda o atual, compre o próximo</span></div>
     </div>
-  <div class="marquee-inner">
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L10 3l7 6.5"></path><path d="M5 8v8h4v-4h2v4h4V8"></path></svg></span><span class="mtag-title">MCMV</span><span class="mtag-sub">Minha Casa Minha Vida</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="16" height="11" rx="2"></rect><path d="M14 11.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" fill="currentColor"></path><path d="M2 9h16M6 6V4.5A1.5 1.5 0 0 1 7.5 3h5A1.5 1.5 0 0 1 14 4.5V6"></path></svg></span><span class="mtag-title">FGTS</span><span class="mtag-sub">Use como entrada ou parcelas</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h16M3 8v7M7 8v7M10 8v7M13 8v7M17 8v7"></path><path d="M2 8h16M10 2L2 7h16L10 2z"></path></svg></span><span class="mtag-title">Caixa Econômica</span><span class="mtag-sub">Principal banco do financiamento</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="9" height="12"></rect><rect x="10" y="3" width="9" height="16"></rect><path d="M4 10h2M4 13h2M13 7h2M13 10h2M13 13h2"></path></svg></span><span class="mtag-title">Bancos Privados</span><span class="mtag-sub">Itaú, Bradesco, Santander</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,7 10,14 17,5"></polyline><path d="M17 5v5M17 5h-5"></path></svg></span><span class="mtag-title">Entrada Reduzida</span><span class="mtag-sub">A partir de 10% em alguns casos</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,13 10,6 17,13"></polyline><path d="M10 6v10"></path></svg></span><span class="mtag-title">Investimento</span><span class="mtag-sub">Imóvel como patrimônio</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="14" rx="1"></rect><path d="M6 3v14M2 7h16M2 11h4M2 15h4"></path></svg></span><span class="mtag-title">Na Planta</span><span class="mtag-sub">Condições especiais de lançamento</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="12" height="16" rx="2"></rect><rect x="7" y="5" width="6" height="3" rx="0.5"></rect><circle cx="7.5" cy="11.5" r="0.8" fill="currentColor"></circle><circle cx="10" cy="11.5" r="0.8" fill="currentColor"></circle><circle cx="12.5" cy="11.5" r="0.8" fill="currentColor"></circle><circle cx="7.5" cy="14" r="0.8" fill="currentColor"></circle><circle cx="10" cy="14" r="0.8" fill="currentColor"></circle><circle cx="12.5" cy="14" r="0.8" fill="currentColor"></circle></svg></span><span class="mtag-title">Simulação Grátis</span><span class="mtag-sub">Sem compromisso, na hora</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6l-4-4z"></path><path d="M12 2v4h4M7 9h6M7 12h6M7 15h4"></path></svg></span><span class="mtag-title">Documentação</span><span class="mtag-sub">Do início ao fim com suporte</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h12M13 4l3 3-3 3"></path><path d="M16 13H4M7 10l-3 3 3 3"></path></svg></span><span class="mtag-title">Upgrade de Imóvel</span><span class="mtag-sub">Venda o atual, compre o próximo</span></div>
-    </div></div>
+  </div>
 </div>
 
 
