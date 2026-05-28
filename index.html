@@ -2131,29 +2131,66 @@
 
   /* ── PARCEIROS SANTA IMÓVEIS ── */
   .site-nav-partner {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    color: rgba(244,242,238,0.55);
+    color: rgba(244,242,238,0.50);
     padding: 4px 10px;
     border-left: 1px solid rgba(255,255,255,0.12);
     margin-left: 4px;
     white-space: nowrap;
   }
 
+  .site-nav-santa-logo {
+    height: 17px;
+    width: auto;
+    display: block;
+    opacity: 0.65;
+    flex-shrink: 0;
+  }
+
+  .site-nav-partner-text {
+    letter-spacing: 1.5px;
+  }
+
+  /* ── WATERMARK SÍMBOLO SANTA IMÓVEIS ── */
+  .hero-santa-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -18%);
+    width: 42%;
+    max-width: 270px;
+    opacity: 0.07;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    user-select: none;
+    z-index: 2;
+    display: block;
+  }
+
   @media (max-width: 768px) {
     .site-nav-partner {
-      font-size: 8px;
-      letter-spacing: 0.8px;
-      padding: 2px 6px;
+      padding: 2px 8px;
       margin-left: 2px;
+      gap: 5px;
+    }
+    .site-nav-santa-logo { height: 13px; }
+    .site-nav-partner-text { display: none; }
+
+    .hero-santa-watermark {
+      width: 52%;
+      top: 48%;
     }
   }
 
   @media (max-width: 380px) {
-    .site-nav-partner { display: none; }
+    .site-nav-partner { border-left: none; padding-left: 4px; }
   }
 
   /* ── HERO IMAGE CTA OVERLAY (mobile only) ── */
@@ -2238,7 +2275,10 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 <nav class="site-nav">
   <img src="images/img.png" alt="Kamila e Ricardo Corretores" class="site-logo" loading="lazy">
   <span class="site-nav-name">Kamila &amp; Ricardo</span>
-  <span class="site-nav-partner">Parceiros Santa Imóveis</span>
+  <span class="site-nav-partner">
+    <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="site-nav-santa-logo" loading="lazy">
+    <span class="site-nav-partner-text">Parceiros</span>
+  </span>
 </nav>
 
 <section class="hero" style="padding:0">
@@ -2294,6 +2334,8 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   </div>
   <div class="hero-right" style="background-color:#0d1220">
     <img src="images/foto-kamila.jpg" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="800" height="1000">
+    <!-- WATERMARK SÍMBOLO SANTA IMÓVEIS -->
+    <img src="images/simbolo-santa.png" alt="" class="hero-santa-watermark" aria-hidden="true" loading="lazy">
     <!-- CTA OVERLAY — aparece só no mobile, sobre a foto -->
     <div class="hero-img-cta">
       <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo%2C%20vim%20pelo%20site%20da%20KR%20Im%C3%B3veis%20%E2%80%94%20pode%20me%20ajudar%3F"
