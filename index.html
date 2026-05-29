@@ -1878,20 +1878,25 @@
   }
 
   /* ── LOGO SANTA NO HERO ── */
+  .hero-logo-badge-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-logo-badge-wrap .badge {
+    margin-bottom: 0;
+    animation: none;
+  }
+
   .hero-santa-badge-logo {
     width: 130px;
     height: auto;
     display: block;
     opacity: 0.78;
-    margin-bottom: 22px;
-    animation: fadeUp 0.8s ease both;
-  }
-
-  @media (max-width: 768px) {
-    .hero-santa-badge-logo {
-      width: 100px;
-      margin: 0 auto 16px;
-    }
+    margin-bottom: 12px;
   }
 
   .bairros-dots { display: none; }
@@ -2480,8 +2485,10 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 
 <section class="hero" style="padding:0">
   <div class="hero-left">
-    <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="hero-santa-badge-logo" loading="lazy">
-    <span class="badge">✦ Corretores de Imóveis · Parceiros Santa Imóveis</span>
+    <div class="hero-logo-badge-wrap">
+      <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="hero-santa-badge-logo" loading="lazy">
+      <span class="badge">✦ Corretores de Imóveis · Parceiros Santa Imóveis</span>
+    </div>
     <a href="https://share.google/BkXUTphc45arjYmvr" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.35);color:#f5c518;font-size:13px;font-weight:600;letter-spacing:0.5px;padding:5px 14px;border-radius:100px;text-decoration:none;margin-bottom:28px;width:fit-content;transition:background 0.2s;" onmouseover="this.style.background='rgba(245,197,24,0.2)'" onmouseout="this.style.background='rgba(245,197,24,0.12)'">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       5,0 no Google · Avaliações verificadas
