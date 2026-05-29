@@ -40,6 +40,32 @@
   "employee": [
     {"@type": "Person", "name": "Ricardo Mello", "jobTitle": "Corretor de Imóveis", "identifier": "CRECI/RS 082996"},
     {"@type": "Person", "name": "Kamila Xavier", "jobTitle": "Corretora de Imóveis", "identifier": "CRECI/RS 78710"}
+  ],
+  "areaServed": [
+    {"@type": "City", "name": "Santa Maria", "addressRegion": "RS", "addressCountry": "BR"},
+    {"@type": "Neighborhood", "name": "Centro, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Nossa Senhora de Fátima, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Bonfim, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Nossa Senhora das Dores, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Pinheiro Machado, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Camobi, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Nossa Senhora de Lourdes, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Nonoai, Santa Maria"},
+    {"@type": "Neighborhood", "name": "Medianeira, Santa Maria"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Vocês trabalham com imóveis em qual região de Santa Maria, RS?","acceptedAnswer":{"@type":"Answer","text":"Atendemos toda Santa Maria, com foco nos bairros Centro, Fátima, Bonfim, Nossa Senhora das Dores, Pinheiro Machado, Camobi, Lourdes, Nonoai e Medianeira. Se você procura casa ou apartamento em qualquer bairro da cidade, entre em contato pelo WhatsApp."}},
+    {"@type":"Question","name":"O que é o programa Minha Casa Minha Vida e vocês trabalham com ele?","acceptedAnswer":{"@type":"Answer","text":"O Minha Casa Minha Vida (MCMV) é o programa habitacional do governo federal. Em 2026, tem 4 faixas: Faixa 1 (até R$ 3.200/mês, teto R$ 240 mil em Santa Maria), Faixa 2 (até R$ 5.000/mês, teto R$ 240 mil), Faixa 3 (até R$ 9.600/mês, teto R$ 400 mil) e Faixa 4 — nova — (até R$ 13.000/mês, teto R$ 600 mil). Trabalhamos com todas as faixas."}},
+    {"@type":"Question","name":"É possível usar o FGTS para comprar imóvel em Santa Maria?","acceptedAnswer":{"@type":"Answer","text":"Sim. O FGTS pode ser usado como entrada ou para amortizar o saldo devedor em financiamentos habitacionais. O imóvel precisa ser residencial e estar na cidade onde você trabalha ou mora há pelo menos 1 ano. Fazemos a verificação gratuita do seu FGTS disponível."}},
+    {"@type":"Question","name":"Quais são os valores médios de imóveis no Centro de Santa Maria?","acceptedAnswer":{"@type":"Answer","text":"Segundo dados FipeZAP de maio de 2026, o metro quadrado em Santa Maria está em torno de R$ 5.397. Apartamentos de 2 dormitórios no Centro costumam variar entre R$ 250 mil e R$ 400 mil, dependendo do andar e conservação. Entre em contato para receber opções atualizadas."}},
+    {"@type":"Question","name":"Tem imóvel à venda no bairro Camobi em Santa Maria?","acceptedAnswer":{"@type":"Answer","text":"Camobi é um dos bairros com maior procura em Santa Maria, especialmente por famílias e estudantes da UFSM. Trabalhamos com casas e apartamentos na região, com boa variedade de preços e opções que se enquadram no MCMV. Fale com a gente para receber uma lista atualizada."}},
+    {"@type":"Question","name":"Qual o custo do atendimento?","acceptedAnswer":{"@type":"Answer","text":"A simulação e o atendimento são gratuitos. Nossa remuneração é o comissionamento sobre a venda do imóvel, conforme as normas do CRECI-RS. Você recebe atendimento completo, simulação e acompanhamento sem custo de consultoria — tudo explicado com transparência antes de qualquer decisão."}}
   ]
 }
 </script>
@@ -1772,6 +1798,96 @@
     .esp-body { max-height: none !important; padding: 0 !important; overflow: visible !important; }
   }
 
+  /* ── BAIRROS E TIPOS ── */
+  #bairros {
+    padding: 90px 72px;
+    background: #0a0f1c;
+    border-top: 1px solid rgba(139,127,232,0.08);
+    border-bottom: 1px solid rgba(139,127,232,0.08);
+  }
+
+  .bairros-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 40px 0 0;
+  }
+
+  .bairro-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    transition: border-color 0.3s, transform 0.3s, background 0.3s;
+  }
+
+  .bairro-card:hover {
+    border-color: rgba(139,127,232,0.4);
+    transform: translateY(-2px);
+    background: rgba(139,127,232,0.05);
+  }
+
+  .bairro-name {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .bairro-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .tipos-wrap {
+    margin-top: 52px;
+  }
+
+  .tipos-wrap-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(18px, 2vw, 22px);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 18px;
+  }
+
+  .tipos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tipo-tag {
+    background: rgba(139,127,232,0.07);
+    border: 1px solid rgba(139,127,232,0.2);
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--purple2);
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+
+  .tipo-tag:hover {
+    background: rgba(139,127,232,0.15);
+    border-color: rgba(139,127,232,0.45);
+  }
+
+  @media (max-width: 768px) {
+    #bairros { padding: 60px 24px !important; }
+    .bairros-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .bairro-name { font-size: 15px; }
+    .bairro-sub { font-size: 13px; }
+  }
+
+  @media (max-width: 380px) {
+    .bairros-grid { grid-template-columns: 1fr; }
+  }
+
 
   /* ── POR QUE A KR ── */
   #por-que-kr {
@@ -1935,7 +2051,7 @@
   }
 
   .faq-item.open .faq-answer {
-    max-height: 400px;
+    max-height: 600px;
     padding: 0 0 24px;
   }
 
@@ -2627,6 +2743,66 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 
 
 
+<!-- BAIRROS E TIPOS -->
+<section id="bairros">
+  <span class="section-tag">● Onde atuamos</span>
+  <h2 class="section-title">Imóveis em <em>Santa Maria, RS</em></h2>
+  <p class="section-sub">Atuamos em toda a cidade, com foco nos bairros mais procurados para moradia e investimento.</p>
+
+  <div class="bairros-grid">
+    <div class="bairro-card">
+      <h3 class="bairro-name">Centro</h3>
+      <p class="bairro-sub">Apartamentos e coberturas no coração da cidade — alto padrão e opções para investimento</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Nossa Senhora de Fátima</h3>
+      <p class="bairro-sub">Bairro nobre com alta valorização — apartamentos de médio e alto padrão</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Bonfim</h3>
+      <p class="bairro-sub">Boa localização, opções acessíveis e imóveis enquadrados no MCMV</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Nossa Senhora das Dores</h3>
+      <p class="bairro-sub">Bairro residencial tranquilo, casas e apartamentos para famílias</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Pinheiro Machado</h3>
+      <p class="bairro-sub">Infraestrutura completa e boa variedade de casas e apartamentos</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Camobi</h3>
+      <p class="bairro-sub">Alta demanda, próximo à UFSM — MCMV disponível, imóveis compactos e familiares</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Nossa Senhora de Lourdes</h3>
+      <p class="bairro-sub">Bairro consolidado com boa infraestrutura — casas e apartamentos para todos os perfis</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Nonoai</h3>
+      <p class="bairro-sub">Opções populares e de médio padrão com boa localização na cidade</p>
+    </div>
+    <div class="bairro-card">
+      <h3 class="bairro-name">Medianeira</h3>
+      <p class="bairro-sub">Bairro em crescimento — casas e apartamentos com excelente custo-benefício</p>
+    </div>
+  </div>
+
+  <div class="tipos-wrap">
+    <p class="tipos-wrap-title">Tipos de imóvel que trabalhamos</p>
+    <div class="tipos-grid">
+      <span class="tipo-tag">Apartamentos</span>
+      <span class="tipo-tag">Casas</span>
+      <span class="tipo-tag">Terrenos</span>
+      <span class="tipo-tag">Imóveis Comerciais</span>
+      <span class="tipo-tag">Imóveis na Planta</span>
+      <span class="tipo-tag">MCMV / Caixa Econômica</span>
+      <span class="tipo-tag">Alto Padrão</span>
+      <span class="tipo-tag">Imóveis para Investimento</span>
+    </div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <span class="section-tag">● Perguntas frequentes</span>
@@ -2637,61 +2813,131 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">
-        <span>Posso usar o FGTS no financiamento?</span>
-        <span class="faq-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </span>
+        <span>Vocês trabalham com imóveis em qual região de Santa Maria, RS?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="faq-answer">
-        <p>Sim — e na maioria dos casos é vantajoso. O FGTS pode ser usado como parte da entrada, para amortizar parcelas ou abater no saldo devedor. Vale avaliar caso a caso conforme seu tempo de carteira e o tipo de imóvel.</p>
+        <p>Atendemos toda Santa Maria, com foco nos bairros Centro, Fátima, Bonfim, Nossa Senhora das Dores, Pinheiro Machado, Camobi, Lourdes, Nonoai e Medianeira. Se você procura casa ou apartamento em qualquer bairro da cidade, entre em contato — vamos encontrar a opção certa para o seu perfil.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>Quais tipos de imóveis vocês trabalham?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>Trabalhamos com apartamentos, casas, terrenos e imóveis comerciais para compra e venda. Temos opções em diversas faixas de preço, incluindo imóveis enquadrados no Minha Casa Minha Vida (MCMV) e imóveis para financiamento com uso do FGTS.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>O que é o Minha Casa Minha Vida e vocês trabalham com ele?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>O Minha Casa Minha Vida (MCMV) é o programa habitacional do governo federal com subsídios e juros reduzidos. Em 2026, o programa tem 4 faixas: <strong>Faixa 1</strong> (renda até R$ 3.200/mês — teto de até R$ 240 mil em Santa Maria), <strong>Faixa 2</strong> (até R$ 5.000/mês — teto R$ 240 mil), <strong>Faixa 3</strong> (até R$ 9.600/mês — teto R$ 400 mil) e <strong>Faixa 4</strong> — nova em 2026 — (até R$ 13.000/mês — teto R$ 600 mil). Trabalhamos com todas as faixas e orientamos do início ao fim do processo. Dados conforme Portaria MCID nº 333, vigente desde 22/04/2026.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>É possível usar o FGTS para comprar imóvel em Santa Maria?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>Sim. O FGTS pode ser usado como entrada ou para amortizar o saldo devedor em financiamentos habitacionais. Para isso, o imóvel precisa ser residencial, estar na cidade onde você trabalha ou mora há pelo menos 1 ano. Fazemos a verificação gratuita do seu FGTS disponível e analisamos o melhor uso no seu caso.</p>
       </div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">
         <span>Quanto preciso de entrada?</span>
-        <span class="faq-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="faq-answer">
-        <p>Depende do programa, do banco e se o imóvel é novo ou usado. No MCMV, a entrada mínima costuma ser 20%, podendo chegar a 10% em casos específicos com construtoras parceiras. Em financiamentos tradicionais, fica entre 20% e 30%. Para imóveis usados aqui na região Sul, o MCMV pode exigir até 50%. Cada caso pede uma análise — fala com a gente que montamos a proposta certa pro seu perfil.</p>
+        <p>Depende do programa, do banco e se o imóvel é novo ou usado. No MCMV, a entrada mínima costuma ser 20%, podendo chegar a 10% em casos específicos com construtoras parceiras. Em financiamentos tradicionais, fica entre 20% e 30%. O FGTS pode compor a entrada — fala com a gente que montamos a proposta certa pro seu perfil.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>Quais são os valores médios de imóveis no Centro de Santa Maria?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>Segundo o índice FipeZAP (maio/2026), o metro quadrado médio em Santa Maria está em R$ 5.397 — com alta de 8% nos últimos 12 meses. Apartamentos de 2 dormitórios no Centro costumam variar entre R$ 250 mil e R$ 400 mil, dependendo do andar, estado de conservação e infraestrutura do prédio. Entre em contato para receber opções atualizadas dentro do seu orçamento.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>Tem imóvel à venda no bairro Camobi em Santa Maria?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>Camobi é um dos bairros com maior procura em Santa Maria, especialmente por famílias e estudantes da UFSM. Trabalhamos com casas e apartamentos na região, com boa variedade de preços e muitas opções que se enquadram no MCMV. Fale com a gente para receber uma lista atualizada.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>Vocês têm imóveis nos bairros Fátima, Bonfim e outros?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>Sim. Fátima e Bonfim são bairros residenciais consolidados com alta procura por famílias. Também atuamos em Lourdes, Nonoai, Medianeira, Dores, Pinheiro Machado e toda Santa Maria. Consulte-nos para verificar a disponibilidade atual de casas e apartamentos em cada região.</p>
       </div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">
         <span>Tenho score baixo, consigo financiar?</span>
-        <span class="faq-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="faq-answer">
-        <p>Score baixo não é impedimento automático. Os bancos analisam renda, tempo de trabalho, dívidas ativas e relacionamento bancário. Já fechamos financiamentos com scores variados — vale a análise completa antes de descartar.</p>
+        <p>Score baixo não é impedimento automático. Os bancos analisam renda, tempo de trabalho, dívidas ativas e relacionamento bancário. Já fechamos financiamentos com scores variados — vale a análise completa antes de descartar qualquer possibilidade.</p>
       </div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">
-        <span>Quanto tempo demora a aprovação?</span>
-        <span class="faq-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </span>
+        <span>Quanto tempo demora a aprovação do financiamento?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="faq-answer">
-        <p>A análise inicial do banco sai em poucos dias após o envio da documentação. O processo completo até a assinatura costuma levar de 30 a 60 dias, dependendo da documentação e da agilidade das partes.</p>
+        <p>A análise inicial do banco sai em poucos dias após o envio da documentação completa. O processo completo até a assinatura costuma levar de 30 a 60 dias, dependendo da documentação e da agilidade das partes. Acompanhamos cada etapa para agilizar ao máximo.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>Quais documentos preciso para iniciar a compra?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>Para começar o processo, geralmente são necessários: RG e CPF (do comprador e cônjuge, se houver), comprovante de renda dos últimos 3 meses, comprovante de residência, extrato do FGTS (se for usar) e declaração do Imposto de Renda. Orientamos você sobre cada documento de acordo com o seu caso.</p>
       </div>
     </div>
 
     <div class="faq-item" onclick="toggleFaq(this)">
       <div class="faq-question">
         <span>Qual o custo do atendimento?</span>
-        <span class="faq-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
       </div>
       <div class="faq-answer">
-        <p>A simulação e o atendimento são gratuitos para você. A corretagem é incluída no fechamento da venda do imóvel — totalmente transparente, explicado antes de qualquer decisão.</p>
+        <p>A simulação e o atendimento são gratuitos. Nossa remuneração é o comissionamento sobre a venda do imóvel, conforme as normas do CRECI-RS. Você recebe atendimento completo, simulação e acompanhamento sem custo de consultoria — tudo explicado com transparência antes de qualquer decisão.</p>
+      </div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-question">
+        <span>Como agendar uma visita a um imóvel em Santa Maria?</span>
+        <span class="faq-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
+      </div>
+      <div class="faq-answer">
+        <p>É simples: entre em contato diretamente pelo WhatsApp com Ricardo ou Kamila. Enviamos as opções disponíveis de acordo com o seu perfil e agendamos a visita no horário que for melhor para você. Sem burocracia, sem intermediários.</p>
       </div>
     </div>
 
