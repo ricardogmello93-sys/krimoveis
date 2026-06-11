@@ -131,52 +131,48 @@
     pointer-events: none;
     overflow: hidden;
   }
+  /* oculto em mobile — não interfere com a foto */
+  @media (max-width: 768px) { .mesh-bg { display: none; } }
+
   .mesh-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(90px);
     pointer-events: none;
     will-change: transform;
-    mix-blend-mode: screen;
   }
-  /* dourado — canto superior esquerdo, vaga em direção ao centro */
   .mesh-blob-1 {
-    width: 50vw; height: 50vw; max-width: 600px; max-height: 600px;
-    top: 0%; left: -5%;
-    background: radial-gradient(circle, rgba(210,165,55,0.72) 0%, transparent 60%);
-    animation: mb1 14s ease-in-out infinite;
+    width: 55vw; height: 55vw; max-width: 660px; max-height: 660px;
+    top: -5%; left: -8%;
+    background: radial-gradient(circle, rgba(210,165,55,0.82) 0%, transparent 62%);
+    animation: mb1 15s ease-in-out infinite;
   }
-  /* roxo — centro da tela, movimento mais amplo */
   .mesh-blob-2 {
-    width: 45vw; height: 45vw; max-width: 540px; max-height: 540px;
-    top: 20%; left: 30%;
-    background: radial-gradient(circle, rgba(120,60,220,0.78) 0%, transparent 60%);
-    animation: mb2 19s ease-in-out infinite;
+    width: 50vw; height: 50vw; max-width: 600px; max-height: 600px;
+    top: 18%; left: 28%;
+    background: radial-gradient(circle, rgba(115,55,215,0.88) 0%, transparent 62%);
+    animation: mb2 20s ease-in-out infinite;
   }
-  /* lilás — canto inferior direito, sobe e cruza o centro */
   .mesh-blob-3 {
-    width: 42vw; height: 42vw; max-width: 500px; max-height: 500px;
-    bottom: 0%; right: -5%;
-    background: radial-gradient(circle, rgba(157,147,237,0.68) 0%, transparent 60%);
-    animation: mb3 24s ease-in-out infinite;
+    width: 46vw; height: 46vw; max-width: 560px; max-height: 560px;
+    bottom: -5%; right: -8%;
+    background: radial-gradient(circle, rgba(157,147,237,0.78) 0%, transparent 62%);
+    animation: mb3 25s ease-in-out infinite;
   }
   @keyframes mb1 {
-    0%   { transform: translate(0,0) scale(1); }
-    30%  { transform: translate(200px, 140px) scale(1.2); }
-    60%  { transform: translate(80px, 280px) scale(0.88); }
-    100% { transform: translate(0,0) scale(1); }
+    0%,100% { transform: translate(0,0) scale(1); }
+    35%     { transform: translate(220px,160px) scale(1.18); }
+    70%     { transform: translate(80px,300px) scale(0.88); }
   }
   @keyframes mb2 {
-    0%   { transform: translate(0,0) scale(1); }
-    35%  { transform: translate(160px,-160px) scale(1.15); }
-    65%  { transform: translate(-60px, 180px) scale(0.9); }
-    100% { transform: translate(0,0) scale(1); }
+    0%,100% { transform: translate(0,0) scale(1); }
+    30%     { transform: translate(180px,-180px) scale(1.12); }
+    65%     { transform: translate(-80px,200px) scale(0.9); }
   }
   @keyframes mb3 {
-    0%   { transform: translate(0,0) scale(1); }
-    40%  { transform: translate(180px,-200px) scale(1.1); }
-    75%  { transform: translate(260px,-80px) scale(0.92); }
-    100% { transform: translate(0,0) scale(1); }
+    0%,100% { transform: translate(0,0) scale(1); }
+    40%     { transform: translate(-200px,-220px) scale(1.15); }
+    75%     { transform: translate(-300px,-80px) scale(0.92); }
   }
 
   .hero-left {
@@ -1544,20 +1540,20 @@
 
   /* Imóveis — levemente mais claro */
   #imoveis-destaque {
-    background: rgba(13,18,32,0.82);
+    background: rgba(13,18,32,0.58);
     border-top: 1px solid rgba(255,255,255,0.04);
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
 
   /* Especialidades — escuro puro com linha sutil no topo */
   #especialidades {
-    background: rgba(7,7,15,0.8);
+    background: rgba(7,7,15,0.55);
     border-top: 1px solid rgba(139,127,232,0.08);
   }
 
   /* Depoimentos — já tem gradiente, reforça */
   #depoimentos {
-    background: linear-gradient(180deg, rgba(10,15,28,0.8) 0%, rgba(139,127,232,0.08) 50%, rgba(10,15,28,0.8) 100%);
+    background: linear-gradient(180deg, rgba(10,15,28,0.52) 0%, rgba(139,127,232,0.08) 50%, rgba(10,15,28,0.52) 100%);
     border-top: 1px solid rgba(139,127,232,0.1);
     border-bottom: 1px solid rgba(139,127,232,0.1);
   }
@@ -1571,7 +1567,7 @@
 
   /* Contato — escuro puro com linha roxa no topo */
   .contato {
-    background: rgba(7,7,15,0.8);
+    background: rgba(7,7,15,0.55);
     border-top: 2px solid rgba(139,127,232,0.15);
     position: relative;
   }
@@ -1590,7 +1586,7 @@
 
   /* Footer — mais escuro que o resto */
   footer {
-    background: rgba(5,8,16,0.88) !important;
+    background: rgba(5,8,16,0.65) !important;
     border-top: 1px solid rgba(255,255,255,0.06);
   }
 
@@ -1878,7 +1874,7 @@
   /* ── BAIRROS E TIPOS ── */
   #bairros {
     padding: 90px 72px;
-    background: rgba(10,15,28,0.82);
+    background: rgba(10,15,28,0.58);
     border-top: 1px solid rgba(139,127,232,0.08);
     border-bottom: 1px solid rgba(139,127,232,0.08);
   }
@@ -2039,7 +2035,7 @@
   /* ── POR QUE A KR ── */
   #por-que-kr {
     padding: 90px 72px;
-    background: rgba(13,18,32,0.82);
+    background: rgba(13,18,32,0.58);
     border-top: 1px solid rgba(139,127,232,0.08);
     border-bottom: 1px solid rgba(139,127,232,0.08);
   }
@@ -2093,7 +2089,7 @@
   /* ── BLOCO DE NÚMEROS ── */
   #numeros {
     padding: 60px 72px 90px;
-    background: rgba(7,7,15,0.8);
+    background: rgba(7,7,15,0.55);
   }
 
   .stats-grid {
