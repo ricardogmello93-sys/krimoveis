@@ -131,48 +131,70 @@
     pointer-events: none;
     overflow: hidden;
   }
-  /* oculto em mobile — não interfere com a foto */
-  @media (max-width: 768px) { .mesh-bg { display: none; } }
-
   .mesh-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
+    filter: blur(110px);
     pointer-events: none;
     will-change: transform;
   }
   .mesh-blob-1 {
-    width: 55vw; height: 55vw; max-width: 660px; max-height: 660px;
-    top: -5%; left: -8%;
-    background: radial-gradient(circle, rgba(210,165,55,0.82) 0%, transparent 62%);
-    animation: mb1 15s ease-in-out infinite;
+    width: 70vw; height: 70vw; max-width: 800px; max-height: 800px;
+    top: -15%; left: -15%;
+    background: radial-gradient(circle, rgba(210,165,55,0.75) 0%, transparent 65%);
+    animation: mb1 9s linear infinite;
   }
   .mesh-blob-2 {
-    width: 50vw; height: 50vw; max-width: 600px; max-height: 600px;
-    top: 18%; left: 28%;
-    background: radial-gradient(circle, rgba(115,55,215,0.88) 0%, transparent 62%);
-    animation: mb2 20s ease-in-out infinite;
+    width: 65vw; height: 65vw; max-width: 740px; max-height: 740px;
+    top: 10%; left: 20%;
+    background: radial-gradient(circle, rgba(115,55,215,0.82) 0%, transparent 65%);
+    animation: mb2 13s linear infinite;
   }
   .mesh-blob-3 {
-    width: 46vw; height: 46vw; max-width: 560px; max-height: 560px;
-    bottom: -5%; right: -8%;
-    background: radial-gradient(circle, rgba(157,147,237,0.78) 0%, transparent 62%);
-    animation: mb3 25s ease-in-out infinite;
+    width: 60vw; height: 60vw; max-width: 700px; max-height: 700px;
+    bottom: -15%; right: -15%;
+    background: radial-gradient(circle, rgba(157,147,237,0.72) 0%, transparent 65%);
+    animation: mb3 17s linear infinite;
   }
   @keyframes mb1 {
-    0%,100% { transform: translate(0,0) scale(1); }
-    35%     { transform: translate(220px,160px) scale(1.18); }
-    70%     { transform: translate(80px,300px) scale(0.88); }
+    0%   { transform: translate(0px,   0px); }
+    13%  { transform: translate(120px, 80px); }
+    25%  { transform: translate(220px, 30px); }
+    38%  { transform: translate(270px,160px); }
+    50%  { transform: translate(200px,280px); }
+    63%  { transform: translate( 90px,260px); }
+    75%  { transform: translate( 20px,150px); }
+    88%  { transform: translate(-30px, 60px); }
+    100% { transform: translate(0px,   0px); }
   }
   @keyframes mb2 {
-    0%,100% { transform: translate(0,0) scale(1); }
-    30%     { transform: translate(180px,-180px) scale(1.12); }
-    65%     { transform: translate(-80px,200px) scale(0.9); }
+    0%   { transform: translate(0px,   0px); }
+    12%  { transform: translate(-80px,-100px); }
+    25%  { transform: translate( 60px,-200px); }
+    37%  { transform: translate(200px,-140px); }
+    50%  { transform: translate(220px,  60px); }
+    62%  { transform: translate(120px, 200px); }
+    75%  { transform: translate(-50px, 180px); }
+    87%  { transform: translate(-120px, 60px); }
+    100% { transform: translate(0px,   0px); }
   }
   @keyframes mb3 {
-    0%,100% { transform: translate(0,0) scale(1); }
-    40%     { transform: translate(-200px,-220px) scale(1.15); }
-    75%     { transform: translate(-300px,-80px) scale(0.92); }
+    0%   { transform: translate(0px,    0px); }
+    14%  { transform: translate(-120px,-100px); }
+    28%  { transform: translate(-250px,-180px); }
+    42%  { transform: translate(-300px, -60px); }
+    57%  { transform: translate(-200px,  80px); }
+    71%  { transform: translate( -80px,  60px); }
+    85%  { transform: translate( -30px, -40px); }
+    100% { transform: translate(0px,    0px); }
+  }
+
+  /* mobile: blobs menores e mais rápidos, sem cobrir a foto */
+  @media (max-width: 768px) {
+    .mesh-blob { filter: blur(70px); }
+    .mesh-blob-1 { width: 90vw; height: 90vw; top: 50%; left: -10%; animation-duration: 7s; }
+    .mesh-blob-2 { width: 80vw; height: 80vw; top: 55%; left: 15%; animation-duration: 10s; }
+    .mesh-blob-3 { width: 75vw; height: 75vw; bottom: 0%; right: -10%; animation-duration: 13s; }
   }
 
   .hero-left {
@@ -319,8 +341,14 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, var(--dark) 0%, transparent 30%, transparent 70%, var(--dark) 100%),
-                linear-gradient(0deg, var(--dark) 0%, transparent 20%);
+    background: linear-gradient(90deg,
+                  var(--dark) 0%,
+                  rgba(7,7,15,0.92) 12%,
+                  rgba(7,7,15,0.6) 28%,
+                  transparent 48%,
+                  transparent 65%,
+                  var(--dark) 100%),
+                linear-gradient(0deg, var(--dark) 0%, transparent 28%);
     pointer-events: none;
     z-index: 1;
   }
