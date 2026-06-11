@@ -310,23 +310,21 @@
   .hero-right {
     position: relative;
     overflow: visible;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
   }
 
   .hero-img {
-    height: 96%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-55%);
+    height: 97%;
     width: auto;
     max-width: none;
-    object-fit: contain;
-    object-position: bottom center;
     display: block;
-    /* glow atmosférico roxo do lado esquerdo do casal + sutil dourado em cima */
+    /* glow atmosférico roxo à esquerda + sutil dourado acima */
     filter:
-      drop-shadow(-60px 0 140px rgba(110,50,210,0.32))
-      drop-shadow(0 -10px 60px rgba(200,155,45,0.10));
-    position: relative;
+      drop-shadow(-70px 0 160px rgba(110,50,210,0.35))
+      drop-shadow(0 -15px 70px rgba(200,155,45,0.12));
     z-index: 2;
   }
 
@@ -1611,8 +1609,8 @@
 
     /* HERO */
     .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-right { height: 60vh; order: -1; overflow: hidden; justify-content: center; }
-    .hero-img { height: 100%; width: auto; filter: drop-shadow(0 -20px 60px rgba(110,50,210,0.25)); }
+    .hero-right { height: 62vh; order: -1; overflow: hidden; position: relative; }
+    .hero-img { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 98%; width: auto; filter: drop-shadow(0 -20px 60px rgba(110,50,210,0.25)); }
     .hero-left { padding: 36px 24px 48px; text-align: center !important; display: flex; flex-direction: column; align-items: center !important; }
     /* no mobile o overlay lateral não faz sentido — só vinheta inferior na área da foto */
     .hero::before {
