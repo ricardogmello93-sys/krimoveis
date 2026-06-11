@@ -1310,7 +1310,19 @@
   /* ── DEPOIMENTOS ── */
   #depoimentos {
     padding: 100px 72px;
+    background: rgba(10,15,28,0.70);
+  }
+
+  /* bloqueia mesh nos espaços entre os cards, preserva mesh no header */
+  #depoimentos .dep-grid {
     background: rgba(10,15,28,0.92);
+    border-radius: 12px;
+  }
+
+  /* remove o gradiente lateral que sombreia o primeiro/último card */
+  #depoimentos .carousel-track-wrap::before,
+  #depoimentos .carousel-track-wrap::after {
+    display: none;
   }
 
   .dep-grid {
