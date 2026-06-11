@@ -118,18 +118,16 @@
     content: '';
     position: absolute;
     inset: 0;
-    /* overlay único que cobre os dois lados — elimina a divisão no centro */
+    /* apenas garante legibilidade do texto — PNG transparente cuida da fusão */
     background:
       linear-gradient(90deg,
-        rgba(7,7,15,1)    0%,
-        rgba(7,7,15,1)    20%,
-        rgba(7,7,15,0.94) 30%,
-        rgba(7,7,15,0.78) 40%,
-        rgba(7,7,15,0.42) 48%,
-        rgba(7,7,15,0.10) 56%,
-        transparent       62%
+        rgba(7,7,15,0.92) 0%,
+        rgba(7,7,15,0.88) 25%,
+        rgba(7,7,15,0.55) 40%,
+        rgba(7,7,15,0.08) 52%,
+        transparent       60%
       ),
-      linear-gradient(180deg, transparent 60%, rgba(7,7,15,0.55) 100%);
+      linear-gradient(180deg, transparent 65%, rgba(7,7,15,0.45) 100%);
     pointer-events: none;
     z-index: 3;
   }
@@ -311,28 +309,25 @@
 
   .hero-right {
     position: relative;
-    overflow: hidden;
-  }
-
-  /* vinheta inferior e direita — fade lateral tratado pelo hero::before */
-  .hero-right::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(0deg, var(--dark) 0%, transparent 22%),
-      linear-gradient(270deg, rgba(7,7,15,0.55) 0%, transparent 30%);
-    pointer-events: none;
-    z-index: 1;
+    overflow: visible;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
   }
 
   .hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
+    height: 96%;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    object-position: bottom center;
     display: block;
-    filter: brightness(0.86) contrast(1.06) saturate(0.78);
+    /* glow atmosférico roxo do lado esquerdo do casal + sutil dourado em cima */
+    filter:
+      drop-shadow(-60px 0 140px rgba(110,50,210,0.32))
+      drop-shadow(0 -10px 60px rgba(200,155,45,0.10));
+    position: relative;
+    z-index: 2;
   }
 
   .hero-creci {
@@ -664,8 +659,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 18%;
+    object-position: center 15%;
     display: block;
+    filter: brightness(1.12) contrast(1.06) saturate(0.80);
   }
 
   .contact-name {
@@ -1316,7 +1312,7 @@
   /* ── DEPOIMENTOS ── */
   #depoimentos {
     padding: 100px 72px;
-    background: linear-gradient(180deg, var(--dark) 0%, rgba(139,127,232,0.04) 50%, var(--dark) 100%);
+    background: rgba(10,15,28,0.52);
   }
 
   .dep-grid {
@@ -1327,14 +1323,16 @@
   }
 
   .dep-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
+    background: rgba(14,18,30,0.82);
+    border: 1px solid rgba(139,127,232,0.18);
     border-radius: 16px;
     padding: 28px 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
     transition: border-color 0.3s, transform 0.3s;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .dep-card:hover {
@@ -1613,7 +1611,8 @@
 
     /* HERO */
     .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-right { height: 55vh; order: -1; }
+    .hero-right { height: 60vh; order: -1; overflow: hidden; justify-content: center; }
+    .hero-img { height: 100%; width: auto; filter: drop-shadow(0 -20px 60px rgba(110,50,210,0.25)); }
     .hero-left { padding: 36px 24px 48px; text-align: center !important; display: flex; flex-direction: column; align-items: center !important; }
     /* no mobile o overlay lateral não faz sentido — só vinheta inferior na área da foto */
     .hero::before {
@@ -2599,8 +2598,8 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       </a>
     </div>
   </div>
-  <div class="hero-right" style="background-color:#07070f">
-    <img src="images/foto-kamila.jpg" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="800" height="1000">
+  <div class="hero-right">
+    <img src="images/foto-hero.png" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="1060" height="1200">
     <!-- WATERMARK SÍMBOLO SANTA IMÓVEIS -->
     <img src="images/simbolo-santa.png" alt="" class="hero-santa-watermark" aria-hidden="true" loading="lazy">
     <!-- CTA OVERLAY — aparece só no mobile, sobre a foto -->
