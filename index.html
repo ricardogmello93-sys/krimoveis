@@ -114,18 +114,13 @@
     overflow: hidden;
   }
 
-  /* gradiente atmosférico sobre a foto — roxo/dourado + escurece bas */
   .hero::before {
     content: '';
     position: absolute;
     inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(7,7,15,0.5) 100%);
     pointer-events: none;
     z-index: 1;
-    background:
-      radial-gradient(ellipse 55% 70% at 0% 45%, rgba(100,45,200,0.55) 0%, transparent 65%),
-      radial-gradient(ellipse 35% 45% at 15% 85%, rgba(200,155,45,0.3) 0%, transparent 60%),
-      linear-gradient(to right, rgba(7,7,15,0.92) 0%, rgba(7,7,15,0.55) 35%, rgba(7,7,15,0.15) 60%, transparent 80%),
-      linear-gradient(180deg, transparent 55%, rgba(7,7,15,0.6) 100%);
   }
 
   /* ── MESH ANIMATED BACKGROUND (site-wide fixed layer) ── */
@@ -209,6 +204,8 @@
     padding: 80px 56px 80px 72px;
     position: relative;
     z-index: 2;
+    /* dissolve a borda direita para fundir com a foto */
+    background: linear-gradient(to right, rgba(7,7,15,1) 0%, rgba(7,7,15,0.98) 60%, rgba(7,7,15,0.5) 85%, transparent 100%);
   }
 
   .badge {
@@ -339,22 +336,27 @@
 
   .hero-right {
     position: relative;
-    z-index: 2;
-    pointer-events: none; /* clicks passam para hero-left e elementos absolutos */
+    overflow: hidden;
   }
 
-  /* re-habilita clicks nos filhos do hero-right */
-  .hero-right > * { pointer-events: auto; }
-
-  .hero-img {
+  /* fade suave da foto para o lado do texto */
+  .hero-right::after {
+    content: '';
     position: absolute;
     inset: 0;
+    background:
+      linear-gradient(90deg, rgba(7,7,15,0.9) 0%, rgba(7,7,15,0.4) 25%, transparent 52%, transparent 70%, var(--dark) 100%),
+      linear-gradient(0deg, var(--dark) 0%, transparent 25%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 68% top;
+    object-position: center top;
     display: block;
-    z-index: 0;
   }
 
   .hero-creci {
@@ -1633,11 +1635,10 @@
     .site-logo { height: 22px; }
     .site-nav-name { font-size: 20px; }
 
-    /* HERO — foto é background absoluto, sem divisão */
-    .hero { grid-template-columns: 1fr; min-height: 100svh; }
-    .hero-right { display: none; }
-    .hero-img { object-position: 72% top; }
-    .hero-left { padding: 36px 24px 48px; text-align: center !important; display: flex; flex-direction: column; align-items: center !important; min-height: 100svh; justify-content: flex-end; padding-bottom: 60px; }
+    /* HERO */
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { height: 55vh; order: -1; }
+    .hero-left { padding: 36px 24px 48px; text-align: center !important; display: flex; flex-direction: column; align-items: center !important; }
     .hero-slider { width: 100% !important; overflow: hidden; }
     .hero-title, .hero-subtitle { font-size: clamp(40px, 11vw, 60px); letter-spacing: -0.5px; font-weight: 300; }
     .hero-eyebrow { font-size: 11px; }
@@ -2570,8 +2571,6 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 </nav>
 
 <section class="hero" style="padding:0">
-  <!-- foto cobre o hero inteiro — sem divisão de colunas -->
-  <img src="images/foto-kamila.jpg" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="800" height="1000">
   <div class="hero-left">
     <span class="badge">✦ Corretores de Imóveis · Parceiros Santa Imóveis</span>
     <a href="https://share.google/BkXUTphc45arjYmvr" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.35);color:#f5c518;font-size:13px;font-weight:600;letter-spacing:0.5px;padding:5px 14px;border-radius:100px;text-decoration:none;margin-bottom:28px;width:fit-content;transition:background 0.2s;" onmouseover="this.style.background='rgba(245,197,24,0.2)'" onmouseout="this.style.background='rgba(245,197,24,0.12)'">
@@ -2622,7 +2621,8 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       </a>
     </div>
   </div>
-  <div class="hero-right">
+  <div class="hero-right" style="background-color:#07070f">
+    <img src="images/foto-kamila.jpg" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="800" height="1000">
     <!-- WATERMARK SÍMBOLO SANTA IMÓVEIS -->
     <img src="images/simbolo-santa.png" alt="" class="hero-santa-watermark" aria-hidden="true" loading="lazy">
     <!-- CTA OVERLAY — aparece só no mobile, sobre a foto -->
