@@ -123,78 +123,44 @@
     z-index: 1;
   }
 
-  /* ── MESH ANIMATED BACKGROUND (site-wide fixed layer) ── */
+  /* ── @property: gradiente animável por CSS interpolação nativa ── */
+  @property --ax { syntax: '<percentage>'; inherits: false; initial-value: 12%; }
+  @property --ay { syntax: '<percentage>'; inherits: false; initial-value: 18%; }
+  @property --bx { syntax: '<percentage>'; inherits: false; initial-value: 72%; }
+  @property --by { syntax: '<percentage>'; inherits: false; initial-value: 52%; }
+  @property --cx { syntax: '<percentage>'; inherits: false; initial-value: 35%; }
+  @property --cy { syntax: '<percentage>'; inherits: false; initial-value: 80%; }
+
+  /* container fixo — cobre viewport inteiro, sempre */
   .mesh-bg {
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    overflow: hidden;
-  }
-  .mesh-blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(110px);
-    pointer-events: none;
-    will-change: transform;
-  }
-  .mesh-blob-1 {
-    width: 70vw; height: 70vw; max-width: 800px; max-height: 800px;
-    top: -15%; left: -15%;
-    background: radial-gradient(circle, rgba(210,165,55,0.58) 0%, transparent 65%);
-    animation: mb1 9s linear infinite;
-  }
-  .mesh-blob-2 {
-    width: 65vw; height: 65vw; max-width: 740px; max-height: 740px;
-    top: 10%; left: 20%;
-    background: radial-gradient(circle, rgba(115,55,215,0.62) 0%, transparent 65%);
-    animation: mb2 13s linear infinite;
-  }
-  .mesh-blob-3 {
-    width: 60vw; height: 60vw; max-width: 700px; max-height: 700px;
-    bottom: -15%; right: -15%;
-    background: radial-gradient(circle, rgba(157,147,237,0.55) 0%, transparent 65%);
-    animation: mb3 17s linear infinite;
-  }
-  @keyframes mb1 {
-    0%   { transform: translate(0px,   0px); }
-    13%  { transform: translate(120px, 80px); }
-    25%  { transform: translate(220px, 30px); }
-    38%  { transform: translate(270px,160px); }
-    50%  { transform: translate(200px,280px); }
-    63%  { transform: translate( 90px,260px); }
-    75%  { transform: translate( 20px,150px); }
-    88%  { transform: translate(-30px, 60px); }
-    100% { transform: translate(0px,   0px); }
-  }
-  @keyframes mb2 {
-    0%   { transform: translate(0px,   0px); }
-    12%  { transform: translate(-80px,-100px); }
-    25%  { transform: translate( 60px,-200px); }
-    37%  { transform: translate(200px,-140px); }
-    50%  { transform: translate(220px,  60px); }
-    62%  { transform: translate(120px, 200px); }
-    75%  { transform: translate(-50px, 180px); }
-    87%  { transform: translate(-120px, 60px); }
-    100% { transform: translate(0px,   0px); }
-  }
-  @keyframes mb3 {
-    0%   { transform: translate(0px,    0px); }
-    14%  { transform: translate(-120px,-100px); }
-    28%  { transform: translate(-250px,-180px); }
-    42%  { transform: translate(-300px, -60px); }
-    57%  { transform: translate(-200px,  80px); }
-    71%  { transform: translate( -80px,  60px); }
-    85%  { transform: translate( -30px, -40px); }
-    100% { transform: translate(0px,    0px); }
+    background-image:
+      radial-gradient(ellipse 60% 55% at var(--ax) var(--ay), rgba(110,50,210,0.38) 0%, transparent 100%),
+      radial-gradient(ellipse 55% 50% at var(--bx) var(--by), rgba(200,155,45,0.28) 0%, transparent 100%),
+      radial-gradient(ellipse 50% 55% at var(--cx) var(--cy), rgba(148,138,230,0.30) 0%, transparent 100%);
+    animation: meshFlow 28s ease-in-out infinite alternate;
   }
 
-  /* mobile: blobs menores e mais rápidos, sem cobrir a foto */
+  @keyframes meshFlow {
+    0%   { --ax:12%; --ay:18%; --bx:72%; --by:52%; --cx:35%; --cy:80%; }
+    20%  { --ax:30%; --ay:42%; --bx:55%; --by:20%; --cx:65%; --cy:58%; }
+    40%  { --ax: 6%; --ay:65%; --bx:85%; --by:72%; --cx:22%; --cy:32%; }
+    60%  { --ax:48%; --ay: 8%; --bx:28%; --by:88%; --cx:80%; --cy:48%; }
+    80%  { --ax:20%; --ay:75%; --bx:65%; --by:30%; --cx:45%; --cy:18%; }
+    100% { --ax:12%; --ay:18%; --bx:72%; --by:52%; --cx:35%; --cy:80%; }
+  }
+
+  /* mobile: mesh visível mas mais sutil */
   @media (max-width: 768px) {
-    .mesh-blob { filter: blur(70px); }
-    .mesh-blob-1 { width: 90vw; height: 90vw; top: 50%; left: -10%; animation-duration: 7s; }
-    .mesh-blob-2 { width: 80vw; height: 80vw; top: 55%; left: 15%; animation-duration: 10s; }
-    .mesh-blob-3 { width: 75vw; height: 75vw; bottom: 0%; right: -10%; animation-duration: 13s; }
+    .mesh-bg {
+      background-image:
+        radial-gradient(ellipse 80% 60% at var(--ax) var(--ay), rgba(110,50,210,0.28) 0%, transparent 100%),
+        radial-gradient(ellipse 70% 65% at var(--bx) var(--by), rgba(200,155,45,0.18) 0%, transparent 100%),
+        radial-gradient(ellipse 65% 60% at var(--cx) var(--cy), rgba(148,138,230,0.22) 0%, transparent 100%);
+    }
   }
 
   .hero-left {
@@ -1566,20 +1532,20 @@
 
   /* Imóveis — levemente mais claro */
   #imoveis-destaque {
-    background: rgba(13,18,32,0.65);
+    background: rgba(13,18,32,0.52);
     border-top: 1px solid rgba(255,255,255,0.04);
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
 
   /* Especialidades — escuro puro com linha sutil no topo */
   #especialidades {
-    background: rgba(7,7,15,0.65);
+    background: rgba(7,7,15,0.52);
     border-top: 1px solid rgba(139,127,232,0.08);
   }
 
   /* Depoimentos — já tem gradiente, reforça */
   #depoimentos {
-    background: linear-gradient(180deg, rgba(10,15,28,0.52) 0%, rgba(139,127,232,0.08) 50%, rgba(10,15,28,0.52) 100%);
+    background: linear-gradient(180deg, rgba(10,15,28,0.48) 0%, rgba(139,127,232,0.06) 50%, rgba(10,15,28,0.48) 100%);
     border-top: 1px solid rgba(139,127,232,0.1);
     border-bottom: 1px solid rgba(139,127,232,0.1);
   }
@@ -1593,7 +1559,7 @@
 
   /* Contato — escuro puro com linha roxa no topo */
   .contato {
-    background: rgba(7,7,15,0.65);
+    background: rgba(7,7,15,0.52);
     border-top: 2px solid rgba(139,127,232,0.15);
     position: relative;
   }
@@ -1612,7 +1578,7 @@
 
   /* Footer — mais escuro que o resto */
   footer {
-    background: rgba(5,8,16,0.65) !important;
+    background: rgba(5,8,16,0.55) !important;
     border-top: 1px solid rgba(255,255,255,0.06);
   }
 
@@ -1900,7 +1866,7 @@
   /* ── BAIRROS E TIPOS ── */
   #bairros {
     padding: 90px 72px;
-    background: rgba(10,15,28,0.65);
+    background: rgba(10,15,28,0.52);
     border-top: 1px solid rgba(139,127,232,0.08);
     border-bottom: 1px solid rgba(139,127,232,0.08);
   }
@@ -2061,7 +2027,7 @@
   /* ── POR QUE A KR ── */
   #por-que-kr {
     padding: 90px 72px;
-    background: rgba(13,18,32,0.65);
+    background: rgba(13,18,32,0.52);
     border-top: 1px solid rgba(139,127,232,0.08);
     border-bottom: 1px solid rgba(139,127,232,0.08);
   }
@@ -2115,7 +2081,7 @@
   /* ── BLOCO DE NÚMEROS ── */
   #numeros {
     padding: 60px 72px 90px;
-    background: rgba(7,7,15,0.65);
+    background: rgba(7,7,15,0.52);
   }
 
   .stats-grid {
@@ -2553,11 +2519,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 <body>
 
 <!-- FUNDO ANIMADO FIXO — aparece em toda a página -->
-<div class="mesh-bg" aria-hidden="true">
-  <div class="mesh-blob mesh-blob-1"></div>
-  <div class="mesh-blob mesh-blob-2"></div>
-  <div class="mesh-blob mesh-blob-3"></div>
-</div>
+<div class="mesh-bg" aria-hidden="true"></div>
 
 <!-- HERO -->
 <!-- NAV WITH LOGO -->
