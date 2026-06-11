@@ -76,19 +76,21 @@
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --dark:    #080c14;
-    --darker:  #050810;
+    --dark:    #07070f;
+    --darker:  #05050c;
     --purple:  #9d93ed;
     --purple2: #c4b8f7;
+    --gold:    #c9a84c;
+    --gold2:   #d4b87a;
     --white:   #f4f2ee;
-    --muted:   rgba(244,242,238,0.82);
+    --muted:   rgba(244,242,238,0.78);
     --card-bg: rgba(255,255,255,0.04);
-    --card-border: rgba(255,255,255,0.08);
+    --card-border: rgba(255,255,255,0.07);
   }
 
   html { scroll-behavior: smooth; }
@@ -116,11 +118,47 @@
     content: '';
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(139,127,232,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(139,127,232,0.05) 0%, transparent 60%);
+    background: linear-gradient(180deg, transparent 60%, rgba(7,7,15,0.5) 100%);
     pointer-events: none;
+    z-index: 1;
   }
+
+  /* ── MESH ANIMATED BACKGROUND ── */
+  .mesh-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .mesh-blob-1 {
+    width: 55vw; height: 55vw; max-width: 680px; max-height: 680px;
+    top: -18%; left: -10%;
+    background: radial-gradient(circle, rgba(201,152,52,0.38) 0%, transparent 70%);
+    animation: mb1 16s ease-in-out infinite;
+  }
+  .mesh-blob-2 {
+    width: 45vw; height: 45vw; max-width: 560px; max-height: 560px;
+    top: 10%; right: -8%;
+    background: radial-gradient(circle, rgba(80,30,140,0.38) 0%, transparent 70%);
+    animation: mb2 21s ease-in-out infinite;
+  }
+  .mesh-blob-3 {
+    width: 38vw; height: 38vw; max-width: 480px; max-height: 480px;
+    bottom: -10%; left: 22%;
+    background: radial-gradient(circle, rgba(155,85,25,0.35) 0%, transparent 70%);
+    animation: mb3 26s ease-in-out infinite;
+  }
+  .mesh-blob-4 {
+    width: 30vw; height: 30vw; max-width: 380px; max-height: 380px;
+    top: 30%; left: 38%;
+    background: radial-gradient(circle, rgba(210,175,80,0.22) 0%, transparent 70%);
+    animation: mb4 13s ease-in-out infinite;
+  }
+  @keyframes mb1 { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(80px,60px) scale(1.1)} 70%{transform:translate(-40px,100px) scale(0.92)} }
+  @keyframes mb2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-70px,50px) scale(0.9)} 66%{transform:translate(50px,-80px) scale(1.12)} }
+  @keyframes mb3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-100px,-60px) scale(1.2)} }
+  @keyframes mb4 { 0%,100%{transform:translate(0,0) scale(1)} 25%{transform:translate(60px,-50px) scale(0.85)} 75%{transform:translate(-60px,70px) scale(1.15)} }
 
   .hero-left {
     display: flex;
@@ -135,9 +173,9 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    border: 1px solid rgba(139,127,232,0.4);
-    background: rgba(139,127,232,0.1);
-    color: var(--purple2);
+    border: 1px solid rgba(201,168,76,0.45);
+    background: rgba(201,168,76,0.06);
+    color: var(--gold2);
     font-size: 13px;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -150,21 +188,21 @@
 
   .hero-eyebrow {
     font-family: 'DM Sans', sans-serif;
-    font-size: 18px;
-    letter-spacing: 3px;
+    font-size: 11px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
+    color: var(--gold);
+    margin-bottom: 18px;
     animation: fadeUp 0.9s 0.1s ease both;
   }
 
   .hero-title {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(48px, 5vw, 72px);
-    font-weight: 900;
-    line-height: 1.0;
-    letter-spacing: -2px;
-    margin-bottom: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 5.5vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
     animation: fadeUp 0.9s 0.15s ease both;
   }
 
@@ -175,13 +213,13 @@
   }
 
   .hero-subtitle {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(48px, 5vw, 72px);
-    font-weight: 900;
-    line-height: 1.0;
-    letter-spacing: -2px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 5.5vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1px;
     color: var(--purple);
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     animation: fadeUp 0.9s 0.2s ease both;
   }
 
@@ -209,35 +247,53 @@
   .btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 28px;
-    border-radius: 100px;
-    font-size: 20px;
+    gap: 10px;
+    padding: 13px 26px;
+    border-radius: 3px;
+    font-size: 12px;
     font-weight: 500;
     text-decoration: none;
-    letter-spacing: 0.5px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
   }
 
-  .btn:hover { transform: translateY(-2px); }
+  .btn:hover { transform: translateY(-1px); }
 
   .btn-primary {
     background: var(--purple);
     color: #fff;
-    box-shadow: 0 8px 32px rgba(139,127,232,0.35);
+    border: 1px solid transparent;
+    box-shadow: 0 6px 28px rgba(139,127,232,0.3);
   }
 
-  .btn-primary:hover { box-shadow: 0 12px 40px rgba(139,127,232,0.5); }
+  .btn-primary:hover {
+    background: var(--purple2);
+    box-shadow: 0 10px 36px rgba(139,127,232,0.45);
+    color: #1a1440;
+  }
 
   .btn-secondary {
     background: transparent;
     color: var(--white);
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.12);
   }
 
-  .btn-secondary:hover { background: rgba(255,255,255,0.06); }
+  .btn-secondary:hover { background: rgba(255,255,255,0.05); }
 
-  .btn-icon { font-size: 18px; }
+  .wa-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #25d366;
+    flex-shrink: 0;
+    animation: wapulse 2.2s ease-in-out infinite;
+  }
+  @keyframes wapulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.65); }
+    60%      { box-shadow: 0 0 0 6px rgba(37,211,102,0); }
+  }
 
   .hero-right {
     position: relative;
@@ -375,7 +431,7 @@
   .mtag-icon svg { display: block; }
 
   .mtag-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--white);
@@ -393,20 +449,21 @@
   section { padding: 100px 72px; }
 
   .section-tag {
-    font-size: 18px;
-    letter-spacing: 3px;
+    font-size: 11px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.75);
+    color: var(--gold);
     margin-bottom: 16px;
     display: block;
+    font-family: 'DM Sans', sans-serif;
   }
 
   .section-title {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(32px, 3.5vw, 48px);
-    font-weight: 900;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 3.5vw, 52px);
+    font-weight: 600;
     line-height: 1.1;
-    letter-spacing: -1px;
+    letter-spacing: -0.5px;
     margin-bottom: 16px;
   }
 
@@ -462,7 +519,7 @@
   .esp-icon svg { display: block; }
 
   .esp-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 10px;
@@ -516,14 +573,14 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 24px;
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 22px;
     font-weight: 900;
     color: var(--purple);
   }
 
   .step-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
@@ -594,7 +651,7 @@
   }
 
   .contact-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 22px;
     font-weight: 700;
     margin-bottom: 4px;
@@ -636,7 +693,7 @@
   }
 
   .footer-brand {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--white);
@@ -725,7 +782,7 @@
   }
 
   .site-nav-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--white);
@@ -830,7 +887,7 @@
   }
 
   .imovel-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 700;
     color: var(--white);
@@ -867,7 +924,7 @@
   }
 
   .imovel-price {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--white);
@@ -924,7 +981,7 @@
   }
 
   .admin-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 28px;
     font-weight: 700;
     color: var(--white);
@@ -968,7 +1025,7 @@
   }
 
   .admin-slot-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 700;
     color: var(--white);
@@ -1063,7 +1120,7 @@
   }
 
   .admin-pass-box h2 {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 24px;
     margin-bottom: 24px;
     color: var(--white);
@@ -1128,7 +1185,7 @@
   }
 
   .picker-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 700;
     color: var(--white);
@@ -1181,7 +1238,7 @@
   .picker-option-info { flex: 1; }
 
   .picker-option-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
     font-weight: 700;
     color: var(--white);
@@ -1300,7 +1357,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 700;
     color: #fff;
@@ -1541,8 +1598,8 @@
     .hero-right { height: 55vh; order: -1; }
     .hero-left { padding: 36px 24px 48px; text-align: center !important; display: flex; flex-direction: column; align-items: center !important; }
     .hero-slider { width: 100% !important; overflow: hidden; }
-    .hero-title, .hero-subtitle { font-size: clamp(38px, 11vw, 56px); letter-spacing: -1px; }
-    .hero-eyebrow { font-size: 20px; }
+    .hero-title, .hero-subtitle { font-size: clamp(40px, 11vw, 60px); letter-spacing: -0.5px; font-weight: 300; }
+    .hero-eyebrow { font-size: 11px; }
     .hero-desc { font-size: 18px; margin-bottom: 32px; }
     .hero-buttons,
     .cta-group { display: flex !important; flex-direction: column !important; gap: 12px !important; width: 100% !important; align-items: center !important; padding: 0 !important; }
@@ -1828,7 +1885,7 @@
   }
 
   .bairro-name {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 17px;
     font-weight: 700;
     color: var(--white);
@@ -1847,7 +1904,7 @@
   }
 
   .tipos-wrap-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: clamp(18px, 2vw, 22px);
     font-weight: 700;
     color: var(--white);
@@ -1989,7 +2046,7 @@
   }
 
   .why-num {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 42px;
     font-weight: 700;
     color: var(--purple);
@@ -1999,7 +2056,7 @@
   }
 
   .why-title {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 19px;
     font-weight: 700;
     color: var(--white);
@@ -2038,7 +2095,7 @@
   }
 
   .stat-big {
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 44px;
     font-weight: 700;
     color: var(--purple);
@@ -2083,7 +2140,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 24px 0;
-    font-family: 'Fraunces', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
     font-weight: 700;
     color: var(--white);
@@ -2465,6 +2522,10 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 </nav>
 
 <section class="hero" style="padding:0">
+  <div class="mesh-blob mesh-blob-1"></div>
+  <div class="mesh-blob mesh-blob-2"></div>
+  <div class="mesh-blob mesh-blob-3"></div>
+  <div class="mesh-blob mesh-blob-4"></div>
   <div class="hero-left">
     <span class="badge">✦ Corretores de Imóveis · Parceiros Santa Imóveis</span>
     <a href="https://share.google/BkXUTphc45arjYmvr" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.35);color:#f5c518;font-size:13px;font-weight:600;letter-spacing:0.5px;padding:5px 14px;border-radius:100px;text-decoration:none;margin-bottom:28px;width:fit-content;transition:background 0.2s;" onmouseover="this.style.background='rgba(245,197,24,0.2)'" onmouseout="this.style.background='rgba(245,197,24,0.12)'">
@@ -2508,14 +2569,14 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
     </div>
     <div class="cta-group">
       <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo%2C%20vim%20pelo%20site%20da%20KR%20Im%C3%B3veis%20%E2%80%94%20pode%20me%20ajudar%3F" onclick="gtag('event','whatsapp_click',{'corretor':'Ricardo','origem':'hero'}); fbq('track','Lead',{},{eventID:'lead_'+Date.now()+'_'+Math.random().toString(36).substr(2,6)});" class="btn btn-primary">
-        <span class="btn-icon">💬</span> Falar com Ricardo
+        <span class="wa-dot"></span>Falar com Ricardo
       </a>
       <a href="https://wa.me/55991346393?text=Ol%C3%A1%20Kamila%20Xavier%2C%20vim%20pelo%20site%20da%20KR%20Im%C3%B3veis%20%E2%80%94%20pode%20me%20ajudar%3F" onclick="gtag('event','whatsapp_click',{'corretor':'Kamila','origem':'hero'}); fbq('track','Lead',{},{eventID:'lead_'+Date.now()+'_'+Math.random().toString(36).substr(2,6)});" class="btn btn-primary">
-        <span class="btn-icon">💬</span> Falar com Kamila
+        <span class="wa-dot"></span>Falar com Kamila
       </a>
     </div>
   </div>
-  <div class="hero-right" style="background-color:#0d1220">
+  <div class="hero-right" style="background-color:#07070f">
     <img src="images/foto-kamila.jpg" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="800" height="1000">
     <!-- WATERMARK SÍMBOLO SANTA IMÓVEIS -->
     <img src="images/simbolo-santa.png" alt="" class="hero-santa-watermark" aria-hidden="true" loading="lazy">
@@ -2621,7 +2682,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   </div>
 
 <div style="text-align:center; padding: 48px 24px 0;">
-  <p style="font-family:'Fraunces',serif; font-size:clamp(20px,3.5vw,28px); font-weight:700; color:var(--white); margin-bottom:20px; line-height:1.3;">Pronto para dar o próximo passo?</p>
+  <p style="font-family:'Cormorant Garamond',serif; font-size:clamp(20px,3.5vw,28px); font-weight:700; color:var(--white); margin-bottom:20px; line-height:1.3;">Pronto para dar o próximo passo?</p>
   <button onclick="gtag('event','whatsapp_click',{'origem':'cta_numeros'}); openPicker('Fale com a gente', 'https://wa.me/55999147822?text=' + encodeURIComponent('Olá Ricardo, vim pelo site de Kamila e Ricardo — pode me ajudar?'), 'https://wa.me/55991346393?text=' + encodeURIComponent('Olá Kamila Xavier, vim pelo site de Kamila e Ricardo — pode me ajudar?'))"
     style="display:inline-flex;align-items:center;gap:10px;background:var(--purple);color:#fff;border:none;padding:16px 32px;border-radius:100px;font-size:17px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity 0.2s,transform 0.2s;"
     onmouseover="this.style.opacity='0.85';this.style.transform='translateY(-2px)'"
@@ -2713,7 +2774,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 </div>
 
 <div style="text-align:center; padding: 48px 24px 0;">
-  <p style="font-family:'Fraunces',serif; font-size:clamp(20px,3.5vw,28px); font-weight:700; color:var(--white); margin-bottom:20px; line-height:1.3;">Encontre o melhor caminho pro seu imóvel.</p>
+  <p style="font-family:'Cormorant Garamond',serif; font-size:clamp(20px,3.5vw,28px); font-weight:700; color:var(--white); margin-bottom:20px; line-height:1.3;">Encontre o melhor caminho pro seu imóvel.</p>
   <button onclick="gtag('event','whatsapp_click',{'origem':'cta_especialidades'}); openPicker('Fale com a gente', 'https://wa.me/55999147822?text=' + encodeURIComponent('Olá Ricardo, vim pelo site de Kamila e Ricardo — pode me ajudar?'), 'https://wa.me/55991346393?text=' + encodeURIComponent('Olá Kamila Xavier, vim pelo site de Kamila e Ricardo — pode me ajudar?'))"
     style="display:inline-flex;align-items:center;gap:10px;background:var(--purple);color:#fff;border:none;padding:16px 32px;border-radius:100px;font-size:17px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:opacity 0.2s,transform 0.2s;"
     onmouseover="this.style.opacity='0.85';this.style.transform='translateY(-2px)'"
