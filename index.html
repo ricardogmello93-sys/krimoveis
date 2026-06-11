@@ -1612,12 +1612,8 @@
     .hero-right { height: 62vh; order: -1; overflow: hidden; position: relative; }
     .hero-img { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); height: 98%; width: auto; filter: drop-shadow(0 -20px 60px rgba(110,50,210,0.25)); }
     .hero-left { padding: 36px 24px 48px; text-align: center !important; display: flex; flex-direction: column; align-items: center !important; }
-    /* no mobile o overlay lateral não faz sentido — só vinheta inferior na área da foto */
-    .hero::before {
-      background: linear-gradient(180deg, transparent 50%, rgba(7,7,15,0.65) 100%);
-      height: 55vh;
-      bottom: auto;
-    }
+    /* no mobile o texto fica ABAIXO da foto, não precisa de overlay escuro */
+    .hero::before { display: none; }
     .hero-slider { width: 100% !important; overflow: hidden; }
     .hero-title, .hero-subtitle { font-size: clamp(40px, 11vw, 60px); letter-spacing: -0.5px; font-weight: 300; }
     .hero-eyebrow { font-size: 11px; }
@@ -2597,7 +2593,10 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
     </div>
   </div>
   <div class="hero-right">
-    <img src="images/foto-hero.png" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="1060" height="1200">
+    <picture>
+      <source srcset="images/foto-hero.webp" type="image/webp">
+      <img src="images/foto-hero.png" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="1800" height="1800">
+    </picture>
     <!-- WATERMARK SÍMBOLO SANTA IMÓVEIS -->
     <img src="images/simbolo-santa.png" alt="" class="hero-santa-watermark" aria-hidden="true" loading="lazy">
     <!-- CTA OVERLAY — aparece só no mobile, sobre a foto -->
