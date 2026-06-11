@@ -359,12 +359,7 @@
     padding: 36px 0;
     position: relative;
     /* funde suavemente com as seções acima e abaixo */
-    background: linear-gradient(180deg,
-      transparent 0%,
-      rgba(7,7,15,0.08) 25%,
-      rgba(7,7,15,0.08) 75%,
-      transparent 100%
-    );
+    background: transparent;
   }
 
   .marquee-wrap::before,
@@ -396,8 +391,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
-    background: rgba(110,50,210,0.06);
-    border: 1px solid rgba(139,127,232,0.12);
+    background: rgba(110,50,210,0.04);
+    border: 1px solid rgba(139,127,232,0.08);
     border-radius: 16px;
     padding: 18px 24px;
     flex-shrink: 0;
@@ -540,9 +535,9 @@
 
   /* ── COMO FUNCIONA ── */
   .como {
-    background: rgba(139,127,232,0.04);
-    border-top: 1px solid var(--card-border);
-    border-bottom: 1px solid var(--card-border);
+    background: transparent;
+    border-top: none;
+    border-bottom: none;
   }
 
   .steps {
@@ -1312,12 +1307,11 @@
   /* ── DEPOIMENTOS ── */
   #depoimentos {
     padding: 100px 72px;
-    background: rgba(10,15,28,0.70);
+    background: rgba(10,15,28,0.22);
   }
 
-  /* bloqueia mesh nos espaços entre os cards, preserva mesh no header */
   #depoimentos .dep-grid {
-    background: rgba(10,15,28,0.92);
+    background: transparent;
     border-radius: 12px;
   }
 
@@ -1555,28 +1549,28 @@
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
 
-  /* Especialidades — permite mesh passar, fluido com as outras seções */
+  /* Especialidades — mesh passa livremente */
   #especialidades {
-    background: rgba(10,15,28,0.42);
-    border-top: 1px solid rgba(139,127,232,0.08);
+    background: transparent;
+    border-top: none;
   }
 
   #depoimentos {
-    border-top: 1px solid rgba(139,127,232,0.1);
-    border-bottom: 1px solid rgba(139,127,232,0.1);
+    border-top: none;
+    border-bottom: none;
   }
 
-  /* Como funciona — levemente mais claro com linha roxa */
+  /* Como funciona — sem container visível */
   .como {
-    background: rgba(13,18,32,0.52) !important;
-    border-top: 1px solid rgba(139,127,232,0.12) !important;
-    border-bottom: 1px solid rgba(139,127,232,0.12) !important;
+    background: transparent !important;
+    border-top: none !important;
+    border-bottom: none !important;
   }
 
-  /* Contato — escuro puro com linha roxa no topo */
+  /* Contato */
   .contato {
-    background: rgba(7,7,15,0.52);
-    border-top: 2px solid rgba(139,127,232,0.15);
+    background: rgba(7,7,15,0.25);
+    border-top: none;
     position: relative;
   }
 
