@@ -123,35 +123,41 @@
     z-index: 1;
   }
 
-  /* ── MESH ANIMATED BACKGROUND ── */
+  /* ── MESH ANIMATED BACKGROUND (site-wide fixed layer) ── */
+  .mesh-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
   .mesh-blob {
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
     pointer-events: none;
-    z-index: 0;
     will-change: transform;
     mix-blend-mode: screen;
   }
-  /* dourado — nasce no canto sup-esq e passeia pelo centro */
+  /* dourado — canto superior esquerdo, vaga em direção ao centro */
   .mesh-blob-1 {
-    width: 44vw; height: 44vw; max-width: 520px; max-height: 520px;
-    top: 5%; left: 2%;
-    background: radial-gradient(circle, rgba(210,165,55,0.75) 0%, transparent 60%);
+    width: 50vw; height: 50vw; max-width: 600px; max-height: 600px;
+    top: 0%; left: -5%;
+    background: radial-gradient(circle, rgba(210,165,55,0.72) 0%, transparent 60%);
     animation: mb1 14s ease-in-out infinite;
   }
-  /* roxo vivo — nasce no centro-esq e sobe/desce */
+  /* roxo — centro da tela, movimento mais amplo */
   .mesh-blob-2 {
-    width: 40vw; height: 40vw; max-width: 480px; max-height: 480px;
-    top: 30%; left: 8%;
-    background: radial-gradient(circle, rgba(120,60,220,0.8) 0%, transparent 60%);
+    width: 45vw; height: 45vw; max-width: 540px; max-height: 540px;
+    top: 20%; left: 30%;
+    background: radial-gradient(circle, rgba(120,60,220,0.78) 0%, transparent 60%);
     animation: mb2 19s ease-in-out infinite;
   }
-  /* lilás — nasce embaixo e sobe em diagonal */
+  /* lilás — canto inferior direito, sobe e cruza o centro */
   .mesh-blob-3 {
-    width: 36vw; height: 36vw; max-width: 440px; max-height: 440px;
-    bottom: 8%; left: 5%;
-    background: radial-gradient(circle, rgba(157,147,237,0.7) 0%, transparent 60%);
+    width: 42vw; height: 42vw; max-width: 500px; max-height: 500px;
+    bottom: 0%; right: -5%;
+    background: radial-gradient(circle, rgba(157,147,237,0.68) 0%, transparent 60%);
     animation: mb3 24s ease-in-out infinite;
   }
   @keyframes mb1 {
@@ -459,7 +465,8 @@
   }
 
   /* ── SECTIONS ── */
-  section { padding: 100px 72px; }
+  section { padding: 100px 72px; position: relative; z-index: 1; }
+  footer  { position: relative; z-index: 1; }
 
   .section-tag {
     font-size: 11px;
@@ -1537,20 +1544,20 @@
 
   /* Imóveis — levemente mais claro */
   #imoveis-destaque {
-    background: #0d1220;
+    background: rgba(13,18,32,0.82);
     border-top: 1px solid rgba(255,255,255,0.04);
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
 
   /* Especialidades — escuro puro com linha sutil no topo */
   #especialidades {
-    background: var(--dark);
+    background: rgba(7,7,15,0.8);
     border-top: 1px solid rgba(139,127,232,0.08);
   }
 
   /* Depoimentos — já tem gradiente, reforça */
   #depoimentos {
-    background: linear-gradient(180deg, #0a0f1c 0%, rgba(139,127,232,0.06) 50%, #0a0f1c 100%);
+    background: linear-gradient(180deg, rgba(10,15,28,0.8) 0%, rgba(139,127,232,0.08) 50%, rgba(10,15,28,0.8) 100%);
     border-top: 1px solid rgba(139,127,232,0.1);
     border-bottom: 1px solid rgba(139,127,232,0.1);
   }
@@ -1564,7 +1571,7 @@
 
   /* Contato — escuro puro com linha roxa no topo */
   .contato {
-    background: var(--dark);
+    background: rgba(7,7,15,0.8);
     border-top: 2px solid rgba(139,127,232,0.15);
     position: relative;
   }
@@ -1583,7 +1590,7 @@
 
   /* Footer — mais escuro que o resto */
   footer {
-    background: #050810 !important;
+    background: rgba(5,8,16,0.88) !important;
     border-top: 1px solid rgba(255,255,255,0.06);
   }
 
@@ -1871,7 +1878,7 @@
   /* ── BAIRROS E TIPOS ── */
   #bairros {
     padding: 90px 72px;
-    background: #0a0f1c;
+    background: rgba(10,15,28,0.82);
     border-top: 1px solid rgba(139,127,232,0.08);
     border-bottom: 1px solid rgba(139,127,232,0.08);
   }
@@ -2032,7 +2039,7 @@
   /* ── POR QUE A KR ── */
   #por-que-kr {
     padding: 90px 72px;
-    background: #0d1220;
+    background: rgba(13,18,32,0.82);
     border-top: 1px solid rgba(139,127,232,0.08);
     border-bottom: 1px solid rgba(139,127,232,0.08);
   }
@@ -2086,7 +2093,7 @@
   /* ── BLOCO DE NÚMEROS ── */
   #numeros {
     padding: 60px 72px 90px;
-    background: var(--dark);
+    background: rgba(7,7,15,0.8);
   }
 
   .stats-grid {
@@ -2523,6 +2530,13 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 </head>
 <body>
 
+<!-- FUNDO ANIMADO FIXO — aparece em toda a página -->
+<div class="mesh-bg" aria-hidden="true">
+  <div class="mesh-blob mesh-blob-1"></div>
+  <div class="mesh-blob mesh-blob-2"></div>
+  <div class="mesh-blob mesh-blob-3"></div>
+</div>
+
 <!-- HERO -->
 <!-- NAV WITH LOGO -->
 <nav class="site-nav">
@@ -2535,9 +2549,6 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 </nav>
 
 <section class="hero" style="padding:0">
-  <div class="mesh-blob mesh-blob-1"></div>
-  <div class="mesh-blob mesh-blob-2"></div>
-  <div class="mesh-blob mesh-blob-3"></div>
   <div class="hero-left">
     <span class="badge">✦ Corretores de Imóveis · Parceiros Santa Imóveis</span>
     <a href="https://share.google/BkXUTphc45arjYmvr" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.35);color:#f5c518;font-size:13px;font-weight:600;letter-spacing:0.5px;padding:5px 14px;border-radius:100px;text-decoration:none;margin-bottom:28px;width:fit-content;transition:background 0.2s;" onmouseover="this.style.background='rgba(245,197,24,0.2)'" onmouseout="this.style.background='rgba(245,197,24,0.12)'">
