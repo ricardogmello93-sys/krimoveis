@@ -352,99 +352,6 @@
     text-transform: uppercase;
   }
 
-  /* ── MARQUEE STRIP ── */
-  .marquee-wrap {
-    border: none;
-    overflow: hidden;
-    padding: 36px 0;
-    position: relative;
-    /* funde suavemente com as seções acima e abaixo */
-    background: transparent;
-  }
-
-  .marquee-wrap::before,
-  .marquee-wrap::after { content: none; }
-
-  .marquee-track {
-    display: flex;
-  }
-
-  .marquee-inner {
-    display: flex;
-    gap: 12px;
-    animation: marqueeScroll 30s linear infinite;
-    white-space: nowrap;
-    will-change: transform;
-  }
-
-  .marquee-inner:hover {
-    animation-play-state: paused;
-  }
-
-  @keyframes marqueeScroll {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  .mtag {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
-    background: transparent;
-    border: 1px solid rgba(139,127,232,0.06);
-    border-radius: 16px;
-    padding: 18px 24px;
-    flex-shrink: 0;
-    min-width: 190px;
-    transition: border-color 0.3s, background 0.3s, transform 0.3s;
-    cursor: default;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .mtag::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--purple), var(--purple2));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .mtag:hover {
-    border-color: rgba(139,127,232,0.4);
-    background: rgba(139,127,232,0.07);
-    transform: translateY(-2px);
-  }
-
-  .mtag:hover::before { opacity: 1; }
-
-  .mtag-icon {
-    width: 22px;
-    height: 22px;
-    margin-bottom: 4px;
-    color: var(--purple);
-    flex-shrink: 0;
-  }
-  .mtag-icon svg { display: block; }
-
-  .mtag-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.2;
-  }
-
-  .mtag-sub {
-    font-size: 18px;
-    color: var(--muted);
-    letter-spacing: 0.2px;
-    line-height: 1.5;
-  }
-
   /* ── SECTIONS ── */
   section { padding: 100px 72px; position: relative; z-index: 1; }
   footer  { position: relative; z-index: 1; }
@@ -1300,14 +1207,13 @@
     .hero-title,
     .hero-subtitle { font-size: 34px; }
     .section-title { font-size: 26px; }
-    .mtag { min-width: 140px; }
   }
 
 
   /* ── DEPOIMENTOS ── */
   #depoimentos {
     padding: 100px 72px;
-    background: rgba(10,15,28,0.22);
+    background: transparent;
   }
 
   #depoimentos .dep-grid {
@@ -1542,11 +1448,10 @@
 
   /* ── SECTION BACKGROUNDS ── */
 
-  /* Imóveis — levemente mais claro */
   #imoveis-destaque {
-    background: rgba(13,18,32,0.52);
-    border-top: 1px solid rgba(255,255,255,0.04);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
+    background: transparent;
+    border-top: none;
+    border-bottom: none;
   }
 
   /* Especialidades — mesh passa livremente */
@@ -1580,7 +1485,6 @@
     border-top: 1px solid rgba(255,255,255,0.06);
   }
 
-  /* Marquee — funde com mesh, sem background sólido */
 
 
   
@@ -1645,12 +1549,6 @@
     /* COMO FUNCIONA */
     .steps { grid-template-columns: 1fr; gap: 24px; }
     .steps::before { display: none; }
-
-    /* MARQUEE */
-    .marquee-wrap { padding: 20px 0; }
-    .mtag { padding: 14px 18px; min-width: 160px; }
-    .mtag-title { font-size: 18px; }
-    .mtag-sub { font-size: 18px; }
 
     /* IMÓVEIS — carousel */
     #imoveis-destaque { padding: 60px 0 !important; }
@@ -1864,9 +1762,9 @@
   /* ── BAIRROS E TIPOS ── */
   #bairros {
     padding: 90px 72px;
-    background: rgba(10,15,28,0.52);
-    border-top: 1px solid rgba(139,127,232,0.08);
-    border-bottom: 1px solid rgba(139,127,232,0.08);
+    background: transparent;
+    border-top: none;
+    border-bottom: none;
   }
 
   .bairros-grid {
@@ -2025,9 +1923,9 @@
   /* ── POR QUE A KR ── */
   #por-que-kr {
     padding: 90px 72px;
-    background: rgba(13,18,32,0.52);
-    border-top: 1px solid rgba(139,127,232,0.08);
-    border-bottom: 1px solid rgba(139,127,232,0.08);
+    background: transparent;
+    border-top: none;
+    border-bottom: none;
   }
 
   .why-grid {
@@ -2608,23 +2506,6 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   </div>
 </section>
 
-<!-- MARQUEE STRIP -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <div class="marquee-inner" id="marqueeInner">
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L10 3l7 6.5"></path><path d="M5 8v8h4v-4h2v4h4V8"></path></svg></span><span class="mtag-title">MCMV</span><span class="mtag-sub">Minha Casa Minha Vida</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="16" height="11" rx="2"></rect><path d="M14 11.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" fill="currentColor"></path><path d="M2 9h16M6 6V4.5A1.5 1.5 0 0 1 7.5 3h5A1.5 1.5 0 0 1 14 4.5V6"></path></svg></span><span class="mtag-title">FGTS</span><span class="mtag-sub">Use como entrada ou parcelas</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h16M3 8v7M7 8v7M10 8v7M13 8v7M17 8v7"></path><path d="M2 8h16M10 2L2 7h16L10 2z"></path></svg></span><span class="mtag-title">Caixa Econômica</span><span class="mtag-sub">Principal banco do financiamento</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="9" height="12"></rect><rect x="10" y="3" width="9" height="16"></rect><path d="M4 10h2M4 13h2M13 7h2M13 10h2M13 13h2"></path></svg></span><span class="mtag-title">Bancos Privados</span><span class="mtag-sub">Itaú, Bradesco, Santander</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,7 10,14 17,5"></polyline><path d="M17 5v5M17 5h-5"></path></svg></span><span class="mtag-title">Entrada Reduzida</span><span class="mtag-sub">A partir de 10% em alguns casos</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,13 10,6 17,13"></polyline><path d="M10 6v10"></path></svg></span><span class="mtag-title">Investimento</span><span class="mtag-sub">Imóvel como patrimônio</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="14" rx="1"></rect><path d="M6 3v14M2 7h16M2 11h4M2 15h4"></path></svg></span><span class="mtag-title">Na Planta</span><span class="mtag-sub">Condições especiais de lançamento</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="12" height="16" rx="2"></rect><rect x="7" y="5" width="6" height="3" rx="0.5"></rect><circle cx="7.5" cy="11.5" r="0.8" fill="currentColor"></circle><circle cx="10" cy="11.5" r="0.8" fill="currentColor"></circle><circle cx="12.5" cy="11.5" r="0.8" fill="currentColor"></circle><circle cx="7.5" cy="14" r="0.8" fill="currentColor"></circle><circle cx="10" cy="14" r="0.8" fill="currentColor"></circle><circle cx="12.5" cy="14" r="0.8" fill="currentColor"></circle></svg></span><span class="mtag-title">Simulação Grátis</span><span class="mtag-sub">Sem compromisso, na hora</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6l-4-4z"></path><path d="M12 2v4h4M7 9h6M7 12h6M7 15h4"></path></svg></span><span class="mtag-title">Documentação</span><span class="mtag-sub">Do início ao fim com suporte</span></div>
-      <div class="mtag"><span class="mtag-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h12M13 4l3 3-3 3"></path><path d="M16 13H4M7 10l-3 3 3 3"></path></svg></span><span class="mtag-title">Upgrade de Imóvel</span><span class="mtag-sub">Venda o atual, compre o próximo</span></div>
-    </div>
-  </div>
-</div>
 
 
 
@@ -3077,7 +2958,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 </section>
 
 <!-- COMO FUNCIONA -->
-<section class="como" id="como-funciona" style="background: linear-gradient(135deg, rgba(139,127,232,0.1) 0%, rgba(139,127,232,0.03) 100%); border-top: 1px solid rgba(139,127,232,0.15); border-bottom: 1px solid rgba(139,127,232,0.15);">
+<section class="como" id="como-funciona">
   <span class="section-tag">● Como funciona</span>
   <h2 class="section-title" style="text-align:center">Simples assim.</h2>
   <p class="section-sub" style="text-align:center;margin:0 auto 56px">Sem enrolação, sem burocracia desnecessária. Três passos.</p>
@@ -3176,16 +3057,6 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   startAuto();
 </script>
 
-<script>
-  // Duplicate marquee for seamless infinite loop
-  (function() {
-    const inner = document.getElementById('marqueeInner');
-    if (!inner) return;
-    const clone = inner.cloneNode(true);
-    clone.removeAttribute('id');
-    inner.parentElement.appendChild(clone);
-  })();
-</script>
 
 <script>
 // ── PROPERTY DATA ── (edite aqui ou use o painel admin)
