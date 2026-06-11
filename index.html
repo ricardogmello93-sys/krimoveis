@@ -146,8 +146,7 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    /* cor base constante: garante atmosfera roxa em toda a página mesmo sem blob */
-    background-color: rgba(80,40,170,0.07);
+    background-color: rgba(80,40,170,0.04);
     background-image:
       radial-gradient(ellipse 80% 70% at var(--ax) var(--ay), rgba(110,50,210,0.38) 0%, transparent 100%),
       radial-gradient(ellipse 75% 65% at var(--bx) var(--by), rgba(200,155,45,0.26) 0%, transparent 100%),
@@ -164,15 +163,15 @@
     100% { --ax:12%; --ay:18%; --bx:72%; --by:52%; --cx:35%; --cy:80%; }
   }
 
-  /* mobile: blobs maiores e mais perceptíveis, sem exagero */
+  /* mobile: mesh suave, apenas um toque de atmosfera */
   @media (max-width: 768px) {
     .mesh-bg {
-      background-color: rgba(80,40,170,0.09);
+      background-color: rgba(80,40,170,0.04);
       background-image:
-        radial-gradient(ellipse 100% 80% at var(--ax) var(--ay), rgba(110,50,210,0.36) 0%, transparent 100%),
-        radial-gradient(ellipse 90% 85% at var(--bx) var(--by), rgba(200,155,45,0.22) 0%, transparent 100%),
-        radial-gradient(ellipse 85% 80% at var(--cx) var(--cy), rgba(148,138,230,0.30) 0%, transparent 100%);
-      animation-duration: 20s;
+        radial-gradient(ellipse 80% 60% at var(--ax) var(--ay), rgba(110,50,210,0.22) 0%, transparent 100%),
+        radial-gradient(ellipse 70% 65% at var(--bx) var(--by), rgba(200,155,45,0.13) 0%, transparent 100%),
+        radial-gradient(ellipse 65% 60% at var(--cx) var(--cy), rgba(148,138,230,0.18) 0%, transparent 100%);
+      animation-duration: 22s;
     }
   }
 
