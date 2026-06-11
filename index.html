@@ -81,8 +81,8 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --dark:    #07070f;
-    --darker:  #05050c;
+    --dark:    #0b091c;
+    --darker:  #08061a;
     --purple:  #9d93ed;
     --purple2: #c4b8f7;
     --gold:    #c9a84c;
@@ -391,8 +391,8 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
-    background: rgba(110,50,210,0.04);
-    border: 1px solid rgba(139,127,232,0.08);
+    background: transparent;
+    border: 1px solid rgba(139,127,232,0.06);
     border-radius: 16px;
     padding: 18px 24px;
     flex-shrink: 0;
@@ -1569,21 +1569,9 @@
 
   /* Contato */
   .contato {
-    background: rgba(7,7,15,0.25);
+    background: transparent;
     border-top: none;
     position: relative;
-  }
-
-  /* Linha decorativa roxa acima do contato */
-  .contato::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 2px;
-    background: var(--purple);
-    border-radius: 2px;
   }
 
   /* Footer — mais escuro que o resto */
@@ -2091,21 +2079,21 @@
   /* ── BLOCO DE NÚMEROS ── */
   #numeros {
     padding: 60px 72px 90px;
-    background: rgba(7,7,15,0.52);
+    background: transparent;
   }
 
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0;
-    border-top: 1px solid rgba(139,127,232,0.12);
-    border-bottom: 1px solid rgba(139,127,232,0.12);
+    border-top: none;
+    border-bottom: none;
   }
 
   .stat-item {
     text-align: center;
     padding: 36px 24px;
-    border-right: 1px solid rgba(139,127,232,0.12);
+    border-right: none;
   }
 
   .stat-item:last-child {
@@ -2359,12 +2347,9 @@
 
     .stat-item {
       padding: 28px 12px;
-      border-right: 1px solid rgba(139,127,232,0.12);
-      border-bottom: 1px solid rgba(139,127,232,0.12);
+      border-right: none;
+      border-bottom: none;
     }
-
-    .stat-item:nth-child(2n) { border-right: none; }
-    .stat-item:nth-last-child(-n+2) { border-bottom: none; }
 
     .stat-big { font-size: 32px; }
     .stat-label { font-size: 11px; }
