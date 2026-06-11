@@ -127,39 +127,51 @@
   .mesh-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(72px);
+    filter: blur(80px);
     pointer-events: none;
     z-index: 0;
     will-change: transform;
+    mix-blend-mode: screen;
   }
+  /* dourado — nasce no canto sup-esq e passeia pelo centro */
   .mesh-blob-1 {
-    width: 55vw; height: 55vw; max-width: 680px; max-height: 680px;
-    top: 0%; left: 0%;
-    background: radial-gradient(circle, rgba(201,152,52,0.65) 0%, transparent 65%);
-    animation: mb1 16s ease-in-out infinite;
+    width: 44vw; height: 44vw; max-width: 520px; max-height: 520px;
+    top: 5%; left: 2%;
+    background: radial-gradient(circle, rgba(210,165,55,0.75) 0%, transparent 60%);
+    animation: mb1 14s ease-in-out infinite;
   }
+  /* roxo vivo — nasce no centro-esq e sobe/desce */
   .mesh-blob-2 {
-    width: 48vw; height: 48vw; max-width: 580px; max-height: 580px;
-    top: 5%; right: 0%;
-    background: radial-gradient(circle, rgba(110,50,200,0.65) 0%, transparent 65%);
-    animation: mb2 21s ease-in-out infinite;
+    width: 40vw; height: 40vw; max-width: 480px; max-height: 480px;
+    top: 30%; left: 8%;
+    background: radial-gradient(circle, rgba(120,60,220,0.8) 0%, transparent 60%);
+    animation: mb2 19s ease-in-out infinite;
   }
+  /* lilás — nasce embaixo e sobe em diagonal */
   .mesh-blob-3 {
-    width: 40vw; height: 40vw; max-width: 500px; max-height: 500px;
-    bottom: 0%; left: 18%;
-    background: radial-gradient(circle, rgba(139,127,232,0.5) 0%, transparent 65%);
-    animation: mb3 26s ease-in-out infinite;
+    width: 36vw; height: 36vw; max-width: 440px; max-height: 440px;
+    bottom: 8%; left: 5%;
+    background: radial-gradient(circle, rgba(157,147,237,0.7) 0%, transparent 60%);
+    animation: mb3 24s ease-in-out infinite;
   }
-  .mesh-blob-4 {
-    width: 32vw; height: 32vw; max-width: 400px; max-height: 400px;
-    top: 28%; left: 36%;
-    background: radial-gradient(circle, rgba(210,175,80,0.4) 0%, transparent 65%);
-    animation: mb4 13s ease-in-out infinite;
+  @keyframes mb1 {
+    0%   { transform: translate(0,0) scale(1); }
+    30%  { transform: translate(200px, 140px) scale(1.2); }
+    60%  { transform: translate(80px, 280px) scale(0.88); }
+    100% { transform: translate(0,0) scale(1); }
   }
-  @keyframes mb1 { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(80px,60px) scale(1.1)} 70%{transform:translate(-40px,80px) scale(0.92)} }
-  @keyframes mb2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-70px,50px) scale(0.9)} 66%{transform:translate(40px,-60px) scale(1.12)} }
-  @keyframes mb3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-80px,-50px) scale(1.2)} }
-  @keyframes mb4 { 0%,100%{transform:translate(0,0) scale(1)} 25%{transform:translate(60px,-50px) scale(0.85)} 75%{transform:translate(-60px,70px) scale(1.15)} }
+  @keyframes mb2 {
+    0%   { transform: translate(0,0) scale(1); }
+    35%  { transform: translate(160px,-160px) scale(1.15); }
+    65%  { transform: translate(-60px, 180px) scale(0.9); }
+    100% { transform: translate(0,0) scale(1); }
+  }
+  @keyframes mb3 {
+    0%   { transform: translate(0,0) scale(1); }
+    40%  { transform: translate(180px,-200px) scale(1.1); }
+    75%  { transform: translate(260px,-80px) scale(0.92); }
+    100% { transform: translate(0,0) scale(1); }
+  }
 
   .hero-left {
     display: flex;
@@ -2526,7 +2538,6 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   <div class="mesh-blob mesh-blob-1"></div>
   <div class="mesh-blob mesh-blob-2"></div>
   <div class="mesh-blob mesh-blob-3"></div>
-  <div class="mesh-blob mesh-blob-4"></div>
   <div class="hero-left">
     <span class="badge">✦ Corretores de Imóveis · Parceiros Santa Imóveis</span>
     <a href="https://share.google/BkXUTphc45arjYmvr" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.35);color:#f5c518;font-size:13px;font-weight:600;letter-spacing:0.5px;padding:5px 14px;border-radius:100px;text-decoration:none;margin-bottom:28px;width:fit-content;transition:background 0.2s;" onmouseover="this.style.background='rgba(245,197,24,0.2)'" onmouseout="this.style.background='rgba(245,197,24,0.12)'">
