@@ -2419,7 +2419,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 <!-- HERO -->
 <!-- NAV WITH LOGO -->
 <nav class="site-nav">
-  <img src="images/logo-kr.svg" alt="KR" class="site-logo" loading="lazy">
+  <img src="images/img.png" alt="KR" class="site-logo" loading="lazy">
   <span class="site-nav-name">Kamila &amp; Ricardo</span>
   <span class="site-nav-dot">·</span>
   <span class="site-nav-partner-label">Parceiros Santa Imóveis</span>
@@ -3010,7 +3010,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-brand-wrap"><img src="images/logo-kr.svg" alt="KR" class="footer-logo" loading="lazy"><span class="footer-brand">Kamila &amp; Ricardo</span></div>
+  <div class="footer-brand-wrap"><img src="images/logo-kr.png" alt="KR" class="footer-logo" loading="lazy"><span class="footer-brand">Kamila &amp; Ricardo</span></div>
   <div style="text-align:center;">
     <span style="font-size:14px;">© 2026 · Kamila &amp; Ricardo · Santa Maria, RS</span>
     <p style="font-size:11px; color:rgba(255,255,255,0.2); margin-top:8px; letter-spacing:2px;">Design by RM · Ricardo Mello</p>
@@ -3892,9 +3892,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const CARDS_PER_VIEW = 2;
     const totalPages = Math.ceil(cards.length / CARDS_PER_VIEW);
+    // Don't create a dot for a partial last page (odd number of cards)
+    const dotsCount = (cards.length % CARDS_PER_VIEW === 1) ? totalPages - 1 : totalPages;
 
     // Build dots
-    dotsWrap.innerHTML = Array.from({ length: totalPages }, (_, i) =>
+    dotsWrap.innerHTML = Array.from({ length: dotsCount }, (_, i) =>
       `<button class="bairro-dot${i === 0 ? ' active' : ''}" data-i="${i}"></button>`
     ).join('');
 
@@ -3906,7 +3908,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const cardW = cards[0].offsetWidth + 10; // card + gap
       const page = Math.min(
         Math.round(grid.scrollLeft / (cardW * CARDS_PER_VIEW)),
-        totalPages - 1
+        dotsCount - 1
       );
       dots.forEach((d, i) => d.classList.toggle('active', i === page));
     }
