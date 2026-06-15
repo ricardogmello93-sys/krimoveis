@@ -641,7 +641,6 @@
   }
 
   .slide.active {
-    position: relative;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -3098,6 +3097,22 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 
 
 <script>
+  // Lock hero slider height to tallest slide so photo never reflows
+  function lockSliderHeight() {
+    const slider = document.getElementById('heroSlider');
+    if (!slider) return;
+    let maxH = 0;
+    slider.querySelectorAll('.slide').forEach(s => {
+      const wasActive = s.classList.contains('active');
+      if (!wasActive) { s.style.position = 'relative'; s.style.visibility = 'hidden'; }
+      if (s.offsetHeight > maxH) maxH = s.offsetHeight;
+      if (!wasActive) { s.style.position = ''; s.style.visibility = ''; }
+    });
+    if (maxH > 0) slider.style.minHeight = maxH + 'px';
+  }
+  document.addEventListener('DOMContentLoaded', lockSliderHeight);
+  window.addEventListener('resize', lockSliderHeight);
+
   let currentSlide = 0;
   const totalSlides = 4;
   let autoTimer;
