@@ -1921,6 +1921,59 @@
   }
 
 
+  /* ── VIDEO PHONES ── */
+  .video-phones {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto 56px;
+  }
+
+  .phone-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .phone-frame {
+    width: 224px;
+    height: 398px;
+    border-radius: 40px;
+    border: 1.5px solid rgba(157,147,237,0.28);
+    overflow: hidden;
+    box-shadow:
+      0 32px 72px rgba(139,127,232,0.20),
+      0 0 0 7px rgba(255,255,255,0.025),
+      inset 0 1px 0 rgba(255,255,255,0.07);
+    background: #000;
+    position: relative;
+  }
+
+  .phone-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  .phone-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .video-phones { gap: 14px; padding: 0 8px; }
+    .phone-frame { width: 155px; height: 276px; border-radius: 28px; }
+    .phone-name { font-size: 10px; letter-spacing: 1.5px; }
+  }
+
   /* ── POR QUE A KR ── */
   #por-que-kr {
     padding: 90px 72px;
@@ -2987,6 +3040,22 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   <span class="section-tag" style="display:block;margin-bottom:16px">● Fale com a gente</span>
   <h2 class="section-title" style="text-align:center">Sair do aluguel, investir ou crescer —<br><em>qual é o seu próximo passo?</em></h2>
   <p class="section-sub" style="margin:16px auto 48px;text-align:center">Escolha com qual de nós quer conversar — resposta rápida pelo WhatsApp.</p>
+
+  <div class="video-phones">
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <iframe src="https://www.youtube.com/embed/v5UCcc8vtt8?rel=0&modestbranding=1" title="Ricardo Mello" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <span class="phone-name">Ricardo Mello</span>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone-frame">
+        <iframe src="https://www.youtube.com/embed/JhqJL6FmDZ0?rel=0&modestbranding=1" title="Kamila Xavier" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <span class="phone-name">Kamila Xavier</span>
+    </div>
+  </div>
+
   <div class="contact-cards">
     <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo%2C%20vim%20pelo%20site%20da%20KR%20Im%C3%B3veis%20%E2%80%94%20pode%20me%20ajudar%3F" onclick="gtag('event','whatsapp_click',{'corretor':'Ricardo','origem':'contato'}); fbq('track','Lead',{},{eventID:'lead_'+Date.now()+'_'+Math.random().toString(36).substr(2,6)});" class="contact-card">
       <div class="contact-photo-wrap"><img src="images/img-3.jpg" alt="Ricardo Mello" class="contact-photo" loading="lazy"></div>
