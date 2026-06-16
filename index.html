@@ -3141,6 +3141,13 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   });
 
   startAuto();
+
+  // Google Ads conversion — dispara em todo clique WhatsApp
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('a[href*="wa.me"], .wa-float, [onclick*="openPicker"]')) {
+      gtag('event', 'conversion', {'send_to': 'AW-18162751528/g3KCPn-ksAcEKiw1tRD'});
+    }
+  });
 </script>
 
 
