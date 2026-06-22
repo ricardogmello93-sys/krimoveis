@@ -591,41 +591,35 @@
 
   .contact-btn:hover { box-shadow: 0 8px 24px rgba(37,211,102,0.4); }
 
-  /* ── LEAD FORM (mini formulário) ── */
-  .lead-form-divider {
-    display: flex;
+  /* ── LEAD FORM (modal) ── */
+  .lead-form-box { width: 420px; max-height: 86vh; overflow-y: auto; }
+
+  .btn-form-trigger {
+    display: inline-flex;
     align-items: center;
-    gap: 16px;
-    max-width: 480px;
-    margin: 8px auto 32px;
-  }
-
-  .lead-form-divider::before,
-  .lead-form-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(255,255,255,0.08);
-  }
-
-  .lead-form-divider span {
+    gap: 10px;
+    padding: 13px 26px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.16);
     color: var(--muted);
+    cursor: pointer;
+    transition: border-color 0.25s, color 0.25s, background 0.25s;
     white-space: nowrap;
   }
 
-  .lead-form {
-    max-width: 480px;
-    margin: 0 auto 8px;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 32px;
-    text-align: left;
+  .btn-form-trigger:hover {
+    border-color: rgba(157,147,237,0.55);
+    color: var(--white);
+    background: rgba(157,147,237,0.08);
   }
 
-  .lead-form-row { margin-bottom: 20px; }
+  .lead-form-row { margin-bottom: 20px; text-align: left; }
 
   .lead-form-row label {
     display: block;
@@ -687,8 +681,8 @@
   .lead-form-submit { width: 100%; justify-content: center; margin-top: 4px; }
 
   @media (max-width: 768px) {
-    .lead-form { padding: 24px 20px; margin: 0 24px 8px; }
-    .lead-form-divider { margin: 0 24px 28px; }
+    .lead-form-box { width: 92vw; padding: 28px 20px; }
+    .btn-form-trigger { width: 100%; justify-content: center; padding: 16px 20px; font-size: 13px; }
   }
 
   /* ── FOOTER ── */
@@ -2630,6 +2624,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
         <span class="wa-dot"></span>Falar com Kamila
       </a>
     </div>
+    <button type="button" class="btn-form-trigger" style="margin-top:14px" onclick="openLeadForm()">Prefiro preencher um formulário</button>
   </div>
   <div class="hero-right">
     <picture>
@@ -2726,6 +2721,9 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
     class="btn btn-primary" style="padding:16px 40px; font-size:17px; font-weight:600; font-family:'DM Sans',sans-serif;">
     <span class="wa-dot"></span>Falar com um corretor
   </button>
+  <div style="margin-top:14px">
+    <button type="button" class="btn-form-trigger" onclick="openLeadForm()">Prefiro preencher um formulário</button>
+  </div>
 </div>
 </section>
 
@@ -2815,6 +2813,9 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
     class="btn btn-primary" style="padding:16px 40px; font-size:17px; font-weight:600; font-family:'DM Sans',sans-serif;">
     <span class="wa-dot"></span>Falar com um corretor
   </button>
+  <div style="margin-top:14px">
+    <button type="button" class="btn-form-trigger" onclick="openLeadForm()">Prefiro preencher um formulário</button>
+  </div>
 </div>
 </section>
 
@@ -3175,44 +3176,9 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
     </a>
   </div>
 
-  <div class="lead-form-divider"><span>ou prefere preencher um formulário rápido</span></div>
-
-  <form class="lead-form" id="leadForm">
-    <div class="lead-form-row">
-      <label>Seu nome</label>
-      <input type="text" id="leadNome" placeholder="Como podemos te chamar?" required>
-    </div>
-
-    <div class="lead-form-row">
-      <label>Finalidade</label>
-      <div class="lead-form-pills" data-group="finalidade">
-        <button type="button" class="lead-pill" data-value="Moradia">Moradia</button>
-        <button type="button" class="lead-pill" data-value="Investimento">Investimento</button>
-      </div>
-    </div>
-
-    <div class="lead-form-row">
-      <label>Forma de pagamento</label>
-      <div class="lead-form-pills" data-group="pagamento">
-        <button type="button" class="lead-pill" data-value="À vista">À vista</button>
-        <button type="button" class="lead-pill" data-value="Financiamento">Financiamento</button>
-      </div>
-    </div>
-
-    <div class="lead-form-row">
-      <label>Tipo de imóvel</label>
-      <div class="lead-form-pills" data-group="tipo">
-        <button type="button" class="lead-pill" data-value="Apartamento">Apartamento</button>
-        <button type="button" class="lead-pill" data-value="Casa">Casa</button>
-        <button type="button" class="lead-pill" data-value="Terreno">Terreno</button>
-        <button type="button" class="lead-pill" data-value="Comercial">Comercial</button>
-      </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary lead-form-submit">
-      <span class="wa-dot"></span>Enviar e continuar no WhatsApp
-    </button>
-  </form>
+  <div style="text-align:center;margin-top:28px">
+    <button type="button" class="btn-form-trigger" onclick="openLeadForm()">Prefiro preencher um formulário</button>
+  </div>
 
   <p style="font-size:12px;color:var(--muted);margin-top:40px">Santa Maria · RS · Atendimento em toda a região</p>
 </section>
@@ -3675,6 +3641,51 @@ window.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
+<!-- LEAD FORM MODAL -->
+<div class="picker-backdrop" id="leadFormBackdrop" onclick="closeLeadForm(event)">
+  <div class="picker-box lead-form-box">
+    <p class="picker-title">Quero saber mais</p>
+    <p class="picker-sub">Preenche rapidinho — a gente já te chama no WhatsApp:</p>
+    <form id="leadForm">
+      <div class="lead-form-row">
+        <label>Seu nome</label>
+        <input type="text" id="leadNome" placeholder="Como podemos te chamar?" required>
+      </div>
+
+      <div class="lead-form-row">
+        <label>Finalidade</label>
+        <div class="lead-form-pills" data-group="finalidade">
+          <button type="button" class="lead-pill" data-value="Moradia">Moradia</button>
+          <button type="button" class="lead-pill" data-value="Investimento">Investimento</button>
+        </div>
+      </div>
+
+      <div class="lead-form-row">
+        <label>Forma de pagamento</label>
+        <div class="lead-form-pills" data-group="pagamento">
+          <button type="button" class="lead-pill" data-value="À vista">À vista</button>
+          <button type="button" class="lead-pill" data-value="Financiamento">Financiamento</button>
+        </div>
+      </div>
+
+      <div class="lead-form-row">
+        <label>Tipo de imóvel</label>
+        <div class="lead-form-pills" data-group="tipo">
+          <button type="button" class="lead-pill" data-value="Apartamento">Apartamento</button>
+          <button type="button" class="lead-pill" data-value="Casa">Casa</button>
+          <button type="button" class="lead-pill" data-value="Terreno">Terreno</button>
+          <button type="button" class="lead-pill" data-value="Comercial">Comercial</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary lead-form-submit">
+        <span class="wa-dot"></span>Enviar e continuar no WhatsApp
+      </button>
+    </form>
+    <button class="picker-cancel" type="button" onclick="closeLeadForm()" style="margin-top:12px">Cancelar</button>
+  </div>
+</div>
+
 
 <script>
   function openPicker(imovelLabel, msgRicardo, msgKamila) {
@@ -3688,6 +3699,17 @@ window.addEventListener('DOMContentLoaded', () => {
   function closePicker(e) {
     if (e && e.target !== document.getElementById('pickerBackdrop') && e.target.closest('.picker-box')) return;
     document.getElementById('pickerBackdrop').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function openLeadForm() {
+    document.getElementById('leadFormBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLeadForm(e) {
+    if (e && e.target !== document.getElementById('leadFormBackdrop') && e.target.closest('.picker-box')) return;
+    document.getElementById('leadFormBackdrop').classList.remove('active');
     document.body.style.overflow = '';
   }
 </script>
@@ -3724,6 +3746,9 @@ window.addEventListener('DOMContentLoaded', () => {
       const msgRicardo = 'https://wa.me/55999147822?text=' + encodeURIComponent(resumo);
       const msgKamila  = 'https://wa.me/55991346393?text=' + encodeURIComponent(resumo);
 
+      closeLeadForm();
+      leadForm.reset();
+      leadForm.querySelectorAll('.lead-pill.selected').forEach(function(p) { p.classList.remove('selected'); });
       openPicker('Quero saber mais', msgRicardo, msgKamila);
     });
   }
