@@ -591,6 +591,106 @@
 
   .contact-btn:hover { box-shadow: 0 8px 24px rgba(37,211,102,0.4); }
 
+  /* ── LEAD FORM (mini formulário) ── */
+  .lead-form-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 480px;
+    margin: 8px auto 32px;
+  }
+
+  .lead-form-divider::before,
+  .lead-form-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .lead-form-divider span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .lead-form {
+    max-width: 480px;
+    margin: 0 auto 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 32px;
+    text-align: left;
+  }
+
+  .lead-form-row { margin-bottom: 20px; }
+
+  .lead-form-row label {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .lead-form-row input[type="text"] {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    color: var(--white);
+    padding: 13px 16px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .lead-form-row input[type="text"]:focus {
+    border-color: rgba(157,147,237,0.5);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .lead-form-row input[type="text"]::placeholder { color: rgba(255,255,255,0.3); }
+
+  .lead-form-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .lead-pill {
+    background: rgba(139,127,232,0.07);
+    border: 1px solid rgba(139,127,232,0.2);
+    border-radius: 100px;
+    padding: 9px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--purple2);
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .lead-pill:hover {
+    background: rgba(139,127,232,0.15);
+    border-color: rgba(139,127,232,0.45);
+  }
+
+  .lead-pill.selected {
+    background: rgba(157,147,237,0.30);
+    border-color: rgba(157,147,237,0.75);
+    color: var(--white);
+  }
+
+  .lead-form-submit { width: 100%; justify-content: center; margin-top: 4px; }
+
+  @media (max-width: 768px) {
+    .lead-form { padding: 24px 20px; margin: 0 24px 8px; }
+    .lead-form-divider { margin: 0 24px 28px; }
+  }
+
   /* ── FOOTER ── */
   footer {
     border-top: 1px solid var(--card-border);
@@ -3074,7 +3174,47 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       </span>
     </a>
   </div>
-  <p style="font-size:12px;color:var(--muted)">Santa Maria · RS · Atendimento em toda a região</p>
+
+  <div class="lead-form-divider"><span>ou prefere preencher um formulário rápido</span></div>
+
+  <form class="lead-form" id="leadForm">
+    <div class="lead-form-row">
+      <label>Seu nome</label>
+      <input type="text" id="leadNome" placeholder="Como podemos te chamar?" required>
+    </div>
+
+    <div class="lead-form-row">
+      <label>Finalidade</label>
+      <div class="lead-form-pills" data-group="finalidade">
+        <button type="button" class="lead-pill" data-value="Moradia">Moradia</button>
+        <button type="button" class="lead-pill" data-value="Investimento">Investimento</button>
+      </div>
+    </div>
+
+    <div class="lead-form-row">
+      <label>Forma de pagamento</label>
+      <div class="lead-form-pills" data-group="pagamento">
+        <button type="button" class="lead-pill" data-value="À vista">À vista</button>
+        <button type="button" class="lead-pill" data-value="Financiamento">Financiamento</button>
+      </div>
+    </div>
+
+    <div class="lead-form-row">
+      <label>Tipo de imóvel</label>
+      <div class="lead-form-pills" data-group="tipo">
+        <button type="button" class="lead-pill" data-value="Apartamento">Apartamento</button>
+        <button type="button" class="lead-pill" data-value="Casa">Casa</button>
+        <button type="button" class="lead-pill" data-value="Terreno">Terreno</button>
+        <button type="button" class="lead-pill" data-value="Comercial">Comercial</button>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary lead-form-submit">
+      <span class="wa-dot"></span>Enviar e continuar no WhatsApp
+    </button>
+  </form>
+
+  <p style="font-size:12px;color:var(--muted);margin-top:40px">Santa Maria · RS · Atendimento em toda a região</p>
 </section>
 
 <!-- FOOTER -->
@@ -3549,6 +3689,43 @@ window.addEventListener('DOMContentLoaded', () => {
     if (e && e.target !== document.getElementById('pickerBackdrop') && e.target.closest('.picker-box')) return;
     document.getElementById('pickerBackdrop').classList.remove('active');
     document.body.style.overflow = '';
+  }
+</script>
+
+<!-- LEAD FORM LOGIC -->
+<script>
+  document.querySelectorAll('.lead-form-pills').forEach(function(group) {
+    group.addEventListener('click', function(e) {
+      const btn = e.target.closest('.lead-pill');
+      if (!btn) return;
+      group.querySelectorAll('.lead-pill').forEach(function(p) { p.classList.remove('selected'); });
+      btn.classList.add('selected');
+    });
+  });
+
+  const leadForm = document.getElementById('leadForm');
+  if (leadForm) {
+    leadForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('leadNome').value.trim();
+      const finalidade = leadForm.querySelector('[data-group="finalidade"] .selected');
+      const pagamento  = leadForm.querySelector('[data-group="pagamento"] .selected');
+      const tipo       = leadForm.querySelector('[data-group="tipo"] .selected');
+
+      if (!nome || !finalidade || !pagamento || !tipo) {
+        alert('Preenche todos os campos pra gente te ajudar melhor :)');
+        return;
+      }
+
+      const resumo = 'Olá! Meu nome é ' + nome + '. Procuro um imóvel para ' +
+        finalidade.dataset.value.toLowerCase() + ', pagamento ' + pagamento.dataset.value.toLowerCase() +
+        ', tipo: ' + tipo.dataset.value + '. Vim pelo site da KR Imóveis — pode me ajudar?';
+
+      const msgRicardo = 'https://wa.me/55999147822?text=' + encodeURIComponent(resumo);
+      const msgKamila  = 'https://wa.me/55991346393?text=' + encodeURIComponent(resumo);
+
+      openPicker('Quero saber mais', msgRicardo, msgKamila);
+    });
   }
 </script>
 
