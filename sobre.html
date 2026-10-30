@@ -91,6 +91,7 @@ body { background: var(--dark); color: var(--white); font-family: 'DM Sans', san
 .profiles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; max-width: 1100px; margin: 0 auto; }
 .profile-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 4px; padding: 40px; }
 .profile-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top; border-radius: 2px; margin-bottom: 28px; display: block; }
+.profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: rgba(157,147,237,0.15); border: 1px solid rgba(157,147,237,0.35); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--purple2); margin-bottom: 28px; letter-spacing: 1px; }
 .profile-name { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 400; margin-bottom: 4px; }
 .profile-creci { font-size: 11px; letter-spacing: 2px; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 20px; }
 .profile-bio { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
@@ -179,7 +180,7 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
   <h2>Ricardo &amp; Kamila</h2>
   <div class="profiles-grid">
     <div class="profile-card">
-      <img src="images/foto-kamila-3.jpg" alt="Ricardo Mello, corretor de imóveis Santa Maria RS" class="profile-photo" loading="lazy">
+      <div class="profile-avatar">RM</div>
       <p class="profile-name">Ricardo Mello</p>
       <p class="profile-creci">CRECI/RS 082996</p>
       <p class="profile-bio">Administrador formado na UFSM com MBA em marketing, Ricardo passou anos liderando equipes antes de encontrar sua vocação no mercado imobiliário. Sabe que comprar um imóvel é uma das decisões mais carregadas de expectativa que existem — e é exatamente por isso que acompanha cada cliente do começo ao fim, com clareza, sem pressa e sem deixar ninguém no meio do caminho.</p>
@@ -193,7 +194,7 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
       </div>
     </div>
     <div class="profile-card">
-      <img src="images/foto-kamila.jpg" alt="Kamila Xavier, corretora de imóveis Santa Maria RS" class="profile-photo" loading="lazy">
+      <div class="profile-avatar">KX</div>
       <p class="profile-name">Kamila Xavier</p>
       <p class="profile-creci">CRECI/RS 78710</p>
       <p class="profile-bio">Engenheira Civil formada em Santa Cruz do Sul, com experiência em licitações e construção de casas. O olhar técnico que só uma engenheira tem — para avaliar estrutura, qualidade construtiva e potencial real de cada imóvel — aplicado ao atendimento dos clientes da KR Imóveis em Santa Maria.</p>
