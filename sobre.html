@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sobre Ricardo Mello e Kamila Xavier | Corretores de Imóveis Santa Maria RS</title>
+<title>Ricardo Mello e Kamila Xavier | Corretores em Santa Maria RS</title>
 <meta name="description" content="Conheça Ricardo Mello (CRECI/RS 082996) e Kamila Xavier (CRECI/RS 78710), corretores de imóveis em Santa Maria, RS. Engenharia civil + administração a serviço do seu imóvel.">
 <link rel="canonical" href="https://krimoveissm.com.br/sobre.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://krimoveissm.com.br/sobre.html">
 <meta property="og:title" content="Sobre Ricardo e Kamila | Corretores de Imóveis Santa Maria RS">
 <meta property="og:description" content="Uma trajetória real: engenharia civil + administração + recomeço em Santa Maria. Conheça quem vai guiar você no imóvel mais importante da sua vida.">
-<meta property="og:image" content="https://www.krimoveissm.com.br/images/foto-hero.webp">
+<meta property="og:image" content="https://krimoveissm.com.br/images/foto-kamila.jpg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -25,7 +25,7 @@
       "identifier": "CRECI/RS 082996",
       "alumniOf": "UFSM — Universidade Federal de Santa Maria",
       "description": "Formado em Administração pela UFSM. Experiência em liderança e atendimento consultivo na área de telecomunicações. Especialista em imóveis na planta, construtoras e negócios imobiliários em Santa Maria, RS.",
-      "telephone": "+5554999147822",
+      "telephone": "+5555999147822",
       "address": {"@type": "PostalAddress", "addressLocality": "Santa Maria", "addressRegion": "RS"}
     },
     {
@@ -34,7 +34,7 @@
       "jobTitle": "Corretora de Imóveis",
       "identifier": "CRECI/RS 78710",
       "description": "Engenheira Civil com experiência em construção e licitações. Olhar técnico para avaliação de imóveis em Santa Maria, RS. Especialista em MCMV e financiamento habitacional.",
-      "telephone": "+5554991346393",
+      "telephone": "+5555991346393",
       "address": {"@type": "PostalAddress", "addressLocality": "Santa Maria", "addressRegion": "RS"}
     }
   ]
@@ -136,7 +136,91 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
   .profiles-grid { grid-template-columns: 1fr; }
   .nums-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* BYLINE */
+.byline { display: flex; align-items: center; gap: 14px; margin: 0 0 32px; }
+.byline-avatars { display: flex; }
+.byline-avatars img { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(160deg, rgba(157,147,237,0.38), rgba(11,9,28,0.7)); border: 2px solid var(--dark); object-fit: cover; }
+.byline-avatars img + img { margin-left: -12px; }
+.byline-text { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.55; }
+.byline-text strong { color: var(--white); font-weight: 500; }
+
+/* TOC */
+.toc { margin: 0 0 40px; padding: 22px 26px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.025); border-radius: 4px; }
+.toc-title { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: block; }
+.toc ol { list-style: none; counter-reset: toc; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 28px; }
+.toc li { counter-increment: toc; font-size: 14px; }
+.toc li::before { content: counter(toc) "."; color: var(--purple); margin-right: 8px; font-family: 'Cormorant Garamond', serif; font-size: 16px; }
+.toc a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.toc a:hover { color: var(--white); }
+h2[id] { scroll-margin-top: 90px; }
+
+/* LISTS + NOTE */
+.bullets { list-style: none; margin: 0 0 24px; }
+.bullets li { position: relative; padding: 0 0 12px 22px; font-size: 15px; color: var(--muted); line-height: 1.75; }
+.bullets li::before { content: ""; position: absolute; left: 0; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
+.note { border-left: 2px solid var(--gold); background: rgba(201,168,76,0.06); padding: 16px 22px; margin: 8px 0 28px; border-radius: 0 4px 4px 0; }
+.note p { margin: 0; color: var(--white); font-size: 15px; }
+a.inline { color: var(--purple2); text-decoration: underline; text-decoration-color: rgba(196,184,247,0.4); text-underline-offset: 3px; }
+a.inline:hover { color: var(--white); }
+
+/* INLINE CTA */
+.cta-inline { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: rgba(157,147,237,0.07); border: 1px solid rgba(157,147,237,0.22); border-radius: 4px; padding: 22px 26px; margin: 40px 0; }
+.cta-inline p { margin: 0; font-size: 15px; color: var(--white); flex: 1 1 260px; line-height: 1.6; }
+.cta-inline .btn-group { justify-content: flex-start; }
+
+/* RELATED */
+.related { margin-top: 64px; }
+.related h2 { margin-top: 0; }
+.related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.related-card { display: block; padding: 20px 22px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); border-radius: 4px; text-decoration: none; transition: border-color 0.25s, background 0.25s, transform 0.25s; }
+.related-card:hover { border-color: rgba(157,147,237,0.45); background: rgba(157,147,237,0.06); transform: translateY(-2px); }
+.related-card span { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.related-card strong { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; line-height: 1.25; color: var(--white); display: block; }
+
+/* STICKY CTA */
+.sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(11,9,28,0.94); backdrop-filter: blur(12px); border-top: 1px solid rgba(157,147,237,0.25); transform: translateY(110%); transition: transform 0.35s ease; }
+.sticky-cta.show { transform: none; }
+.sticky-cta-text { font-size: 13px; color: var(--muted); margin-right: 6px; }
+.sticky-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 3px; font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; color: var(--white); background: linear-gradient(135deg, rgba(157,147,237,0.3), rgba(196,184,247,0.18)); border: 1px solid rgba(157,147,237,0.55); transition: background 0.2s; }
+.sticky-btn:hover { background: linear-gradient(135deg, rgba(157,147,237,0.45), rgba(196,184,247,0.3)); }
+footer { margin-bottom: 64px; }
+.footer-links { max-width: 900px; margin-left: auto; margin-right: auto; }
+
+@media (max-width: 768px) {
+  .site-nav { gap: 8px; }
+  .site-nav-dot, .site-nav-partner-label { display: none; }
+  .site-nav-name { white-space: nowrap; font-size: 16px; }
+  .nav-back { margin-right: 4px; white-space: nowrap; }
+  .toc ol { grid-template-columns: 1fr; }
+  .related-grid { grid-template-columns: 1fr; }
+  .sticky-cta-text { display: none; }
+  .sticky-btn { flex: 1; justify-content: center; padding: 12px 10px; }
+  .cta-inline { padding: 20px; }
+}
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1511246240665666');
+fbq('track', 'PageView');
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M7E90J24DT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M7E90J24DT');
+  gtag('config', 'AW-18162751528');
+</script>
 </head>
 <body>
 
@@ -235,15 +319,33 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
   </div>
 </section>
 
+<!-- GUIAS -->
+<section class="story-section" style="border-top:1px solid rgba(255,255,255,0.07)">
+  <div style="max-width:1100px;margin:0 auto">
+    <span class="section-tag" style="text-align:center">● Guias</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(30px,3.5vw,44px);font-weight:300;text-align:center;margin-bottom:40px">Para quem está <em style="font-style:italic;color:var(--purple2)">decidindo</em></h2>
+    <div class="related-grid">
+      <a href="mcmv-santa-maria.html" class="related-card"><span>Guia 2026</span><strong>Minha Casa Minha Vida em Santa Maria</strong></a>
+      <a href="financiamento-santa-maria.html" class="related-card"><span>Financiamento</span><strong>Financiamento imobiliário e FGTS em Santa Maria</strong></a>
+      <a href="imoveis-na-planta-santa-maria.html" class="related-card"><span>Na planta</span><strong>Imóveis na planta: como comprar com segurança</strong></a>
+      <a href="documentos-financiar-imovel-santa-maria.html" class="related-card"><span>Passo a passo</span><strong>Documentos para financiar um imóvel</strong></a>
+      <a href="aluguel-ou-financiamento-santa-maria.html" class="related-card"><span>Decisão</span><strong>Aluguel ou financiamento: vale sair do aluguel?</strong></a>
+      <a href="investir-em-imoveis-santa-maria.html" class="related-card"><span>Investimento</span><strong>Investir em imóveis em Santa Maria</strong></a>
+      <a href="imoveis-camobi-santa-maria.html" class="related-card"><span>Bairro</span><strong>Imóveis em Camobi, Santa Maria</strong></a>
+      <a href="vender-imovel-santa-maria.html" class="related-card"><span>Vender</span><strong>Como vender seu imóvel em Santa Maria</strong></a>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section">
   <h2>Pronto para dar o próximo passo<br>com quem <em>entende o que está em jogo?</em></h2>
   <p>Simulação gratuita. Atendimento do início ao fim. Sem pressão.</p>
   <div class="btn-grid">
-    <a href="https://wa.me/55999147822?text=Olá Ricardo, vi a página sobre vocês no site — pode me ajudar?" class="btn btn-primary">
+    <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo%2C%20vi%20a%20p%C3%A1gina%20sobre%20voc%C3%AAs%20no%20site%20%E2%80%94%20pode%20me%20ajudar%3F" target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="sobre_final" class="btn btn-primary">
       <span class="wa-dot"></span>Falar com Ricardo
     </a>
-    <a href="https://wa.me/55991346393?text=Olá Kamila, vi a página sobre vocês no site — pode me ajudar?" class="btn btn-secondary">
+    <a href="https://wa.me/55991346393?text=Ol%C3%A1%20Kamila%2C%20vi%20a%20p%C3%A1gina%20sobre%20voc%C3%AAs%20no%20site%20%E2%80%94%20pode%20me%20ajudar%3F" target="_blank" rel="noopener" data-corretor="Kamila" data-origem="sobre_final" class="btn btn-secondary">
       <span class="wa-dot"></span>Falar com Kamila
     </a>
   </div>
@@ -259,11 +361,41 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
   <div class="footer-links">
     <a href="index.html" class="footer-link">Início</a>
     <a href="sobre.html" class="footer-link">Sobre</a>
-    <a href="mcmv-santa-maria.html" class="footer-link">MCMV Santa Maria</a>
+    <a href="mcmv-santa-maria.html" class="footer-link">MCMV</a>
     <a href="financiamento-santa-maria.html" class="footer-link">Financiamento</a>
+    <a href="imoveis-na-planta-santa-maria.html" class="footer-link">Na planta</a>
+    <a href="documentos-financiar-imovel-santa-maria.html" class="footer-link">Documentos</a>
+    <a href="aluguel-ou-financiamento-santa-maria.html" class="footer-link">Aluguel x financiamento</a>
+    <a href="investir-em-imoveis-santa-maria.html" class="footer-link">Investir</a>
+    <a href="imoveis-camobi-santa-maria.html" class="footer-link">Camobi</a>
+    <a href="vender-imovel-santa-maria.html" class="footer-link">Vender</a>
   </div>
   <p style="font-size:11px;color:rgba(255,255,255,0.18);margin-top:16px">© 2026 · Kamila &amp; Ricardo · Parceiros Santa Imóveis</p>
 </footer>
+
+
+<div class="sticky-cta" id="stickyCta" role="region" aria-label="Falar com os corretores">
+  <span class="sticky-cta-text">Simulação gratuita e sem compromisso</span>
+  <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pela%20p%C3%A1gina%20%22Sobre%20Ricardo%20e%20Kamila%22%20do%20site%20e%20quero%20uma%20simula%C3%A7%C3%A3o%20gratuita." target="_blank" rel="noopener" class="sticky-btn" data-corretor="Ricardo" data-origem="sticky_sobre"><span class="wa-dot"></span>Ricardo</a>
+  <a href="https://wa.me/55991346393?text=Ol%C3%A1%20Kamila!%20Vim%20pela%20p%C3%A1gina%20%22Sobre%20Ricardo%20e%20Kamila%22%20do%20site%20e%20quero%20uma%20simula%C3%A7%C3%A3o%20gratuita." target="_blank" rel="noopener" class="sticky-btn" data-corretor="Kamila" data-origem="sticky_sobre"><span class="wa-dot"></span>Kamila</a>
+</div>
+<script>
+(function () {
+  var bar = document.getElementById('stickyCta');
+  function onScroll() { bar.classList.toggle('show', window.scrollY > 400); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href*="wa.me"]');
+    if (!a) return;
+    try {
+      gtag('event', 'whatsapp_click', { corretor: a.getAttribute('data-corretor') || '', origem: a.getAttribute('data-origem') || 'pagina' });
+      gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
+      fbq('track', 'Lead', {}, { eventID: 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) });
+    } catch (_) {}
+  });
+})();
+</script>
 
 </body>
 </html>

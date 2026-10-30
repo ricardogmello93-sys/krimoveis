@@ -2,28 +2,28 @@
 <meta charset="UTF-8">
 <link rel="canonical" href="https://krimoveissm.com.br/" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kamila &amp; Ricardo Corretores | Santa Maria, RS · Parceiros Santa Imóveis</title>
-<meta name="description" content="Corretores de imóveis em Santa Maria, RS, parceiros da Santa Imóveis. Especialistas em MCMV, FGTS e financiamento habitacional. Simulação gratuita e atendimento personalizado do início ao fim.">
+<title>Corretores de Imóveis em Santa Maria RS | Kamila &amp; Ricardo</title>
+<meta name="description" content="Corretores de imóveis em Santa Maria, RS, parceiros da Santa Imóveis. MCMV, FGTS e financiamento. Simulação gratuita e atendimento do início ao fim.">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://www.krimoveissm.com.br/">
+<meta property="og:url" content="https://krimoveissm.com.br/">
 <meta property="og:title" content="Kamila &amp; Ricardo Corretores | Santa Maria, RS · Parceiros Santa Imóveis">
 <meta property="og:description" content="Corretores parceiros da Santa Imóveis em Santa Maria, RS. MCMV, FGTS e bancos privados. Simulação gratuita e atendimento do início ao fim.">
-<meta property="og:image" content="https://www.krimoveissm.com.br/images/foto-kamila.jpg">
+<meta property="og:image" content="https://krimoveissm.com.br/images/foto-kamila.jpg">
 <meta property="og:locale" content="pt_BR">
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kamila &amp; Ricardo Corretores | Santa Maria, RS · Parceiros Santa Imóveis">
 <meta name="twitter:description" content="Corretores parceiros da Santa Imóveis em Santa Maria, RS. MCMV, FGTS e bancos privados. Simulação gratuita.">
-<meta name="twitter:image" content="https://www.krimoveissm.com.br/images/foto-kamila.jpg">
+<meta name="twitter:image" content="https://krimoveissm.com.br/images/foto-kamila.jpg">
 <!-- Schema.org -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
   "name": "Kamila & Ricardo Corretores",
-  "url": "https://www.krimoveissm.com.br",
-  "image": "https://www.krimoveissm.com.br/images/foto-kamila.jpg",
+  "url": "https://krimoveissm.com.br",
+  "image": "https://krimoveissm.com.br/images/foto-kamila.jpg",
   "description": "Corretores de imóveis em Santa Maria, RS. Especialistas em MCMV, FGTS e financiamento habitacional.",
   "address": {
     "@type": "PostalAddress",
@@ -38,8 +38,8 @@
     "ratingCount": "50"
   },
   "employee": [
-    {"@type": "Person", "name": "Ricardo Mello", "jobTitle": "Corretor de Imóveis", "identifier": "CRECI/RS 082996"},
-    {"@type": "Person", "name": "Kamila Xavier", "jobTitle": "Corretora de Imóveis", "identifier": "CRECI/RS 78710"}
+    {"@type": "Person", "name": "Ricardo Mello", "jobTitle": "Corretor de Imóveis", "identifier": "CRECI/RS 082996", "image": "https://krimoveissm.com.br/images/ricardo-recorte.webp", "url": "https://krimoveissm.com.br/sobre.html", "telephone": "+5555999147822", "sameAs": ["https://instagram.com/corretor.ricardomello"]},
+    {"@type": "Person", "name": "Kamila Xavier", "jobTitle": "Corretora de Imóveis", "identifier": "CRECI/RS 78710", "image": "https://krimoveissm.com.br/images/kamila-recorte.webp", "url": "https://krimoveissm.com.br/sobre.html", "telephone": "+5555991346393", "sameAs": ["https://instagram.com/kamilaxavier.imoveis"]}
   ],
   "areaServed": [
     {"@type": "City", "name": "Santa Maria", "addressRegion": "RS", "addressCountry": "BR"},
@@ -2547,6 +2547,25 @@
     .sobre-img { aspect-ratio: 3/2; object-position: center 20%; }
   }
 
+
+  /* ── GUIAS ── */
+  #guias { padding: 90px 72px; background: transparent; }
+  .guias-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 40px 0 0; }
+  .guia-card { display: flex; flex-direction: column; gap: 8px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 22px; text-decoration: none; color: inherit; transition: border-color 0.3s, transform 0.3s, background 0.3s; }
+  .guia-card:hover { border-color: rgba(139,127,232,0.4); transform: translateY(-2px); background: rgba(139,127,232,0.05); }
+  .guia-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .guia-title { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: var(--white); line-height: 1.2; }
+  .guia-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .guia-more { margin-top: auto; padding-top: 6px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--purple); }
+  @media (max-width: 1100px) { .guias-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) {
+    #guias { padding: 60px 24px; }
+    #guias .section-sub { margin-bottom: 0; }
+    .guias-grid { grid-template-columns: 1fr; gap: 10px; margin-top: 28px; }
+    .guia-card { padding: 18px 20px; }
+    .guia-title { font-size: 19px; }
+  }
+
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -2565,7 +2584,6 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 / loading="lazy"></noscript>
 <!-- End Meta Pixel Code -->
-  <link rel="preload" as="image" href="images/foto-kamila.jpg" fetchpriority="high">
   <link rel="preload" as="image" href="images/logo-kr.png">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-M7E90J24DT"></script>
@@ -2610,19 +2628,19 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       </div>
       <div class="slide">
         <p class="hero-eyebrow">INVESTIDORES</p>
-        <h1 class="hero-title">Multiplique seu <em>patrimônio.</em></h1>
+        <h2 class="hero-title">Multiplique seu <em>patrimônio.</em></h2>
         <p class="hero-subtitle">&nbsp;</p>
         <p class="hero-desc">Imóveis compactos bem localizados em <strong>Santa Maria</strong> têm gerado retorno consistente. A gente mostra os números antes de qualquer decisão.</p>
       </div>
       <div class="slide">
         <p class="hero-eyebrow">UPGRADE DE IMÓVEL</p>
-        <h1 class="hero-title">Troque para o imóvel <em>que você merece.</em></h1>
+        <h2 class="hero-title">Troque para o imóvel <em>que você merece.</em></h2>
         <p class="hero-subtitle">&nbsp;</p>
         <p class="hero-desc">Venda o atual, compre o próximo — sem perder dinheiro no processo. Cuidamos das duas pontas com quem conhece o mercado local.</p>
       </div>
       <div class="slide">
         <p class="hero-eyebrow">FAMÍLIA EM CRESCIMENTO</p>
-        <h1 class="hero-title">Mais espaço para <em>quem você ama.</em></h1>
+        <h2 class="hero-title">Mais espaço para <em>quem você ama.</em></h2>
         <p class="hero-subtitle">&nbsp;</p>
         <p class="hero-desc">Família crescendo, imóvel ficando pequeno. Encontramos o próximo passo certo — <strong>financiamento sob medida</strong> pra cada fase da vida.</p>
       </div>
@@ -2648,7 +2666,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   <div class="hero-right">
     <picture>
       <source srcset="images/foto-hero.webp" type="image/webp">
-      <img src="images/foto-hero.png" fetchpriority="high" decoding="sync" alt="Kamila e Ricardo Corretores" class="hero-img" elementtiming="lcp-image" width="1800" height="1800">
+      <img src="images/foto-hero.png" fetchpriority="high" decoding="sync" alt="Kamila Xavier e Ricardo Mello, corretores de imóveis em Santa Maria RS" class="hero-img" elementtiming="lcp-image" width="1800" height="1800">
     </picture>
     <!-- WATERMARK SÍMBOLO SANTA IMÓVEIS -->
     <img src="images/simbolo-santa.png" alt="" class="hero-santa-watermark" aria-hidden="true" loading="lazy">
@@ -2977,10 +2995,11 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <h3 class="bairro-name">Pinheiro Machado</h3>
       <p class="bairro-sub">Infraestrutura completa e boa variedade de casas e apartamentos</p>
     </div>
-    <div class="bairro-card">
+    <a class="bairro-card" href="imoveis-camobi-santa-maria.html" style="display:block;text-decoration:none;color:inherit">
       <h3 class="bairro-name">Camobi</h3>
       <p class="bairro-sub">Alta demanda, próximo à UFSM — MCMV disponível, imóveis compactos e familiares</p>
-    </div>
+      <span style="display:inline-block;margin-top:8px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple)">Ver guia do bairro →</span>
+    </a>
     <div class="bairro-card">
       <h3 class="bairro-name">Nossa Senhora de Lourdes</h3>
       <p class="bairro-sub">Bairro consolidado com boa infraestrutura — casas e apartamentos para todos os perfis</p>
@@ -3013,6 +3032,63 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <span class="tipo-tag">Alto Padrão</span>
       <span class="tipo-tag">Imóveis para Investimento</span>
     </div>
+  </div>
+</section>
+
+<!-- GUIAS -->
+<section id="guias">
+  <span class="section-tag">● Guias</span>
+  <h2 class="section-title">Tire suas dúvidas <em>antes de decidir</em></h2>
+  <p class="section-sub">Conteúdo direto, feito por quem atende clientes todos os dias em Santa Maria.</p>
+  <div class="guias-grid">
+    <a class="guia-card" href="mcmv-santa-maria.html">
+      <span class="guia-tag">Guia 2026</span>
+      <h3 class="guia-title">Minha Casa Minha Vida em Santa Maria</h3>
+      <p class="guia-desc">Faixas de renda, tetos de valor e como usar o FGTS.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
+    <a class="guia-card" href="financiamento-santa-maria.html">
+      <span class="guia-tag">Financiamento</span>
+      <h3 class="guia-title">Financiamento imobiliário e FGTS em Santa Maria</h3>
+      <p class="guia-desc">Modalidades, requisitos e como montar a melhor condição.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
+    <a class="guia-card" href="imoveis-na-planta-santa-maria.html">
+      <span class="guia-tag">Na planta</span>
+      <h3 class="guia-title">Imóveis na planta: como comprar com segurança</h3>
+      <p class="guia-desc">Vantagens, riscos e o checklist antes de assinar.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
+    <a class="guia-card" href="documentos-financiar-imovel-santa-maria.html">
+      <span class="guia-tag">Passo a passo</span>
+      <h3 class="guia-title">Documentos para financiar um imóvel</h3>
+      <p class="guia-desc">Lista completa por perfil de renda, do imóvel e do vendedor.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
+    <a class="guia-card" href="aluguel-ou-financiamento-santa-maria.html">
+      <span class="guia-tag">Decisão</span>
+      <h3 class="guia-title">Aluguel ou financiamento: vale sair do aluguel?</h3>
+      <p class="guia-desc">A conta certa para decidir sem se enganar.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
+    <a class="guia-card" href="investir-em-imoveis-santa-maria.html">
+      <span class="guia-tag">Investimento</span>
+      <h3 class="guia-title">Investir em imóveis em Santa Maria</h3>
+      <p class="guia-desc">Estratégias, como calcular a rentabilidade e os riscos.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
+    <a class="guia-card" href="imoveis-camobi-santa-maria.html">
+      <span class="guia-tag">Bairro</span>
+      <h3 class="guia-title">Imóveis em Camobi, Santa Maria</h3>
+      <p class="guia-desc">Para quem faz sentido morar, comprar ou investir no bairro da UFSM.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
+    <a class="guia-card" href="vender-imovel-santa-maria.html">
+      <span class="guia-tag">Vender</span>
+      <h3 class="guia-title">Como vender seu imóvel em Santa Maria</h3>
+      <p class="guia-desc">Preço certo, documentos e como vender e comprar o próximo.</p>
+      <span class="guia-more">Ler guia →</span>
+    </a>
   </div>
 </section>
 
@@ -3238,6 +3314,12 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
       <a href="sobre.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Sobre nós</a>
       <a href="mcmv-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">MCMV</a>
       <a href="financiamento-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Financiamento</a>
+      <a href="imoveis-na-planta-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Na planta</a>
+      <a href="documentos-financiar-imovel-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Documentos</a>
+      <a href="aluguel-ou-financiamento-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Aluguel x financiamento</a>
+      <a href="investir-em-imoveis-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Investir</a>
+      <a href="imoveis-camobi-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Camobi</a>
+      <a href="vender-imovel-santa-maria.html" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#f4f2ee'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">Vender</a>
     </div>
     <div style="margin-top:16px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
       <a href="https://instagram.com/corretor.ricardomello" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.6); text-decoration:none; padding:10px 18px; border-radius:100px; font-size:13px; font-family:'DM Sans',sans-serif; transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(139,127,232,0.5)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.6)'">

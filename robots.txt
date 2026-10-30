@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://krimoveissm.com.br/sitemap.xml
