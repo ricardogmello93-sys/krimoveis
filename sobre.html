@@ -76,14 +76,13 @@ body { background: var(--dark); color: var(--white); font-family: 'DM Sans', san
 .page-hero .lead { font-size: 18px; color: var(--muted); line-height: 1.7; max-width: 600px; margin: 0 auto; }
 
 /* STORY */
-.story-section { padding: 80px 72px; max-width: 1100px; margin: 0 auto; }
-.story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.story-photo { width: 100%; border-radius: 4px; display: block; aspect-ratio: 4/5; object-fit: cover; object-position: top; }
+.story-section { padding: 80px 72px; }
+.story-inner { max-width: 680px; margin: 0 auto; }
 .story-text .label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 20px; font-family: 'DM Sans', sans-serif; font-weight: 500; }
 .story-text h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 3.5vw, 44px); font-weight: 300; line-height: 1.2; margin-bottom: 32px; }
 .story-text h2 em { font-style: italic; color: var(--purple2); }
-.story-pullquote { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px, 2vw, 22px); font-style: italic; color: var(--gold2); border-left: 2px solid var(--gold); padding-left: 20px; margin-bottom: 28px; line-height: 1.5; }
-.story-p { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 18px; }
+.story-pullquote { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px, 2.2vw, 26px); font-style: italic; color: var(--gold2); border-left: 2px solid var(--gold); padding-left: 24px; margin-bottom: 32px; line-height: 1.5; }
+.story-p { font-size: 16px; color: var(--muted); line-height: 1.9; margin-bottom: 20px; }
 
 /* PROFILES */
 .profiles-section { padding: 80px 72px; border-top: 1px solid rgba(255,255,255,0.07); }
@@ -132,8 +131,6 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
   .site-nav { padding: 14px 20px; }
   .page-hero { padding: 120px 24px 60px; }
   .story-section, .profiles-section, .nums-section, .cta-section { padding: 60px 24px; }
-  .story-grid { grid-template-columns: 1fr; gap: 36px; }
-  .story-photo { aspect-ratio: 3/2; object-position: center 20%; }
   .profiles-grid { grid-template-columns: 1fr; }
   .nums-grid { grid-template-columns: repeat(2, 1fr); }
 }
@@ -162,10 +159,7 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
 
 <!-- STORY -->
 <section class="story-section">
-  <div class="story-grid">
-    <div>
-      <img src="images/foto-hero.webp" alt="Ricardo Mello e Kamila Xavier, corretores de imóveis Santa Maria RS" class="story-photo" loading="lazy">
-    </div>
+  <div class="story-inner">
     <div class="story-text">
       <span class="label">● Nossa trajetória</span>
       <h2>De recomeço em Santa Maria<br><em>para ajudar outros a recomeçar</em></h2>
@@ -174,7 +168,7 @@ footer { padding: 48px 40px; text-align: center; border-top: 1px solid rgba(255,
       <p class="story-p">Ricardo veio de Cachoeira do Sul, estudou Administração na UFSM em Santa Maria — a mesma cidade onde hoje trabalha. Fez MBA em marketing, liderou equipes por anos na área de telecom e aprendeu na prática o que os livros não ensinam: que por trás de qualquer decisão de compra existe uma pessoa com um sonho, um medo e uma história.</p>
       <p class="story-p">Namoramos à distância por dois anos. Em 2022, com um filho a caminho e uma decisão pra tomar, Ricardo deixou a empresa em que estava e foi pra Santa Cruz. Tentamos empreender juntos. Não deu certo. Encerramos a empresa com dívidas — e viemos pra Santa Maria buscar um recomeço.</p>
       <p class="story-p">Aqui, encontramos no mercado imobiliário não só uma carreira. Encontramos um propósito: ajudar famílias a conquistar o que nós próprios estávamos buscando — estabilidade, lar, um novo começo numa cidade que acolhe.</p>
-      <p class="story-p">Hoje somos parceiros da Santa Imóveis e atuamos juntos em Santa Maria — com o olhar técnico da engenharia da Kamila e a habilidade de atendimento consultivo do Ricardo. Dois corretores, um único compromisso com o seu resultado.</p>
+      <p class="story-p">Hoje somos parceiros da Santa Imóveis e atuamos juntos em Santa Maria — com o olhar técnico da engenharia da Kamila e a visão de negócio do Ricardo. Dois corretores, um único compromisso com o seu resultado.</p>
     </div>
   </div>
 </section>
