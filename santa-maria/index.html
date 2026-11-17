@@ -173,6 +173,17 @@ img { max-width: 100%; }
 .hero { position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; display: flex; align-items: flex-end; }
 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11,9,28,0.86) 0%, rgba(27,20,66,0.45) 55%, rgba(11,9,28,0.15) 100%), linear-gradient(180deg, rgba(11,9,28,0.35) 0%, transparent 35%, rgba(11,9,28,0.95) 100%); }
 .hero img.kb { filter: saturate(0.85) contrast(1.05); }
+.hsim { position: absolute; right: 40px; bottom: 150px; z-index: 3; display: flex; align-items: center; gap: 16px; max-width: 360px; padding: 18px 22px 18px 18px; border-radius: 22px; text-decoration: none; color: #f4f2ee; background: rgba(27,20,66,0.55); border: 1px solid rgba(201,168,76,0.5); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 24px 60px rgba(0,0,0,0.35); transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+.hsim:hover { transform: translateY(-4px); border-color: #e2c77e; box-shadow: 0 30px 70px rgba(0,0,0,0.45); }
+.hsim i { flex-shrink: 0; width: 52px; height: 52px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; color: #0b091c; background: linear-gradient(135deg, #f3eadb, #e2c77e 65%, #c9a84c); }
+.hsim i svg { width: 28px; height: 28px; }
+.hsim small { display: block; font-size: 10.5px; letter-spacing: 2.2px; text-transform: uppercase; color: #c4b8f7; }
+.hsim b { display: block; font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; line-height: 1.15; margin: 2px 0 3px; }
+.hsim em { display: block; font-style: normal; font-size: 13px; color: rgba(244,242,238,0.72); line-height: 1.45; }
+.hsim u { text-decoration: none; font-size: 22px; color: #e2c77e; transition: transform 0.3s; }
+.hsim:hover u { transform: translateX(4px); }
+@media (max-width: 1199px) { .hsim { position: relative; right: auto; bottom: auto; margin-top: 22px; max-width: 460px; } }
+@media (max-width: 760px) { .hsim { max-width: none; } }
 .hero-in { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: 0 auto; padding: 130px 40px 150px; }
 .hero-lead { font-size: clamp(17px, 1.6vw, 21px); color: var(--champ); line-height: 1.7; max-width: 560px; margin: 26px 0 34px; }
 .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -472,6 +483,7 @@ fbq('track', 'PageView');
     <div class="ctas rv d3">
       <a href="https://wa.me/55991346393?text=Ol%C3%A1%20Kamila!%20Vim%20pelo%20site%20e%20quero%20ver%20im%C3%B3veis%20em%20Santa%20Maria." target="_blank" rel="noopener" class="sm-btn sm-btn-gold" data-corretor="Kamila" data-origem="sm_hub_hero"><span class="sm-dot"></span>Falar com Kamila</a>
     </div>
+    <a class="hsim rv d3" href="../simulador-financiamento-santa-maria.html"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="7" y="5.5" width="10" height="4" rx="1" fill="currentColor" opacity=".35"/><g fill="currentColor"><circle cx="8.5" cy="13" r="1.1"/><circle cx="12" cy="13" r="1.1"/><circle cx="15.5" cy="13" r="1.1"/><circle cx="8.5" cy="17" r="1.1"/><circle cx="12" cy="17" r="1.1"/><circle cx="15.5" cy="17" r="1.1"/></g></svg></i><span><small>Simulador gratuito</small><b>Simule seu financiamento</b><em>Faixa do MCMV, parcela máxima e prazo, na hora.</em></span><u aria-hidden="true">→</u></a>
     <div class="badge rv d3">★ <span><b>5,0 no Google</b> · avaliações verificadas</span></div>
   </div>
   <div class="goldrule"></div>
