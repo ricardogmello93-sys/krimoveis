@@ -87,6 +87,14 @@
     },
     {
       "@type": "Question",
+      "name": "Moro em outra cidade. Consigo comprar um imóvel em Santa Maria?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Muitas famílias da Fronteira Oeste e de toda a região compram em Santa Maria para o filho estudar na UFSM ou na UFN, ou para investir em locação. A seleção é feita pelo WhatsApp, com fotos e vídeos, e a visita é organizada para você vir uma vez só."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Quanto custa a simulação de financiamento?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -220,7 +228,7 @@ img { max-width: 100%; }
 .sb-tags span { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; border: 1px solid rgba(196,184,247,0.35); color: var(--purple2); }
 .sb-guide { font-size: 12px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--gold2); text-decoration: none; }
 .sb-wa { display: flex; gap: 10px; margin: 18px 0 4px; }
-.sb-wa .sm-btn { flex: 1; }
+.sb-wa .sm-btn { flex: 1; white-space: normal; text-align: center; line-height: 1.4; }
 .sb-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); }
 .sb-list button { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border-radius: 100px; border: 1px solid var(--line); background: none; color: var(--muted); font: 13px 'DM Sans', sans-serif; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .sb-list button span { width: 22px; height: 22px; border-radius: 50%; background: rgba(196,184,247,0.18); color: var(--purple2); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
@@ -281,7 +289,10 @@ img { max-width: 100%; }
 .person-body p { color: var(--muted); font-size: 14.5px; line-height: 1.7; margin-bottom: 18px; }
 
 /* GUIAS */
-.guides { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.guides { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.guides .g-card strong { font-size: 21px; }
+.guides .g-card .tint { height: 150px; }
+@media (max-width: 1180px) and (min-width: 1001px) { .guides { grid-template-columns: repeat(2, 1fr); } }
 .g-card { display: block; text-decoration: none; color: var(--white); border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: rgba(27,20,66,0.45); transition: transform 0.3s, border-color 0.3s; }
 .g-card:hover { transform: translateY(-5px); border-color: var(--goldline); }
 .g-card .tint { height: 170px; }
@@ -334,6 +345,8 @@ img { max-width: 100%; }
 .kam-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 28px; }
 .kam-tags span { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; border: 1px solid var(--goldline); color: var(--gold2); }
 @media (max-width: 900px) { .kam { grid-template-columns: 1fr; gap: 36px; } .kam-photo { max-width: 380px; width: 100%; margin: 0 auto; } }
+.fora-cities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.fora-cities span { font-size: 12px; padding: 6px 12px; border-radius: 100px; background: rgba(157,147,237,0.12); border: 1px solid rgba(196,184,247,0.28); color: var(--purple2); }
 .credits { max-width: 980px; margin: 26px auto 0; font-size: 11px; line-height: 1.7; color: rgba(244,242,238,0.32); }
 .credits a { color: inherit; }
 .foot small { display: block; margin-top: 16px; font-size: 11px; color: rgba(244,242,238,0.25); }
@@ -345,7 +358,7 @@ img { max-width: 100%; }
 @media (max-width: 1000px) {
   .stats-in { grid-template-columns: repeat(2, 1fr); }
   .stat:nth-child(2) { border-right: 0; } .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-  .intro, .how-in, .sb-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .intro, .how-in, .sb-wrap { grid-template-columns: minmax(0, 1fr); gap: 40px; }
   .prods { grid-template-columns: 1fr; } .prod { height: 360px; }
   .duo { grid-template-columns: 1fr; }
   .guides { grid-template-columns: repeat(2, 1fr); }
@@ -587,6 +600,28 @@ fbq('track', 'PageView');
   </div>
 </section>
 
+<section class="sec" id="mora-fora" style="padding-top:20px">
+  <div class="how fora rv">
+    <img src="../images/santa-maria/px-estudante-quarto-md.webp" srcset="../images/santa-maria/px-estudante-quarto-md.webp 900w, ../images/santa-maria/px-estudante-quarto.webp 1800w" sizes="100vw" alt="Estudante no próprio apartamento em Santa Maria" class="" loading="lazy" decoding="async">
+    <div class="how-in">
+      <div>
+        <span class="tag">Para quem mora fora de Santa Maria</span>
+        <h2 class="h2">Seu filho vai estudar aqui? <em>Ou você quer investir?</em></h2>
+        <p class="sub">Famílias da Fronteira Oeste, das Missões e de toda a região compram em Santa Maria para o filho estudar na UFSM ou na UFN, ou para investir em locação. A Kamila organiza tudo para você vir uma vez só.</p>
+        <div class="fora-cities"><span>Uruguaiana</span><span>Alegrete</span><span>São Borja</span><span>Santiago</span><span>São Gabriel</span><span>Santana do Livramento</span><span>Rosário do Sul</span><span>Itaqui</span><span>Cruz Alta</span><span>Santo Ângelo</span><span>e região</span></div>
+      </div>
+      <div>
+        <div class="steps">
+          <div class="step"><span class="step-n">1</span><div><b>Para o filho estudar</b><span>Em vez de anos de aluguel, a parcela vira patrimônio. Depois do curso, o imóvel pode ser alugado para outro estudante.</span></div></div>
+          <div class="step"><span class="step-n">2</span><div><b>Para investir</b><span>Compactos perto das universidades, lançamentos na planta e imóveis prontos, com a conta antes da decisão.</span></div></div>
+          <div class="step"><span class="step-n">3</span><div><b>Compra a distância</b><span>Seleção pelo WhatsApp com fotos e vídeos, visita em um dia só e documentação acompanhada de perto.</span></div></div>
+        </div>
+        <div class="ctas" style="margin-top:26px"><a href="https://wa.me/55991346393?text=Ol%C3%A1%20Kamila!%20Moro%20em%20outra%20cidade%20e%20quero%20comprar%20um%20im%C3%B3vel%20em%20Santa%20Maria." target="_blank" rel="noopener" class="sm-btn sm-btn-gold" data-corretor="Kamila" data-origem="sm_hub_fora"><span class="sm-dot"></span>Falar com Kamila</a><a href="../comprar-imovel-santa-maria-morando-fora.html" class="sm-btn sm-btn-glass">Ver o guia completo</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec">
   <div class="kam">
     <div class="kam-photo rv"><img src="../images/kamila-recorte.webp" alt="Kamila Xavier, corretora de imóveis em Santa Maria" loading="lazy" width="900" height="1200"></div>
@@ -629,6 +664,7 @@ fbq('track', 'PageView');
     <a class="g-card rv" href="../financiamento-santa-maria.html"><div class="tint"><img src="../images/santa-maria/px-simulacao-financiamento-md.webp" srcset="../images/santa-maria/px-simulacao-financiamento-md.webp 900w, ../images/santa-maria/px-simulacao-financiamento.webp 1800w" sizes="(max-width: 760px) 100vw, 380px" alt="Financiamento e FGTS" class="" loading="lazy" decoding="async"></div><div class="t"><span>Financiamento</span><strong>Financiamento e FGTS</strong><p>Modalidades, requisitos e a melhor condição.</p></div></a>
     <a class="g-card rv" href="../imoveis-na-planta-santa-maria.html"><div class="tint"><img src="../images/santa-maria/px-predio-novo-gruas-md.webp" srcset="../images/santa-maria/px-predio-novo-gruas-md.webp 900w, ../images/santa-maria/px-predio-novo-gruas.webp 1800w" sizes="(max-width: 760px) 100vw, 380px" alt="Imóveis na planta" class="" loading="lazy" decoding="async"></div><div class="t"><span>Na planta</span><strong>Imóveis na planta</strong><p>As três formas de pagar e o checklist.</p></div></a>
     <a class="g-card rv" href="../investir-em-imoveis-santa-maria.html"><div class="tint"><img src="../images/santa-maria/px-predio-residencial-md.webp" srcset="../images/santa-maria/px-predio-residencial-md.webp 900w, ../images/santa-maria/px-predio-residencial.webp 1800w" sizes="(max-width: 760px) 100vw, 380px" alt="Investir em Santa Maria" class="" loading="lazy" decoding="async"></div><div class="t"><span>Investimento</span><strong>Investir em Santa Maria</strong><p>Rentabilidade, estratégias e riscos.</p></div></a>
+    <a class="g-card rv" href="../comprar-imovel-santa-maria-morando-fora.html"><div class="tint"><img src="../images/santa-maria/px-estudante-apartamento-md.webp" srcset="../images/santa-maria/px-estudante-apartamento-md.webp 900w, ../images/santa-maria/px-estudante-apartamento.webp 1800w" sizes="(max-width: 760px) 100vw, 380px" alt="Comprar morando em outra cidade" class="" loading="lazy" decoding="async"></div><div class="t"><span>Mora fora</span><strong>Comprar morando em outra cidade</strong><p>Para o filho estudar ou para investir.</p></div></a>
     <a class="g-card rv" href="../imoveis-centro-santa-maria.html"><div class="tint"><img src="../images/santa-maria/sm-avenida-rio-branco-md.webp" srcset="../images/santa-maria/sm-avenida-rio-branco-md.webp 900w, ../images/santa-maria/sm-avenida-rio-branco.webp 1800w" sizes="(max-width: 760px) 100vw, 380px" alt="Imóveis no Centro" class="" loading="lazy" decoding="async"></div><div class="t"><span>Bairro</span><strong>Imóveis no Centro</strong><p>Perto da UFN, com alta procura por locação.</p></div></a>
     <a class="g-card rv" href="../imoveis-camobi-santa-maria.html"><div class="tint"><img src="../images/santa-maria/sm-ufsm-campus-md.webp" srcset="../images/santa-maria/sm-ufsm-campus-md.webp 900w, ../images/santa-maria/sm-ufsm-campus.webp 1800w" sizes="(max-width: 760px) 100vw, 380px" alt="Imóveis em Camobi" class="" loading="lazy" decoding="async"></div><div class="t"><span>Bairro</span><strong>Imóveis em Camobi</strong><p>O bairro da UFSM, para morar e investir.</p></div></a>
     <a class="g-card rv" href="../documentos-financiar-imovel-santa-maria.html"><div class="tint"><img src="../images/santa-maria/px-assinatura-contrato-md.webp" srcset="../images/santa-maria/px-assinatura-contrato-md.webp 900w, ../images/santa-maria/px-assinatura-contrato.webp 1800w" sizes="(max-width: 760px) 100vw, 380px" alt="Documentos para financiar" class="" loading="lazy" decoding="async"></div><div class="t"><span>Passo a passo</span><strong>Documentos para financiar</strong><p>A lista completa por perfil de renda.</p></div></a>
@@ -643,6 +679,7 @@ fbq('track', 'PageView');
   <div class="faq-item rv"><p class="faq-q">Quais os melhores bairros para morar em Santa Maria?</p><p class="faq-a">Depende do seu momento. Centro e Nossa Senhora de Fátima reúnem apartamentos de médio e alto padrão; Camobi é o bairro da UFSM; Nossa Senhora das Dores e Lourdes são residenciais e tranquilos. No mapa acima você vê o perfil de cada um.</p></div>
   <div class="faq-item rv"><p class="faq-q">Qual o teto do Minha Casa Minha Vida em Santa Maria?</p><p class="faq-a">Nas Faixas 1 e 2, o imóvel pode custar até R$ 240 mil em Santa Maria. Na Faixa 3, até R$ 400 mil, e na Faixa 4, até R$ 600 mil (Portaria MCID nº 333, vigente desde 22/04/2026).</p></div>
   <div class="faq-item rv"><p class="faq-q">Vale a pena investir em imóveis em Santa Maria?</p><p class="faq-a">Santa Maria é um polo universitário, com UFSM e UFN, além de forte presença militar, de saúde e de serviços, o que mantém a procura por locação. Mostramos a conta de rentabilidade antes de qualquer decisão.</p></div>
+  <div class="faq-item rv"><p class="faq-q">Moro em outra cidade. Consigo comprar um imóvel em Santa Maria?</p><p class="faq-a">Sim. Muitas famílias da Fronteira Oeste e de toda a região compram em Santa Maria para o filho estudar na UFSM ou na UFN, ou para investir em locação. A seleção é feita pelo WhatsApp, com fotos e vídeos, e a visita é organizada para você vir uma vez só.</p></div>
   <div class="faq-item rv"><p class="faq-q">Quanto custa a simulação de financiamento?</p><p class="faq-a">Nada. A simulação e o atendimento são gratuitos; nossa remuneração é a comissão sobre a venda.</p></div>
 </section>
 
@@ -665,7 +702,7 @@ fbq('track', 'PageView');
 <footer class="foot">
   <div class="foot-brand">Kamila &amp; Ricardo</div>
   <div class="foot-sub">Corretores de imóveis em Santa Maria, RS · Parceiros Santa Imóveis</div>
-  <div class="foot-links"><a href="../index.html">Início</a><a href="./">Santa Maria</a><a href="../mcmv-santa-maria.html">Minha Casa Minha Vida</a><a href="../financiamento-santa-maria.html">Financiamento e FGTS</a><a href="../imoveis-na-planta-santa-maria.html">Imóveis na planta</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-centro-santa-maria.html">Imóveis no Centro</a><a href="../imoveis-camobi-santa-maria.html">Imóveis em Camobi</a><a href="../documentos-financiar-imovel-santa-maria.html">Documentos para financiar</a><a href="../aluguel-ou-financiamento-santa-maria.html">Aluguel ou financiamento</a><a href="../vender-imovel-santa-maria.html">Vender seu imóvel</a><a href="../sobre.html">Sobre nós</a><a href="../litoral-sc/">Litoral SC</a></div>
+  <div class="foot-links"><a href="../index.html">Início</a><a href="./">Santa Maria</a><a href="../mcmv-santa-maria.html">Minha Casa Minha Vida</a><a href="../financiamento-santa-maria.html">Financiamento e FGTS</a><a href="../imoveis-na-planta-santa-maria.html">Imóveis na planta</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../comprar-imovel-santa-maria-morando-fora.html">Comprar morando em outra cidade</a><a href="../imoveis-centro-santa-maria.html">Imóveis no Centro</a><a href="../imoveis-camobi-santa-maria.html">Imóveis em Camobi</a><a href="../documentos-financiar-imovel-santa-maria.html">Documentos para financiar</a><a href="../aluguel-ou-financiamento-santa-maria.html">Aluguel ou financiamento</a><a href="../vender-imovel-santa-maria.html">Vender seu imóvel</a><a href="../sobre.html">Sobre nós</a><a href="../litoral-sc/">Litoral SC</a></div>
   <p class="credits">Fotos via Wikimedia Commons, com ajustes de cor e corte, sob as licenças indicadas: <a href="https://commons.wikimedia.org/wiki/File:Vista_de_Santa_Maria_(RS).jpg" target="_blank" rel="noopener">Vista de Santa Maria</a>: Clube Trekking Santa Maria RS (<a href="https://creativecommons.org/licenses/by/2.0" target="_blank" rel="noopener">CC BY 2.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Bas%C3%ADlica_de_Nossa_Senhora_Medianeira.jpg" target="_blank" rel="noopener">Basílica da Medianeira</a>: Imagens SM (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Catedral_Metropolitana_de_Santa_Maria.jpg" target="_blank" rel="noopener">Catedral Metropolitana</a>: Andressa Osorio (<a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:UFSM.2014.034.017.Campus-Santa-Maria-Filippe-Richardt.jpg" target="_blank" rel="noopener">Campus da UFSM</a>: Fillipe Richardt (<a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Planet%C3%A1rio_da_UFSM.jpg" target="_blank" rel="noopener">Planetário da UFSM</a>: Imagens SM (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Panorama_da_Vila_Belga.jpg" target="_blank" rel="noopener">Vila Belga</a>: Imagens SM (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:27-santamariateatro.jpg" target="_blank" rel="noopener">Theatro Treze de Maio</a>: Tetraktys (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Itaimb%C3%A92.jpg" target="_blank" rel="noopener">Parque Itaimbé</a>: Latinov (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Camobi,_Santa_Maria_-_RS,_Brazil_-_panoramio.jpg" target="_blank" rel="noopener">Pôr do sol em Camobi</a>: Hal2k1 (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Camobi,_Santa_Maria_-_RS,_Brazil_-_panoramio_-_Hal2k1.jpg" target="_blank" rel="noopener">Entardecer em Camobi</a>: Hal2k1 (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>) · <a href="https://commons.wikimedia.org/wiki/File:Avenida_Rio_Branco1.jpg" target="_blank" rel="noopener">Avenida Rio Branco</a>: Latinov (<a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a>).</p>
   <small>© 2026 · krimoveissm.com.br</small>
 </footer>
