@@ -144,6 +144,7 @@ a { color: inherit; }
 img { max-width: 100%; }
 .sm-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; gap: 14px; padding: 16px 40px; background: rgba(11,9,28,0.5); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(201,168,76,0.12); transition: background 0.3s; }
 .sm-nav.solid { background: rgba(11,9,28,0.92); }
+.sm-brand img { height: 34px; width: auto; display: block; }
 .sm-brand { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; color: var(--white); text-decoration: none; white-space: nowrap; }
 .sm-sp { flex: 1; }
 .sm-reg { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
@@ -327,7 +328,7 @@ fbq('track', 'PageView');
 </head>
 <body>
 <nav class="sm-nav" id="smNav">
-  <a href="index.html" class="sm-brand">Kamila &amp; Ricardo</a>
+  <a href="index.html" class="sm-brand" aria-label="Kamila &amp; Ricardo · início"><img src="images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"></a>
   <div class="sm-sp"></div>
   <div class="sm-reg"><a href="santa-maria/" class="on">Santa Maria</a><a href="litoral-sc/" class="sc"><i></i>Litoral SC</a></div>
   <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="sm-santa" loading="lazy">

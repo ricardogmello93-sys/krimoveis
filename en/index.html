@@ -131,6 +131,7 @@ img { max-width: 100%; }
 /* NAV */
 .lt-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; gap: 14px; padding: 16px 40px; background: rgba(6,24,32,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(169,221,227,0.10); transition: background 0.3s; }
 .lt-nav.solid { background: rgba(6,24,32,0.92); }
+.lt-brand img { height: 34px; width: auto; display: block; }
 .lt-brand { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; text-decoration: none; white-space: nowrap; }
 .lt-chip { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sea2); border: 1px solid rgba(121,194,205,0.4); border-radius: 100px; padding: 4px 11px; text-decoration: none; white-space: nowrap; }
 .lt-nav-sp { flex: 1; }
@@ -326,7 +327,7 @@ fbq('track', 'PageView');
 </head>
 <body>
 <nav class="lt-nav" id="ltNav">
-  <a href="./" class="lt-brand">Kamila &amp; Ricardo</a>
+  <a href="./" class="lt-brand" aria-label="Kamila &amp; Ricardo"><img src="../images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"></a>
   <div class="lt-nav-sp"></div>
   <a href="#simulator" class="lt-nav-link">Payment simulator</a>
   <div class="lang" role="navigation" aria-label="Idioma / Language"><a href="../litoral-sc/" hreflang="pt-BR" lang="pt-BR" class="" title="Português" aria-label="Português"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#229e45"/><path d="M14 2.6 25.4 10 14 17.4 2.6 10z" fill="#f8e509"/><circle cx="14" cy="10" r="4.6" fill="#2b49a3"/><path d="M9.5 9.2c3-.9 6.4-.5 9 1" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a><a href="../en/" hreflang="en" lang="en" class="on" title="English" aria-label="English" aria-current="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="3.076923076923077" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="6.153846153846154" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="9.23076923076923" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="12.307692307692308" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="15.384615384615385" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="18.46153846153846" width="28" height="1.5384615384615385" fill="#b22234"/><rect width="12" height="10.76923076923077" fill="#3c3b6e"/></svg><span>EN</span></a><a href="../es/" hreflang="es" lang="es" class="" title="Español" aria-label="Español"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/></svg><span>ES</span></a></div>
