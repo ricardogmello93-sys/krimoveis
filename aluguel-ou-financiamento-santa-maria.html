@@ -266,6 +266,12 @@ footer { margin-bottom: 64px; }
 /* BTN IGUAIS */
 .btn-group .btn, .btn-grid .btn { min-width: 230px; justify-content: center; }
 @media (max-width: 768px) { .btn-group .btn, .btn-grid .btn { width: 100%; min-width: 0; } }
+
+  /* ── LITORAL SC (nav) ── */
+  .nav-litoral { display: inline-flex; align-items: center; gap: 8px; margin-right: 16px; padding: 7px 14px; border-radius: 100px; border: 1px solid rgba(169,221,227,0.45); background: rgba(121,194,205,0.08); color: #a9dde3; font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; white-space: nowrap; transition: background 0.25s, border-color 0.25s, color 0.25s; }
+  .nav-litoral:hover { background: rgba(121,194,205,0.18); border-color: #a9dde3; color: #fff; }
+  .nav-litoral i { width: 7px; height: 7px; border-radius: 50%; background: #79c2cd; box-shadow: 0 0 0 3px rgba(121,194,205,0.22); flex-shrink: 0; }
+@media (max-width: 768px) { .nav-litoral { display: none; } }
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -300,6 +306,7 @@ fbq('track', 'PageView');
   <span class="site-nav-dot">·</span>
   <span class="site-nav-partner-label">Parceiros Santa Imóveis</span>
   <div class="site-nav-spacer"></div>
+  <a href="litoral-sc/" class="nav-litoral"><i></i>Litoral SC</a>
   <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="site-nav-santa-logo" loading="lazy">
 </nav>
 
@@ -439,6 +446,7 @@ fbq('track', 'PageView');
     <a href="imoveis-centro-santa-maria.html" class="footer-link">Centro</a>
     <a href="imoveis-camobi-santa-maria.html" class="footer-link">Camobi</a>
     <a href="vender-imovel-santa-maria.html" class="footer-link">Vender</a>
+    <a href="litoral-sc/" class="footer-link">Litoral SC</a>
   </div>
   <p style="font-size:11px;color:rgba(255,255,255,0.18);margin-top:16px">© 2026 · krimoveissm.com.br</p>
 </footer>
