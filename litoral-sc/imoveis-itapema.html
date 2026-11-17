@@ -144,6 +144,11 @@ img { max-width: 100%; }
 .lt-nav-link:hover { color: var(--white); }
 .lt-nav-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; color: var(--abyss); background: linear-gradient(135deg, var(--sand2), var(--gold2)); padding: 9px 16px; border-radius: 100px; white-space: nowrap; }
 .lt-santa { height: 22px; opacity: 0.75; }
+.lt-reg { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid rgba(169,221,227,0.22); background: rgba(255,255,255,0.04); }
+.lt-reg a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 100px; font-size: 12px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; text-decoration: none; white-space: nowrap; color: var(--soft); }
+.lt-reg a.sm:hover { color: var(--white); background: rgba(157,147,237,0.18); }
+.lt-reg a.on { background: rgba(121,194,205,0.22); color: var(--foam); }
+.lt-reg a.on i { width: 7px; height: 7px; border-radius: 50%; background: var(--sea); }
 
 /* BOTÕES */
 .lt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 30px; border-radius: 100px; font-size: 13px; font-weight: 500; letter-spacing: 1.8px; text-transform: uppercase; text-decoration: none; transition: transform 0.25s, box-shadow 0.25s, background 0.25s, border-color 0.25s; cursor: pointer; }
@@ -190,9 +195,12 @@ img { max-width: 100%; }
 @media (max-width: 860px) {
   .lt-nav { padding: 12px 18px; gap: 10px; }
   .lt-nav-link, .lt-santa { display: none; }
-  .lt-chip { display: none; }
+  .lt-reg { padding: 0; border: 0; background: none; }
+  .lt-reg a.on { display: none; }
+  .lt-reg a.sm { padding: 6px 11px; font-size: 10.5px; letter-spacing: 1px; color: var(--white); border: 1px solid rgba(196,184,247,0.45); background: rgba(157,147,237,0.14); }
   .lt-nav-cta { padding: 8px 13px; font-size: 11px; letter-spacing: 1px; }
   .lt-sticky span { display: none; }
+  .lt-nav-cta { display: none; }
   .lt-sticky .lt-btn { flex: 1; }
   .lt-footer { padding: 48px 22px 96px; }
 }
@@ -298,11 +306,10 @@ fbq('track', 'PageView');
 <body>
 <nav class="lt-nav" id="ltNav">
   <a href="../index.html" class="lt-brand">Kamila &amp; Ricardo</a>
-  <a href="./" class="lt-chip">Litoral SC</a>
   <div class="lt-nav-sp"></div>
   <a href="imoveis-itapema.html" class="lt-nav-link">Itapema</a>
   <a href="imoveis-porto-belo.html" class="lt-nav-link">Porto Belo</a>
-  <a href="../index.html" class="lt-nav-link">Santa Maria</a>
+  <div class="lt-reg"><a href="../santa-maria/" class="sm">Santa Maria</a><a href="./" class="on"><i></i>Litoral SC</a></div>
   <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_imoveis-itapema_nav"><span class="lt-dot"></span>WhatsApp</a>
   <img src="../images/logo-santa-branca.png" alt="Santa Imóveis" class="lt-santa" loading="lazy">
 </nav>
@@ -407,7 +414,7 @@ fbq('track', 'PageView');
   <div class="lt-footer-brand">Kamila &amp; Ricardo</div>
   <div class="lt-footer-sub">Imóveis em Itapema e Porto Belo, litoral de Santa Catarina · Parceiros Santa Imóveis</div>
   <div class="lt-footer-links"><a href="./">Litoral SC</a><a href="imoveis-itapema.html">Imóveis em Itapema</a><a href="imoveis-meia-praia-itapema.html">Imóveis na Meia Praia</a><a href="imoveis-porto-belo.html">Imóveis em Porto Belo</a><a href="lancamentos-itapema-porto-belo.html">Lançamentos na planta</a><a href="apartamento-frente-mar-itapema.html">Frente mar e alto padrão</a><a href="investir-em-itapema-porto-belo.html">Investir no litoral de SC</a><a href="comprar-imovel-litoral-sc-outro-estado.html">Comprar morando em outro estado</a></div>
-  <div class="lt-footer-links main"><a href="../index.html">Santa Maria</a><a href="../sobre.html">Sobre nós</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-na-planta-santa-maria.html">Na planta em Santa Maria</a></div>
+  <div class="lt-footer-links main"><a href="../index.html">Início</a><a href="../santa-maria/">Santa Maria</a><a href="../sobre.html">Sobre nós</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-na-planta-santa-maria.html">Na planta em Santa Maria</a></div>
   <small>© 2026 · krimoveissm.com.br</small>
 </footer>
 <div class="lt-sticky" id="ltSticky" role="region" aria-label="Falar com Ricardo">

@@ -147,6 +147,11 @@ img { max-width: 100%; }
 .lt-nav-link:hover { color: var(--white); }
 .lt-nav-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; color: var(--abyss); background: linear-gradient(135deg, var(--sand2), var(--gold2)); padding: 9px 16px; border-radius: 100px; white-space: nowrap; }
 .lt-santa { height: 22px; opacity: 0.75; }
+.lt-reg { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid rgba(169,221,227,0.22); background: rgba(255,255,255,0.04); }
+.lt-reg a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 100px; font-size: 12px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; text-decoration: none; white-space: nowrap; color: var(--soft); }
+.lt-reg a.sm:hover { color: var(--white); background: rgba(157,147,237,0.18); }
+.lt-reg a.on { background: rgba(121,194,205,0.22); color: var(--foam); }
+.lt-reg a.on i { width: 7px; height: 7px; border-radius: 50%; background: var(--sea); }
 
 /* BOTÕES */
 .lt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 30px; border-radius: 100px; font-size: 13px; font-weight: 500; letter-spacing: 1.8px; text-transform: uppercase; text-decoration: none; transition: transform 0.25s, box-shadow 0.25s, background 0.25s, border-color 0.25s; cursor: pointer; }
@@ -193,9 +198,12 @@ img { max-width: 100%; }
 @media (max-width: 860px) {
   .lt-nav { padding: 12px 18px; gap: 10px; }
   .lt-nav-link, .lt-santa { display: none; }
-  .lt-chip { display: none; }
+  .lt-reg { padding: 0; border: 0; background: none; }
+  .lt-reg a.on { display: none; }
+  .lt-reg a.sm { padding: 6px 11px; font-size: 10.5px; letter-spacing: 1px; color: var(--white); border: 1px solid rgba(196,184,247,0.45); background: rgba(157,147,237,0.14); }
   .lt-nav-cta { padding: 8px 13px; font-size: 11px; letter-spacing: 1px; }
   .lt-sticky span { display: none; }
+  .lt-nav-cta { display: none; }
   .lt-sticky .lt-btn { flex: 1; }
   .lt-footer { padding: 48px 22px 96px; }
 }
@@ -328,6 +336,41 @@ a.inline:hover { color: var(--white); }
   .lm-pin text { font-size: 20px; }
 }
 
+.ponte { position: relative; display: flex; height: 460px; margin: 30px 0 0; overflow: hidden; background: #070514; }
+.ponte-half { position: relative; flex: 1; display: flex; align-items: flex-end; overflow: hidden; text-decoration: none; color: #f4f2ee; transition: flex 0.7s cubic-bezier(.2,.8,.2,1); }
+.ponte-half:hover { flex: 1.35; }
+.ponte-half img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s ease; }
+.ponte-half:hover img { transform: scale(1.06); }
+.ponte-sm { clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); margin-right: -6%; z-index: 1; }
+.ponte-sc { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); margin-left: -6%; }
+.ponte-sm::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(27,20,66,0.35), rgba(11,9,28,0.92)), linear-gradient(90deg, rgba(42,33,96,0.45), transparent); }
+.ponte-sc::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,42,51,0.3), rgba(6,24,32,0.92)), linear-gradient(270deg, rgba(14,51,64,0.45), transparent); }
+.ponte-txt { position: relative; z-index: 2; padding: 0 9% 46px; }
+.ponte-sc .ponte-txt { margin-left: auto; text-align: right; }
+.ponte-txt span { display: block; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
+.ponte-sm .ponte-txt span { color: #e2c77e; } .ponte-sc .ponte-txt span { color: #a9dde3; }
+.ponte-txt strong { display: block; font: 300 clamp(32px, 3.6vw, 52px)/1.05 'Cormorant Garamond', serif; margin-bottom: 14px; }
+.ponte-txt em { font: 500 12px 'DM Sans', sans-serif; font-style: normal; letter-spacing: 1.8px; text-transform: uppercase; padding-bottom: 3px; border-bottom: 1px solid currentColor; }
+.ponte-here { position: absolute; top: 22px; z-index: 3; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; background: rgba(7,5,20,0.6); border: 1px solid rgba(244,242,238,0.25); backdrop-filter: blur(6px); }
+.ponte-sm .ponte-here { left: 24px; } .ponte-sc .ponte-here { right: 24px; }
+.ponte-mid { position: absolute; z-index: 5; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 190px; height: 190px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at 30% 30%, #1b1442, #070514 75%); border: 1px solid rgba(226,199,126,0.55); box-shadow: 0 0 0 8px rgba(7,5,20,0.55), 0 20px 50px rgba(0,0,0,0.5); pointer-events: none; }
+.ponte-mid span { font: 500 10px 'DM Sans', sans-serif; letter-spacing: 2.5px; text-transform: uppercase; color: #e2c77e; margin-bottom: 6px; }
+.ponte-mid b { font: italic 300 25px/1.1 'Cormorant Garamond', serif; color: #f4f2ee; }
+.ponte-mid i { display: block; width: 36px; height: 1px; margin: 10px auto 0; background: linear-gradient(90deg, #9d93ed, #79c2cd); }
+@media (max-width: 760px) {
+  .ponte { flex-direction: column; height: auto; }
+  .ponte-half { min-height: 250px; flex: none !important; }
+  .ponte-sm { clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); margin: 0 0 -30px; }
+  .ponte-sc { clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 100%); margin: 0; }
+  .ponte-sm .ponte-txt { padding-bottom: 56px; }
+  .ponte-sc .ponte-txt { padding-top: 70px; }
+  .ponte-mid { width: 118px; height: 118px; top: 50%; left: auto; right: 14px; transform: translateY(-50%); }
+  .ponte-sc .ponte-txt { margin-left: 0; text-align: left; }
+  .ponte-sm .ponte-here { left: 16px; } .ponte-sc .ponte-here { display: none; }
+  .ponte-mid b { font-size: 17px; }
+  .ponte-mid span { font-size: 8.5px; letter-spacing: 1.8px; }
+}
+
 .hb-hero { position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; display: flex; align-items: center; }
 .hb-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,24,32,0.82) 0%, rgba(6,24,32,0.45) 55%, rgba(6,24,32,0.15) 100%), linear-gradient(180deg, transparent 60%, rgba(6,24,32,0.9) 100%); }
 .hb-hero-in { position: relative; z-index: 2; width: 100%; max-width: 1200px; margin: 0 auto; padding: 120px 40px 150px; }
@@ -435,11 +478,10 @@ fbq('track', 'PageView');
 <body>
 <nav class="lt-nav" id="ltNav">
   <a href="../index.html" class="lt-brand">Kamila &amp; Ricardo</a>
-  <a href="./" class="lt-chip">Litoral SC</a>
   <div class="lt-nav-sp"></div>
   <a href="imoveis-itapema.html" class="lt-nav-link">Itapema</a>
   <a href="imoveis-porto-belo.html" class="lt-nav-link">Porto Belo</a>
-  <a href="../index.html" class="lt-nav-link">Santa Maria</a>
+  <div class="lt-reg"><a href="../santa-maria/" class="sm">Santa Maria</a><a href="./" class="on"><i></i>Litoral SC</a></div>
   <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_hub_nav"><span class="lt-dot"></span>WhatsApp</a>
   <img src="../images/logo-santa-branca.png" alt="Santa Imóveis" class="lt-santa" loading="lazy">
 </nav>
@@ -660,6 +702,12 @@ fbq('track', 'PageView');
   </div>
 </section>
 
+<section class="ponte" aria-label="Nossas duas regiões">
+  <a class="ponte-half ponte-sm" href="../santa-maria/"><img src="../images/santa-maria/sm-vista-cidade-md.webp" alt="Vista de Santa Maria" loading="lazy"><div class="ponte-txt"><span>Interior · Rio Grande do Sul</span><strong>Santa Maria</strong><em>Conhecer Santa Maria →</em></div></a>
+  <a class="ponte-half ponte-sc" href="../litoral-sc/"><span class="ponte-here">Você está aqui</span><img src="../images/litoral/itapema-aerea-por-do-sol-md.webp" alt="Itapema ao entardecer" loading="lazy"><div class="ponte-txt"><span>Litoral · Santa Catarina</span><strong>Itapema e Porto Belo</strong><em>Voltar ao topo →</em></div></a>
+  <div class="ponte-mid"><span>Kamila &amp; Ricardo</span><b>Do interior<br>ao litoral</b><i></i></div>
+</section>
+
 <section class="hb-final">
   <img src="../images/litoral/porto-belo-por-do-sol.webp" srcset="../images/litoral/porto-belo-por-do-sol-md.webp 900w, ../images/litoral/porto-belo-por-do-sol.webp 1800w" sizes="100vw" alt="Pôr do sol em Porto Belo" class="" loading="lazy" decoding="async">
   <div>
@@ -674,7 +722,7 @@ fbq('track', 'PageView');
   <div class="lt-footer-brand">Kamila &amp; Ricardo</div>
   <div class="lt-footer-sub">Imóveis em Itapema e Porto Belo, litoral de Santa Catarina · Parceiros Santa Imóveis</div>
   <div class="lt-footer-links"><a href="./">Litoral SC</a><a href="imoveis-itapema.html">Imóveis em Itapema</a><a href="imoveis-meia-praia-itapema.html">Imóveis na Meia Praia</a><a href="imoveis-porto-belo.html">Imóveis em Porto Belo</a><a href="lancamentos-itapema-porto-belo.html">Lançamentos na planta</a><a href="apartamento-frente-mar-itapema.html">Frente mar e alto padrão</a><a href="investir-em-itapema-porto-belo.html">Investir no litoral de SC</a><a href="comprar-imovel-litoral-sc-outro-estado.html">Comprar morando em outro estado</a></div>
-  <div class="lt-footer-links main"><a href="../index.html">Santa Maria</a><a href="../sobre.html">Sobre nós</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-na-planta-santa-maria.html">Na planta em Santa Maria</a></div>
+  <div class="lt-footer-links main"><a href="../index.html">Início</a><a href="../santa-maria/">Santa Maria</a><a href="../sobre.html">Sobre nós</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-na-planta-santa-maria.html">Na planta em Santa Maria</a></div>
   <small>© 2026 · krimoveissm.com.br</small>
 </footer>
 <div class="lt-sticky" id="ltSticky" role="region" aria-label="Falar com Ricardo">
