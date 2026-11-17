@@ -90,8 +90,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="images/kamila-recorte.webp">
-<link rel="preload" as="image" href="images/ricardo-recorte.webp">
+<link rel="preload" as="image" href="images/foto-hero.webp">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root { --night: #0b091c; --plum: #1b1442; --purple: #9d93ed; --purple2: #c4b8f7; --gold: #c9a84c; --gold2: #e2c77e; --champ: #f3eadb; --white: #f4f2ee; --muted: rgba(244,242,238,0.78); --soft: rgba(244,242,238,0.55); --sea: #79c2cd; --sea2: #a9dde3; --abyss: #061820; }
@@ -123,51 +122,60 @@ a { color: inherit; text-decoration: none; }
 @keyframes tapDot { 0%, 100% { transform: scale(0.6); opacity: 0.6; } 50% { transform: scale(1); opacity: 1; } }
 
 /* PALCO */
-.g-stage { position: relative; display: flex; overflow: hidden; min-height: 0; }
-.g-side { position: relative; flex: 1; display: block; overflow: hidden; cursor: pointer; transition: flex 0.8s cubic-bezier(.2,.8,.2,1), filter 0.6s; outline: none; }
-.g-sm { clip-path: polygon(0 0, 100% 0, 90% 100%, 0 100%); margin-right: -5%; z-index: 2; }
-.g-sc { clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%); margin-left: -5%; }
+.g-stage { position: relative; overflow: hidden; min-height: 0; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.g-stage img { -webkit-user-drag: none; }
+.g-side { position: absolute; inset: 0; display: block; cursor: pointer; outline: none; }
+.g-sc { clip-path: polygon(0 0, 53% 0, 47% 100%, 0 100%); }
+.g-sm { clip-path: polygon(53% 0, 100% 0, 100% 100%, 47% 100%); }
 .g-bg { position: absolute; inset: 0; }
-.g-bg img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); transition: transform 1.6s ease, filter 0.8s; filter: saturate(0.8) brightness(0.75); }
-.g-sm .g-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,9,28,0.85) 0%, rgba(42,33,96,0.55) 45%, rgba(11,9,28,0.92) 100%); }
-.g-sc .g-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,24,32,0.85) 0%, rgba(14,51,64,0.5) 45%, rgba(6,24,32,0.92) 100%); }
-.g-halo { position: absolute; bottom: -10%; width: 70%; height: 90%; border-radius: 50%; filter: blur(30px); opacity: 0.55; animation: breathe 3.4s ease-in-out infinite; pointer-events: none; }
-.g-sm .g-halo { right: 4%; background: radial-gradient(closest-side, rgba(157,147,237,0.75), rgba(157,147,237,0) 70%); }
-.g-sc .g-halo { left: 4%; background: radial-gradient(closest-side, rgba(121,194,205,0.7), rgba(121,194,205,0) 70%); animation-delay: 1.7s; }
-@keyframes breathe { 0%, 100% { transform: scale(0.92); opacity: 0.4; } 50% { transform: scale(1.04); opacity: 0.75; } }
-.g-person { position: absolute; bottom: 0; height: 94%; width: auto; max-width: none; transition: transform 0.8s cubic-bezier(.2,.8,.2,1), filter 0.6s; transform-origin: bottom center; -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent); mask-image: linear-gradient(180deg, #000 86%, transparent); }
-.g-sm .g-person { right: 3%; }
-.g-sc .g-person { left: 3%; }
-.g-info { position: absolute; top: 50%; transform: translateY(-50%); max-width: min(340px, 42%); z-index: 3; transition: transform 0.7s, opacity 0.7s; }
-.g-sm .g-info { left: 6%; }
-.g-sc .g-info { right: 6%; text-align: right; }
+.g-bg img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 1.6s ease, filter 0.8s; filter: saturate(0.8) brightness(0.72); }
+.g-sm .g-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,9,28,0.82) 0%, rgba(42,33,96,0.5) 45%, rgba(11,9,28,0.9) 100%); }
+.g-sc .g-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,24,32,0.82) 0%, rgba(14,51,64,0.45) 45%, rgba(6,24,32,0.9) 100%); }
+.g-halo { position: absolute; bottom: -8%; width: 40%; height: 95%; border-radius: 50%; filter: blur(34px); opacity: 0.5; animation: breathe 3.4s ease-in-out infinite; pointer-events: none; }
+.g-sc .g-halo { left: 22%; background: radial-gradient(closest-side, rgba(121,194,205,0.8), rgba(121,194,205,0) 70%); }
+.g-sm .g-halo { right: 22%; background: radial-gradient(closest-side, rgba(157,147,237,0.85), rgba(157,147,237,0) 70%); animation-delay: 1.7s; }
+@keyframes breathe { 0%, 100% { transform: scale(0.92); opacity: 0.4; } 50% { transform: scale(1.04); opacity: 0.8; } }
+.g-couple-wrap { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.g-couple { position: absolute; bottom: 0; left: 50%; height: 94%; width: auto; max-width: none; transform: translateX(-51%); transform-origin: 50% 100%; transition: transform 0.9s cubic-bezier(.2,.8,.2,1), opacity 0.6s; -webkit-mask-image: linear-gradient(180deg, #000 88%, transparent); mask-image: linear-gradient(180deg, #000 88%, transparent); }
+/* contorno de luz: cópias da foto recortadas em cada lado, só com brilho da cor da região */
+.g-glow { opacity: 0; }
+.g-glow-sc { clip-path: polygon(0 0, 53% 0, 47% 100%, 0 100%); filter: drop-shadow(0 0 14px rgba(169,221,227,0.95)) drop-shadow(0 0 30px rgba(121,194,205,0.6)) brightness(1.06); }
+.g-glow-sm { clip-path: polygon(53% 0, 100% 0, 100% 100%, 47% 100%); filter: drop-shadow(0 0 14px rgba(226,199,126,0.9)) drop-shadow(0 0 30px rgba(157,147,237,0.65)) brightness(1.06); }
+.g-dim { position: absolute; inset: 0; z-index: 4; pointer-events: none; opacity: 0; transition: opacity 0.6s; background: rgba(6,4,16,0.6); }
+.g-dim-sc { clip-path: polygon(0 0, 53% 0, 47% 100%, 0 100%); }
+.g-dim-sm { clip-path: polygon(53% 0, 100% 0, 100% 100%, 47% 100%); }
+.g-info { position: absolute; z-index: 5; top: 50%; transform: translateY(-50%); width: min(330px, calc(50% - 24vh)); transition: opacity 0.6s, transform 0.6s; }
+.g-info-sc { left: 4%; }
+.g-info-sm { right: 4%; text-align: right; }
 .g-kick { display: block; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
-.g-sm .g-kick { color: var(--gold2); } .g-sc .g-kick { color: var(--sea2); }
-.g-info strong { display: block; font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(38px, 4.2vw, 64px); line-height: 1; margin-bottom: 14px; }
+.g-info-sm .g-kick { color: var(--gold2); } .g-info-sc .g-kick { color: var(--sea2); }
+.g-info strong { display: block; font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(36px, 4vw, 62px); line-height: 1; margin-bottom: 14px; }
 .g-info p { font-size: 15px; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
 .g-go { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; padding: 13px 22px; border-radius: 100px; font-size: 12.5px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase; transition: gap 0.3s, box-shadow 0.3s; }
-.g-sm .g-go { background: linear-gradient(135deg, var(--champ), var(--gold2) 70%, var(--gold)); color: var(--night); }
-.g-sc .g-go { background: linear-gradient(135deg, #d9f0f2, var(--sea2) 60%, var(--sea)); color: var(--abyss); }
+.g-info-sm .g-go { background: linear-gradient(135deg, var(--champ), var(--gold2) 70%, var(--gold)); color: var(--night); }
+.g-info-sc .g-go { background: linear-gradient(135deg, #d9f0f2, var(--sea2) 60%, var(--sea)); color: var(--abyss); }
 .g-go i { font-style: normal; transition: transform 0.3s; }
-.g-tap { position: absolute; bottom: 22px; z-index: 4; display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px 9px 12px; border-radius: 100px; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; background: rgba(11,9,28,0.65); border: 1px solid rgba(255,255,255,0.22); backdrop-filter: blur(8px); white-space: nowrap; }
-.g-sm .g-tap { left: 6%; } .g-sc .g-tap { right: 6%; }
+.g-tap { position: absolute; z-index: 6; bottom: 22px; display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px 9px 12px; border-radius: 100px; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; background: rgba(11,9,28,0.7); border: 1px solid rgba(255,255,255,0.22); backdrop-filter: blur(8px); white-space: nowrap; transition: opacity 0.6s; }
+.g-tap-sc { left: 4%; } .g-tap-sm { right: 4%; }
 .g-ripple { position: relative; width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
-.g-sm .g-ripple { background: var(--gold2); } .g-sc .g-ripple { background: var(--sea2); }
+.g-tap-sm .g-ripple { background: var(--gold2); color: var(--gold2); } .g-tap-sc .g-ripple { background: var(--sea2); color: var(--sea2); }
 .g-ripple::before, .g-ripple::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid currentColor; animation: ripple 2s ease-out infinite; }
-.g-sm .g-ripple { color: var(--gold2); } .g-sc .g-ripple { color: var(--sea2); }
 .g-ripple::after { animation-delay: 1s; }
 @keyframes ripple { from { transform: scale(1); opacity: 0.9; } to { transform: scale(3.2); opacity: 0; } }
 .t-touch { display: none; }
 
 /* ESTADOS: destaque (mouse, toque ou automático) */
-.g-stage.on-sm .g-sm, .g-stage.on-sc .g-sc { flex: 1.14; }
-.g-stage.on-sm .g-sc, .g-stage.on-sc .g-sm { filter: brightness(0.55) saturate(0.6); }
+.g-stage.on-sm .g-dim-sc, .g-stage.on-sc .g-dim-sm { opacity: 1; }
+.g-stage.on-sm .g-glow-sm, .g-stage.on-sc .g-glow-sc { opacity: 1; }
+.g-stage.on-sm .g-couple { transform: translateX(-51%) scale(1.025) rotate(0.4deg); }
+.g-stage.on-sc .g-couple { transform: translateX(-51%) scale(1.025) rotate(-0.4deg); }
+.g-stage.on-sm .g-info-sc, .g-stage.on-sc .g-info-sm, .g-stage.on-sm .g-tap-sc, .g-stage.on-sc .g-tap-sm { opacity: 0.4; }
+.g-stage.on-sm .g-info-sm { transform: translateY(-50%) translateX(-6px); }
+.g-stage.on-sc .g-info-sc { transform: translateY(-50%) translateX(6px); }
 .g-stage.on-sm .g-sm .g-bg img, .g-stage.on-sc .g-sc .g-bg img { transform: scale(1.12); filter: saturate(0.95) brightness(0.85); }
-.g-stage.on-sm .g-sm .g-person { transform: translateY(-6px) scale(1.03); filter: drop-shadow(0 0 22px rgba(196,184,247,0.55)); }
-.g-stage.on-sc .g-sc .g-person { transform: translateY(-6px) scale(1.03); filter: drop-shadow(0 0 22px rgba(169,221,227,0.55)); }
-.g-stage.on-sm .g-sm .g-halo, .g-stage.on-sc .g-sc .g-halo { opacity: 0.95; }
-.g-stage.on-sm .g-sm .g-go, .g-stage.on-sc .g-sc .g-go { gap: 16px; box-shadow: 0 12px 34px rgba(0,0,0,0.35); }
-.g-stage.on-sm .g-sm .g-go i, .g-stage.on-sc .g-sc .g-go i { transform: translateX(3px); }
+.g-stage.on-sm .g-sm .g-halo, .g-stage.on-sc .g-sc .g-halo { opacity: 1; }
+.g-stage.on-sm .g-info-sm .g-go, .g-stage.on-sc .g-info-sc .g-go { gap: 16px; box-shadow: 0 12px 34px rgba(0,0,0,0.35); }
+.g-stage.on-sm .g-info-sm .g-go i, .g-stage.on-sc .g-info-sc .g-go i { transform: translateX(3px); }
 
 /* NOSSA HISTÓRIA */
 .g-story { position: absolute; z-index: 10; left: 50%; bottom: 26px; transform: translateX(-50%); width: 128px; height: 128px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, #251c58, #0b091c 72%); border: 1px solid rgba(226,199,126,0.55); box-shadow: 0 0 0 7px rgba(11,9,28,0.55), 0 18px 40px rgba(0,0,0,0.5); transition: transform 0.4s, box-shadow 0.4s; }
@@ -197,18 +205,10 @@ a { color: inherit; text-decoration: none; }
 .g-curtain span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font: italic 300 clamp(34px, 5vw, 64px) 'Cormorant Garamond', serif; opacity: 0; transition: opacity 0.4s 0.35s; white-space: nowrap; }
 .g-curtain.go span { opacity: 1; }
 
-@media (hover: none), (pointer: coarse) { .g-cursor { display: none; } .t-click { display: none; } .t-touch { display: inline; } }
+@media (hover: none), (pointer: coarse) { .g-cursor:not(.press) { display: none; } .g-cursor.press { width: 84px; height: 84px; margin: -96px 0 0 -42px; transition: opacity 0.2s, background 0.3s, transform 0.12s linear; } .t-click { display: none; } .t-touch { display: inline; } }
 @media (prefers-reduced-motion: reduce) { .g-halo, .g-ripple::before, .g-ripple::after, .g-story svg, .g-hint i::after { animation: none !important; } .g-curtain { transition: none; } }
 
 @media (max-width: 1180px) { .g-info p { display: none; } }
-@media (max-width: 900px) {
-  .g-info { top: 28px; transform: none; max-width: none; }
-  .g-sm .g-info { left: 22px; right: 18%; } .g-sc .g-info { right: 22px; left: 18%; }
-  .g-info p { display: none; }
-  .g-go { padding: 10px 16px; font-size: 11px; }
-  .g-person { height: 74%; }
-  .g-sm .g-person { right: -6%; } .g-sc .g-person { left: -6%; }
-}
 @media (max-width: 760px) {
   .g { min-height: 560px; }
   .g-top { padding: 14px 18px; }
@@ -218,20 +218,17 @@ a { color: inherit; text-decoration: none; }
   .g-tag { font-size: 10px; letter-spacing: 2.4px; margin-bottom: 6px; }
   .g-head h1 { font-size: 27px; }
   .g-hint { font-size: 13px; margin-top: 8px; }
-  .g-sm { clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%); margin-right: -7%; }
-  .g-sc { clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); margin-left: -7%; }
-  .g-info { top: 18px; }
-  .g-sm .g-info { left: 14px; right: 16%; } .g-sc .g-info { right: 14px; left: 16%; }
+  .g-couple { height: 80%; }
+  .g-info { top: 16px; transform: none !important; width: 47%; }
+  .g-info-sc { left: 14px; } .g-info-sm { right: 14px; }
   .g-kick { font-size: 8.5px; letter-spacing: 1.6px; margin-bottom: 6px; }
   .g-info strong { font-size: 25px; margin-bottom: 0; }
   .g-go { display: none; }
-  .g-person { height: 78%; }
-  .g-sm .g-person { right: -24%; } .g-sc .g-person { left: -24%; }
   .g-tap { bottom: 12px; padding: 7px 11px 7px 9px; font-size: 9.5px; letter-spacing: 0.8px; gap: 7px; }
-  .g-sm .g-tap { left: 10px; right: auto; } .g-sc .g-tap { right: 10px; left: auto; }
+  .g-tap-sc { left: 10px; } .g-tap-sm { right: 10px; }
   .g-ripple { width: 12px; height: 12px; }
   .g-story { width: 92px; height: 92px; bottom: 54px; }
-  .g-story b { font-size: 14px; } .g-story b small { font-size: 7px; letter-spacing: 1.4px; }
+  .g-story b { font-size: 14px; }
   .g-story text { font-size: 9px; }
   .g-foot { padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); justify-content: center; }
   .g-foot > span { display: none; }
@@ -280,30 +277,35 @@ fbq('track', 'PageView');
   </div>
 
   <main class="g-stage" id="stage">
-    <a class="g-side g-sm" href="santa-maria/" data-r="sm" data-label="Santa Maria" aria-label="Santa Maria, com a Kamila">
-      <div class="g-bg"><img src="images/santa-maria/sm-vista-cidade-md.webp" srcset="images/santa-maria/sm-vista-cidade-md.webp 900w, images/santa-maria/sm-vista-cidade.webp 1800w" sizes="55vw" alt=""></div>
-      <div class="g-halo"></div>
-      <img class="g-person" src="images/kamila-recorte.webp" alt="Kamila Xavier, corretora de imóveis em Santa Maria" width="900" height="1200">
-      <div class="g-info">
-        <span class="g-kick">Rio Grande do Sul</span>
-        <strong>Santa Maria</strong>
-        <p>Primeiro imóvel, financiamento com MCMV e FGTS, lançamentos e investimento perto das universidades.</p>
-        <span class="g-go">Entrar com a Kamila <i>→</i></span>
-      </div>
-      <span class="g-tap"><span class="g-ripple"></span><span class="t-click">Clique para entrar</span><span class="t-touch">Toque para entrar</span></span>
-    </a>
     <a class="g-side g-sc" href="litoral-sc/" data-r="sc" data-label="Litoral de SC" aria-label="Litoral de Santa Catarina, com o Ricardo">
-      <div class="g-bg"><img src="images/litoral/itapema-aerea-por-do-sol-md.webp" srcset="images/litoral/itapema-aerea-por-do-sol-md.webp 900w, images/litoral/itapema-aerea-por-do-sol.webp 1800w" sizes="55vw" alt=""></div>
+      <div class="g-bg"><img src="images/litoral/itapema-aerea-por-do-sol-md.webp" srcset="images/litoral/itapema-aerea-por-do-sol-md.webp 900w, images/litoral/itapema-aerea-por-do-sol.webp 1800w" sizes="60vw" alt=""></div>
       <div class="g-halo"></div>
-      <img class="g-person" src="images/ricardo-recorte.webp" alt="Ricardo Mello, corretor de imóveis no litoral de SC" width="900" height="1200">
-      <div class="g-info">
-        <span class="g-kick">Santa Catarina</span>
-        <strong>Itapema e<br>Porto Belo</strong>
-        <p>Lançamentos na planta, frente mar e alto padrão, com atendimento para quem mora em outro estado.</p>
-        <span class="g-go">Entrar com o Ricardo <i>→</i></span>
-      </div>
-      <span class="g-tap"><span class="g-ripple"></span><span class="t-click">Clique para entrar</span><span class="t-touch">Toque para entrar</span></span>
     </a>
+    <a class="g-side g-sm" href="santa-maria/" data-r="sm" data-label="Santa Maria" aria-label="Santa Maria, com a Kamila">
+      <div class="g-bg"><img src="images/santa-maria/sm-vista-cidade-md.webp" srcset="images/santa-maria/sm-vista-cidade-md.webp 900w, images/santa-maria/sm-vista-cidade.webp 1800w" sizes="60vw" alt=""></div>
+      <div class="g-halo"></div>
+    </a>
+    <div class="g-couple-wrap" aria-hidden="false">
+      <img class="g-couple" src="images/foto-hero.webp" alt="Ricardo Mello e Kamila Xavier, corretores de imóveis, de costas um para o outro" width="1400" height="1400" fetchpriority="high">
+      <img class="g-couple g-glow g-glow-sc" src="images/foto-hero.webp" alt="" aria-hidden="true">
+      <img class="g-couple g-glow g-glow-sm" src="images/foto-hero.webp" alt="" aria-hidden="true">
+    </div>
+    <div class="g-dim g-dim-sc" aria-hidden="true"></div>
+    <div class="g-dim g-dim-sm" aria-hidden="true"></div>
+    <a class="g-info g-info-sc" href="litoral-sc/" data-r="sc" data-label="Litoral de SC" tabindex="-1">
+      <span class="g-kick">Santa Catarina</span>
+      <strong>Itapema e<br>Porto Belo</strong>
+      <p>Lançamentos na planta, frente mar e alto padrão, com atendimento para quem mora em outro estado.</p>
+      <span class="g-go">Entrar com o Ricardo <i>→</i></span>
+    </a>
+    <a class="g-info g-info-sm" href="santa-maria/" data-r="sm" data-label="Santa Maria" tabindex="-1">
+      <span class="g-kick">Rio Grande do Sul</span>
+      <strong>Santa Maria</strong>
+      <p>Primeiro imóvel, financiamento com MCMV e FGTS, lançamentos e investimento perto das universidades.</p>
+      <span class="g-go">Entrar com a Kamila <i>→</i></span>
+    </a>
+    <a class="g-tap g-tap-sc" href="litoral-sc/" data-r="sc" data-label="Litoral de SC" tabindex="-1"><span class="g-ripple"></span><span class="t-click">Clique para entrar</span><span class="t-touch">Toque para entrar</span></a>
+    <a class="g-tap g-tap-sm" href="santa-maria/" data-r="sm" data-label="Santa Maria" tabindex="-1"><span class="g-ripple"></span><span class="t-click">Clique para entrar</span><span class="t-touch">Toque para entrar</span></a>
     <a class="g-story" href="sobre.html" aria-label="Conheça nossa história">
       <svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="ring" d="M50 50 m-40 0 a40 40 0 1 1 80 0 a40 40 0 1 1 -80 0"/></defs><text textLength="246" lengthAdjust="spacing"><textPath href="#ring" textLength="246" lengthAdjust="spacing">CONHEÇA NOSSA HISTÓRIA · </textPath></text></svg>
       <b>Quem<br>somos</b>
@@ -325,7 +327,7 @@ fbq('track', 'PageView');
 <script>
 (function () {
   var stage = document.getElementById('stage'), cur = document.getElementById('cur'), curtain = document.getElementById('curtain');
-  var sides = stage.querySelectorAll('.g-side'), touched = false, idle = null, which = 'sm';
+  var sides = stage.querySelectorAll('[data-r]'), touched = false, idle = null, which = 'sm';
   function set(r) { stage.classList.toggle('on-sm', r === 'sm'); stage.classList.toggle('on-sc', r === 'sc'); }
   function stopIdle() { touched = true; if (idle) { clearInterval(idle); idle = null; } }
   // destaque automático alternado até a pessoa interagir
@@ -333,22 +335,55 @@ fbq('track', 'PageView');
     setTimeout(function () { if (!touched) { set('sm'); idle = setInterval(function () { which = which === 'sm' ? 'sc' : 'sm'; set(which); }, 2600); } }, 900);
   }
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches, tx = 0, ty = 0, cx = 0, cy = 0;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches, leaving = false;
+  function go(el, x, y) {
+    if (leaving) return;
+    var r = el.getAttribute('data-r'), href = el.getAttribute('href');
+    try { gtag('event', 'select_region', { region: r === 'sm' ? 'santa_maria' : 'litoral_sc' }); } catch (_) {}
+    stopIdle(); set(r);
+    if (reduced) { window.location.href = href; return; }
+    leaving = true;
+    curtain.style.setProperty('--x', x + 'px'); curtain.style.setProperty('--y', y + 'px');
+    curtain.className = 'g-curtain ' + r; curtain.firstChild.textContent = el.getAttribute('data-label');
+    requestAnimationFrame(function () { requestAnimationFrame(function () { curtain.classList.add('go'); }); });
+    setTimeout(function () { window.location.href = href; }, 780);
+  }
+  var suppressClick = false;
   sides.forEach(function (s) {
     var r = s.getAttribute('data-r');
     s.addEventListener('mouseenter', function () { if (!fine) return; stopIdle(); set(r); cur.className = 'g-cursor show ' + r; cur.firstChild.textContent = 'Entrar'; });
-    s.addEventListener('mouseleave', function () { cur.classList.remove('show'); });
+    s.addEventListener('mouseleave', function () { if (fine) cur.classList.remove('show'); });
     s.addEventListener('focus', function () { stopIdle(); set(r); });
     s.addEventListener('click', function (e) {
-      var href = s.getAttribute('href');
-      try { gtag('event', 'select_region', { region: r === 'sm' ? 'santa_maria' : 'litoral_sc' }); } catch (_) {}
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      e.preventDefault(); stopIdle(); set(r);
-      curtain.style.setProperty('--x', e.clientX + 'px'); curtain.style.setProperty('--y', e.clientY + 'px');
-      curtain.className = 'g-curtain ' + r; curtain.firstChild.textContent = s.getAttribute('data-label');
-      requestAnimationFrame(function () { requestAnimationFrame(function () { curtain.classList.add('go'); }); });
-      setTimeout(function () { window.location.href = href; }, 780);
+      e.preventDefault();
+      if (suppressClick) return;
+      go(s, e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
     });
   });
+  // toque: pressionar acende o lado, arrastar troca de lado, soltar entra
+  var press = null;
+  function sideAt(x, y) { var el = document.elementFromPoint(x, y); return el ? el.closest('[data-r]') : null; }
+  function finger(r, x, y) { cur.className = 'g-cursor show press ' + r; cur.firstChild.textContent = 'Entrar'; cur.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(1)'; }
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse') return;
+    var el = sideAt(e.clientX, e.clientY); if (!el) return;
+    stopIdle(); press = el; set(el.getAttribute('data-r')); finger(el.getAttribute('data-r'), e.clientX, e.clientY);
+    if (navigator.vibrate) navigator.vibrate(8);
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'mouse' || !press) return;
+    var el = sideAt(e.clientX, e.clientY); if (!el) return;
+    var r = el.getAttribute('data-r');
+    if (r !== press.getAttribute('data-r')) { set(r); if (navigator.vibrate) navigator.vibrate(6); }
+    press = el; finger(r, e.clientX, e.clientY);
+  });
+  stage.addEventListener('pointerup', function (e) {
+    if (e.pointerType === 'mouse' || !press) return;
+    var el = press; press = null;
+    suppressClick = true; setTimeout(function () { suppressClick = false; }, 700);
+    go(el, e.clientX, e.clientY);
+  });
+  stage.addEventListener('pointercancel', function () { press = null; cur.classList.remove('show'); });
   stage.addEventListener('touchstart', stopIdle, { passive: true });
   if (fine) {
     var running = false;
