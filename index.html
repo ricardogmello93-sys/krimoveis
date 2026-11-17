@@ -156,11 +156,12 @@ a { color: inherit; text-decoration: none; }
 .g-go i { font-style: normal; transition: transform 0.3s; }
 .g-tap { position: absolute; z-index: 6; bottom: 22px; display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px 9px 12px; border-radius: 100px; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; background: rgba(11,9,28,0.7); border: 1px solid rgba(255,255,255,0.22); backdrop-filter: blur(8px); white-space: nowrap; transition: opacity 0.6s; }
 .g-tap-sc { left: 4%; } .g-tap-sm { right: 4%; }
-.g-ripple { position: relative; width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+.g-ripple { position: relative; width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
 .g-tap-sm .g-ripple { background: var(--gold2); color: var(--gold2); } .g-tap-sc .g-ripple { background: var(--sea2); color: var(--sea2); }
-.g-ripple::before, .g-ripple::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid currentColor; animation: ripple 2s ease-out infinite; }
-.g-ripple::after { animation-delay: 1s; }
-@keyframes ripple { from { transform: scale(1); opacity: 0.9; } to { transform: scale(3.2); opacity: 0; } }
+.g-ripple { animation: tapDot 2s ease-in-out infinite; box-shadow: 0 0 10px currentColor; }
+.g-tap-sc { --tc: 121,194,205; } .g-tap-sm { --tc: 226,199,126; }
+.g-tap { animation: tapPulse 2.4s ease-out infinite; }
+@keyframes tapPulse { 0% { box-shadow: 0 0 0 0 rgba(var(--tc),0.45); } 70%, 100% { box-shadow: 0 0 0 7px rgba(var(--tc),0); } }
 .t-touch { display: none; }
 
 /* ESTADOS: destaque (mouse, toque ou automático) */
@@ -205,7 +206,7 @@ a { color: inherit; text-decoration: none; }
 .g-curtain.go span { opacity: 1; }
 
 @media (hover: none), (pointer: coarse) { .g-cursor:not(.press) { display: none; } .g-cursor.press { width: 84px; height: 84px; margin: -96px 0 0 -42px; transition: opacity 0.2s, background 0.3s, transform 0.12s linear; } .t-click { display: none; } .t-touch { display: inline; } }
-@media (prefers-reduced-motion: reduce) { .g-halo, .g-ripple::before, .g-ripple::after, .g-story svg, .g-hint i::after { animation: none !important; } .g-curtain { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .g-halo, .g-ripple, .g-tap, .g-story svg, .g-hint i::after { animation: none !important; } .g-curtain { transition: none; } }
 
 @media (max-width: 1180px) { .g-info p { display: none; } }
 @media (max-width: 760px) {
@@ -223,9 +224,9 @@ a { color: inherit; text-decoration: none; }
   .g-kick { font-size: 8.5px; letter-spacing: 1.6px; margin-bottom: 6px; }
   .g-info strong { font-size: 25px; margin-bottom: 0; }
   .g-go { display: none; }
-  .g-tap { bottom: 12px; padding: 7px 11px 7px 9px; font-size: 9.5px; letter-spacing: 0.8px; gap: 7px; }
+  .g-tap { bottom: 12px; padding: 8px 13px 8px 11px; font-size: 9.5px; letter-spacing: 0.8px; gap: 8px; }
   .g-tap-sc { left: 10px; } .g-tap-sm { right: 10px; }
-  .g-ripple { width: 12px; height: 12px; }
+  .g-ripple { width: 9px; height: 9px; }
   .g-story { width: 92px; height: 92px; bottom: 54px; }
   .g-story b { font-size: 14px; }
   .g-story text { font-size: 9px; }
@@ -308,16 +309,16 @@ fbq('track', 'PageView');
     <a class="g-tap g-tap-sc" href="litoral-sc/" data-r="sc" data-label="Litoral de SC" tabindex="-1"><span class="g-ripple"></span><span class="t-click">Clique para entrar</span><span class="t-touch">Toque para entrar</span></a>
     <a class="g-tap g-tap-sm" href="santa-maria/" data-r="sm" data-label="Santa Maria" tabindex="-1"><span class="g-ripple"></span><span class="t-click">Clique para entrar</span><span class="t-touch">Toque para entrar</span></a>
     <a class="g-story" href="sobre.html" aria-label="Conheça nossa história">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="ring" d="M50 50 m-40 0 a40 40 0 1 1 80 0 a40 40 0 1 1 -80 0"/></defs><text textLength="246" lengthAdjust="spacing"><textPath href="#ring" textLength="246" lengthAdjust="spacing">CONHEÇA NOSSA HISTÓRIA · </textPath></text></svg>
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="ring" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs><text textLength="226" lengthAdjust="spacing"><textPath href="#ring" textLength="226" lengthAdjust="spacing">CONHEÇA NOSSA HISTÓRIA · </textPath></text></svg>
       <b>Quem<br>somos</b>
     </a>
   </main>
 
   <footer class="g-foot">
-    <span>Kamila Xavier · CRECI/RS 78710 &nbsp;·&nbsp; Ricardo Mello · CRECI/RS 082996</span>
+    <span>Ricardo Mello · CRECI/RS 082996 &nbsp;·&nbsp; Kamila Xavier · CRECI/RS 78710</span>
     <div class="g-wa"><em>Prefere falar agora?</em>
-      <a href="https://wa.me/55991346393?text=Ol%C3%A1%20Kamila!%20Vim%20pelo%20site%20de%20voc%C3%AAs%20e%20quero%20falar%20sobre%20im%C3%B3veis." target="_blank" rel="noopener" data-corretor="Kamila" data-origem="inicio_rodape"><i></i>Kamila</a>
       <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20de%20voc%C3%AAs%20e%20quero%20falar%20sobre%20im%C3%B3veis." target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="inicio_rodape"><i></i>Ricardo</a>
+      <a href="https://wa.me/55991346393?text=Ol%C3%A1%20Kamila!%20Vim%20pelo%20site%20de%20voc%C3%AAs%20e%20quero%20falar%20sobre%20im%C3%B3veis." target="_blank" rel="noopener" data-corretor="Kamila" data-origem="inicio_rodape"><i></i>Kamila</a>
     </div>
   </footer>
 </div>
