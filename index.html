@@ -2659,6 +2659,60 @@
     .lit-stat { flex-direction: column; gap: 4px; }
   }
 
+  /* ── DUAS REGIÕES ── */
+  #regioes { padding: 90px 72px 50px; }
+  .reg-head { text-align: center; max-width: 760px; margin: 0 auto 46px; }
+  .reg-head .section-sub { margin: 0 auto; max-width: 620px; }
+  .reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1180px; margin: 0 auto; }
+  .reg-card { position: relative; display: flex; flex-direction: column; border-radius: 28px; overflow: hidden; text-decoration: none; color: var(--white); border: 1px solid var(--card-border); transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s; }
+  .reg-card:hover { transform: translateY(-6px); box-shadow: 0 30px 70px rgba(0,0,0,0.38); }
+  .reg-sm { background: linear-gradient(165deg, rgba(42,33,96,0.9), rgba(11,9,28,0.96)); }
+  .reg-sm:hover { border-color: rgba(157,147,237,0.55); }
+  .reg-sc { background: linear-gradient(165deg, rgba(14,51,64,0.96), rgba(6,24,32,0.98)); }
+  .reg-sc:hover { border-color: rgba(121,194,205,0.6); }
+  .reg-map { position: relative; height: 320px; overflow: hidden; }
+  .reg-map img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1.4s ease; }
+  .reg-card:hover .reg-map img { transform: scale(1.06); }
+  .reg-map::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(11,9,28,0.95)); }
+  .reg-sc .reg-map::after { background: linear-gradient(180deg, transparent 50%, rgba(6,24,32,0.97)); }
+  .reg-flag { position: absolute; top: 18px; left: 18px; z-index: 2; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 7px 13px; border-radius: 100px; background: rgba(8,6,26,0.6); border: 1px solid rgba(255,255,255,0.18); backdrop-filter: blur(6px); }
+  .reg-sc .reg-flag { color: #a9dde3; border-color: rgba(121,194,205,0.4); }
+  .reg-body { position: relative; z-index: 2; padding: 0 34px 34px; margin-top: -40px; display: flex; flex-direction: column; flex: 1; }
+  .reg-kicker { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .reg-sc .reg-kicker { color: #a9dde3; }
+  .reg-body h3 { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 3.8vw, 54px); font-weight: 400; line-height: 1.02; margin: 8px 0 14px; }
+  .reg-body h3 em { font-style: italic; color: var(--purple2); }
+  .reg-sc h3 em { color: #e9dcc3; }
+  .reg-body p { font-size: 17px; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
+  .reg-list { list-style: none; display: grid; gap: 9px; margin-bottom: 28px; }
+  .reg-list li { position: relative; padding-left: 20px; font-size: 15px; color: var(--muted); }
+  .reg-list li::before { content: ""; position: absolute; left: 0; top: 9px; width: 7px; height: 7px; border-radius: 50%; background: var(--purple); }
+  .reg-sc .reg-list li::before { background: #79c2cd; }
+  .reg-cta { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 15px 28px; border-radius: 100px; font-size: 13px; font-weight: 500; letter-spacing: 1.8px; text-transform: uppercase; transition: gap 0.25s; }
+  .reg-card:hover .reg-cta { gap: 16px; }
+  .reg-sm .reg-cta { background: linear-gradient(135deg, #9d93ed, #c4b8f7); color: #0b091c; }
+  .reg-sc .reg-cta { background: linear-gradient(135deg, #a9dde3, #79c2cd); color: #061820; }
+  /* seletor de regiões no cabeçalho */
+  .nav-reg { display: inline-flex; align-items: center; padding: 4px; margin-right: 18px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.05); }
+  .nav-reg a { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 100px; font-size: 12.5px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; text-decoration: none; color: var(--muted); white-space: nowrap; transition: background 0.25s, color 0.25s; }
+  .nav-reg a.on { background: rgba(157,147,237,0.28); color: var(--white); }
+  .nav-reg a.sc { color: #a9dde3; }
+  .nav-reg a.sc:hover { background: rgba(121,194,205,0.18); color: #fff; }
+  .nav-reg a.sc i { width: 7px; height: 7px; border-radius: 50%; background: #79c2cd; box-shadow: 0 0 0 3px rgba(121,194,205,0.22); }
+  @media (max-width: 900px) {
+    #regioes { padding: 70px 20px 30px; }
+    .reg-grid { grid-template-columns: 1fr; gap: 18px; }
+    .reg-map { height: 230px; }
+    .reg-body { padding: 0 24px 28px; }
+    .reg-cta { align-self: stretch; justify-content: center; }
+  }
+  @media (max-width: 768px) {
+    .nav-reg { margin-right: 6px; padding: 0; border: 0; background: none; }
+    .nav-reg a.on { display: none; }
+    .nav-reg a.sc { padding: 6px 10px; font-size: 10.5px; letter-spacing: 1px; gap: 6px; border: 1px solid rgba(169,221,227,0.45); background: rgba(121,194,205,0.10); }
+    .nav-reg a.sc i { width: 6px; height: 6px; }
+  }
+
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -2699,13 +2753,13 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
   <span class="site-nav-dot">·</span>
   <span class="site-nav-partner-label">Parceiros Santa Imóveis</span>
   <div class="site-nav-spacer"></div>
-  <a href="litoral-sc/" class="nav-litoral"><i></i>Litoral SC</a>
+  <div class="nav-reg"><a href="#regioes" class="on">Santa Maria</a><a href="litoral-sc/" class="sc"><i></i>Litoral SC</a></div>
   <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="site-nav-santa-logo" loading="lazy">
 </nav>
 
 <section class="hero" style="padding:0">
   <div class="hero-left">
-    <span class="badge">✦ Corretores de Imóveis · Parceiros Santa Imóveis</span>
+    <span class="badge">✦ Corretores em Santa Maria (RS) e no litoral de SC</span>
     <a href="https://share.google/BkXUTphc45arjYmvr" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.35);color:#f5c518;font-size:13px;font-weight:600;letter-spacing:0.5px;padding:5px 14px;border-radius:100px;text-decoration:none;margin-bottom:28px;width:fit-content;transition:background 0.2s;" onmouseover="this.style.background='rgba(245,197,24,0.2)'" onmouseout="this.style.background='rgba(245,197,24,0.12)'">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       5,0 no Google · Avaliações verificadas
@@ -2793,6 +2847,37 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 
 
 
+
+<!-- DUAS REGIÕES -->
+<section id="regioes">
+  <div class="reg-head">
+    <span class="section-tag">● Onde atuamos</span>
+    <h2 class="section-title">Santa Maria <em>e o litoral de SC</em></h2>
+    <p class="section-sub">Duas regiões, o mesmo cuidado: do primeiro contato às chaves.</p>
+  </div>
+  <div class="reg-grid">
+    <a class="reg-card reg-sm" href="#bairros">
+      <div class="reg-map"><img src="images/mapa-santa-maria.svg" alt="Mapa estilizado dos bairros de Santa Maria" loading="lazy" width="500" height="520"><span class="reg-flag">Rio Grande do Sul</span></div>
+      <div class="reg-body">
+        <span class="reg-kicker">Kamila &amp; Ricardo</span>
+        <h3>Santa <em>Maria</em></h3>
+        <p>Primeiro imóvel, financiamento com MCMV e FGTS, imóveis na planta e investimento perto das universidades.</p>
+        <ul class="reg-list"><li>Camobi, Centro e os bairros mais procurados</li><li>Simulação de financiamento gratuita</li><li>Atendimento da Kamila e do Ricardo</li></ul>
+        <span class="reg-cta">Ver Santa Maria →</span>
+      </div>
+    </a>
+    <a class="reg-card reg-sc" href="litoral-sc/">
+      <div class="reg-map"><img src="images/litoral/mapa-litoral.svg" alt="Mapa estilizado da costa de Itapema e Porto Belo" loading="lazy" width="790" height="830"><span class="reg-flag">Santa Catarina</span></div>
+      <div class="reg-body">
+        <span class="reg-kicker">Com o Ricardo</span>
+        <h3>Litoral <em>de SC</em></h3>
+        <p>Itapema e Porto Belo: lançamentos na planta, apartamentos frente mar e alto padrão, no litoral mais valorizado do país.</p>
+        <ul class="reg-list"><li>Itapema, Meia Praia e Porto Belo</li><li>Para quem mora em MT, GO, SP, PR, RS e SC</li><li>Do primeiro vídeo às chaves</li></ul>
+        <span class="reg-cta">Ver o litoral →</span>
+      </div>
+    </a>
+  </div>
+</section>
 
 <!-- POR QUE A KR -->
 <section id="por-que-kr">
@@ -3095,7 +3180,7 @@ src="https://www.facebook.com/tr?id=1511246240665666&ev=PageView&noscript=1"
 <section id="bairros">
 <div class="bairros-top">
     <div class="bairros-intro">
-      <span class="section-tag">● Onde atuamos</span>
+      <span class="section-tag">● Santa Maria · bairros</span>
       <h2 class="section-title">Imóveis em <em>Santa Maria, RS</em></h2>
       <p class="section-sub">Atuamos em toda a cidade, com foco nos bairros mais procurados para moradia e investimento.</p>
       <div class="bairros-legend"><span><i class="guia"></i>Bairro com guia próprio</span><span><i></i>Demais bairros</span></div>
