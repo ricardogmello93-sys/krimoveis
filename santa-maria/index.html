@@ -347,6 +347,10 @@ img { max-width: 100%; }
 .kam-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 28px; }
 .kam-tags span { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; padding: 6px 12px; border-radius: 100px; border: 1px solid var(--goldline); color: var(--gold2); }
 @media (max-width: 900px) { .kam { grid-template-columns: 1fr; gap: 36px; } .kam-photo { max-width: 380px; width: 100%; margin: 0 auto; } }
+.simband { display: flex; align-items: center; justify-content: space-between; gap: 40px; text-decoration: none; color: var(--white); padding: 50px 56px; border-radius: 30px; border: 1px solid var(--goldline); background: radial-gradient(ellipse 70% 90% at 15% 20%, rgba(157,147,237,0.25), transparent 70%), linear-gradient(135deg, rgba(42,33,96,0.75), rgba(11,9,28,0.9)); transition: transform 0.3s; }
+.simband:hover { transform: translateY(-3px); }
+.simband .sub { margin: 0; }
+@media (max-width: 900px) { .simband { flex-direction: column; align-items: flex-start; padding: 34px 24px; gap: 24px; } .simband .sm-btn { width: 100%; } }
 .fora-cities { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
 .fora-cities span { font-size: 12px; padding: 6px 12px; border-radius: 100px; background: rgba(157,147,237,0.12); border: 1px solid rgba(196,184,247,0.28); color: var(--purple2); }
 .credits { max-width: 980px; margin: 26px auto 0; font-size: 11px; line-height: 1.7; color: rgba(244,242,238,0.32); }
@@ -600,6 +604,13 @@ fbq('track', 'PageView');
       </div>
     </div>
   </div>
+</section>
+
+<section class="sec" style="padding-top:20px">
+  <a class="simband rv" href="../simulador-financiamento-santa-maria.html">
+    <div><span class="tag">Simulador gratuito</span><h2 class="h2">Quanto você <em>consegue financiar?</em></h2><p class="sub">Caixa, Minha Casa Minha Vida ou banco privado: veja na hora sua faixa, a parcela máxima e o prazo pela sua idade. A simulação completa a Kamila manda pelo WhatsApp.</p></div>
+    <span class="sm-btn sm-btn-gold">Simular financiamento →</span>
+  </a>
 </section>
 
 <section class="sec" id="mora-fora" style="padding-top:20px">

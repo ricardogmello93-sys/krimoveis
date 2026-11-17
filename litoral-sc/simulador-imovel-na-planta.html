@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de imóvel na planta | Itapema e Porto Belo SC</title>
+<meta name="description" content="Simule o pagamento de um imóvel na planta direto com a construtora: entrada, reforços, chaves e parcelas em até 180x. Itapema e Porto Belo, SC.">
+<link rel="canonical" href="https://krimoveissm.com.br/litoral-sc/simulador-imovel-na-planta.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://krimoveissm.com.br/litoral-sc/simulador-imovel-na-planta.html">
+<meta property="og:title" content="Simulador de imóvel na planta · Itapema e Porto Belo">
+<meta property="og:description" content="Simule o pagamento de um imóvel na planta direto com a construtora: entrada, reforços, chaves e parcelas em até 180x. Itapema e Porto Belo, SC.">
+<meta property="og:image" content="https://krimoveissm.com.br/images/litoral/og-litoral.jpg">
+<meta property="og:locale" content="pt_BR">
+<meta name="theme-color" content="#061820">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Simulador de fluxo de pagamento na planta",
+  "url": "https://krimoveissm.com.br/litoral-sc/simulador-imovel-na-planta.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "pt-BR",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "BRL"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ricardo Mello",
+    "jobTitle": "Corretor de Imóveis",
+    "url": "https://krimoveissm.com.br/sobre.html",
+    "image": "https://krimoveissm.com.br/images/ricardo-recorte.webp"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Como funciona o pagamento de um imóvel na planta direto com a construtora?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Em geral, você dá uma entrada (muitas vezes a partir de 10%), paga parcelas mensais durante a obra e alguns reforços (balões), que podem ser anuais ou semestrais. Na entrega das chaves costuma haver uma parcela maior, e o saldo pode ser financiado no banco ou seguir parcelado com a construtora."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "O que são os reforços (balões)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "São pagamentos maiores feitos em datas combinadas, como uma vez por ano. Eles reduzem o valor das parcelas mensais. Algumas construtoras pedem poucos reforços; outras distribuem vários ao longo do parcelamento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "As parcelas da construtora têm correção?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Durante a obra, o mais comum é a correção pelo INCC. Depois das chaves, costuma valer um índice como IPCA ou IGP-M, às vezes com juros. O simulador mostra os valores sem correção, para você entender o fluxo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Em quantas vezes dá para parcelar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Depende da construtora. Há lançamentos com saldo em 120 parcelas mensais ou mais. O Ricardo mostra a condição real de cada empreendimento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Preciso de aprovação no banco para comprar na planta?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Não no começo: o parcelamento direto com a construtora não depende de análise bancária na assinatura. Se o saldo for financiado no banco na entrega das chaves, a análise acontece nessa etapa."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Início",
+      "item": "https://krimoveissm.com.br/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Litoral SC",
+      "item": "https://krimoveissm.com.br/litoral-sc/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Simulador",
+      "item": "https://krimoveissm.com.br/litoral-sc/simulador-imovel-na-planta.html"
+    }
+  ]
+}
+</script>
+<link rel="icon" type="image/svg+xml" href="../images/favicon.svg?v=5">
+<link rel="icon" type="image/png" sizes="192x192" href="../images/favicon.png?v=5">
+<link rel="apple-touch-icon" href="../images/apple-touch-icon.png?v=5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+.lang { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
+.lang a { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 100px; text-decoration: none; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1px; color: rgba(255,255,255,0.6); }
+.lang a svg { width: 20px; height: 14px; border-radius: 3px; display: block; box-shadow: 0 0 0 1px rgba(255,255,255,0.15); }
+.lang a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.lang a.on { color: #fff; background: rgba(255,255,255,0.14); }
+@media (max-width: 860px) { .lang { padding: 2px; } .lang a span { display: none; } .lang a { padding: 4px 5px; } .lang a svg { width: 19px; height: 13px; } }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --abyss: #061820; --deep: #0a2630; --deep2: #0e3340; --sea: #79c2cd; --sea2: #a9dde3; --foam: #e6f4f5;
+  --sand: #e9dcc3; --sand2: #f3eadb; --gold: #c9a84c; --gold2: #e2c77e; --white: #f4f2ee;
+  --muted: rgba(230,244,245,0.78); --soft: rgba(230,244,245,0.55); --line: rgba(169,221,227,0.16); --card: rgba(255,255,255,0.04);
+}
+html { scroll-behavior: smooth; }
+body { background: var(--abyss); background-image: radial-gradient(ellipse 80% 50% at 15% 0%, rgba(121,194,205,0.10), transparent 60%), radial-gradient(ellipse 70% 50% at 90% 60%, rgba(121,194,205,0.07), transparent 60%); color: var(--white); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; font-variant-numeric: lining-nums; }
+a { color: inherit; }
+img { max-width: 100%; }
+
+/* NAV */
+.lt-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; gap: 14px; padding: 16px 40px; background: rgba(6,24,32,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(169,221,227,0.10); transition: background 0.3s; }
+.lt-nav.solid { background: rgba(6,24,32,0.92); }
+.lt-brand { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.lt-chip { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--sea2); border: 1px solid rgba(121,194,205,0.4); border-radius: 100px; padding: 4px 11px; text-decoration: none; white-space: nowrap; }
+.lt-nav-sp { flex: 1; }
+.lt-nav-link { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--soft); text-decoration: none; white-space: nowrap; transition: color 0.2s; }
+.lt-nav-link:hover { color: var(--white); }
+.lt-nav-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none; color: var(--abyss); background: linear-gradient(135deg, var(--sand2), var(--gold2)); padding: 9px 16px; border-radius: 100px; white-space: nowrap; }
+.lt-santa { height: 22px; opacity: 0.75; }
+.lt-reg { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid rgba(169,221,227,0.22); background: rgba(255,255,255,0.04); }
+.lt-reg a { display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px; border-radius: 100px; font-size: 12px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; text-decoration: none; white-space: nowrap; color: var(--soft); }
+.lt-reg a.sm:hover { color: var(--white); background: rgba(157,147,237,0.18); }
+.lt-reg a.on { background: rgba(121,194,205,0.22); color: var(--foam); }
+.lt-reg a.on i { width: 7px; height: 7px; border-radius: 50%; background: var(--sea); }
+
+/* BOTÕES */
+.lt-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 30px; border-radius: 100px; font-size: 13px; font-weight: 500; letter-spacing: 1.8px; text-transform: uppercase; text-decoration: none; transition: transform 0.25s, box-shadow 0.25s, background 0.25s, border-color 0.25s; cursor: pointer; }
+.lt-btn-gold { color: var(--abyss); background: linear-gradient(135deg, var(--sand2), var(--gold2) 70%, var(--gold)); box-shadow: 0 10px 30px rgba(201,168,76,0.25); }
+.lt-btn-gold:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(201,168,76,0.35); }
+.lt-btn-ghost { color: var(--foam); border: 1px solid rgba(230,244,245,0.35); background: rgba(6,24,32,0.25); }
+.lt-btn-ghost:hover { border-color: var(--sea2); background: rgba(121,194,205,0.12); }
+.lt-dot { width: 8px; height: 8px; border-radius: 50%; background: #25D366; box-shadow: 0 0 0 3px rgba(37,211,102,0.2); flex-shrink: 0; }
+
+/* TIPOGRAFIA */
+.lt-tag { display: inline-block; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--sea2); margin-bottom: 18px; font-weight: 500; }
+.lt-h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 54px); font-weight: 300; line-height: 1.08; margin-bottom: 18px; }
+.lt-h2 em, .lt-h1 em { font-style: italic; color: var(--sand); }
+.lt-sub { font-size: 18px; color: var(--muted); line-height: 1.75; max-width: 620px; }
+
+/* WAVE */
+.lt-wave { position: absolute; left: 0; right: 0; bottom: -1px; height: 90px; overflow: hidden; pointer-events: none; }
+.lt-wave svg { position: absolute; bottom: 0; width: 200%; height: 100%; animation: ltWave 18s linear infinite; }
+.lt-wave svg.w2 { animation-duration: 26s; opacity: 0.55; }
+@keyframes ltWave { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* REVEAL */
+.rv { opacity: 0; transform: translateY(28px); transition: opacity 0.9s ease, transform 0.9s ease; }
+.rv.in { opacity: 1; transform: none; }
+.rv.d1 { transition-delay: 0.12s; } .rv.d2 { transition-delay: 0.24s; } .rv.d3 { transition-delay: 0.36s; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } .lt-wave svg, .lt-kb { animation: none !important; } }
+
+/* STICKY */
+.lt-sticky { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(6,24,32,0.94); backdrop-filter: blur(12px); border-top: 1px solid rgba(201,168,76,0.3); transform: translateY(110%); transition: transform 0.35s ease; }
+.lt-sticky.show { transform: none; }
+.lt-sticky span { font-size: 13px; color: var(--muted); }
+.lt-sticky .lt-btn { padding: 11px 24px; font-size: 12px; }
+
+/* FOOTER */
+.lt-footer { padding: 56px 40px 90px; text-align: center; border-top: 1px solid var(--line); background: rgba(3,14,19,0.6); }
+.lt-footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+.lt-footer-sub { font-size: 13px; color: var(--soft); }
+.lt-footer-links { display: flex; flex-wrap: wrap; gap: 10px 22px; justify-content: center; margin: 22px auto 0; max-width: 980px; }
+.lt-footer-links a { font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(230,244,245,0.45); text-decoration: none; transition: color 0.2s; }
+.lt-footer-links a:hover { color: var(--white); }
+.lt-footer-links.main a { color: rgba(230,244,245,0.3); }
+.lt-footer small { display: block; margin-top: 18px; font-size: 11px; color: rgba(230,244,245,0.25); }
+
+@media (max-width: 860px) {
+  .lt-nav { padding: 12px 16px; gap: 8px; }
+  .lt-nav-link, .lt-santa { display: none; }
+  .lt-reg { padding: 0; border: 0; background: none; }
+  .lt-reg a.on { display: none; }
+  .lt-reg a.sm { padding: 6px 11px; font-size: 10.5px; letter-spacing: 1px; color: var(--white); border: 1px solid rgba(196,184,247,0.45); background: rgba(157,147,237,0.14); }
+  .lt-nav-cta { padding: 8px 13px; font-size: 11px; letter-spacing: 1px; }
+  .lt-sticky span { display: none; }
+  .lt-nav-cta { display: none; }
+  .lang a.on { display: none; }
+  .lt-sticky .lt-btn { flex: 1; }
+  .lt-footer { padding: 48px 22px 96px; }
+}
+
+.sim { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 0; border-radius: 28px; overflow: hidden; border: 1px solid rgba(169,221,227,0.22); background: linear-gradient(160deg, rgba(14,51,64,0.75), rgba(6,24,32,0.85)); box-shadow: 0 40px 90px rgba(0,0,0,0.35); }
+.sim-in { padding: 38px 38px 34px; display: grid; gap: 22px; }
+.sim-f label { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--sea2); margin-bottom: 10px; }
+.sim-f label b { font-size: 15px; letter-spacing: 0; text-transform: none; color: var(--white); font-weight: 500; }
+.sim-money { width: 100%; font: 300 30px 'DM Sans', sans-serif; color: var(--white); background: rgba(6,24,32,0.55); border: 1px solid rgba(169,221,227,0.25); border-radius: 14px; padding: 12px 16px; outline: none; }
+.sim-money:focus { border-color: var(--sea2); }
+.sim input[type=range] { width: 100%; accent-color: #e2c77e; height: 26px; }
+.sim-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.sim-seg { display: inline-flex; padding: 3px; border-radius: 100px; border: 1px solid rgba(169,221,227,0.25); background: rgba(6,24,32,0.45); }
+.sim-seg button { border: 0; background: none; color: var(--soft); font: 500 12px 'DM Sans', sans-serif; letter-spacing: 1px; padding: 8px 14px; border-radius: 100px; cursor: pointer; }
+.sim-seg button.on { background: rgba(121,194,205,0.25); color: var(--white); }
+.sim-sel { width: 100%; font: 400 16px 'DM Sans', sans-serif; color: var(--white); background: rgba(6,24,32,0.55); border: 1px solid rgba(169,221,227,0.25); border-radius: 12px; padding: 11px 14px; }
+.sim-sel option { color: #111; }
+.sim-out { padding: 38px; background: rgba(3,14,19,0.55); border-left: 1px solid rgba(169,221,227,0.14); display: flex; flex-direction: column; gap: 18px; }
+.sim-big span { display: block; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sea2); }
+.sim-big b { display: block; font-size: clamp(38px, 4vw, 54px); font-weight: 300; color: var(--sand); letter-spacing: -1px; line-height: 1.1; margin-top: 6px; }
+.sim-big small { font-size: 14px; color: var(--soft); }
+.sim-bar { display: flex; height: 12px; border-radius: 100px; overflow: hidden; background: rgba(255,255,255,0.06); }
+.sim-bar i { display: block; height: 100%; transition: width 0.4s; }
+.sim-list { display: grid; gap: 10px; }
+.sim-list div { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; color: var(--muted); padding-bottom: 10px; border-bottom: 1px solid rgba(169,221,227,0.1); }
+.sim-list div b { color: var(--white); font-weight: 500; text-align: right; }
+.sim-list i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
+.sim-list .tot { border-bottom: 0; font-size: 14px; }
+.sim-warn { display: none; font-size: 14px; color: #ffd0a6; background: rgba(255,140,60,0.1); border: 1px solid rgba(255,160,90,0.35); border-radius: 12px; padding: 10px 14px; }
+.sim-note { font-size: 12.5px; color: var(--soft); line-height: 1.6; }
+.sim-lead { grid-column: 1 / -1; padding: 30px 38px 34px; border-top: 1px solid rgba(201,168,76,0.3); background: linear-gradient(135deg, rgba(201,168,76,0.10), rgba(121,194,205,0.06)); }
+.sim-lead h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; line-height: 1.15; }
+.sim-lead > p { color: var(--muted); font-size: 15px; margin: 6px 0 18px; }
+.sim-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
+.sim-form.c3 { grid-template-columns: 1fr 1fr 1fr auto; }
+.sim-form input, .sim-form select { width: 100%; font: 400 16px 'DM Sans', sans-serif; color: var(--white); background: rgba(6,24,32,0.6); border: 1px solid rgba(169,221,227,0.28); border-radius: 12px; padding: 13px 14px; outline: none; }
+.sim-form select option { color: #111; }
+.sim-form input:focus, .sim-form select:focus { border-color: var(--gold2); }
+.sim-form label { display: block; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--soft); margin-bottom: 6px; }
+.sim-form .lt-btn { border: 0; cursor: pointer; padding: 15px 24px; }
+.sim-err { display: none; color: #ffb4a0; font-size: 13.5px; margin-top: 10px; }
+.sim-ok { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.35); color: var(--white); font-size: 15px; line-height: 1.6; }
+.sim-ok a { color: var(--gold2); }
+.sim-consent { font-size: 12px; color: var(--soft); margin-top: 10px; }
+@media (max-width: 900px) {
+  .sim { grid-template-columns: 1fr; }
+  .sim-out { border-left: 0; border-top: 1px solid rgba(169,221,227,0.14); }
+  .sim-in, .sim-out { padding: 26px 20px; }
+  .sim-lead { padding: 26px 20px 28px; }
+  .sim-form, .sim-form.c3 { grid-template-columns: 1fr; }
+  .sim-form .lt-btn { width: 100%; }
+  .sim-row { grid-template-columns: 1fr; }
+}
+
+.sm-hero { position: relative; min-height: 460px; height: 62vh; overflow: hidden; display: flex; align-items: flex-end; }
+.sm-hero img.k { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: ltKb 26s ease-in-out infinite alternate; }
+@keyframes ltKb { from { transform: scale(1.04); } to { transform: scale(1.14) translate(-1.5%, -1%); } }
+.sm-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6,24,32,0.5), rgba(6,24,32,0.35) 35%, rgba(6,24,32,0.95)); }
+.sm-hero-in { position: relative; z-index: 2; width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 28px 110px; }
+.crumbs { font-size: 12px; letter-spacing: 1px; color: var(--foam); margin-bottom: 14px; } .crumbs a { color: var(--sea2); text-decoration: none; }
+.lt-h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 6vw, 78px); font-weight: 300; line-height: 1.03; }
+.lt-h1 em { font-style: italic; color: var(--sand); }
+.sm-lead { font-size: 18px; color: var(--foam); line-height: 1.7; max-width: 640px; margin-top: 16px; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 30px 28px 40px; }
+.txt { max-width: 820px; margin: 70px auto 0; }
+.txt h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 3.4vw, 40px); font-weight: 300; line-height: 1.15; margin: 50px 0 16px; }
+.txt h2 em { font-style: italic; color: var(--sand); }
+.txt p, .txt li { font-size: 16px; color: var(--muted); line-height: 1.85; }
+.txt p { margin-bottom: 14px; } .txt strong { color: var(--white); font-weight: 500; }
+.txt ul { list-style: none; margin: 0 0 18px; } .txt li { position: relative; padding: 0 0 10px 22px; }
+.txt li::before { content: ""; position: absolute; left: 0; top: 11px; width: 8px; height: 8px; border-radius: 50%; background: var(--sea2); }
+a.inline { color: var(--sand); text-underline-offset: 3px; }
+.faq-item { border-bottom: 1px solid var(--line); padding: 18px 0; }
+.faq-q { font-size: 16px !important; font-weight: 500; color: var(--white) !important; margin-bottom: 6px !important; }
+.rel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+.rel a { display: block; text-decoration: none; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: rgba(14,51,64,0.35); }
+.rel img { width: 100%; height: 130px; object-fit: cover; display: block; }
+.rel div { padding: 14px 16px; } .rel span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--sea2); }
+.rel strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; margin-top: 4px; }
+@media (max-width: 760px) { .sm-hero-in { padding: 0 20px 96px; } .wrap { padding: 20px 16px 30px; } .rel { grid-template-columns: 1fr; } .txt { margin-top: 50px; } }
+</style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1511246240665666');
+fbq('track', 'PageView');
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M7E90J24DT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M7E90J24DT');
+  gtag('config', 'AW-18162751528');
+</script>
+</head>
+<body>
+<nav class="lt-nav" id="ltNav">
+  <a href="../index.html" class="lt-brand">Kamila &amp; Ricardo</a>
+  <div class="lt-nav-sp"></div>
+  <a href="imoveis-itapema.html" class="lt-nav-link">Itapema</a>
+  <a href="imoveis-porto-belo.html" class="lt-nav-link">Porto Belo</a>
+  <div class="lt-reg"><a href="../santa-maria/" class="sm">Santa Maria</a><a href="./" class="on"><i></i>Litoral SC</a></div>
+  <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_simulador_nav"><span class="lt-dot"></span>WhatsApp</a>
+  <div class="lang" role="navigation" aria-label="Idioma / Language"><a href="./" hreflang="pt-BR" lang="pt-BR" class="on" title="Português" aria-label="Português" aria-current="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#229e45"/><path d="M14 2.6 25.4 10 14 17.4 2.6 10z" fill="#f8e509"/><circle cx="14" cy="10" r="4.6" fill="#2b49a3"/><path d="M9.5 9.2c3-.9 6.4-.5 9 1" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a><a href="../en/" hreflang="en" lang="en" class="" title="English" aria-label="English"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="3.076923076923077" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="6.153846153846154" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="9.23076923076923" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="12.307692307692308" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="15.384615384615385" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="18.46153846153846" width="28" height="1.5384615384615385" fill="#b22234"/><rect width="12" height="10.76923076923077" fill="#3c3b6e"/></svg><span>EN</span></a><a href="../es/" hreflang="es" lang="es" class="" title="Español" aria-label="Español"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/></svg><span>ES</span></a></div>
+  <img src="../images/logo-santa-branca.png" alt="Santa Imóveis" class="lt-santa" loading="lazy">
+</nav>
+<header class="sm-hero">
+  <img class="k" src="../images/litoral/itapema-aerea-luzes-md.webp" srcset="../images/litoral/itapema-aerea-luzes-md.webp 900w, ../images/litoral/itapema-aerea-luzes.webp 1800w" sizes="100vw" alt="Itapema à noite, vista aérea" fetchpriority="high">
+  <div class="sm-hero-in">
+    <nav class="crumbs" aria-label="Você está em"><a href="../index.html">Início</a> › <a href="./">Litoral SC</a> › Simulador</nav>
+    <span class="lt-tag">Simulador gratuito</span>
+    <h1 class="lt-h1">Simulador de imóvel <em>na planta</em></h1>
+    <p class="sm-lead">Veja como fica o pagamento direto com a construtora em Itapema e Porto Belo: entrada, reforços, chaves e parcelas mensais.</p>
+  </div>
+  <div class="lt-wave" aria-hidden="true">
+  <svg class="w2" viewBox="0 0 2880 90" preserveAspectRatio="none"><path fill="rgba(121,194,205,0.18)" d="M0 50 C 240 20 480 20 720 50 S 1200 80 1440 50 S 1920 20 2160 50 S 2640 80 2880 50 V90 H0Z"/></svg>
+  <svg viewBox="0 0 2880 90" preserveAspectRatio="none"><path fill="var(--abyss)" d="M0 60 C 240 35 480 35 720 60 S 1200 85 1440 60 S 1920 35 2160 60 S 2640 85 2880 60 V90 H0Z"/></svg>
+</div>
+</header>
+<main class="wrap">
+  <div class="sim" id="sim" data-lang="pt" data-origem="litoral_simulador">
+  <div class="sim-in">
+    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"></div>
+    <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
+    <div class="sim-row">
+      <div class="sim-f"><label for="sBq">Reforços (balões): Quantidade <b id="sBqV"></b></label><input type="range" id="sBq" min="0" max="12" step="1" value="4"></div>
+      <div class="sim-f"><label for="sBp">Cada reforço <b id="sBpV"></b></label><input type="range" id="sBp" min="0" max="15" step="0.5" value="5"></div>
+    </div>
+    <div class="sim-row">
+      <div class="sim-f"><label>Frequência</label><div class="sim-seg" id="sEvery"><button type="button" class="on" data-v="12">Anual</button><button type="button" data-v="6">Semestral</button></div></div>
+      <div class="sim-f"><label for="sKeys">Parcela nas chaves <b id="sKeysV"></b></label><input type="range" id="sKeys" min="0" max="40" step="1" value="10"></div>
+    </div>
+    <div class="sim-f"><label for="sN">Parcelas mensais</label><select class="sim-sel" id="sN"><option value="36">36x</option><option value="48">48x</option><option value="60">60x</option><option value="72">72x</option><option value="84">84x</option><option value="96">96x</option><option value="120" selected>120x</option><option value="132">132x</option><option value="150">150x</option><option value="180">180x</option></select></div>
+  </div>
+  <div class="sim-out" aria-live="polite">
+    <div class="sim-big"><span>Parcela mensal</span><b id="sMonthly">-</b><small id="sMonthlyN"></small></div>
+    <div class="sim-bar" id="sBar"></div>
+    <div class="sim-list">
+      <div><span><i style="background:#e2c77e"></i>Entrada</span><b id="oDown"></b></div>
+      <div><span><i style="background:#79c2cd"></i>Reforços</span><b id="oBoost"></b></div>
+      <div><span><i style="background:#9d93ed"></i>Nas chaves</span><b id="oKeys"></b></div>
+      <div><span><i style="background:#e9dcc3"></i>Parcelas</span><b id="oInst"></b></div>
+      <div class="tot"><span>Total do imóvel</span><b id="oTot"></b></div>
+    </div>
+    <div class="sim-warn" id="sWarn">A soma de entrada, reforços e chaves passou de 100%. Diminua algum desses valores.</div>
+    <p class="sim-note">Valores sem correção. Durante a obra, as parcelas costumam ser corrigidas pelo INCC; depois das chaves, por um índice como IPCA ou IGP-M, às vezes com juros. Cada construtora tem a sua condição, e o Ricardo mostra a real de cada empreendimento.</p>
+  </div>
+  <div class="sim-lead">
+    <h3>Receba esta simulação e os lançamentos que cabem neste fluxo</h3>
+    <p>O Ricardo responde pelo WhatsApp com opções reais em Itapema e Porto Belo.</p>
+    <form class="sim-form" id="sForm" novalidate>
+      <div><label for="sName">Seu nome</label><input id="sName" autocomplete="name" required></div>
+      
+      <div><label for="sPhone">Seu WhatsApp com DDD</label><input id="sPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(47) 99999-9999" required></div>
+      <button type="submit" class="lt-btn lt-btn-gold"><span class="lt-dot"></span>Receber no WhatsApp</button>
+    </form>
+    <p class="sim-err" id="sErr"></p>
+    <div class="sim-ok" id="sOk"></div>
+    <p class="sim-consent">Ao enviar, você concorda em receber o contato do Ricardo pelo WhatsApp.</p>
+  </div>
+</div>
+  <article class="txt">
+    <h2>Como funciona o <em>fluxo com a construtora</em></h2>
+    <p>Nos lançamentos do litoral catarinense, boa parte das compras é feita com o pagamento direto à construtora durante a obra. O valor do imóvel é dividido em quatro partes:</p>
+    <ul>
+      <li><strong>Entrada:</strong> paga na assinatura do contrato. É comum partir de 10% do valor.</li>
+      <li><strong>Reforços (balões):</strong> pagamentos maiores em datas combinadas, como uma vez por ano. Algumas construtoras pedem poucos; outras distribuem vários ao longo do parcelamento.</li>
+      <li><strong>Parcela nas chaves:</strong> paga na entrega do imóvel.</li>
+      <li><strong>Parcelas mensais:</strong> o saldo dividido em parcelas, que podem chegar a 120 vezes ou mais, conforme o empreendimento.</li>
+    </ul>
+    <p>Quanto maiores a entrada, os reforços e a parcela nas chaves, menor fica a parcela mensal. O simulador acima mostra esse equilíbrio na hora.</p>
+    <h2>Correção das parcelas</h2>
+    <p>Os valores do simulador não têm correção, para você enxergar o fluxo com clareza. Na prática, durante a obra as parcelas costumam ser corrigidas pelo <strong>INCC</strong>, o índice da construção civil. Depois das chaves, vale um índice como <strong>IPCA</strong> ou <strong>IGP-M</strong>, às vezes com juros. Cada construtora tem a sua regra, e ela está no contrato.</p>
+    <h2>Investidor de fora? <em>Dá para fazer tudo a distância</em></h2>
+    <p>Quem mora em outro estado ou fora do Brasil acompanha a escolha por vídeo e WhatsApp, e em alguns lançamentos a construtora busca o cliente de avião particular para conhecer o empreendimento. Veja como funciona em <a class="inline" href="comprar-imovel-litoral-sc-outro-estado.html">comprar no litoral de SC morando em outro estado</a> e as estratégias em <a class="inline" href="investir-em-itapema-porto-belo.html">investir no litoral de SC</a>.</p>
+    <h2>Perguntas <em>frequentes</em></h2>
+    <div class="faq-item"><p class="faq-q">Como funciona o pagamento de um imóvel na planta direto com a construtora?</p><p>Em geral, você dá uma entrada (muitas vezes a partir de 10%), paga parcelas mensais durante a obra e alguns reforços (balões), que podem ser anuais ou semestrais. Na entrega das chaves costuma haver uma parcela maior, e o saldo pode ser financiado no banco ou seguir parcelado com a construtora.</p></div>
+    <div class="faq-item"><p class="faq-q">O que são os reforços (balões)?</p><p>São pagamentos maiores feitos em datas combinadas, como uma vez por ano. Eles reduzem o valor das parcelas mensais. Algumas construtoras pedem poucos reforços; outras distribuem vários ao longo do parcelamento.</p></div>
+    <div class="faq-item"><p class="faq-q">As parcelas da construtora têm correção?</p><p>Sim. Durante a obra, o mais comum é a correção pelo INCC. Depois das chaves, costuma valer um índice como IPCA ou IGP-M, às vezes com juros. O simulador mostra os valores sem correção, para você entender o fluxo.</p></div>
+    <div class="faq-item"><p class="faq-q">Em quantas vezes dá para parcelar?</p><p>Depende da construtora. Há lançamentos com saldo em 120 parcelas mensais ou mais. O Ricardo mostra a condição real de cada empreendimento.</p></div>
+    <div class="faq-item"><p class="faq-q">Preciso de aprovação no banco para comprar na planta?</p><p>Não no começo: o parcelamento direto com a construtora não depende de análise bancária na assinatura. Se o saldo for financiado no banco na entrega das chaves, a análise acontece nessa etapa.</p></div>
+    <h2>Continue <em>explorando</em></h2>
+    <div class="rel"><a href="lancamentos-itapema-porto-belo.html"><img src="../images/litoral/itapema-praia-reflexo.webp" srcset="../images/litoral/itapema-praia-reflexo-md.webp 900w, ../images/litoral/itapema-praia-reflexo.webp 1800w" sizes="(max-width: 760px) 100vw, 340px" alt="Lançamentos na planta" class="" loading="lazy" decoding="async"><div><span>Na planta</span><strong>Lançamentos na planta</strong></div></a><a href="investir-em-itapema-porto-belo.html"><img src="../images/litoral/itapema-nascer-do-sol.webp" srcset="../images/litoral/itapema-nascer-do-sol-md.webp 900w, ../images/litoral/itapema-nascer-do-sol.webp 1800w" sizes="(max-width: 760px) 100vw, 340px" alt="Investir no litoral de SC" class="" loading="lazy" decoding="async"><div><span>Investimento</span><strong>Investir no litoral de SC</strong></div></a><a href="comprar-imovel-litoral-sc-outro-estado.html"><img src="../images/litoral/porto-belo-barco-calmo.webp" srcset="../images/litoral/porto-belo-barco-calmo-md.webp 900w, ../images/litoral/porto-belo-barco-calmo.webp 1800w" sizes="(max-width: 760px) 100vw, 340px" alt="Comprar morando em outro estado" class="" loading="lazy" decoding="async"><div><span>Outro estado</span><strong>Comprar morando em outro estado</strong></div></a></div>
+  </article>
+</main>
+<footer class="lt-footer">
+  <div class="lt-footer-brand">Kamila &amp; Ricardo</div>
+  <div class="lt-footer-sub">Imóveis em Itapema e Porto Belo, litoral de Santa Catarina · Parceiros Santa Imóveis</div>
+  <div class="lt-footer-links"><a href="./">Litoral SC</a><a href="imoveis-itapema.html">Imóveis em Itapema</a><a href="imoveis-meia-praia-itapema.html">Imóveis na Meia Praia</a><a href="imoveis-porto-belo.html">Imóveis em Porto Belo</a><a href="lancamentos-itapema-porto-belo.html">Lançamentos na planta</a><a href="apartamento-frente-mar-itapema.html">Frente mar e alto padrão</a><a href="investir-em-itapema-porto-belo.html">Investir no litoral de SC</a><a href="comprar-imovel-litoral-sc-outro-estado.html">Comprar morando em outro estado</a><a href="simulador-imovel-na-planta.html">Simulador de fluxo na planta</a></div>
+  <div class="lt-footer-links main"><a href="../index.html">Início</a><a href="../santa-maria/">Santa Maria</a><a href="../sobre.html">Sobre nós</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-na-planta-santa-maria.html">Na planta em Santa Maria</a></div>
+  <small>© 2026 · krimoveissm.com.br</small>
+</footer>
+<div class="lt-sticky" id="ltSticky" role="region" aria-label="Falar com Ricardo">
+  <span>Ricardo atende o litoral de SC · resposta pelo WhatsApp</span>
+  <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pela%20p%C3%A1gina%20%22Simulador%20de%20im%C3%B3vel%20na%20planta%22%20do%20site%20e%20quero%20conversar%20sobre%20im%C3%B3veis%20no%20litoral%20de%20SC." target="_blank" rel="noopener" class="lt-btn lt-btn-gold" data-corretor="Ricardo" data-origem="litoral_simulador_sticky"><span class="lt-dot"></span>Falar com Ricardo</a>
+</div>
+<script>
+(function () {
+  var nav = document.getElementById('ltNav'), st = document.getElementById('ltSticky');
+  function onScroll() { var y = window.scrollY; if (nav) nav.classList.toggle('solid', y > 40); if (st) st.classList.toggle('show', y > 500); }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  var els = document.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  } else els.forEach(function (el) { el.classList.add('in'); });
+  document.querySelectorAll('[data-count]').forEach(function (el) {
+    var end = parseFloat(el.getAttribute('data-count')), dec = (el.getAttribute('data-count').split('.')[1] || '').length, done = false;
+    function run() { if (done) return; done = true; var t0 = performance.now(); (function step(t) { var p = Math.min(1, (t - t0) / 1400); p = 1 - Math.pow(1 - p, 3); el.textContent = (end * p).toFixed(dec).replace('.', ','); if (p < 1) requestAnimationFrame(step); })(t0); }
+    if ('IntersectionObserver' in window) { var o = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { run(); o.disconnect(); } }); o.observe(el); } else run();
+  });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href*="wa.me"]'); if (!a) return;
+    try {
+      gtag('event', 'whatsapp_click', { corretor: a.getAttribute('data-corretor') || 'Ricardo', origem: a.getAttribute('data-origem') || 'litoral' });
+      gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
+      fbq('track', 'Lead', {}, { eventID: 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) });
+    } catch (_) {}
+  });
+})();
+</script>
+<script>
+(function () {
+  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui"};
+  var MSG = (d) => `[Simulador Litoral] Olá Ricardo! Fiz a simulação de fluxo no site.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nParcelas: ${d.months}x de ${d.monthly}\n\nQuero receber lançamentos em Itapema e Porto Belo que cabem nesse fluxo.`;
+  var lang = "pt", root = document.getElementById('sim'); if (!root) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var brl = new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  var every = 12, last = null;
+  function num(s) { return parseInt(String(s).replace(/\D/g, ''), 10) || 0; }
+  function fmtInput() { var v = num($('sPrice').value); $('sPrice').value = v ? v.toLocaleString('pt-BR') : ''; }
+  function calc() {
+    var price = num($('sPrice').value), d = +$('sDown').value, bq = +$('sBq').value, bp = +$('sBp').value, k = +$('sKeys').value, n = +$('sN').value;
+    var rest = 100 - d - bq * bp - k;
+    $('sDownV').textContent = d + '%'; $('sBqV').textContent = bq + 'x'; $('sBpV').textContent = String(bp).replace('.', ',') + '%'; $('sKeysV').textContent = k + '%';
+    $('sWarn').style.display = rest < 0 ? 'block' : 'none';
+    var r = Math.max(rest, 0), monthly = price * r / 100 / n;
+    $('sMonthly').textContent = rest < 0 ? '-' : brl.format(monthly);
+    $('sMonthlyN').textContent = rest < 0 ? '' : n + 'x';
+    $('oDown').textContent = brl.format(price * d / 100);
+    $('oBoost').textContent = bq ? bq + 'x ' + brl.format(price * bp / 100) : '-';
+    $('oKeys').textContent = brl.format(price * k / 100);
+    $('oInst').textContent = rest < 0 ? '-' : n + 'x ' + brl.format(monthly);
+    $('oTot').textContent = brl.format(price);
+    var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [r, '#e9dcc3']], sum = d + bq * bp + k + r || 1;
+    $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
+    last = { price: brl.format(price), downPct: d, down: brl.format(price * d / 100), boostQty: bq, boost: brl.format(price * bp / 100), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: brl.format(price * k / 100), months: n, monthly: brl.format(monthly), ok: rest >= 0 };
+  }
+  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN'].forEach(function (id) { $(id).addEventListener('input', calc); });
+  $('sPrice').addEventListener('input', function () { fmtInput(); calc(); });
+  $('sEvery').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; every = +b.getAttribute('data-v'); [].forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); }); calc(); });
+  var touched = false;
+  root.addEventListener('input', function () { if (touched) return; touched = true; try { gtag('event', 'simulador_uso', { simulador: 'fluxo_construtora', idioma: lang }); } catch (_) {} });
+  $('sForm').addEventListener('submit', function (e) {
+    e.preventDefault(); calc();
+    var name = $('sName').value.trim(), phone = $('sPhone').value.trim(), digits = phone.replace(/\D/g, ''), err = $('sErr');
+    var okPhone = lang === 'pt' ? (digits.length >= 10 && digits.length <= 13) : (digits.length >= 8 && digits.length <= 15);
+    if (!name) { err.textContent = L.badName; err.style.display = 'block'; $('sName').focus(); return; }
+    if (!okPhone) { err.textContent = L.bad; err.style.display = 'block'; $('sPhone').focus(); return; }
+    err.style.display = 'none';
+    var c = $('sCountry'); var d = Object.assign({}, last, { name: name, phone: phone, country: c ? c.value : '' });
+    var url = 'https://wa.me/55999147822?text=' + encodeURIComponent(MSG(d));
+    try {
+      gtag('event', 'generate_lead', { simulador: 'fluxo_construtora', idioma: lang, valor_imovel: num($('sPrice').value) });
+      gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
+      fbq('track', 'Lead', { content_name: 'simulador_fluxo_' + lang });
+    } catch (_) {}
+    var ok = $('sOk'); ok.innerHTML = L.ok + ' <a href="' + url + '" target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="' + root.getAttribute('data-origem') + '">' + L.okLink + '</a>'; ok.style.display = 'block';
+    var w = window.open(url, '_blank'); if (!w) window.location.href = url;
+  });
+  calc();
+})();
+</script>
+</body>
+</html>

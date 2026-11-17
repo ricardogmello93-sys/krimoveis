@@ -6,6 +6,10 @@
 <title>Imóveis em Itapema e Porto Belo SC | Litoral de Santa Catarina</title>
 <meta name="description" content="Imóveis em Itapema e Porto Belo, no litoral de SC: lançamentos na planta, apartamentos frente mar e alto padrão. Atendimento para quem mora em outro estado.">
 <link rel="canonical" href="https://krimoveissm.com.br/litoral-sc/">
+<link rel="alternate" hreflang="pt-BR" href="https://krimoveissm.com.br/litoral-sc/">
+<link rel="alternate" hreflang="en" href="https://krimoveissm.com.br/en/">
+<link rel="alternate" hreflang="es" href="https://krimoveissm.com.br/es/">
+<link rel="alternate" hreflang="x-default" href="https://krimoveissm.com.br/en/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://krimoveissm.com.br/litoral-sc/">
 <meta property="og:title" content="Imóveis em Itapema e Porto Belo · Litoral de SC">
@@ -128,6 +132,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="../images/litoral/itapema-aerea-por-do-sol-md.webp" imagesrcset="../images/litoral/itapema-aerea-por-do-sol-md.webp 900w, ../images/litoral/itapema-aerea-por-do-sol.webp 1800w" imagesizes="100vw">
 <style>
+.lang { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
+.lang a { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 100px; text-decoration: none; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1px; color: rgba(255,255,255,0.6); }
+.lang a svg { width: 20px; height: 14px; border-radius: 3px; display: block; box-shadow: 0 0 0 1px rgba(255,255,255,0.15); }
+.lang a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.lang a.on { color: #fff; background: rgba(255,255,255,0.14); }
+@media (max-width: 860px) { .lang { padding: 2px; } .lang a span { display: none; } .lang a { padding: 4px 5px; } .lang a svg { width: 19px; height: 13px; } }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --abyss: #061820; --deep: #0a2630; --deep2: #0e3340; --sea: #79c2cd; --sea2: #a9dde3; --foam: #e6f4f5;
@@ -198,7 +209,7 @@ img { max-width: 100%; }
 .lt-footer small { display: block; margin-top: 18px; font-size: 11px; color: rgba(230,244,245,0.25); }
 
 @media (max-width: 860px) {
-  .lt-nav { padding: 12px 18px; gap: 10px; }
+  .lt-nav { padding: 12px 16px; gap: 8px; }
   .lt-nav-link, .lt-santa { display: none; }
   .lt-reg { padding: 0; border: 0; background: none; }
   .lt-reg a.on { display: none; }
@@ -206,6 +217,7 @@ img { max-width: 100%; }
   .lt-nav-cta { padding: 8px 13px; font-size: 11px; letter-spacing: 1px; }
   .lt-sticky span { display: none; }
   .lt-nav-cta { display: none; }
+  .lang a.on { display: none; }
   .lt-sticky .lt-btn { flex: 1; }
   .lt-footer { padding: 48px 22px 96px; }
 }
@@ -416,6 +428,10 @@ a.inline:hover { color: var(--white); }
 .hb-gal figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 16px 12px; font-size: 12.5px; color: var(--foam); background: linear-gradient(transparent, rgba(6,24,32,0.85)); }
 .hb-far { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; background: linear-gradient(135deg, rgba(14,51,64,0.7), rgba(6,24,32,0.6)); border: 1px solid var(--line); border-radius: 28px; padding: 56px; }
 .hb-far .steps { margin: 0; }
+.hb-simband { display: flex; align-items: center; justify-content: space-between; gap: 40px; text-decoration: none; color: var(--white); padding: 50px 56px; border-radius: 30px; border: 1px solid rgba(201,168,76,0.35); background: radial-gradient(ellipse 70% 90% at 15% 20%, rgba(121,194,205,0.22), transparent 70%), linear-gradient(135deg, rgba(14,51,64,0.85), rgba(6,24,32,0.9)); transition: transform 0.3s; }
+.hb-simband:hover { transform: translateY(-3px); }
+.hb-simband .lt-sub { margin: 0; }
+@media (max-width: 900px) { .hb-simband { flex-direction: column; align-items: flex-start; padding: 34px 24px; gap: 24px; } .hb-simband .lt-btn { width: 100%; } }
 .hb-ricardo { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 60px; align-items: center; }
 .hb-ric-photo { position: relative; border-radius: 26px; overflow: hidden; aspect-ratio: 3/4; background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(121,194,205,0.35), rgba(6,24,32,0.2) 75%), linear-gradient(180deg, rgba(14,51,64,0.6), rgba(6,24,32,0)); border: 1px solid var(--line); }
 .hb-ric-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; -webkit-mask-image: linear-gradient(180deg, #000 80%, transparent); mask-image: linear-gradient(180deg, #000 80%, transparent); }
@@ -485,6 +501,7 @@ fbq('track', 'PageView');
   <a href="imoveis-porto-belo.html" class="lt-nav-link">Porto Belo</a>
   <div class="lt-reg"><a href="../santa-maria/" class="sm">Santa Maria</a><a href="./" class="on"><i></i>Litoral SC</a></div>
   <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_hub_nav"><span class="lt-dot"></span>WhatsApp</a>
+  <div class="lang" role="navigation" aria-label="Idioma / Language"><a href="./" hreflang="pt-BR" lang="pt-BR" class="on" title="Português" aria-label="Português" aria-current="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#229e45"/><path d="M14 2.6 25.4 10 14 17.4 2.6 10z" fill="#f8e509"/><circle cx="14" cy="10" r="4.6" fill="#2b49a3"/><path d="M9.5 9.2c3-.9 6.4-.5 9 1" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a><a href="../en/" hreflang="en" lang="en" class="" title="English" aria-label="English"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="3.076923076923077" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="6.153846153846154" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="9.23076923076923" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="12.307692307692308" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="15.384615384615385" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="18.46153846153846" width="28" height="1.5384615384615385" fill="#b22234"/><rect width="12" height="10.76923076923077" fill="#3c3b6e"/></svg><span>EN</span></a><a href="../es/" hreflang="es" lang="es" class="" title="Español" aria-label="Español"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/></svg><span>ES</span></a></div>
   <img src="../images/logo-santa-branca.png" alt="Santa Imóveis" class="lt-santa" loading="lazy">
 </nav>
 
@@ -660,6 +677,13 @@ fbq('track', 'PageView');
   </div>
 </section>
 
+<section class="hb-sec" style="padding-top:20px">
+  <a class="hb-simband rv" href="simulador-imovel-na-planta.html">
+    <div><span class="lt-tag">Simulador gratuito</span><h2 class="lt-h2">Simule o fluxo <em>na planta</em></h2><p class="lt-sub">Entrada, reforços, chaves e parcelas direto com a construtora. Mude os valores e veja na hora quanto fica cada parte.</p></div>
+    <span class="lt-btn lt-btn-gold">Abrir o simulador →</span>
+  </a>
+</section>
+
 <section class="hb-sec">
   <div class="hb-ricardo">
     <div class="hb-ric-photo rv"><img src="../images/ricardo-recorte.webp" alt="Ricardo Mello, corretor de imóveis" loading="lazy" width="900" height="1200"></div>
@@ -687,6 +711,7 @@ fbq('track', 'PageView');
       <a class="rel-card rv" href="apartamento-frente-mar-itapema.html"><img src="../images/litoral/itapema-por-do-sol-dourado.webp" srcset="../images/litoral/itapema-por-do-sol-dourado-md.webp 900w, ../images/litoral/itapema-por-do-sol-dourado.webp 1800w" sizes="(max-width: 760px) 100vw, 300px" alt="Frente mar e alto padrão" class="" loading="lazy" decoding="async"><div><span>Frente mar</span><strong>Frente mar e alto padrão</strong><p>Frente, quadra ou segunda quadra: como escolher o apartamento certo.</p></div></a>
       <a class="rel-card rv" href="investir-em-itapema-porto-belo.html"><img src="../images/litoral/itapema-nascer-do-sol.webp" srcset="../images/litoral/itapema-nascer-do-sol-md.webp 900w, ../images/litoral/itapema-nascer-do-sol.webp 1800w" sizes="(max-width: 760px) 100vw, 300px" alt="Investir no litoral de SC" class="" loading="lazy" decoding="async"><div><span>Investimento</span><strong>Investir no litoral de SC</strong><p>Valorização, estratégias e os riscos antes de decidir.</p></div></a>
       <a class="rel-card rv" href="comprar-imovel-litoral-sc-outro-estado.html"><img src="../images/litoral/porto-belo-barco-calmo.webp" srcset="../images/litoral/porto-belo-barco-calmo-md.webp 900w, ../images/litoral/porto-belo-barco-calmo.webp 1800w" sizes="(max-width: 760px) 100vw, 300px" alt="Comprar morando em outro estado" class="" loading="lazy" decoding="async"><div><span>Outro estado</span><strong>Comprar morando em outro estado</strong><p>Visitas, documentos, financiamento, FGTS e escritura a distância.</p></div></a>
+      <a class="rel-card rv" href="simulador-imovel-na-planta.html"><img src="../images/litoral/itapema-aerea-luzes.webp" srcset="../images/litoral/itapema-aerea-luzes-md.webp 900w, ../images/litoral/itapema-aerea-luzes.webp 1800w" sizes="(max-width: 760px) 100vw, 300px" alt="Simulador de fluxo na planta" class="" loading="lazy" decoding="async"><div><span>Simulador</span><strong>Simulador de fluxo na planta</strong><p>Entrada, reforços, chaves e parcelas: veja na hora quanto fica cada parte.</p></div></a>
       <a class="rel-card hb-gcta rv" href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20conhecer%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="litoral_hub_guias"><div><span>Atendimento</span><strong>Não achou o que procura?</strong><p>Conte o seu objetivo e o Ricardo manda opções reais pelo WhatsApp.</p><em class="lt-btn lt-btn-gold" style="margin-top:16px;padding:12px 20px">Falar com Ricardo</em></div></a>
   </div>
 </section>
@@ -723,7 +748,7 @@ fbq('track', 'PageView');
 <footer class="lt-footer">
   <div class="lt-footer-brand">Kamila &amp; Ricardo</div>
   <div class="lt-footer-sub">Imóveis em Itapema e Porto Belo, litoral de Santa Catarina · Parceiros Santa Imóveis</div>
-  <div class="lt-footer-links"><a href="./">Litoral SC</a><a href="imoveis-itapema.html">Imóveis em Itapema</a><a href="imoveis-meia-praia-itapema.html">Imóveis na Meia Praia</a><a href="imoveis-porto-belo.html">Imóveis em Porto Belo</a><a href="lancamentos-itapema-porto-belo.html">Lançamentos na planta</a><a href="apartamento-frente-mar-itapema.html">Frente mar e alto padrão</a><a href="investir-em-itapema-porto-belo.html">Investir no litoral de SC</a><a href="comprar-imovel-litoral-sc-outro-estado.html">Comprar morando em outro estado</a></div>
+  <div class="lt-footer-links"><a href="./">Litoral SC</a><a href="imoveis-itapema.html">Imóveis em Itapema</a><a href="imoveis-meia-praia-itapema.html">Imóveis na Meia Praia</a><a href="imoveis-porto-belo.html">Imóveis em Porto Belo</a><a href="lancamentos-itapema-porto-belo.html">Lançamentos na planta</a><a href="apartamento-frente-mar-itapema.html">Frente mar e alto padrão</a><a href="investir-em-itapema-porto-belo.html">Investir no litoral de SC</a><a href="comprar-imovel-litoral-sc-outro-estado.html">Comprar morando em outro estado</a><a href="simulador-imovel-na-planta.html">Simulador de fluxo na planta</a></div>
   <div class="lt-footer-links main"><a href="../index.html">Início</a><a href="../santa-maria/">Santa Maria</a><a href="../sobre.html">Sobre nós</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-na-planta-santa-maria.html">Na planta em Santa Maria</a></div>
   <small>© 2026 · krimoveissm.com.br</small>
 </footer>
