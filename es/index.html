@@ -227,8 +227,14 @@ img { max-width: 100%; }
 .sim-list .tot { border-bottom: 0; font-size: 14px; }
 .sim-warn { display: none; font-size: 14px; color: #ffd0a6; background: rgba(255,140,60,0.1); border: 1px solid rgba(255,160,90,0.35); border-radius: 12px; padding: 10px 14px; }
 .sim-note { font-size: 12.5px; color: var(--soft); line-height: 1.6; }
-.sim-lead { grid-column: 1 / -1; padding: 30px 38px 34px; border-top: 1px solid rgba(201,168,76,0.3); background: linear-gradient(135deg, rgba(201,168,76,0.10), rgba(121,194,205,0.06)); }
-.sim-lead h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; line-height: 1.15; }
+.sim-lead { grid-column: 1 / -1; position: relative; padding: 36px 38px 34px; border-top: 1px solid rgba(201,168,76,0.55); background: radial-gradient(ellipse 60% 120% at 0% 0%, rgba(201,168,76,0.22), transparent 70%), linear-gradient(135deg, rgba(201,168,76,0.12), rgba(121,194,205,0.06)); }
+.sim-bonus { display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; letter-spacing: 2.4px; text-transform: uppercase; color: #061820; background: linear-gradient(135deg, #f3eadb, #e2c77e); padding: 5px 12px; border-radius: 100px; margin-bottom: 12px; font-weight: 500; }
+.sim-lead h3 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 3vw, 38px); font-weight: 400; line-height: 1.12; }
+.sim-lead h3 span { color: var(--gold2); font-style: italic; white-space: nowrap; }
+.sim-perks { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 0 20px; }
+.sim-perks li { font-size: 14px; color: var(--sand2); } .sim-perks li::before { content: "✓ "; color: var(--gold2); }
+.sim-dl { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 11px 18px; border-radius: 100px; border: 1px solid var(--gold2); color: var(--white); text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; background: rgba(201,168,76,0.12); }
+.sim-dl:hover { background: rgba(201,168,76,0.25); }
 .sim-lead > p { color: var(--muted); font-size: 15px; margin: 6px 0 18px; }
 .sim-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
 .sim-form.c3 { grid-template-columns: 1fr 1fr 1fr auto; }
@@ -416,13 +422,15 @@ fbq('track', 'PageView');
     <p class="sim-note">Valores en reales brasileños (BRL), sin ajuste. Durante la obra, la mayoría de las constructoras de la región ajusta las cuotas por el CUB, el índice de costo de la construcción de Santa Catarina. Después de la entrega, el ajuste y los posibles intereses dependen del contrato. Ricardo le muestra las condiciones reales de cada proyecto.</p>
   </div>
   <div class="sim-lead">
-    <h3>Reciba esta simulación y los proyectos que encajan en este plan</h3>
-    <p>Ricardo responde por WhatsApp con opciones reales en Itapema y Porto Belo.</p>
+    <span class="sim-bonus">WhatsApp</span>
+    <h3>Reciba 3 proyectos reales que encajan en esta cuota <span id="sLeadV"></span></h3>
+    <p>Ricardo selecciona proyectos en Itapema y Porto Belo para su plan y se los envía por WhatsApp.</p>
+    <ul class="sim-perks"><li>3 proyectos reales, con precios y condiciones</li><li>Su simulación en imagen, con nuestra marca, para descargar</li><li>Sin compromiso</li></ul>
     <form class="sim-form c3" id="sForm" novalidate>
       <div><label for="sName">Su nombre</label><input id="sName" autocomplete="name" required></div>
       <div><label for="sCountry">País</label><select id="sCountry"><option>Argentina</option><option>Uruguay</option><option>Paraguay</option><option>Chile</option><option>España</option><option>Estados Unidos</option><option>México</option><option>Colombia</option><option>Perú</option><option>Bolivia</option><option>Otro</option></select></div>
       <div><label for="sPhone">Su WhatsApp con código de país</label><input id="sPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+54 9 11 1234 5678" required></div>
-      <button type="submit" class="lt-btn lt-btn-gold"><span class="lt-dot"></span>Recibir por WhatsApp</button>
+      <button type="submit" class="lt-btn lt-btn-gold"><span class="lt-dot"></span>Quiero los 3 proyectos</button>
     </form>
     <p class="sim-err" id="sErr"></p>
     <div class="sim-ok" id="sOk"></div>
@@ -501,8 +509,8 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"es-ES","yearly":"Anual","half":"Semestral","bad":"Revise su WhatsApp, con el código de país.","badName":"Escriba su nombre.","ok":"Abrimos su WhatsApp con la simulación lista. Solo toque enviar para que Ricardo la reciba.","okLink":"¿No se abrió? Toque aquí"};
-  var MSG = (d) => `[Simulador · litoral de Brasil] ¡Hola Ricardo! Hice la simulación del plan de pagos en su sitio.\nNombre: ${d.name}\nPaís: ${d.country}\nWhatsApp: ${d.phone}\n\nInmueble: ${d.price}\nAnticipo (${d.downPct}%): ${d.down}\nRefuerzos: ${d.boostQty}x ${d.boost} (${d.every.toLowerCase()})\nA la entrega (${d.keysPct}%): ${d.keys}\nCuotas: ${d.months}x ${d.monthly}\n\nQuiero ver proyectos en Itapema y Porto Belo que encajen en este plan.`;
+  var L = {"locale":"es-ES","yearly":"Anual","half":"Semestral","bad":"Revise su WhatsApp, con el código de país.","badName":"Escriba su nombre.","ok":"Abrimos su WhatsApp con la simulación lista. Solo toque enviar para que Ricardo la reciba.","okLink":"¿No se abrió? Toque aquí","leadOf":"de","dl":"Descargar mi simulación (imagen)","imgTitle":"Plan de pagos en pozo","imgFor":"Preparada para","imgSub":"Itapema y Porto Belo · Brasil","imgNote":"Valores en reales brasileños, sin ajuste. Durante la obra, la mayoría de las constructoras ajusta las cuotas por el CUB/SC; después de la entrega, según el contrato.","imgPrice":"Precio del inmueble","file":"simulacion-kamila-ricardo.png","monthly":"Cuota mensual","downL":"Anticipo","boostL":"Refuerzos","keysL":"A la entrega","instL":"Cuotas"};
+  var MSG = (d) => `[Simulador · litoral de Brasil] ¡Hola Ricardo! Hice la simulación del plan de pagos en su sitio.\nNombre: ${d.name}\nPaís: ${d.country}\nWhatsApp: ${d.phone}\n\nInmueble: ${d.price}\nAnticipo (${d.downPct}%): ${d.down}\nRefuerzos: ${d.boostQty}x ${d.boost} (${d.every.toLowerCase()})\nA la entrega (${d.keysPct}%): ${d.keys}\nCuotas: ${d.months}x ${d.monthly}\n\nQuiero recibir 3 proyectos reales en Itapema y Porto Belo que encajen en esta cuota.`;
   var lang = "es", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
   var brl = new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
@@ -517,6 +525,7 @@ fbq('track', 'PageView');
     var r = Math.max(rest, 0), monthly = price * r / 100 / n;
     $('sMonthly').textContent = rest < 0 ? '-' : brl.format(monthly);
     $('sMonthlyN').textContent = rest < 0 ? '' : n + 'x';
+    $('sLeadV').textContent = rest < 0 ? '' : L.leadOf + ' ' + brl.format(monthly);
     $('oDown').textContent = brl.format(price * d / 100);
     $('oBoost').textContent = bq ? bq + 'x ' + brl.format(price * bp / 100) : '-';
     $('oKeys').textContent = brl.format(price * k / 100);
@@ -524,7 +533,7 @@ fbq('track', 'PageView');
     $('oTot').textContent = brl.format(price);
     var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [r, '#e9dcc3']], sum = d + bq * bp + k + r || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
-    last = { price: brl.format(price), downPct: d, down: brl.format(price * d / 100), boostQty: bq, boost: brl.format(price * bp / 100), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: brl.format(price * k / 100), months: n, monthly: brl.format(monthly), ok: rest >= 0 };
+    last = { parts: parts, price: brl.format(price), downPct: d, down: brl.format(price * d / 100), boostQty: bq, boost: brl.format(price * bp / 100), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: brl.format(price * k / 100), months: n, monthly: brl.format(monthly), ok: rest >= 0 };
   }
   ['sDown', 'sBq', 'sBp', 'sKeys', 'sN'].forEach(function (id) { $(id).addEventListener('input', calc); });
   $('sPrice').addEventListener('input', function () { fmtInput(); calc(); });
@@ -547,7 +556,48 @@ fbq('track', 'PageView');
     } catch (_) {}
     var ok = $('sOk'); ok.innerHTML = L.ok + ' <a href="' + url + '" target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="' + root.getAttribute('data-origem') + '">' + L.okLink + '</a>'; ok.style.display = 'block';
     var w = window.open(url, '_blank'); if (!w) window.location.href = url;
+    makeImage(d).then(function (href) {
+      var a = document.createElement('a'); a.className = 'sim-dl'; a.href = href; a.download = L.file; a.textContent = '↓ ' + L.dl;
+      a.addEventListener('click', function () { try { gtag('event', 'simulador_imagem', { idioma: lang }); } catch (_) {} });
+      ok.appendChild(document.createElement('br')); ok.appendChild(a);
+    }).catch(function () {});
   });
+  // imagem da simulação (1080x1350), desenhada no próprio navegador
+  function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+  function wrap(c, txt, x, y, maxW, lh) { var words = txt.split(' '), line = ''; for (var i = 0; i < words.length; i++) { var test = line ? line + ' ' + words[i] : words[i]; if (c.measureText(test).width > maxW && line) { c.fillText(line, x, y); line = words[i]; y += lh; } else line = test; } c.fillText(line, x, y); return y; }
+  function makeImage(d) {
+    var W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H; var c = cv.getContext('2d');
+    var fonts = document.fonts ? Promise.all([document.fonts.load('300 64px "Cormorant Garamond"'), document.fonts.load('600 40px "Cormorant Garamond"'), document.fonts.load('400 24px "DM Sans"'), document.fonts.load('500 24px "DM Sans"')]) : Promise.resolve();
+    var logo = new Image(); var logoP = new Promise(function (res) { logo.onload = res; logo.onerror = res; logo.src = '../images/logo-kr.svg'; });
+    return Promise.all([fonts, logoP]).then(function () {
+      var g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0e3340'); g.addColorStop(1, '#061820'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+      var rg = c.createRadialGradient(W * 0.85, 120, 0, W * 0.85, 120, 700); rg.addColorStop(0, 'rgba(226,199,126,0.20)'); rg.addColorStop(1, 'rgba(226,199,126,0)'); c.fillStyle = rg; c.fillRect(0, 0, W, H);
+      c.strokeStyle = 'rgba(226,199,126,0.55)'; c.lineWidth = 2; rr(c, 40, 40, W - 80, H - 80, 36); c.stroke();
+      if (logo.naturalWidth) c.drawImage(logo, 90, 92, 140, 140 * 258 / 504);
+      c.fillStyle = '#f4f2ee'; c.font = '600 40px "Cormorant Garamond"'; c.fillText('Kamila & Ricardo', 260, 132);
+      c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.fillText(L.imgSub.toUpperCase(), 262, 166);
+      c.fillStyle = '#f4f2ee'; c.font = '300 66px "Cormorant Garamond"'; wrap(c, L.imgTitle, 90, 300, W - 180, 72);
+      c.fillStyle = 'rgba(230,244,245,0.7)'; c.font = '400 26px "DM Sans"'; c.fillText(L.imgFor + ' ' + d.name + ' · ' + new Date().toLocaleDateString(L.locale), 90, 360);
+      c.fillStyle = 'rgba(6,24,32,0.55)'; rr(c, 90, 400, W - 180, 230, 28); c.fill(); c.strokeStyle = 'rgba(169,221,227,0.25)'; c.stroke();
+      c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.fillText(L.monthly.toUpperCase(), 130, 456);
+      c.fillStyle = '#e9dcc3'; c.font = '300 104px "DM Sans"'; c.fillText(d.monthly, 124, 568);
+      var mw = c.measureText(d.monthly).width; c.fillStyle = 'rgba(230,244,245,0.65)'; c.font = '400 34px "DM Sans"'; c.fillText('× ' + d.months, 150 + mw, 566);
+      var parts = d.parts, sum = parts.reduce(function (s, p) { return s + p[0]; }, 0) || 1, x = 90, bw = W - 180;
+      c.save(); rr(c, 90, 668, bw, 22, 11); c.clip(); parts.forEach(function (p) { var w = bw * p[0] / sum; c.fillStyle = p[1]; c.fillRect(x, 668, w + 1, 22); x += w; }); c.restore();
+      var rows = [[L.imgPrice, d.price, null], [L.downL + ' (' + d.downPct + '%)', d.down, '#e2c77e'], [L.boostL + ' (' + d.boostQty + 'x · ' + d.every.toLowerCase() + ')', d.boostQty ? d.boostQty + 'x ' + d.boost : '-', '#79c2cd'], [L.keysL + ' (' + d.keysPct + '%)', d.keys, '#9d93ed'], [L.instL + ' (' + d.months + 'x)', d.months + 'x ' + d.monthly, '#e9dcc3']];
+      var y = 748; rows.forEach(function (r) {
+        if (r[2]) { c.fillStyle = r[2]; c.beginPath(); c.arc(100, y - 9, 8, 0, Math.PI * 2); c.fill(); }
+        c.fillStyle = 'rgba(230,244,245,0.8)'; c.font = '400 28px "DM Sans"'; c.fillText(r[0], r[2] ? 124 : 90, y);
+        c.fillStyle = '#ffffff'; c.font = '500 30px "DM Sans"'; c.textAlign = 'right'; c.fillText(r[1], W - 90, y); c.textAlign = 'left';
+        c.strokeStyle = 'rgba(169,221,227,0.14)'; c.lineWidth = 1; c.beginPath(); c.moveTo(90, y + 26); c.lineTo(W - 90, y + 24); c.stroke(); y += 66;
+      });
+      c.fillStyle = 'rgba(230,244,245,0.55)'; c.font = '400 21px "DM Sans"'; wrap(c, L.imgNote, 90, y + 22, W - 180, 30);
+      c.strokeStyle = 'rgba(226,199,126,0.4)'; c.beginPath(); c.moveTo(90, 1176); c.lineTo(W - 90, 1176); c.stroke();
+      c.fillStyle = '#f4f2ee'; c.font = '600 34px "Cormorant Garamond"'; c.fillText('Ricardo Mello', 90, 1226); var nw = c.measureText('Ricardo Mello').width; c.fillStyle = 'rgba(230,244,245,0.7)'; c.font = '400 22px "DM Sans"'; c.fillText('·  CRECI/RS 082996', 104 + nw, 1225);
+      c.fillStyle = '#e2c77e'; c.font = '500 23px "DM Sans"'; c.fillText('WhatsApp +55 55 99914-7822 · krimoveissm.com.br', 90, 1266);
+      return new Promise(function (res) { cv.toBlob(function (b) { res(URL.createObjectURL(b)); }, 'image/png'); });
+    });
+  }
   calc();
 })();
 </script>
