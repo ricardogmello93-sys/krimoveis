@@ -292,6 +292,21 @@ img { max-width: 100%; }
 .g-card strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 400; line-height: 1.2; margin: 4px 0 6px; }
 .g-card p { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
 
+/* AVALIAÇÕES */
+.revs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.rev { position: relative; padding: 28px 26px 24px; border-radius: 22px; border: 1px solid var(--line); background: linear-gradient(165deg, rgba(42,33,96,0.55), rgba(11,9,28,0.9)); }
+.rev::before { content: "“"; position: absolute; top: 4px; right: 20px; font: 300 90px/1 'Cormorant Garamond', serif; color: rgba(226,199,126,0.18); }
+.rev-stars { color: var(--gold2); letter-spacing: 3px; font-size: 14px; margin-bottom: 14px; }
+.rev p { font-family: 'Cormorant Garamond', serif; font-size: 20px; line-height: 1.45; color: var(--champ); margin-bottom: 18px; }
+.rev b { font-size: 13px; font-weight: 500; letter-spacing: 1px; color: var(--muted); }
+.rev:nth-child(4), .rev:nth-child(5) { grid-column: span 1; }
+.revs-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 22px; }
+.revs-score { display: flex; align-items: center; gap: 14px; }
+.revs-score b { font-size: 40px; font-weight: 300; color: var(--champ); line-height: 1; }
+.revs-score span { font-size: 13px; color: var(--soft); line-height: 1.5; }
+@media (max-width: 1000px) { .revs { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) { .revs { grid-template-columns: 1fr; } .rev p { font-size: 18px; } }
+
 /* FAQ */
 .faq { max-width: 820px; }
 .faq-item { border-bottom: 1px solid var(--line); padding: 20px 0; }
@@ -442,7 +457,7 @@ fbq('track', 'PageView');
   <div class="stats-in">
     <div class="stat"><b><span data-count="5.0">5,0</span><small>★</small></b><span>Nota no Google, com avaliações verificadas</span></div>
     <div class="stat"><b><span data-count="4">4</span><small>faixas</small></b><span>do MCMV, com imóveis de até R$ 600 mil conforme a renda</span></div>
-    <div class="stat"><b><span data-count="2">2</span><small>universidades</small></b><span>UFSM e UFN movimentam a procura por locação</span></div>
+    <div class="stat"><b>UFSM<small>+</small>UFN</b><span>As universidades que mais movimentam a procura por locação</span></div>
     <div class="stat"><b>≈<span data-count="280">280</span><small>mil</small></b><span>Habitantes (estimativa do IBGE)</span></div>
   </div>
 </section>
@@ -583,6 +598,24 @@ fbq('track', 'PageView');
       <div class="person-body"><h3>Ricardo Mello</h3><span class="role">CRECI/RS 082996 · Administrador, UFSM</span><p>Especialista em imóveis na planta, construtoras e negociação, acompanha cada cliente do primeiro contato às chaves.</p>
         <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20ver%20im%C3%B3veis%20em%20Santa%20Maria." target="_blank" rel="noopener" class="sm-btn sm-btn-glass sm-btn-sm" data-corretor="Ricardo" data-origem="sm_hub_dupla"><span class="sm-dot"></span>Falar com Ricardo</a></div>
     </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:20px">
+  <div class="head">
+    <span class="tag rv">Avaliações no Google</span>
+    <h2 class="h2 rv d1">Quem já comprou <em>com a gente</em></h2>
+  </div>
+  <div class="revs">
+    <figure class="rev rv"><div class="rev-stars">★★★★★</div><p>Profissionais sérios, especializados e comprometidos. Me auxiliaram em todo processo, demonstrando conhecimento, capacidade e experiência. Super recomendo.</p><b>Julio F.</b></figure>
+    <figure class="rev rv d1"><div class="rev-stars">★★★★★</div><p>Profissionais altamente qualificados, com atuação pautada em ética, transparência e excelência. Conduzem todo o processo com organização e foco nas necessidades do cliente.</p><b>Michele G.</b></figure>
+    <figure class="rev rv d2"><div class="rev-stars">★★★★★</div><p>Excelentes profissionais! Atendimento muito atencioso e agradável, com grande conhecimento do mercado. Ofereceram excelentes opções de investimentos. Me senti muito seguro.</p><b>Pedro A.</b></figure>
+    <figure class="rev rv"><div class="rev-stars">★★★★★</div><p>Atendimento excelente, muito atenciosos e transparentes em todo o processo. Recomendo demais!</p><b>Maria L.</b></figure>
+    <figure class="rev rv d1"><div class="rev-stars">★★★★★</div><p>Excelente atendimento do início ao fim. A Kamila e o Ricardo são extremamente atenciosos e transparentes. O atendimento é humanizado e passa muita confiança. Recomendo muito!</p><b>Natasha R.</b></figure>
+  </div>
+  <div class="revs-foot rv">
+    <div class="revs-score"><b>5,0</b><span>Nota no Google<br>Avaliações verificadas</span></div>
+    <a href="https://share.google/BkXUTphc45arjYmvr" target="_blank" rel="noopener" class="sm-btn sm-btn-glass sm-btn-sm">Ver todas no Google</a>
   </div>
 </section>
 
