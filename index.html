@@ -409,8 +409,14 @@ fbq('track', 'PageView');
     window.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; if (!running) { running = true; requestAnimationFrame(loop); } });
   }
   window.addEventListener('pageshow', function (e) { if (e.persisted) { curtain.className = 'g-curtain'; } });
+
+  var __pc = !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+  function __waAlt(u, app) { var p = String(u).split('wa.me/')[1]; if (!p) return u; var ph = p.split('?')[0], q = p.split('?')[1]; return (app ? 'whatsapp://send?phone=' : 'https://web.whatsapp.com/send?phone=') + ph + (q ? '&' + q : ''); }
+  window.__waAlt = __waAlt; window.__waPc = __pc;
+  if (__pc) document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href*="wa.me/"]'); if (a) { a.setAttribute('target', '_blank'); a.href = __waAlt(a.getAttribute('href')); } }, true);
+
   document.addEventListener('click', function (e) {
-    var a = e.target.closest('a[href*="wa.me"]'); if (!a) return;
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com/send"], a[href^="whatsapp:"]'); if (!a) return;
     try {
       gtag('event', 'whatsapp_click', { corretor: a.getAttribute('data-corretor') || '', origem: a.getAttribute('data-origem') || 'inicio' });
       gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });

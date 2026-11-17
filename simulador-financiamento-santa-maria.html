@@ -315,6 +315,7 @@ a.inline:hover { color: var(--white); }
 .lf button { border: 0; cursor: pointer; }
 .err { display: none; color: #ffb4a0; font-size: 13.5px; margin-top: 10px; }
 .okm { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.35); color: var(--white); font-size: 15px; line-height: 1.6; } .okm a { color: var(--gold2); }
+.appl { display: inline-block; margin-top: 8px; font-size: 13.5px; color: var(--purple2) !important; }
 .consent { font-size: 12px; color: var(--soft); margin-top: 10px; }
 .txt { max-width: 820px; margin: 70px auto 0; }
 .txt h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 3.4vw, 40px); font-weight: 300; line-height: 1.15; margin: 50px 0 16px; } .txt h2 em { font-style: italic; color: var(--gold2); }
@@ -444,8 +445,14 @@ fbq('track', 'PageView');
   var els = document.querySelectorAll('.rv');
   if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' }); els.forEach(function (el) { io.observe(el); }); }
   else els.forEach(function (el) { el.classList.add('in'); });
+
+  var __pc = !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+  function __waAlt(u, app) { var p = String(u).split('wa.me/')[1]; if (!p) return u; var ph = p.split('?')[0], q = p.split('?')[1]; return (app ? 'whatsapp://send?phone=' : 'https://web.whatsapp.com/send?phone=') + ph + (q ? '&' + q : ''); }
+  window.__waAlt = __waAlt; window.__waPc = __pc;
+  if (__pc) document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href*="wa.me/"]'); if (a) { a.setAttribute('target', '_blank'); a.href = __waAlt(a.getAttribute('href')); } }, true);
+
   document.addEventListener('click', function (e) {
-    var a = e.target.closest('a[href*="wa.me"]'); if (!a) return;
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com/send"], a[href^="whatsapp:"]'); if (!a) return;
     try {
       gtag('event', 'whatsapp_click', { corretor: a.getAttribute('data-corretor') || 'Kamila', origem: a.getAttribute('data-origem') || 'guia_santa_maria' });
       gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
@@ -515,7 +522,9 @@ fbq('track', 'PageView');
       fbq('track', 'Lead', { content_name: 'simulador_financiamento_sm' });
     } catch (_) {}
     var ok = $('fOk'); ok.innerHTML = 'Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para a Kamila receber. <a href="' + url + '" target="_blank" rel="noopener" data-corretor="Kamila" data-origem="sm_simulador">Não abriu? Toque aqui</a>'; ok.style.display = 'block';
-    var w = window.open(url, '_blank'); if (!w) window.location.href = url;
+    var go = window.__waPc ? window.__waAlt(url) : url;
+    if (window.__waPc) ok.innerHTML += '<br><a class="appl" href="' + window.__waAlt(url, true) + '">Usa o app do WhatsApp no computador? Abrir no app</a>';
+    var w = window.open(go, '_blank'); if (!w) window.location.href = go;
   });
 })();
 </script>

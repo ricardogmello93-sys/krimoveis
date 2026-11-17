@@ -226,6 +226,11 @@ img { max-width: 100%; }
 .sim-list i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
 .sim-list .tot { border-bottom: 0; font-size: 14px; }
 .sim-warn { display: none; font-size: 14px; color: #ffd0a6; background: rgba(255,140,60,0.1); border: 1px solid rgba(255,160,90,0.35); border-radius: 12px; padding: 10px 14px; }
+.sim-after { margin-top: 8px; font-size: 15px; color: var(--muted); }
+.sim-after b { display: inline; font-size: 15px; color: var(--white); font-weight: 500; letter-spacing: 0; margin: 0; }
+.sim-rule { font-size: 14px; line-height: 1.5; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(37,211,102,0.35); background: rgba(37,211,102,0.08); color: var(--white); }
+.sim-rule small { display: block; color: var(--soft); font-size: 12.5px; margin-top: 3px; }
+.sim-rule.bad { border-color: rgba(255,160,90,0.4); background: rgba(255,140,60,0.1); color: #ffd0a6; }
 .sim-note { font-size: 12.5px; color: var(--soft); line-height: 1.6; }
 .sim-lead { grid-column: 1 / -1; position: relative; padding: 36px 38px 34px; border-top: 1px solid rgba(201,168,76,0.55); background: radial-gradient(ellipse 60% 120% at 0% 0%, rgba(201,168,76,0.22), transparent 70%), linear-gradient(135deg, rgba(201,168,76,0.12), rgba(121,194,205,0.06)); }
 .sim-bonus { display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; letter-spacing: 2.4px; text-transform: uppercase; color: #061820; background: linear-gradient(135deg, #f3eadb, #e2c77e); padding: 5px 12px; border-radius: 100px; margin-bottom: 12px; font-weight: 500; }
@@ -235,6 +240,8 @@ img { max-width: 100%; }
 .sim-perks li { font-size: 14px; color: var(--sand2); } .sim-perks li::before { content: "✓ "; color: var(--gold2); }
 .sim-dl { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 11px 18px; border-radius: 100px; border: 1px solid var(--gold2); color: var(--white); text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; background: rgba(201,168,76,0.12); }
 .sim-dl:hover { background: rgba(201,168,76,0.25); }
+.sim-dl.big { display: flex; justify-content: center; width: 100%; margin: 0 0 12px; padding: 16px 20px; font-size: 14px; font-weight: 500; color: #061820; border: 0; background: linear-gradient(135deg, #f3eadb, #e2c77e 65%, #c9a84c); box-shadow: 0 10px 30px rgba(201,168,76,0.3); }
+.sim-dl.big:hover { background: linear-gradient(135deg, #fff5e3, #ead18a 65%, #d2b25a); }
 .sim-lead > p { color: var(--muted); font-size: 15px; margin: 6px 0 18px; }
 .sim-form { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
 .sim-form.c3 { grid-template-columns: 1fr 1fr 1fr auto; }
@@ -246,6 +253,7 @@ img { max-width: 100%; }
 .sim-err { display: none; color: #ffb4a0; font-size: 13.5px; margin-top: 10px; }
 .sim-ok { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.35); color: var(--white); font-size: 15px; line-height: 1.6; }
 .sim-ok a { color: var(--gold2); }
+.sim-app { display: inline-block; margin-top: 8px; font-size: 13.5px; color: var(--sea2) !important; }
 .sim-consent { font-size: 12px; color: var(--soft); margin-top: 10px; }
 @media (max-width: 900px) {
   .sim { grid-template-columns: 1fr; }
@@ -406,18 +414,23 @@ fbq('track', 'PageView');
       <div class="sim-f"><label>Frecuencia</label><div class="sim-seg" id="sEvery"><button type="button" class="on" data-v="12">Anual</button><button type="button" data-v="6">Semestral</button></div></div>
       <div class="sim-f"><label for="sKeys">Pago a la entrega <b id="sKeysV"></b></label><input type="range" id="sKeys" min="0" max="40" step="1" value="10"></div>
     </div>
-    <div class="sim-f"><label for="sN">Cuotas mensuales</label><select class="sim-sel" id="sN"><option value="36">36x</option><option value="48">48x</option><option value="60">60x</option><option value="72">72x</option><option value="84">84x</option><option value="96">96x</option><option value="120" selected>120x</option><option value="132">132x</option><option value="150">150x</option><option value="180">180x</option></select></div>
+    <div class="sim-row">
+      <div class="sim-f"><label for="sN">Cuotas mensuales</label><select class="sim-sel" id="sN"><option value="36">36x</option><option value="48">48x</option><option value="60">60x</option><option value="72">72x</option><option value="84">84x</option><option value="96">96x</option><option value="120" selected>120x</option><option value="132">132x</option><option value="150">150x</option><option value="180">180x</option></select></div>
+      <div class="sim-f"><label for="sObra">Plazo de obra (hasta la entrega) <b id="sObraV"></b></label><input type="range" id="sObra" min="12" max="60" step="1" value="48"></div>
+    </div>
   </div>
   <div class="sim-out" aria-live="polite">
-    <div class="sim-big"><span>Cuota mensual</span><b id="sMonthly">-</b><small id="sMonthlyN"></small></div>
+    <div class="sim-big"><span>Cuota mensual durante la obra</span><b id="sMonthly">-</b><small id="sMonthlyN"></small><p class="sim-after" id="sAfter"></p></div>
     <div class="sim-bar" id="sBar"></div>
     <div class="sim-list">
       <div><span><i style="background:#e2c77e"></i>Anticipo</span><b id="oDown"></b></div>
       <div><span><i style="background:#79c2cd"></i>Refuerzos</span><b id="oBoost"></b></div>
       <div><span><i style="background:#9d93ed"></i>A la entrega</span><b id="oKeys"></b></div>
-      <div><span><i style="background:#e9dcc3"></i>Cuotas</span><b id="oInst"></b></div>
+      <div><span><i style="background:#e9dcc3"></i>Cuotas durante la obra</span><b id="oInst"></b></div>
+      <div id="oInstBRow"><span><i style="background:#8a8476"></i>Cuotas después de la entrega</span><b id="oInstB"></b></div>
       <div class="tot"><span>Precio total</span><b id="oTot"></b></div>
     </div>
+    <div class="sim-rule" id="sRule"></div>
     <div class="sim-warn" id="sWarn">Anticipo, refuerzos y entrega suman más del 100%. Reduzca alguno de ellos.</div>
     <p class="sim-note">Valores en reales brasileños (BRL), sin ajuste. Durante la obra, la mayoría de las constructoras de la región ajusta las cuotas por el CUB, el índice de costo de la construcción de Santa Catarina. Después de la entrega, el ajuste y los posibles intereses dependen del contrato. Ricardo le muestra las condiciones reales de cada proyecto.</p>
   </div>
@@ -497,8 +510,14 @@ fbq('track', 'PageView');
     function run() { if (done) return; done = true; var t0 = performance.now(); (function step(t) { var p = Math.min(1, (t - t0) / 1400); p = 1 - Math.pow(1 - p, 3); el.textContent = (end * p).toFixed(dec).replace('.', ','); if (p < 1) requestAnimationFrame(step); })(t0); }
     if ('IntersectionObserver' in window) { var o = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { run(); o.disconnect(); } }); o.observe(el); } else run();
   });
+
+  var __pc = !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+  function __waAlt(u, app) { var p = String(u).split('wa.me/')[1]; if (!p) return u; var ph = p.split('?')[0], q = p.split('?')[1]; return (app ? 'whatsapp://send?phone=' : 'https://web.whatsapp.com/send?phone=') + ph + (q ? '&' + q : ''); }
+  window.__waAlt = __waAlt; window.__waPc = __pc;
+  if (__pc) document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href*="wa.me/"]'); if (a) { a.setAttribute('target', '_blank'); a.href = __waAlt(a.getAttribute('href')); } }, true);
+
   document.addEventListener('click', function (e) {
-    var a = e.target.closest('a[href*="wa.me"]'); if (!a) return;
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com/send"], a[href^="whatsapp:"]'); if (!a) return;
     try {
       gtag('event', 'whatsapp_click', { corretor: a.getAttribute('data-corretor') || 'Ricardo', origem: a.getAttribute('data-origem') || 'litoral' });
       gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
@@ -509,8 +528,8 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"es-ES","yearly":"Anual","half":"Semestral","bad":"Revise su WhatsApp, con el código de país.","badName":"Escriba su nombre.","ok":"Abrimos su WhatsApp con la simulación lista. Solo toque enviar para que Ricardo la reciba.","okLink":"¿No se abrió? Toque aquí","leadOf":"de","dl":"Descargar mi simulación (imagen)","imgTitle":"Plan de pagos en pozo","imgFor":"Preparada para","imgSub":"Itapema y Porto Belo · Brasil","imgNote":"Valores en reales brasileños, sin ajuste. Durante la obra, la mayoría de las constructoras ajusta las cuotas por el CUB/SC; después de la entrega, según el contrato.","imgPrice":"Precio del inmueble","file":"simulacion-kamila-ricardo.png","monthly":"Cuota mensual","downL":"Anticipo","boostL":"Refuerzos","keysL":"A la entrega","instL":"Cuotas"};
-  var MSG = (d) => `[Simulador · litoral de Brasil] ¡Hola Ricardo! Hice la simulación del plan de pagos en su sitio.\nNombre: ${d.name}\nPaís: ${d.country}\nWhatsApp: ${d.phone}\n\nInmueble: ${d.price}\nAnticipo (${d.downPct}%): ${d.down}\nRefuerzos: ${d.boostQty}x ${d.boost} (${d.every.toLowerCase()})\nA la entrega (${d.keysPct}%): ${d.keys}\nCuotas: ${d.months}x ${d.monthly}\n\nQuiero recibir 3 proyectos reales en Itapema y Porto Belo que encajen en esta cuota.`;
+  var L = {"locale":"es-ES","yearly":"Anual","half":"Semestral","bad":"Revise su WhatsApp, con el código de país.","badName":"Escriba su nombre.","ok":"Abrimos su WhatsApp con la simulación lista. Solo toque enviar para que Ricardo la reciba.","okLink":"¿No se abrió? Toque aquí","app":"¿Usa la app de WhatsApp en la computadora? Abrir en la app","leadOf":"de","dl":"Descargar mi simulación (imagen)","imgTitle":"Plan de pagos en pozo","imgFor":"Preparada para","imgSub":"Itapema y Porto Belo · Brasil","imgNote":"Valores en reales brasileños, sin ajuste. Durante la obra, la mayoría de las constructoras ajusta las cuotas por el CUB/SC; después de la entrega, según el contrato.","imgPrice":"Precio del inmueble","file":"simulacion-kamila-ricardo.png","monthly":"Cuota mensual","monthlyA":"Cuota mensual durante la obra","durObra":"durante la obra","afterKeys":"Después de la entrega","obraU":"meses","ruleOk":"% pagado hasta la entrega (mínimo 60%)","ruleAuto":"Las cuotas de la obra se ajustaron para llegar al 60% hasta la entrega.","ruleBad":"Con estos valores no se llega al 60% hasta la entrega. Aumente el anticipo, los refuerzos durante la obra o el pago a la entrega.","instA":"Cuotas durante la obra","instB":"Cuotas después de la entrega","imgPct":"hasta la entrega","downL":"Anticipo","boostL":"Refuerzos","keysL":"A la entrega","instL":"Cuotas"};
+  var MSG = (d) => `[Simulador · litoral de Brasil] ¡Hola Ricardo! Hice la simulación del plan de pagos en su sitio.\nNombre: ${d.name}\nPaís: ${d.country}\nWhatsApp: ${d.phone}\n\nInmueble: ${d.price}\nAnticipo (${d.downPct}%): ${d.down}\nRefuerzos: ${d.boostQty}x ${d.boost} (${d.every.toLowerCase()})\nA la entrega (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses · ${d.pctObra}% pagado hasta la entrega\nCuotas durante la obra: ${d.mA}x ${d.monthly}${d.mB ? '\nCuotas después de la entrega: ' + d.mB + 'x ' + d.monthlyB : ''}\n\nQuiero recibir 3 proyectos reales en Itapema y Porto Belo que encajen en esta cuota.`;
   var lang = "es", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
   var brl = new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
@@ -518,24 +537,34 @@ fbq('track', 'PageView');
   function num(s) { return parseInt(String(s).replace(/\D/g, ''), 10) || 0; }
   function fmtInput() { var v = num($('sPrice').value); $('sPrice').value = v ? v.toLocaleString('pt-BR') : ''; }
   function calc() {
-    var price = num($('sPrice').value), d = +$('sDown').value, bq = +$('sBq').value, bp = +$('sBp').value, k = +$('sKeys').value, n = +$('sN').value;
-    var rest = 100 - d - bq * bp - k;
-    $('sDownV').textContent = d + '%'; $('sBqV').textContent = bq + 'x'; $('sBpV').textContent = String(bp).replace('.', ',') + '%'; $('sKeysV').textContent = k + '%';
-    $('sWarn').style.display = rest < 0 ? 'block' : 'none';
-    var r = Math.max(rest, 0), monthly = price * r / 100 / n;
-    $('sMonthly').textContent = rest < 0 ? '-' : brl.format(monthly);
-    $('sMonthlyN').textContent = rest < 0 ? '' : n + 'x';
-    $('sLeadV').textContent = rest < 0 ? '' : L.leadOf + ' ' + brl.format(monthly);
-    $('oDown').textContent = brl.format(price * d / 100);
-    $('oBoost').textContent = bq ? bq + 'x ' + brl.format(price * bp / 100) : '-';
-    $('oKeys').textContent = brl.format(price * k / 100);
-    $('oInst').textContent = rest < 0 ? '-' : n + 'x ' + brl.format(monthly);
+    var price = num($('sPrice').value), d = +$('sDown').value, bq = +$('sBq').value, bp = +$('sBp').value, k = +$('sKeys').value, n = +$('sN').value, M = +$('sObra').value;
+    var S = 100 - d - bq * bp - k;
+    $('sDownV').textContent = d + '%'; $('sBqV').textContent = bq + 'x'; $('sBpV').textContent = String(bp).replace('.', ',') + '%'; $('sKeysV').textContent = k + '%'; $('sObraV').textContent = M + ' ' + L.obraU;
+    $('sWarn').style.display = S < 0 ? 'block' : 'none';
+    var nB = 0; for (var i = 1; i <= bq; i++) if (i * every <= M) nB++;
+    var base = d + nB * bp + k, mA = Math.min(n, M), mB = n - mA, s = Math.max(S, 0), P = s / n, pA = P, pB = mB ? P : 0, auto = false;
+    if (mB && base + P * mA < 60) { pA = Math.min(s / mA, (60 - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
+    var pct = base + pA * mA, reach = pct >= 59.95;
+    var f = function (p) { return brl.format(price * p / 100); };
+    $('sMonthly').textContent = S < 0 ? '-' : f(pA);
+    $('sMonthlyN').textContent = S < 0 ? '' : mA + 'x · ' + L.durObra;
+    var hasB = mB && price * pB / 100 >= 1;
+    $('sAfter').innerHTML = S < 0 || !hasB ? '' : L.afterKeys + ': <b>' + f(pB) + '</b> × ' + mB;
+    $('sLeadV').textContent = S < 0 ? '' : L.leadOf + ' ' + f(pA);
+    $('oDown').textContent = f(d);
+    $('oBoost').textContent = bq ? bq + 'x ' + f(bp) : '-';
+    $('oKeys').textContent = f(k);
+    $('oInst').textContent = S < 0 ? '-' : mA + 'x ' + f(pA);
+    $('oInstBRow').style.display = hasB ? '' : 'none'; $('oInstB').textContent = hasB ? mB + 'x ' + f(pB) : '';
     $('oTot').textContent = brl.format(price);
-    var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [r, '#e9dcc3']], sum = d + bq * bp + k + r || 1;
+    var rule = $('sRule'); rule.style.display = S < 0 ? 'none' : '';
+    rule.className = 'sim-rule' + (reach ? '' : ' bad');
+    rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk + (auto ? '<small>' + L.ruleAuto + '</small>' : '') : L.ruleBad;
+    var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [pA * mA, '#e9dcc3'], [pB * mB, '#8a8476']], sum = parts.reduce(function (a, p) { return a + p[0]; }, 0) || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
-    last = { parts: parts, price: brl.format(price), downPct: d, down: brl.format(price * d / 100), boostQty: bq, boost: brl.format(price * bp / 100), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: brl.format(price * k / 100), months: n, monthly: brl.format(monthly), ok: rest >= 0 };
+    last = { parts: parts, price: brl.format(price), downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
   }
-  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN'].forEach(function (id) { $(id).addEventListener('input', calc); });
+  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra'].forEach(function (id) { $(id).addEventListener('input', calc); });
   $('sPrice').addEventListener('input', function () { fmtInput(); calc(); });
   $('sEvery').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; every = +b.getAttribute('data-v'); [].forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); }); calc(); });
   var touched = false;
@@ -555,16 +584,20 @@ fbq('track', 'PageView');
       fbq('track', 'Lead', { content_name: 'simulador_fluxo_' + lang });
     } catch (_) {}
     var ok = $('sOk'); ok.innerHTML = L.ok + ' <a href="' + url + '" target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="' + root.getAttribute('data-origem') + '">' + L.okLink + '</a>'; ok.style.display = 'block';
-    var w = window.open(url, '_blank'); if (!w) window.location.href = url;
+    try { ok.scrollIntoView({ block: 'center' }); } catch (_) {}
+    var go = window.__waPc ? window.__waAlt(url) : url;
+    if (window.__waPc) ok.innerHTML += '<br><a class="sim-app" href="' + window.__waAlt(url, true) + '">' + L.app + '</a>';
+    var w = window.open(go, '_blank'); if (!w) window.location.href = go;
     makeImage(d).then(function (href) {
       var a = document.createElement('a'); a.className = 'sim-dl'; a.href = href; a.download = L.file; a.textContent = '↓ ' + L.dl;
       a.addEventListener('click', function () { try { gtag('event', 'simulador_imagem', { idioma: lang }); } catch (_) {} });
-      ok.appendChild(document.createElement('br')); ok.appendChild(a);
+      a.className = 'sim-dl big'; ok.insertBefore(a, ok.firstChild);
     }).catch(function () {});
   });
   // imagem da simulação (1080x1350), desenhada no próprio navegador
   function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
   function wrap(c, txt, x, y, maxW, lh) { var words = txt.split(' '), line = ''; for (var i = 0; i < words.length; i++) { var test = line ? line + ' ' + words[i] : words[i]; if (c.measureText(test).width > maxW && line) { c.fillText(line, x, y); line = words[i]; y += lh; } else line = test; } c.fillText(line, x, y); return y; }
+  var PRE = new Image(); PRE.src = '../images/logo-kr.svg'; try { document.fonts.load('300 64px "Cormorant Garamond"'); document.fonts.load('400 24px "DM Sans"'); } catch (_) {}
   function makeImage(d) {
     var W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H; var c = cv.getContext('2d');
     var fonts = document.fonts ? Promise.all([document.fonts.load('300 64px "Cormorant Garamond"'), document.fonts.load('600 40px "Cormorant Garamond"'), document.fonts.load('400 24px "DM Sans"'), document.fonts.load('500 24px "DM Sans"')]) : Promise.resolve();
@@ -579,12 +612,12 @@ fbq('track', 'PageView');
       c.fillStyle = '#f4f2ee'; c.font = '300 66px "Cormorant Garamond"'; wrap(c, L.imgTitle, 90, 300, W - 180, 72);
       c.fillStyle = 'rgba(230,244,245,0.7)'; c.font = '400 26px "DM Sans"'; c.fillText(L.imgFor + ' ' + d.name + ' · ' + new Date().toLocaleDateString(L.locale), 90, 360);
       c.fillStyle = 'rgba(6,24,32,0.55)'; rr(c, 90, 400, W - 180, 230, 28); c.fill(); c.strokeStyle = 'rgba(169,221,227,0.25)'; c.stroke();
-      c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.fillText(L.monthly.toUpperCase(), 130, 456);
+      c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.fillText(L.monthlyA.toUpperCase(), 130, 456); c.textAlign = 'right'; c.fillText(L.imgPrice + ': ' + d.price, W - 130, 456); c.fillStyle = '#e2c77e'; c.font = '500 26px "DM Sans"'; c.fillText('✓ ' + d.pctObra + '% ' + L.imgPct, W - 130, 600); c.textAlign = 'left';
       c.fillStyle = '#e9dcc3'; c.font = '300 104px "DM Sans"'; c.fillText(d.monthly, 124, 568);
-      var mw = c.measureText(d.monthly).width; c.fillStyle = 'rgba(230,244,245,0.65)'; c.font = '400 34px "DM Sans"'; c.fillText('× ' + d.months, 150 + mw, 566);
+      var mw = c.measureText(d.monthly).width; c.fillStyle = 'rgba(230,244,245,0.65)'; c.font = '400 34px "DM Sans"'; c.fillText('× ' + d.mA, 150 + mw, 566);
       var parts = d.parts, sum = parts.reduce(function (s, p) { return s + p[0]; }, 0) || 1, x = 90, bw = W - 180;
       c.save(); rr(c, 90, 668, bw, 22, 11); c.clip(); parts.forEach(function (p) { var w = bw * p[0] / sum; c.fillStyle = p[1]; c.fillRect(x, 668, w + 1, 22); x += w; }); c.restore();
-      var rows = [[L.imgPrice, d.price, null], [L.downL + ' (' + d.downPct + '%)', d.down, '#e2c77e'], [L.boostL + ' (' + d.boostQty + 'x · ' + d.every.toLowerCase() + ')', d.boostQty ? d.boostQty + 'x ' + d.boost : '-', '#79c2cd'], [L.keysL + ' (' + d.keysPct + '%)', d.keys, '#9d93ed'], [L.instL + ' (' + d.months + 'x)', d.months + 'x ' + d.monthly, '#e9dcc3']];
+      var rows = [[L.downL + ' (' + d.downPct + '%)', d.down, '#e2c77e'], [L.boostL + ' (' + d.boostQty + 'x · ' + d.every.toLowerCase() + ')', d.boostQty ? d.boostQty + 'x ' + d.boost : '-', '#79c2cd'], [L.keysL + ' (' + d.keysPct + '%)', d.keys, '#9d93ed'], [L.instA, d.mA + 'x ' + d.monthly, '#e9dcc3']].concat(d.mB ? [[L.instB, d.mB + 'x ' + d.monthlyB, '#8a8476']] : []);
       var y = 748; rows.forEach(function (r) {
         if (r[2]) { c.fillStyle = r[2]; c.beginPath(); c.arc(100, y - 9, 8, 0, Math.PI * 2); c.fill(); }
         c.fillStyle = 'rgba(230,244,245,0.8)'; c.font = '400 28px "DM Sans"'; c.fillText(r[0], r[2] ? 124 : 90, y);

@@ -424,8 +424,14 @@ fbq('track', 'PageView');
     function run() { if (done) return; done = true; var t0 = performance.now(); (function step(t) { var p = Math.min(1, (t - t0) / 1400); p = 1 - Math.pow(1 - p, 3); el.textContent = (end * p).toFixed(dec).replace('.', ','); if (p < 1) requestAnimationFrame(step); })(t0); }
     if ('IntersectionObserver' in window) { var o = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { run(); o.disconnect(); } }); o.observe(el); } else run();
   });
+
+  var __pc = !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
+  function __waAlt(u, app) { var p = String(u).split('wa.me/')[1]; if (!p) return u; var ph = p.split('?')[0], q = p.split('?')[1]; return (app ? 'whatsapp://send?phone=' : 'https://web.whatsapp.com/send?phone=') + ph + (q ? '&' + q : ''); }
+  window.__waAlt = __waAlt; window.__waPc = __pc;
+  if (__pc) document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('a[href*="wa.me/"]'); if (a) { a.setAttribute('target', '_blank'); a.href = __waAlt(a.getAttribute('href')); } }, true);
+
   document.addEventListener('click', function (e) {
-    var a = e.target.closest('a[href*="wa.me"]'); if (!a) return;
+    var a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp.com/send"], a[href^="whatsapp:"]'); if (!a) return;
     try {
       gtag('event', 'whatsapp_click', { corretor: a.getAttribute('data-corretor') || 'Ricardo', origem: a.getAttribute('data-origem') || 'litoral' });
       gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
