@@ -254,6 +254,9 @@ img { max-width: 100%; }
 .sim-perks { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0 0 20px; }
 .sim-perks li { font-size: 14px; color: var(--sand2); } .sim-perks li::before { content: "✓ "; color: var(--gold2); }
 .sim-dl { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 11px 18px; border-radius: 100px; border: 1px solid var(--gold2); color: var(--white); text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; background: rgba(201,168,76,0.12); }
+.sim-prev { display: flex; align-items: center; gap: 14px; margin: 0 0 14px; }
+.sim-prev img { width: 92px; height: auto; border-radius: 8px; border: 1px solid rgba(226,199,126,0.45); flex-shrink: 0; -webkit-touch-callout: default; }
+.sim-prev span { font-size: 13px; line-height: 1.45; color: var(--soft); }
 .sim-dl:hover { background: rgba(201,168,76,0.25); }
 .sim-dl.big { display: flex; justify-content: center; width: 100%; margin: 0 0 12px; padding: 16px 20px; font-size: 14px; font-weight: 500; color: #061820; border: 0; background: linear-gradient(135deg, #f3eadb, #e2c77e 65%, #c9a84c); box-shadow: 0 10px 30px rgba(201,168,76,0.3); }
 .sim-dl.big:hover { background: linear-gradient(135deg, #fff5e3, #ead18a 65%, #d2b25a); }
@@ -337,7 +340,7 @@ fbq('track', 'PageView');
   <a href="imoveis-itapema.html" class="lt-nav-link">Itapema</a>
   <a href="imoveis-porto-belo.html" class="lt-nav-link">Porto Belo</a>
   <div class="lt-reg"><a href="../santa-maria/" class="sm">Santa Maria</a><a href="./" class="on"><i></i>Litoral SC</a></div>
-  <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_simulador_nav"><span class="lt-dot"></span>WhatsApp</a>
+  <a href="https://wa.me/5555999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_simulador_nav"><span class="lt-dot"></span>WhatsApp</a>
   <div class="lang" role="navigation" aria-label="Idioma / Language"><a href="./" hreflang="pt-BR" lang="pt-BR" class="on" title="Português" aria-label="Português" aria-current="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#229e45"/><path d="M14 2.6 25.4 10 14 17.4 2.6 10z" fill="#f8e509"/><circle cx="14" cy="10" r="4.6" fill="#2b49a3"/><path d="M9.5 9.2c3-.9 6.4-.5 9 1" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a><a href="../en/" hreflang="en" lang="en" class="" title="English" aria-label="English"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="3.076923076923077" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="6.153846153846154" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="9.23076923076923" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="12.307692307692308" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="15.384615384615385" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="18.46153846153846" width="28" height="1.5384615384615385" fill="#b22234"/><rect width="12" height="10.76923076923077" fill="#3c3b6e"/></svg><span>EN</span></a><a href="../es/" hreflang="es" lang="es" class="" title="Español" aria-label="Español"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/></svg><span>ES</span></a></div>
   <img src="../images/logo-santa-branca.png" alt="Santa Imóveis" class="lt-santa" loading="lazy">
 </nav>
@@ -391,7 +394,7 @@ fbq('track', 'PageView');
     <span class="sim-bonus">WhatsApp</span>
     <h3>Receba 3 lançamentos reais que cabem nessa parcela <span id="sLeadV"></span></h3>
     <p>O Ricardo seleciona empreendimentos de Itapema e Porto Belo para o seu fluxo e manda pelo WhatsApp.</p>
-    <ul class="sim-perks"><li>3 lançamentos reais, com valores e condições</li><li>Sua simulação em imagem, com a nossa marca, para baixar</li><li>Sem compromisso</li></ul>
+    <ul class="sim-perks"><li>3 lançamentos reais, com valores e condições</li><li>Sua simulação em PDF, com a nossa marca, para baixar</li><li>Sem compromisso</li></ul>
     <form class="sim-form" id="sForm" novalidate>
       <div><label for="sName">Seu nome</label><input id="sName" autocomplete="name" required></div>
       
@@ -440,7 +443,7 @@ fbq('track', 'PageView');
 </footer>
 <div class="lt-sticky" id="ltSticky" role="region" aria-label="Falar com Ricardo">
   <span>Ricardo atende o litoral de SC · resposta pelo WhatsApp</span>
-  <a href="https://wa.me/55999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pela%20p%C3%A1gina%20%22Simulador%20de%20im%C3%B3vel%20na%20planta%22%20do%20site%20e%20quero%20conversar%20sobre%20im%C3%B3veis%20no%20litoral%20de%20SC." target="_blank" rel="noopener" class="lt-btn lt-btn-gold" data-corretor="Ricardo" data-origem="litoral_simulador_sticky"><span class="lt-dot"></span>Falar com Ricardo</a>
+  <a href="https://wa.me/5555999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pela%20p%C3%A1gina%20%22Simulador%20de%20im%C3%B3vel%20na%20planta%22%20do%20site%20e%20quero%20conversar%20sobre%20im%C3%B3veis%20no%20litoral%20de%20SC." target="_blank" rel="noopener" class="lt-btn lt-btn-gold" data-corretor="Ricardo" data-origem="litoral_simulador_sticky"><span class="lt-dot"></span>Falar com Ricardo</a>
 </div>
 <script>
 (function () {
@@ -475,7 +478,7 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar minha simulação (imagem)","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Itapema e Porto Belo · SC","imgNote":"Valores sem correção. Durante a obra, a maioria das construtoras corrige as parcelas pelo CUB/SC; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-kamila-ricardo.png","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
+  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Itapema e Porto Belo · SC","imgNote":"Valores sem correção. Durante a obra, a maioria das construtoras corrige as parcelas pelo CUB/SC; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-ricardo-mello.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
   var MSG = (d) => `[Simulador Litoral] Olá Ricardo! Fiz a simulação de fluxo no site.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses · ${d.pctObra}% pago até as chaves\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber 3 lançamentos reais em Itapema e Porto Belo que cabem nessa parcela.`;
   var lang = "pt", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
@@ -524,7 +527,7 @@ fbq('track', 'PageView');
     if (!okPhone) { err.textContent = L.bad; err.style.display = 'block'; $('sPhone').focus(); return; }
     err.style.display = 'none';
     var c = $('sCountry'); var d = Object.assign({}, last, { name: name, phone: phone, country: c ? c.value : '' });
-    var url = 'https://wa.me/55999147822?text=' + encodeURIComponent(MSG(d));
+    var url = 'https://wa.me/5555999147822?text=' + encodeURIComponent(MSG(d));
     try {
       gtag('event', 'generate_lead', { simulador: 'fluxo_construtora', idioma: lang, valor_imovel: num($('sPrice').value) });
       gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
@@ -535,16 +538,39 @@ fbq('track', 'PageView');
     var go = window.__waPc ? window.__waAlt(url) : url;
     if (window.__waPc) ok.innerHTML += '<br><a class="sim-app" href="' + window.__waAlt(url, true) + '">' + L.app + '</a>';
     var w = window.open(go, '_blank'); if (!w) window.location.href = go;
-    makeImage(d).then(function (href) {
-      var a = document.createElement('a'); a.className = 'sim-dl'; a.href = href; a.download = L.file; a.textContent = '↓ ' + L.dl;
-      a.addEventListener('click', function () { try { gtag('event', 'simulador_imagem', { idioma: lang }); } catch (_) {} });
-      a.className = 'sim-dl big'; ok.insertBefore(a, ok.firstChild);
+    makeImage(d).then(function (cv) {
+      var jpg = cv.toDataURL('image/jpeg', 0.9);
+      return makePdf(jpg).then(function (pdf) {
+        var a = document.createElement('a'); a.className = 'sim-dl big'; a.href = URL.createObjectURL(pdf); a.download = L.file; a.textContent = '↓ ' + L.dl;
+        a.addEventListener('click', function () { try { gtag('event', 'simulador_pdf', { idioma: lang }); } catch (_) {} });
+        var box = document.createElement('div'); box.appendChild(a);
+        if (!window.__waPc) { var p = document.createElement('div'); p.className = 'sim-prev'; p.innerHTML = '<img alt="" src="' + jpg + '"><span>' + L.hold + '</span>'; box.appendChild(p); }
+        ok.insertBefore(box, ok.firstChild);
+      });
     }).catch(function () {});
   });
   // imagem da simulação (1080x1350), desenhada no próprio navegador
   function rr(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
   function wrap(c, txt, x, y, maxW, lh) { var words = txt.split(' '), line = ''; for (var i = 0; i < words.length; i++) { var test = line ? line + ' ' + words[i] : words[i]; if (c.measureText(test).width > maxW && line) { c.fillText(line, x, y); line = words[i]; y += lh; } else line = test; } c.fillText(line, x, y); return y; }
   var PRE = new Image(); PRE.src = '../images/logo-kr.svg'; try { document.fonts.load('300 64px "Cormorant Garamond"'); document.fonts.load('400 24px "DM Sans"'); } catch (_) {}
+  function makePdf(jpg) {
+    var bin = atob(jpg.split(',')[1]), img = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) img[i] = bin.charCodeAt(i);
+    var enc = new TextEncoder(), parts = [], off = 0, xr = [];
+    function add(x) { var b = typeof x === 'string' ? enc.encode(x) : x; parts.push(b); off += b.length; }
+    function obj(n, body) { xr[n] = off; add(n + ' 0 obj\n' + body + '\nendobj\n'); }
+    add('%PDF-1.4\n');
+    obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
+    obj(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
+    obj(3, '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 540 675] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R /Annots [6 0 R] >>');
+    xr[4] = off; add('4 0 obj\n<< /Type /XObject /Subtype /Image /Width 1080 /Height 1350 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + img.length + ' >>\nstream\n'); add(img); add('\nendstream\nendobj\n');
+    var cs = 'q 540 0 0 675 0 0 cm /Im0 Do Q';
+    obj(5, '<< /Length ' + cs.length + ' >>\nstream\n' + cs + '\nendstream');
+    obj(6, '<< /Type /Annot /Subtype /Link /Rect [40 34 420 58] /Border [0 0 0] /A << /S /URI /URI (https://wa.me/5555999147822) >> >>');
+    var x = off, s = 'xref\n0 7\n0000000000 65535 f \n';
+    for (var j = 1; j <= 6; j++) s += ('000000000' + xr[j]).slice(-10) + ' 00000 n \n';
+    add(s + 'trailer\n<< /Size 7 /Root 1 0 R >>\nstartxref\n' + x + '\n%%EOF\n');
+    return Promise.resolve(new Blob(parts, { type: 'application/pdf' }));
+  }
   function makeImage(d) {
     var W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H; var c = cv.getContext('2d');
     var fonts = document.fonts ? Promise.all([document.fonts.load('300 64px "Cormorant Garamond"'), document.fonts.load('600 40px "Cormorant Garamond"'), document.fonts.load('400 24px "DM Sans"'), document.fonts.load('500 24px "DM Sans"')]) : Promise.resolve();
@@ -554,8 +580,7 @@ fbq('track', 'PageView');
       var rg = c.createRadialGradient(W * 0.85, 120, 0, W * 0.85, 120, 700); rg.addColorStop(0, 'rgba(226,199,126,0.20)'); rg.addColorStop(1, 'rgba(226,199,126,0)'); c.fillStyle = rg; c.fillRect(0, 0, W, H);
       c.strokeStyle = 'rgba(226,199,126,0.55)'; c.lineWidth = 2; rr(c, 40, 40, W - 80, H - 80, 36); c.stroke();
       if (logo.naturalWidth) c.drawImage(logo, 90, 92, 140, 140 * 258 / 504);
-      c.fillStyle = '#f4f2ee'; c.font = '600 40px "Cormorant Garamond"'; c.fillText('Kamila & Ricardo', 260, 132);
-      c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.fillText(L.imgSub.toUpperCase(), 262, 166);
+      c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.textAlign = 'right'; c.fillText(L.imgSub.toUpperCase(), W - 90, 136); c.textAlign = 'left';
       c.fillStyle = '#f4f2ee'; c.font = '300 66px "Cormorant Garamond"'; wrap(c, L.imgTitle, 90, 300, W - 180, 72);
       c.fillStyle = 'rgba(230,244,245,0.7)'; c.font = '400 26px "DM Sans"'; c.fillText(L.imgFor + ' ' + d.name + ' · ' + new Date().toLocaleDateString(L.locale), 90, 360);
       c.fillStyle = 'rgba(6,24,32,0.55)'; rr(c, 90, 400, W - 180, 230, 28); c.fill(); c.strokeStyle = 'rgba(169,221,227,0.25)'; c.stroke();
@@ -575,7 +600,7 @@ fbq('track', 'PageView');
       c.strokeStyle = 'rgba(226,199,126,0.4)'; c.beginPath(); c.moveTo(90, 1176); c.lineTo(W - 90, 1176); c.stroke();
       c.fillStyle = '#f4f2ee'; c.font = '600 34px "Cormorant Garamond"'; c.fillText('Ricardo Mello', 90, 1226); var nw = c.measureText('Ricardo Mello').width; c.fillStyle = 'rgba(230,244,245,0.7)'; c.font = '400 22px "DM Sans"'; c.fillText('·  CRECI/RS 082996', 104 + nw, 1225);
       c.fillStyle = '#e2c77e'; c.font = '500 23px "DM Sans"'; c.fillText('WhatsApp +55 55 99914-7822 · krimoveissm.com.br', 90, 1266);
-      return new Promise(function (res) { cv.toBlob(function (b) { res(URL.createObjectURL(b)); }, 'image/png'); });
+      return cv;
     });
   }
   calc();
