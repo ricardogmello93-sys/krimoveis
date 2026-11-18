@@ -408,7 +408,12 @@ fbq('track', 'PageView');
     }
     window.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; if (!running) { running = true; requestAnimationFrame(loop); } });
   }
-  window.addEventListener('pageshow', function (e) { if (e.persisted) { curtain.className = 'g-curtain'; } });
+  // voltar do navegador devolve a página do cache já "saindo": reabre tudo para dar para entrar de novo
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    curtain.className = 'g-curtain'; leaving = false; press = null; suppressClick = false;
+    cur.classList.remove('show', 'press');
+  });
 
   var __pc = !/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent || '');
   function __waAlt(u, app) { var p = String(u).split('wa.me/')[1]; if (!p) return u; var ph = p.split('?')[0], q = p.split('?')[1]; return (app ? 'whatsapp://send?phone=' : 'https://web.whatsapp.com/send?phone=') + ph + (q ? '&' + q : ''); }
