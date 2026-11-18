@@ -291,7 +291,7 @@ img { max-width: 100%; }
   .vp-nums-in { grid-template-columns: repeat(2, 1fr); } .vp-num:nth-child(3) { border-left: 0; } .vp-num:nth-child(n+3) { border-top: 1px solid var(--line); }
 }
 @media (max-width: 640px) {
-  .vp-hero { height: 100svh; min-height: 640px; } .vp-hero-in { padding: 0 20px 130px; } .vp-sec { padding: 70px 16px 0; }
+  .vp-hero { height: auto; min-height: 100svh; max-height: none; padding-top: 118px; } .vp-hero-in { padding: 0 20px 130px; } .vp-sec { padding: 70px 16px 0; }
   .vp-cap-h { display: none; } .vp-scroll { bottom: 50px; font-size: 10.5px; letter-spacing: 1.4px; white-space: normal; width: 260px; } .vp-scroll i { display: none; } .vp-hero-in { padding-bottom: 140px !important; } .vp-chips span { font-size: 11px; padding: 7px 11px; }
   .vp-nums { padding: 0 16px; margin-top: -34px; } .vp-num { padding: 22px 12px; } .vp-num > span { font-size: 10.5px; letter-spacing: 1.2px; }
   .vp-day { grid-template-columns: 1fr; } .vp-d, .vp-d + .vp-d { padding: 22px 0 8px; border-left: 0; } .vp-d + .vp-d { border-top: 1px solid var(--line); margin-top: 6px; } .vp-d i, .vp-d + .vp-d i { left: 0; } .vp-d + .vp-d i { top: 17px; }
@@ -616,7 +616,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwliq2ii').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwlivh8s').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();
