@@ -35,18 +35,13 @@ export function init(stage) {
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
 
   const scene = new THREE.Scene();
-  const skyCv = document.createElement('canvas'), skyTex = new THREE.CanvasTexture(skyCv); skyTex.colorSpace = THREE.SRGBColorSpace;
-  function paintSky(w, h) {
-    const W = 640, H = Math.max(200, Math.round(W * h / w)); skyCv.width = W; skyCv.height = H; const x = skyCv.getContext('2d');
-    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#f2b878'); g.addColorStop(0.2, '#e9c39a'); g.addColorStop(0.45, '#6f9fba'); g.addColorStop(0.75, '#2d6684'); g.addColorStop(1, '#143f5a');
-    x.fillStyle = g; x.fillRect(0, 0, W, H);
-    const sx = W * 0.16, sy = H * 0.1, r = Math.min(W, H) * 0.05;
-    const gl = x.createRadialGradient(sx, sy, 0, sx, sy, r * 9); gl.addColorStop(0, 'rgba(255,214,150,0.75)'); gl.addColorStop(0.25, 'rgba(255,180,100,0.3)'); gl.addColorStop(1, 'rgba(255,170,90,0)');
-    x.fillStyle = gl; x.fillRect(0, 0, W, H);
-    x.fillStyle = '#fff1cf'; x.beginPath(); x.arc(sx, sy, r, 0, Math.PI * 2); x.fill();
-    skyTex.needsUpdate = true;
-  }
-  scene.background = skyTex;
+  // fundo: céu de pôr do sol numa esfera fixa em volta da maquete; o sol fica parado no lugar quando a câmera gira
+  const sunDir = new THREE.Vector3(-0.44, -0.315, -0.83).normalize();
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(45, 48, 24), new THREE.ShaderMaterial({ side: THREE.BackSide, depthWrite: false, depthTest: false,
+    uniforms: { sunDir: { value: sunDir }, zen: { value: new THREE.Color(0x174a70) }, mid: { value: new THREE.Color(0x6f9fba) }, deep: { value: new THREE.Color(0x123b55) }, hc: { value: new THREE.Color(0xe4c6a2) }, hw: { value: new THREE.Color(0xf2b06c) }, glow: { value: new THREE.Color(0xff9e4a) }, core: { value: new THREE.Color(0xffe8b0) } },
+    vertexShader: 'varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+    fragmentShader: 'uniform vec3 sunDir, zen, mid, deep, hc, hw, glow, core; varying vec3 vD; void main(){ vec3 d = normalize(vD); vec2 a = normalize(d.xz + 1e-5), s = normalize(sunDir.xz); vec3 c = mix(hc, hw, pow(max(dot(a, s), 0.0), 2.0)); float u = d.y - sunDir.y; c = u > 0.0 ? mix(mix(c, mid, smoothstep(0.0, 0.25, u)), zen, smoothstep(0.25, 0.75, u)) : mix(mix(c, mid, smoothstep(0.0, 0.16, -u)), deep, smoothstep(0.16, 0.55, -u)); float sd = max(dot(d, sunDir), 0.0); c += glow * (pow(sd, 8.0) * 0.25 + pow(sd, 80.0) * 0.45 + pow(sd, 900.0) * 0.7); c = mix(c, core * 1.35, smoothstep(0.99935, 0.99952, sd)); gl_FragColor = vec4(c, 1.0);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}' }));
+  sky.renderOrder = -10; sky.frustumCulled = false; scene.add(sky);
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
   camera.position.set(0, 14, 16);
 
@@ -196,8 +191,7 @@ export function init(stage) {
     fsb.textContent = on ? '× Sair' : '⤢ Tela cheia'; controls.enabled = on || !touch || stage.classList.contains('live'); setTimeout(resize, 60);
     try { gtag('event', 'maquete_tela_cheia', { on: on ? 1 : 0 }); } catch (_) {}
   });
-  let skyAsp = 0;
-  function resize() { const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); if (Math.abs(camera.aspect - skyAsp) > 0.02) { skyAsp = camera.aspect; paintSky(w, h); } }
+  function resize() { const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
   new ResizeObserver(resize).observe(stage); resize();
 
   // começo: câmera desce do alto e os prédios sobem do chão
@@ -209,7 +203,7 @@ export function init(stage) {
     const dt = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dt;
     risers.forEach((r) => { if (r.t0 == null) r.t0 = performance.now(); r.p = Math.min(1, (performance.now() - r.t0) / 2200); const n = Math.max(0, r.p) * r.N; r.floors.forEach((f) => { const s = Math.max(0.0001, Math.min(1, n - f.userData.i)); f.scale.y = s; f.visible = s > 0.001; }); });
     if (fly) { const k = Math.min(1, (performance.now() - fly.t0) / fly.d), e = ease(k); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.q0, fly.q1, e); if (k >= 1) fly = null; }
-    stepZoom(); controls.update(); renderer.render(scene, camera);
+    stepZoom(); controls.update(); sky.position.copy(camera.position); renderer.render(scene, camera);
     const w = stage.clientWidth, h = stage.clientHeight;
     pins.forEach((p) => { v.copy(p.v).project(camera); const on = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05; p.el.style.opacity = on ? '1' : '0'; p.el.style.transform = 'translate(' + ((v.x + 1) / 2 * w).toFixed(1) + 'px,' + ((1 - v.y) / 2 * h).toFixed(1) + 'px)'; });
   }

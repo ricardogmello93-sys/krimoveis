@@ -159,7 +159,7 @@ img { max-width: 100%; }
   .lt-footer { padding: 48px 22px 96px; }
 }
 
-.vp-hero { position: relative; min-height: 600px; height: 100vh; max-height: 920px; overflow: hidden; display: flex; align-items: flex-end; }
+.vp-hero { position: relative; min-height: min(max(600px, 100vh), 920px); padding-top: 112px; box-sizing: border-box; overflow: hidden; display: flex; align-items: flex-end; }
 .vp-hero img.k { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: vpKb 30s ease-in-out infinite alternate; }
 @keyframes vpKb { from { transform: scale(1.02); } to { transform: scale(1.1) translate(-1%, -0.6%); } }
 .vp-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,24,32,0.85), rgba(6,24,32,0.5) 40%, rgba(6,24,32,0.05) 70%), linear-gradient(180deg, rgba(6,24,32,0.5), rgba(6,24,32,0) 30%, rgba(6,24,32,0.25) 62%, rgba(6,24,32,0.96)); }
@@ -756,7 +756,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=sol1811a').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=mwm3asz6').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';
