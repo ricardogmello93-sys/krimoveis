@@ -481,6 +481,40 @@ a.inline:hover { color: var(--white); }
   .hb-final { padding: 110px 20px; }
   .hb-ctas .lt-btn { width: 100%; }
 }
+
+.em-sec { max-width: 1240px; margin: 0 auto; padding: 90px 28px 0; }
+.em-3d { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 28px; }
+.em-3d a { position: relative; display: block; min-height: 230px; border-radius: 26px; overflow: hidden; text-decoration: none; color: var(--white); border: 1px solid rgba(226,199,126,0.4); }
+.em-3d img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s cubic-bezier(.2,.7,.2,1); }
+.em-3d a:hover img { transform: scale(1.05); }
+.em-3d a::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6,24,32,0.9), rgba(6,24,32,0.45) 60%, rgba(6,24,32,0.15)); }
+.em-3d div { position: relative; z-index: 2; padding: 30px 28px; max-width: 420px; }
+.em-3d strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; line-height: 1.05; }
+.em-3d p { font-size: 14.5px; color: var(--muted); line-height: 1.6; margin: 8px 0 16px; }
+.em-3d span { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase; color: var(--abyss); background: linear-gradient(135deg, var(--sand2), var(--gold2)); padding: 10px 16px; border-radius: 100px; }
+.em-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 30px 0 16px; }
+.em-filt { display: flex; gap: 8px; flex-wrap: wrap; }
+.em-filt button { font: 500 12px 'DM Sans', sans-serif; letter-spacing: 1.3px; text-transform: uppercase; padding: 9px 15px; border-radius: 100px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--soft); cursor: pointer; }
+.em-filt button.on { background: linear-gradient(135deg, var(--sand2), var(--gold2)); color: var(--abyss); border-color: transparent; }
+.em-arr { display: flex; gap: 8px; }
+.em-arr button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(226,199,126,0.5); background: rgba(6,24,32,0.6); color: var(--sand2); font-size: 18px; cursor: pointer; }
+.em-row { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 2px 14px; scrollbar-width: none; }
+.em-row::-webkit-scrollbar { display: none; }
+.em-card { flex: 0 0 300px; scroll-snap-align: start; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(14,51,64,0.55), rgba(6,24,32,0.9)); text-decoration: none; color: var(--white); display: flex; flex-direction: column; transition: transform 0.35s, border-color 0.35s; }
+.em-card:hover { transform: translateY(-4px); border-color: rgba(226,199,126,0.5); }
+.em-card.hide { display: none; }
+.em-ph { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+.em-ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.em-st { position: absolute; left: 12px; top: 12px; font-size: 10px; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase; padding: 6px 10px; border-radius: 100px; background: rgba(6,24,32,0.85); border: 1px solid rgba(226,199,126,0.5); color: var(--sand2); }
+.em-st.pronto { border-color: rgba(37,211,102,0.55); color: #9be7b4; } .em-st.obra { border-color: rgba(121,194,205,0.6); color: var(--sea2); }
+.em-b { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+.em-b small { font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--sea2); }
+.em-b strong { font-family: 'Cormorant Garamond', serif; font-size: 27px; font-weight: 400; line-height: 1.05; margin: 4px 0 2px; }
+.em-b em { font-style: normal; font-size: 12.5px; color: var(--soft); }
+.em-sp { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0 14px; }
+.em-sp span { font-size: 11.5px; padding: 5px 9px; border-radius: 9px; border: 1px solid var(--line); }
+.em-go { margin-top: auto; font-size: 11.5px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold2); }
+@media (max-width: 760px) { .em-sec { padding: 70px 16px 0; } .em-3d { grid-template-columns: 1fr; } .em-3d a { min-height: 200px; } .em-arr { display: none; } .em-card { flex-basis: 78%; } }
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -511,6 +545,7 @@ fbq('track', 'PageView');
   <div class="lt-nav-sp"></div>
   <a href="imoveis-itapema.html" class="lt-nav-link">Itapema</a>
   <a href="imoveis-porto-belo.html" class="lt-nav-link">Porto Belo</a>
+  <a href="./#empreendimentos" class="lt-nav-link">Empreendimentos</a>
   <div class="lt-reg"><a href="../santa-maria/" class="sm">Santa Maria</a><a href="./" class="on"><i></i>Litoral SC</a></div>
   <a href="https://wa.me/5555999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_hub_nav"><span class="lt-dot"></span>WhatsApp</a>
   <div class="lang" role="navigation" aria-label="Idioma / Language"><a href="./" hreflang="pt-BR" lang="pt-BR" class="on" title="Português" aria-label="Português" aria-current="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#229e45"/><path d="M14 2.6 25.4 10 14 17.4 2.6 10z" fill="#f8e509"/><circle cx="14" cy="10" r="4.6" fill="#2b49a3"/><path d="M9.5 9.2c3-.9 6.4-.5 9 1" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a><a href="../en/" hreflang="en" lang="en" class="" title="English" aria-label="English"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="3.076923076923077" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="6.153846153846154" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="9.23076923076923" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="12.307692307692308" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="15.384615384615385" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="18.46153846153846" width="28" height="1.5384615384615385" fill="#b22234"/><rect width="12" height="10.76923076923077" fill="#3c3b6e"/></svg><span>EN</span></a><a href="../es/" hreflang="es" lang="es" class="" title="Español" aria-label="Español"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/></svg><span>ES</span></a></div>
@@ -525,7 +560,7 @@ fbq('track', 'PageView');
     <p class="hb-lead rv d2">O litoral mais valorizado do Brasil, com quem acompanha você do primeiro contato às chaves, mesmo morando em outro estado.</p>
     <div class="hb-ctas rv d3">
       <a href="https://wa.me/5555999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20conhecer%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-btn lt-btn-gold" data-corretor="Ricardo" data-origem="litoral_hub_hero"><span class="lt-dot"></span>Falar com Ricardo</a>
-      <a href="#mapa" class="lt-btn lt-btn-ghost">Explorar o mapa</a>
+      <a href="#empreendimentos" class="lt-btn lt-btn-ghost">Ver empreendimentos</a>
     </div>
     <a class="hsim rv d3" href="simulador-imovel-na-planta.html"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="7" y="5.5" width="10" height="4" rx="1" fill="currentColor" opacity=".35"/><g fill="currentColor"><circle cx="8.5" cy="13" r="1.1"/><circle cx="12" cy="13" r="1.1"/><circle cx="15.5" cy="13" r="1.1"/><circle cx="8.5" cy="17" r="1.1"/><circle cx="12" cy="17" r="1.1"/><circle cx="15.5" cy="17" r="1.1"/></g></svg></i><span><small>Simulador gratuito</small><b>Simule o fluxo na planta</b><em>Entrada, reforços, chaves e parcelas, na hora.</em></span><u aria-hidden="true">→</u></a>
     <div class="hb-badge rv d3">★ <span><b>Itapema</b> · maior m² residencial do país · FipeZAP, mai/2026</span></div>
@@ -541,6 +576,15 @@ fbq('track', 'PageView');
   <div class="hb-stat"><b>≈<span data-count="50">50</span><small>km</small></b><span>do Aeroporto de Navegantes</span></div>
   <div class="hb-stat"><b>≈<span data-count="80">80</span><small>km</small></b><span>de Florianópolis</span></div>
   <div class="hb-stat"><b><span data-count="2">2</span><small>cidades</small></b><span>vizinhas na mesma enseada: Itapema e Porto Belo</span></div>
+</section>
+
+<section class="em-sec" id="empreendimentos">
+  <span class="lt-tag rv">Empreendimentos em destaque</span>
+  <h2 class="lt-h2 rv d1">Escolha o seu <em>no litoral</em></h2>
+  <p class="lt-sub rv d2">Do pronto para morar ao lançamento. Toque para ver fotos, ficha, andamento da obra e a maquete em 3D.</p>
+  <div class="em-3d rv"><a href="vivapark-porto-belo.html#maquete" data-origem="litoral_hub_3d_vivapark"><img src="../images/vivapark/vertice-lago-md.webp" srcset="../images/vivapark/vertice-lago-md.webp 900w, ../images/vivapark/vertice-lago.webp 1800w" sizes="(max-width: 760px) 100vw, 620px" alt="Vivapark · Porto Belo" loading="lazy"><div><strong>Vivapark · Porto Belo</strong><p>O primeiro bairro parque do Brasil, com lago, escola, PSG Academy e o Vision Home Club.</p><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><path d="M4 7.4l8 4.6 8-4.6M12 12v9.2"/></svg>Explorar em 3D</span></div></a><a href="zah-empreendimentos.html#maquete" data-origem="litoral_hub_3d_zah"><img src="../images/zah/tenet2-2-md.webp" srcset="../images/zah/tenet2-2-md.webp 900w, ../images/zah/tenet2-2.webp 1800w" sizes="(max-width: 760px) 100vw, 620px" alt="ZAH Empreendimentos" loading="lazy"><div><strong>ZAH Empreendimentos</strong><p>Arte, natureza e bem-estar à beira-mar: do pronto para morar ao lançamento.</p><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><path d="M4 7.4l8 4.6 8-4.6M12 12v9.2"/></svg>Explorar em 3D</span></div></a></div>
+  <div class="em-bar rv"><div class="em-filt"><button type="button" data-f="todos" class="on">Todos</button><button type="button" data-f="pronto">Pronto para morar</button><button type="button" data-f="obra">Em obras</button><button type="button" data-f="lanc">Lançamento</button></div><div class="em-arr"><button type="button" data-d="-1" aria-label="Anteriores">←</button><button type="button" data-d="1" aria-label="Próximos">→</button></div></div>
+  <div class="em-row" id="emRow"><a class="em-card" data-s="lanc" href="vivapark-porto-belo.html#vision" data-origem="litoral_hub_vision"><div class="em-ph"><img src="../images/vivapark/vision-piscina-md.webp" srcset="../images/vivapark/vision-piscina-md.webp 900w, ../images/vivapark/vision-piscina.webp 1800w" sizes="300px" alt="Vision Home Club" loading="lazy"><span class="em-st lanc">Lançamento</span></div><div class="em-b"><small>Vokkan · Grupo N1</small><strong>Vision Home Club</strong><em>Vivapark · Porto Belo</em><div class="em-sp"><span>103 a 180 m²</span><span>2 a 4 quartos</span><span>5.800 m² de lazer</span></div><span class="em-go">Ver empreendimento →</span></div></a><a class="em-card" data-s="pronto" href="zah-empreendimentos.html#canvas" data-origem="litoral_hub_canvas"><div class="em-ph"><img src="../images/zah/canvas-1-md.webp" srcset="../images/zah/canvas-1-md.webp 900w, ../images/zah/canvas-1.webp 1800w" sizes="300px" alt="Canvas" loading="lazy"><span class="em-st pronto">Pronto para morar</span></div><div class="em-b"><small>ZAH</small><strong>Canvas</strong><em>Meia Praia · Itapema</em><div class="em-sp"><span>179 a 188 m²</span><span>4 suítes</span><span>Quadra do mar</span></div><span class="em-go">Ver empreendimento →</span></div></a><a class="em-card" data-s="lanc" href="zah-empreendimentos.html#tenet2" data-origem="litoral_hub_tenet2"><div class="em-ph"><img src="../images/zah/tenet2-1-md.webp" srcset="../images/zah/tenet2-1-md.webp 900w, ../images/zah/tenet2-1.webp 1800w" sizes="300px" alt="Tenet · Fase 2" loading="lazy"><span class="em-st lanc">Lançamento</span></div><div class="em-b"><small>ZAH</small><strong>Tenet · Fase 2</strong><em>Tabuleiro das Oliveiras · Itapema</em><div class="em-sp"><span>40 a 144 m²</span><span>36 pavimentos</span><span>Parque de 12 mil m²</span></div><span class="em-go">Ver empreendimento →</span></div></a><a class="em-card" data-s="obra" href="zah-empreendimentos.html#amrita" data-origem="litoral_hub_amrita"><div class="em-ph"><img src="../images/zah/amrita-2-md.webp" srcset="../images/zah/amrita-2-md.webp 900w, ../images/zah/amrita-2.webp 1800w" sizes="300px" alt="Amrita" loading="lazy"><span class="em-st obra">Em obras</span></div><div class="em-b"><small>ZAH</small><strong>Amrita</strong><em>Perequê · Porto Belo</em><div class="em-sp"><span>125 a 144 m²</span><span>3 suítes</span><span>Frente mar</span></div><span class="em-go">Ver empreendimento →</span></div></a><a class="em-card" data-s="lanc" href="zah-empreendimentos.html#veda" data-origem="litoral_hub_veda"><div class="em-ph"><img src="../images/zah/veda-1-md.webp" srcset="../images/zah/veda-1-md.webp 900w, ../images/zah/veda-1.webp 1800w" sizes="300px" alt="Vedá" loading="lazy"><span class="em-st lanc">Lançamento</span></div><div class="em-b"><small>ZAH</small><strong>Vedá</strong><em>Canto da Praia · Itapema</em><div class="em-sp"><span>187 a 580 m²</span><span>3 a 5 suítes</span><span>Coberturas frente mar</span></div><span class="em-go">Ver empreendimento →</span></div></a><a class="em-card" data-s="lanc" href="zah-empreendimentos.html#tekoa" data-origem="litoral_hub_tekoa"><div class="em-ph"><img src="../images/zah/tekoa-1-md.webp" srcset="../images/zah/tekoa-1-md.webp 900w, ../images/zah/tekoa-1.webp 1800w" sizes="300px" alt="Tekoā" loading="lazy"><span class="em-st lanc">Lançamento</span></div><div class="em-b"><small>ZAH</small><strong>Tekoā</strong><em>Ilhota · Itapema</em><div class="em-sp"><span>Offices de 25 a 168 m²</span><span>Torre residencial</span><span>Gestão de locação</span></div><span class="em-go">Ver empreendimento →</span></div></a><a class="em-card" data-s="lanc" href="zah-empreendimentos.html#amazonia" data-origem="litoral_hub_amazonia"><div class="em-ph"><img src="../images/zah/amazonia-1-md.webp" srcset="../images/zah/amazonia-1-md.webp 900w, ../images/zah/amazonia-1.webp 1800w" sizes="300px" alt="Amazônia" loading="lazy"><span class="em-st lanc">Lançamento</span></div><div class="em-b"><small>ZAH</small><strong>Amazônia</strong><em>Frente mar · Porto Belo</em><div class="em-sp"><span>Boutique</span><span>WELL e LEED Platinum</span><span>Poucas unidades</span></div><span class="em-go">Ver empreendimento →</span></div></a></div>
 </section>
 
 <section class="hb-sec">
@@ -798,6 +842,14 @@ fbq('track', 'PageView');
       fbq('track', 'Lead', {}, { eventID: 'lead_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) });
     } catch (_) {}
   });
+})();
+</script>
+<script>
+(function () {
+  var row = document.getElementById('emRow'); if (!row) return;
+  document.querySelectorAll('.em-filt button').forEach(function (b) { b.addEventListener('click', function () { var f = b.getAttribute('data-f'); document.querySelectorAll('.em-filt button').forEach(function (x) { x.classList.toggle('on', x === b); }); row.querySelectorAll('.em-card').forEach(function (c) { c.classList.toggle('hide', f !== 'todos' && c.getAttribute('data-s') !== f); }); row.scrollLeft = 0; }); });
+  document.querySelectorAll('.em-arr button').forEach(function (b) { b.addEventListener('click', function () { row.scrollBy({ left: (+b.getAttribute('data-d')) * 316, behavior: 'smooth' }); }); });
+  document.querySelectorAll('.em-card, .em-3d a').forEach(function (a) { a.addEventListener('click', function () { try { gtag('event', 'empreendimento_click', { origem: a.getAttribute('data-origem') }); } catch (_) {} }); });
 })();
 </script>
 </body>
