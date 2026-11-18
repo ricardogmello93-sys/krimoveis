@@ -273,6 +273,46 @@ img { max-width: 100%; }
   .vp-duo { height: 470px; } .vp-arch { left: 6%; right: 6%; } .vp-names strong { font-size: 18px; } .vp-names span { font-size: 9.5px; letter-spacing: 1.2px; }
   .vp-final { padding: 90px 20px 20px; } .vp-vid-t { left: 16px; bottom: 14px; } .vp-next { font-size: 19px; }
 }
+.vp-3d { padding-top: 96px; }
+.vp-3d-wrap { max-width: 1280px; margin: 26px auto 0; padding: 0 20px; }
+.vp-3d-stage { position: relative; height: 74vh; min-height: 440px; max-height: 760px; border-radius: 30px; overflow: hidden; border: 1px solid rgba(226,199,126,0.4); background: radial-gradient(ellipse at 50% 40%, #0e3340, #061820 70%); box-shadow: 0 40px 90px rgba(0,0,0,0.5); touch-action: pan-y; }
+.vp-3d-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1s; }
+.vp-3d-stage.gl.ready canvas { opacity: 1; }
+.vp-3d-fb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; filter: blur(2px); transition: opacity 0.8s; }
+.vp-3d-stage.gl.ready .vp-3d-fb { opacity: 0; }
+.vp-3d-stage.nogl .vp-3d-fb { opacity: 1; filter: none; }
+.vp-3d-load { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand2); transition: opacity 0.5s; }
+.vp-3d-load i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(226,199,126,0.3); border-top-color: var(--gold2); animation: vpSpin 0.9s linear infinite; }
+@keyframes vpSpin { to { transform: rotate(360deg); } }
+.vp-3d-stage.ready .vp-3d-load, .vp-3d-stage.nogl .vp-3d-load { opacity: 0; pointer-events: none; }
+.vp-3d-pins { position: absolute; inset: 0; pointer-events: none; }
+.vp-pin { position: absolute; left: 0; top: 0; pointer-events: auto; border: 0; background: none; padding: 0; cursor: pointer; transition: opacity 0.3s; will-change: transform; }
+.vp-pin i { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--gold2); box-shadow: 0 0 0 4px rgba(226,199,126,0.25), 0 2px 10px rgba(0,0,0,0.5); }
+.vp-pin i::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid var(--gold2); animation: vpPulse 2.4s ease-out infinite; }
+@keyframes vpPulse { from { transform: scale(0.45); opacity: 0.95; } to { transform: scale(1.3); opacity: 0; } }
+.vp-pin span { position: absolute; left: 14px; top: -13px; white-space: nowrap; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; color: var(--white); padding: 6px 10px; border-radius: 100px; background: rgba(6,24,32,0.82); border: 1px solid rgba(226,199,126,0.45); backdrop-filter: blur(6px); }
+.vp-3d-card { position: absolute; left: 20px; top: 20px; max-width: 340px; padding: 16px 18px 15px; border-radius: 18px; background: rgba(6,24,32,0.86); border: 1px solid rgba(226,199,126,0.45); backdrop-filter: blur(10px); opacity: 0; transform: translateY(-8px); transition: opacity 0.35s, transform 0.35s; pointer-events: none; }
+.vp-3d-card.show { opacity: 1; transform: none; }
+.vp-3d-cx { position: absolute; right: 8px; top: 8px; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); background: rgba(6,24,32,0.6); color: #fff; font-size: 18px; line-height: 1; cursor: pointer; pointer-events: none; }
+.vp-3d-card.show .vp-3d-cx { pointer-events: auto; }
+.vp-3d-card strong { padding-right: 30px; }
+.vp-3d-card small { font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--sea2); }
+.vp-3d-card strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--sand2); margin: 2px 0 4px; }
+.vp-3d-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.vp-3d-live { display: none; position: absolute; right: 16px; bottom: 16px; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; padding: 10px 14px; border-radius: 100px; border: 1px solid rgba(226,199,126,0.55); background: rgba(6,24,32,0.85); color: var(--sand2); cursor: pointer; }
+.vp-3d-stage.live { touch-action: none; }
+.vp-3d-tour { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+.vp-3d-tour button { font: 500 12px 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; padding: 10px 16px; border-radius: 100px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--soft); cursor: pointer; transition: all 0.25s; }
+.vp-3d-tour button.on, .vp-3d-tour button:hover { background: linear-gradient(135deg, var(--sand2), var(--gold2)); color: var(--abyss); border-color: transparent; }
+@media (pointer: coarse) { .vp-3d-live { display: block; } }
+@media (max-width: 640px) { .vp-3d { padding-top: 70px; } .vp-3d-wrap { padding: 0 12px; } .vp-3d-stage { height: 68vh; min-height: 420px; border-radius: 22px; } .vp-3d-card { left: 12px; right: 12px; top: 12px; max-width: none; } .vp-3d-card strong { font-size: 22px; } .vp-3d-tour { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; } .vp-3d-tour button { flex-shrink: 0; } .vp-pin span { font-size: 9.5px; padding: 5px 8px; } }
+.vp-pin.zp i { background: #e2c77e; } .vp-pin.zp.pronto i { background: #5fd38a; } .vp-pin.zp.obra i { background: #79c2cd; }
+.vp-3d-card small { display: block; padding-right: 34px; }
+.zp-place { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: rgba(255,255,255,0.85); text-shadow: 0 2px 8px rgba(0,0,0,0.8); pointer-events: none; transition: opacity 0.3s; }
+.zp-more { margin-top: 10px; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; padding: 9px 14px; border-radius: 100px; border: 0; background: linear-gradient(135deg, var(--sand2), var(--gold2)); color: var(--abyss); cursor: pointer; pointer-events: none; }
+.vp-3d-card.show .zp-more { pointer-events: auto; }
+.zp-leg { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 12px; font-size: 12px; color: var(--soft); }
+.zp-leg i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -365,7 +405,28 @@ fbq('track', 'PageView');
     </article>
   </div>
   <p class="vp-cap">Imagens ilustrativas da ZAH. Fichas conforme o site da construtora em novembro de 2026; metragens do Tenet Fase 1 e do Vedá conforme divulgação em portais. Condições e disponibilidade mudam: confirme na tabela atual.</p>
-  <a class="vp-next rv" href="#porque"><span>A seguir</span>Por que a ZAH é diferente<i aria-hidden="true"></i></a>
+  <a class="vp-next rv" href="#maquete"><span>A seguir</span>Veja onde fica cada um, em 3D<i aria-hidden="true"></i></a>
+</section>
+
+<section class="vp-3d" id="maquete">
+  <div class="vp-sec" style="padding-top:0">
+    <span class="lt-tag rv">Maquete do portfólio</span>
+    <h2 class="vp-h2 rv">O litoral da ZAH <em>em 3D</em></h2>
+    <p class="vp-p rv">O relevo real de Itapema e Porto Belo, com o mar, os morros e as avenidas. Os prédios da ZAH sobem no endereço de cada um: toque em um deles para ver os detalhes.</p>
+  </div>
+  <div class="vp-3d-wrap rv">
+    <div class="vp-3d-stage" id="zh3d" data-terrain="../js/zah-terreno.json">
+      <canvas aria-label="Maquete 3D do portfólio da ZAH em Itapema e Porto Belo"></canvas>
+      <div class="vp-3d-pins"></div>
+      <div class="vp-3d-card" role="status" aria-live="polite"><button class="vp-3d-cx" type="button" aria-label="Fechar">×</button><small></small><strong></strong><p></p><button class="zp-more" type="button">Ver detalhes</button></div>
+      <div class="vp-3d-load"><i></i>Montando a maquete</div>
+      <button class="vp-3d-live" type="button">Toque para explorar</button>
+    </div>
+    <div class="vp-3d-tour" role="toolbar" aria-label="Passeio pela maquete"><button type="button" data-k="geral">Visão geral</button><button type="button" data-k="canvas">Canvas</button><button type="button" data-k="amrita">Amrita</button><button type="button" data-k="tenet">Tenet</button><button type="button" data-k="veda">Vedá</button><button type="button" data-k="amazonia">Amazônia</button><button type="button" data-k="tekoa">Tekoā</button></div>
+    <div class="zp-leg"><span><i style="background:#5fd38a"></i>Pronto para morar</span><span><i style="background:#79c2cd"></i>Em obras</span><span><i style="background:#e2c77e"></i>Lançamento</span></div>
+  </div>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maquete ilustrativa. Relevo real (dados SRTM), exagerado 2 vezes, e vias do OpenStreetMap (© colaboradores do OpenStreetMap). Prédios em escala ampliada, com posições e alturas aproximadas.</p>
+  <a class="vp-next rv" href="#porque"><span>A seguir</span>Por que a ZAH é diferente<i aria-hidden="true"></i></a></div>
 </section>
 
 <section class="vp-sec" id="porque">
@@ -533,6 +594,13 @@ fbq('track', 'PageView');
     modal.classList.add('open'); document.documentElement.style.overflow = 'hidden'; q('.zh-panel').scrollTop = 0; q('.zh-x').focus({ preventScroll: true });
     setTimeout(function () { modal.querySelectorAll('.zh-bars i b').forEach(function (b) { b.style.width = b.getAttribute('data-w') + '%'; }); }, 120);
     try { gtag('event', 'zah_detalhe', { empreendimento: id }); } catch (_) {}
+  }
+  // maquete do portfólio: carrega só quando a pessoa chega perto
+  var z3 = document.getElementById('zh3d');
+  if (z3) {
+    var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=mwlj8azk').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   function closeDet() { modal.classList.remove('open'); document.documentElement.style.overflow = ''; if (lastFocus) try { lastFocus.focus(); } catch (_) {} }
   document.querySelectorAll('[data-open]').forEach(function (b) { b.addEventListener('click', function () { openDet(b.getAttribute('data-open')); }); });
