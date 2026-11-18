@@ -756,7 +756,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwll200c').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=sol1811a').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();
