@@ -175,6 +175,36 @@ img { max-width: 100%; }
 .vp-pop.show { opacity: 1; transform: none; }
 .vp-pop strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; color: var(--sand2); }
 .vp-pop p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-top: 3px; }
+.vp-3d { padding-top: 96px; }
+.vp-3d-wrap { max-width: 1280px; margin: 26px auto 0; padding: 0 20px; }
+.vp-3d-stage { position: relative; height: 74vh; min-height: 440px; max-height: 760px; border-radius: 30px; overflow: hidden; border: 1px solid rgba(226,199,126,0.4); background: radial-gradient(ellipse at 50% 40%, #0e3340, #061820 70%); box-shadow: 0 40px 90px rgba(0,0,0,0.5); touch-action: pan-y; }
+.vp-3d-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1s; }
+.vp-3d-stage.gl.ready canvas { opacity: 1; }
+.vp-3d-fb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; filter: blur(2px); transition: opacity 0.8s; }
+.vp-3d-stage.gl.ready .vp-3d-fb { opacity: 0; }
+.vp-3d-stage.nogl .vp-3d-fb { opacity: 1; filter: none; }
+.vp-3d-load { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sand2); transition: opacity 0.5s; }
+.vp-3d-load i { width: 22px; height: 22px; border-radius: 50%; border: 2px solid rgba(226,199,126,0.3); border-top-color: var(--gold2); animation: vpSpin 0.9s linear infinite; }
+@keyframes vpSpin { to { transform: rotate(360deg); } }
+.vp-3d-stage.ready .vp-3d-load, .vp-3d-stage.nogl .vp-3d-load { opacity: 0; pointer-events: none; }
+.vp-3d-pins { position: absolute; inset: 0; pointer-events: none; }
+.vp-pin { position: absolute; left: 0; top: 0; pointer-events: auto; border: 0; background: none; padding: 0; cursor: pointer; transition: opacity 0.3s; will-change: transform; }
+.vp-pin i { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--gold2); box-shadow: 0 0 0 4px rgba(226,199,126,0.25), 0 2px 10px rgba(0,0,0,0.5); }
+.vp-pin i::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid var(--gold2); animation: vpPulse 2.4s ease-out infinite; }
+@keyframes vpPulse { from { transform: scale(0.45); opacity: 0.95; } to { transform: scale(1.3); opacity: 0; } }
+.vp-pin span { position: absolute; left: 14px; top: -13px; white-space: nowrap; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; color: var(--white); padding: 6px 10px; border-radius: 100px; background: rgba(6,24,32,0.82); border: 1px solid rgba(226,199,126,0.45); backdrop-filter: blur(6px); }
+.vp-3d-card { position: absolute; left: 20px; top: 20px; max-width: 340px; padding: 16px 18px 15px; border-radius: 18px; background: rgba(6,24,32,0.86); border: 1px solid rgba(226,199,126,0.45); backdrop-filter: blur(10px); opacity: 0; transform: translateY(-8px); transition: opacity 0.35s, transform 0.35s; pointer-events: none; }
+.vp-3d-card.show { opacity: 1; transform: none; }
+.vp-3d-card small { font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--sea2); }
+.vp-3d-card strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--sand2); margin: 2px 0 4px; }
+.vp-3d-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.vp-3d-live { display: none; position: absolute; right: 16px; bottom: 16px; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; padding: 10px 14px; border-radius: 100px; border: 1px solid rgba(226,199,126,0.55); background: rgba(6,24,32,0.85); color: var(--sand2); cursor: pointer; }
+.vp-3d-stage.live { touch-action: none; }
+.vp-3d-tour { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+.vp-3d-tour button { font: 500 12px 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; padding: 10px 16px; border-radius: 100px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--soft); cursor: pointer; transition: all 0.25s; }
+.vp-3d-tour button.on, .vp-3d-tour button:hover { background: linear-gradient(135deg, var(--sand2), var(--gold2)); color: var(--abyss); border-color: transparent; }
+@media (pointer: coarse) { .vp-3d-live { display: block; } }
+@media (max-width: 640px) { .vp-3d { padding-top: 70px; } .vp-3d-wrap { padding: 0 12px; } .vp-3d-stage { height: 68vh; min-height: 420px; border-radius: 22px; } .vp-3d-card { left: 12px; right: 12px; top: 12px; max-width: none; } .vp-3d-card strong { font-size: 22px; } .vp-3d-tour { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; } .vp-3d-tour button { flex-shrink: 0; } .vp-pin span { font-size: 9.5px; padding: 5px 8px; } }
 .vp-day { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 34px; border-top: 1px solid var(--line); }
 .vp-d { padding: 26px 24px 8px 0; position: relative; }
 .vp-d + .vp-d { padding-left: 24px; border-left: 1px solid var(--line); }
@@ -307,7 +337,7 @@ fbq('track', 'PageView');
   <div class="lang" role="navigation" aria-label="Idioma / Language"><a href="./" hreflang="pt-BR" lang="pt-BR" class="on" title="Português" aria-label="Português" aria-current="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#229e45"/><path d="M14 2.6 25.4 10 14 17.4 2.6 10z" fill="#f8e509"/><circle cx="14" cy="10" r="4.6" fill="#2b49a3"/><path d="M9.5 9.2c3-.9 6.4-.5 9 1" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a><a href="../en/" hreflang="en" lang="en" class="" title="English" aria-label="English"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="3.076923076923077" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="6.153846153846154" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="9.23076923076923" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="12.307692307692308" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="15.384615384615385" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="18.46153846153846" width="28" height="1.5384615384615385" fill="#b22234"/><rect width="12" height="10.76923076923077" fill="#3c3b6e"/></svg><span>EN</span></a><a href="../es/" hreflang="es" lang="es" class="" title="Español" aria-label="Español"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/></svg><span>ES</span></a></div>
   <img src="../images/logo-santa-branca.png" alt="Santa Imóveis" class="lt-santa" loading="lazy">
 </nav>
-<nav class="vp-rail" id="vpRail" aria-label="Capítulos da página"><a href="#video" data-k="video"><span>O vídeo</span></a><a href="#pronto" data-k="pronto"><span>Já pronto</span></a><a href="#bairro" data-k="bairro"><span>O bairro</span></a><a href="#rotina" data-k="rotina"><span>Um dia</span></a><a href="#vision" data-k="vision"><span>Vision</span></a><a href="#quem" data-k="quem"><span>Quem atende</span></a></nav>
+<nav class="vp-rail" id="vpRail" aria-label="Capítulos da página"><a href="#video" data-k="video"><span>O vídeo</span></a><a href="#pronto" data-k="pronto"><span>Já pronto</span></a><a href="#bairro" data-k="bairro"><span>O bairro</span></a><a href="#maquete" data-k="maquete"><span>Maquete 3D</span></a><a href="#rotina" data-k="rotina"><span>Um dia</span></a><a href="#vision" data-k="vision"><span>Vision</span></a><a href="#quem" data-k="quem"><span>Quem atende</span></a></nav>
 <header class="vp-hero">
   <img class="k" src="../images/vivapark/vertice-lago-md.webp" srcset="../images/vivapark/vertice-lago-md.webp 1000w, ../images/vivapark/vertice-lago.webp 2000w" sizes="100vw" alt="Vértice e o boulevard à beira do lago no Vivapark, em Porto Belo, com as montanhas ao fundo" fetchpriority="high">
   <span class="vp-cap-h">Vértice, à beira do lago do Vivapark · ilustração</span>
@@ -380,17 +410,34 @@ fbq('track', 'PageView');
       <p class="vp-p rv">A ideia é simples: ruas arborizadas, parques, lagos e comércio no mesmo lugar, <strong>sem muros</strong> e com segurança por tecnologia. A estimativa da incorporadora é de até 35 mil moradores quando o bairro estiver pronto.</p>
     </div>
     <div class="rv d1">
-      <div class="vp-map" id="vpMap">
+      <div class="vp-map">
         <img src="../images/vivapark/viva-entrada-md.webp" srcset="../images/vivapark/viva-entrada-md.webp 900w, ../images/vivapark/viva-entrada.webp 1800w" sizes="(max-width: 900px) 100vw, 55vw" alt="Vista aérea do Vivapark com o parque, o campo de society e a mata preservada" loading="lazy">
-        <button class="vp-hot" style="left:41.5%;top:42.5%" type="button" data-i="0" aria-label="Lago e parque"></button>
-        <button class="vp-hot" style="left:59.5%;top:74%" type="button" data-i="1" aria-label="Campo de society"></button>
-        <button class="vp-hot" style="left:82%;top:64%" type="button" data-i="2" aria-label="Mata preservada"></button>
-        <div class="vp-pop" id="vpPop" role="status" aria-live="polite"><strong></strong><p></p></div>
       </div>
-      <p class="vp-cap">Toque nos pontos dourados. Foto aérea de 2024, com o bairro em obras.</p>
+      <p class="vp-cap">Foto aérea de 2024, com o bairro em obras.</p>
     </div>
   </div>
-  <a class="vp-next rv" href="#rotina"><span>A seguir</span>Como é um dia no Vivapark<i aria-hidden="true"></i></a>
+  <a class="vp-next rv" href="#maquete"><span>A seguir</span>Explore o bairro em 3D<i aria-hidden="true"></i></a>
+</section>
+
+<section class="vp-3d" id="maquete">
+  <div class="vp-sec" style="padding-top:0">
+    <span class="lt-tag rv">Maquete digital</span>
+    <h2 class="vp-h2 rv">Explore o Vivapark <em>em 3D</em></h2>
+    <p class="vp-p rv">Gire, aproxime e toque nos pontos. Veja o Vértice subir do chão, os lagos, o boulevard e as ruas de casas, como se você estivesse sobrevoando o bairro.</p>
+  </div>
+  <div class="vp-3d-wrap rv">
+    <div class="vp-3d-stage" id="vp3d" data-tex="../images/vivapark/implantacao.jpg">
+      <img class="vp-3d-fb" src="../images/vivapark/implantacao-md.jpg" alt="Implantação geral do Vivapark vista de cima" loading="lazy">
+      <canvas aria-label="Maquete 3D interativa do Vivapark"></canvas>
+      <div class="vp-3d-pins"></div>
+      <div class="vp-3d-card" role="status" aria-live="polite"><small></small><strong></strong><p></p></div>
+      <div class="vp-3d-load"><i></i>Montando a maquete</div>
+      <button class="vp-3d-live" type="button">Toque para explorar</button>
+    </div>
+    <div class="vp-3d-tour" role="toolbar" aria-label="Passeio pela maquete"><button type="button" data-k="geral">Visão geral</button><button type="button" data-k="vertice">Vértice</button><button type="button" data-k="lago">Lago e boulevard</button><button type="button" data-k="casas">Casas</button><button type="button" data-k="mata">Mata preservada</button><button type="button" data-k="br">BR-101</button></div>
+  </div>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maquete digital ilustrativa, montada sobre a implantação geral do projeto. Posições e alturas aproximadas; o bairro segue em expansão.</p>
+  <a class="vp-next rv" href="#rotina"><span>A seguir</span>Como é um dia no Vivapark<i aria-hidden="true"></i></a></div>
 </section>
 
 <section class="vp-sec" id="rotina">
@@ -563,9 +610,15 @@ fbq('track', 'PageView');
   window.addEventListener('scroll', prog, { passive: true }); prog();
   if ('IntersectionObserver' in window) {
     var so = new IntersectionObserver(function (es) { var vis = es.filter(function (e) { return e.isIntersecting; }); if (!vis.length) return; var id = vis[vis.length - 1].target.id; links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('data-k') === id); }); }, { rootMargin: '-45% 0px -54% 0px' });
-    ["video","pronto","bairro","rotina","vision","quem"].forEach(function (id) { var el = document.getElementById(id); if (el) so.observe(el); });
+    ["video","pronto","bairro","maquete","rotina","vision","quem"].forEach(function (id) { var el = document.getElementById(id); if (el) so.observe(el); });
   }
   var v = document.querySelector('.vp-vis-ban video'); if (v) { var pv = v.play(); if (pv && pv.catch) pv.catch(function () {}); }
+  // maquete 3D: só carrega quando a pessoa chega perto dela
+  var st3 = document.getElementById('vp3d');
+  if (st3) {
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwliq2ii').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
+  }
 })();
 </script>
 </body>
