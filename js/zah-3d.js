@@ -6,7 +6,7 @@ import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/exampl
 const VE = 2.0, BX = 3.0; // exagero do relevo e dos prédios
 const ST = { pronto: 0x5fd38a, obra: 0x79c2cd, lanc: 0xe2c77e };
 const P = [
-  { id: 'canvas', nome: 'Canvas', st: 'pronto', ll: [-27.1388, -48.5946], tw: [[0, 0, 16, 26, 22]] },
+  { id: 'canvas', nome: 'Canvas', st: 'pronto', ll: [-27.1388, -48.5933], tw: [[0, 0, 16, 26, 22]] },
   { id: 'amrita', nome: 'Amrita', st: 'obra', ll: [-27.1545, -48.5699], tw: [[0, 0, 17, 30, 20]] },
   { id: 'tenet', nome: 'Tenet', st: 'obra', ll: [-27.0987, -48.6227], tw: [[-45, 0, 30, 24, 24, 'obra'], [45, 12, 30, 24, 24, 'obra'], [-135, -30, 36, 24, 24, 'lanc'], [130, 40, 36, 24, 24, 'lanc']], sub: 'Fase 1 em obras · Fase 2 em lançamento' },
   { id: 'veda', nome: 'Vedá', st: 'lanc', ll: [-27.0898, -48.6059], tw: [[0, 0, 22, 30, 24]] },
@@ -71,6 +71,24 @@ export async function init(stage, opts = {}) {
   data.roads.forEach((r) => { const arr = groups[r.t] || (groups[r.t] = []); for (let i = 1; i < r.p.length; i++) { const a = r.p[i - 1], b = r.p[i]; arr.push(X(a[1]), hAt(a[0], a[1]) + 0.06, Z(a[0]), X(b[1]), hAt(b[0], b[1]) + 0.06, Z(b[0])); } });
   Object.entries(groups).forEach(([t, arr]) => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(arr, 3)); scene.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: roadMat[t] || 0xbfb39a, transparent: true, opacity: t === 'secondary' ? 0.45 : 0.8 }))); });
 
+  // cidade em volta: construções ao longo das ruas reais (altas perto da praia), num único desenho instanciado
+  if (data.bf && data.bf.length) {
+    const n = data.bf.length / 6, latC2 = (N + S) / 2, mxm = 111320 * Math.cos(latC2 * Math.PI / 180), mzm = 110540;
+    const bg = new THREE.BoxGeometry(1, 1, 1); bg.translate(0, 0.5, 0);
+    const im = new THREE.InstancedMesh(bg, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.75, metalness: 0.02 }), n);
+    im.castShadow = true; im.receiveShadow = true;
+    const mtx = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), ps = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0), cc = new THREE.Color();
+    for (let k = 0; k < n; k++) {
+      const xm = data.bf[k * 6], zm = data.bf[k * 6 + 1], fl = data.bf[k * 6 + 2], w = data.bf[k * 6 + 3], d = data.bf[k * 6 + 4], a = data.bf[k * 6 + 5];
+      const lon = W + xm / mxm, lat = N - zm / mzm;
+      ps.set(X(lon), hAt(lat, lon) - 0.02, Z(lat)); q.setFromAxisAngle(up, a * Math.PI / 180); sc.set(w / 100, fl * 3 * 1.8 / 100, d / 100);
+      mtx.compose(ps, q, sc); im.setMatrixAt(k, mtx);
+      const tone = 0.6 + ((k * 2654435761) % 1000) / 1000 * 0.16; cc.setRGB(tone * 0.97, tone * 0.96, tone * 0.93); im.setColorAt(k, cc);
+    }
+    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
+    scene.add(im);
+  }
+
   // prédios
   const white = new THREE.MeshStandardMaterial({ color: 0xf3eee4, roughness: 0.5, metalness: 0.05 });
   const risers = [];
@@ -80,7 +98,7 @@ export async function init(stage, opts = {}) {
       const h = fl * 3 * BX / 100, ww = w * 2.2 / 100, dd = d * 2.2 / 100;
       const geo = new THREE.BoxGeometry(ww, h, dd); geo.translate(0, h / 2, 0);
       const lanc = (st || p.st) === 'lanc';
-      const mat = lanc ? new THREE.MeshStandardMaterial({ color: 0xe2c77e, roughness: 0.3, metalness: 0.3, transparent: true, opacity: 0.85 }) : white;
+      const mat = lanc ? new THREE.MeshStandardMaterial({ color: 0xe2c77e, emissive: 0xb8862b, emissiveIntensity: 0.35, roughness: 0.3, metalness: 0.3 }) : new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: ST[st || p.st], emissiveIntensity: 0.22, roughness: 0.45 });
       const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.position.set(dx * 2.2 / 100, 0, dz * 2.2 / 100);
       const ed = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: ST[st || p.st], transparent: true, opacity: 0.9 })); m.add(ed);
       // faixas de andares
@@ -92,7 +110,13 @@ export async function init(stage, opts = {}) {
     // anel no chão marcando o lugar
     const ring = new THREE.Mesh(new THREE.RingGeometry(1.1, 1.25, 48), new THREE.MeshBasicMaterial({ color: ST[p.st], transparent: true, opacity: 0.85, side: THREE.DoubleSide }));
     ring.rotation.x = -Math.PI / 2; ring.position.y = 0.08; g.add(ring);
-    g.userData.ring = ring; scene.add(g); p.g = g; p.top = new THREE.Vector3(g.position.x, base + Math.max(...p.tw.map((t) => t[2])) * 3 * BX / 100 + 0.6, g.position.z);
+    // feixe de luz acima do prédio, para achar cada empreendimento no meio da cidade
+    const topH = Math.max(...p.tw.map((t) => t[2])) * 3 * BX / 100;
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.5, 7, 24, 1, true), new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, uniforms: { c: { value: new THREE.Color(ST[p.st]) } },
+      vertexShader: 'varying float vY; void main(){ vY = position.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'uniform vec3 c; varying float vY; void main(){ float a = smoothstep(3.5, -3.5, vY) * 0.38; gl_FragColor = vec4(c, a); }' }));
+    beam.position.y = topH + 3.6; g.add(beam); g.userData.beam = beam;
+    g.userData.ring = ring; scene.add(g); p.g = g; p.top = new THREE.Vector3(g.position.x, base + Math.max(...p.tw.map((t) => t[2])) * 3 * BX / 100 + 1.2, g.position.z);
     risers.push({ g, t0: null });
   });
 
@@ -137,7 +161,13 @@ export async function init(stage, opts = {}) {
   canvas.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
   canvas.addEventListener('pointerup', (e) => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 8) hideCard(); downAt = null; });
 
-  function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+  // tela cheia (funciona em qualquer celular: a maquete ocupa a tela toda e gira com o dedo)
+  const fsb = stage.querySelector('.vp-3d-fs');
+  if (fsb) fsb.addEventListener('click', () => {
+    const on = !stage.classList.contains('fs'); stage.classList.toggle('fs', on); document.documentElement.style.overflow = on ? 'hidden' : '';
+    fsb.textContent = on ? '× Sair' : '⤢ Tela cheia'; controls.enabled = on || !touch || stage.classList.contains('live'); setTimeout(resize, 60);
+    try { gtag('event', 'maquete_tela_cheia', { on: on ? 1 : 0 }); } catch (_) {}
+  });  function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
   new ResizeObserver(resize).observe(stage); resize();
   camera.position.set(110, 120, 90); controls.target.set(0, 0, 2);
   go('geral'); risers.forEach((r, i) => { r.t0 = performance.now() + 900 + i * 260; });
@@ -150,7 +180,7 @@ export async function init(stage, opts = {}) {
     requestAnimationFrame(loop); if (!visible) return;
     waterMat.uniforms.t.value += Math.min(clock.getDelta(), 0.05);
     const now = performance.now();
-    risers.forEach((r) => { const k = r.t0 == null ? 0 : Math.max(0, Math.min(1, (now - r.t0) / 1600)); const e = 1 - Math.pow(1 - k, 3); r.g.children.forEach((ch) => { if (ch !== r.g.userData.ring) ch.scale.y = Math.max(0.001, e); }); r.g.userData.ring.material.opacity = 0.5 + 0.4 * Math.sin(now / 500); });
+    risers.forEach((r) => { const k = r.t0 == null ? 0 : Math.max(0, Math.min(1, (now - r.t0) / 1600)); const e = 1 - Math.pow(1 - k, 3); r.g.children.forEach((ch) => { if (ch !== r.g.userData.ring && ch !== r.g.userData.beam) ch.scale.y = Math.max(0.001, e); }); r.g.userData.beam.material.uniforms.c.value; r.g.userData.beam.visible = e > 0.95; r.g.userData.ring.material.opacity = 0.5 + 0.4 * Math.sin(now / 500); });
     if (fly) { const k = Math.min(1, (now - fly.t0) / fly.d), e = ease(k); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.q0, fly.q1, e); if (k >= 1) fly = null; }
     else if (!controls.autoRotate && now - idleT > 8000) controls.autoRotate = true;
     controls.update(); renderer.render(scene, camera);
