@@ -14,6 +14,13 @@ const STOPS = {
   mata: { t: [300, 330, 0], c: [-3.2, 3.6, 3.6], k: 'Natureza', n: 'Mata preservada', d: 'São 138 mil m² de áreas verdes no projeto, com parques de reserva ambiental em volta das casas e dos prédios.' },
   br: { t: [420, 900, 0], c: [-3.6, 2.8, 4.2], k: 'Localização', n: 'Acesso pela BR-101', d: 'Na entrada de Porto Belo, ao lado do Jardim Dourado. Itapema e Bombinhas ficam logo ali.' },
 };
+// textos em inglês e espanhol (a página define o idioma no <html lang>)
+const I18N = {
+  en: { geral: ['Digital model', 'Vivapark from above', 'Over 550,000 m² planned by Jaime Lerner: houses, buildings, shops, lakes and lots of green, without walls.'], vertice: ['Development', 'Vértice', 'Two terraced towers full of gardens, facing the lake and the boulevard, in the heart of the neighborhood.'], lago: ['Open today', 'Lake and boulevard', 'Restaurants facing the water and the park around: where the neighborhood meets at the end of the day.'], casas: ['Live here', 'Houses', 'Lots for houses on tree-lined streets, with underground wiring and 24-hour monitoring.'], mata: ['Nature', 'Preserved forest', '138,000 m² of green areas in the project, with nature reserve parks around the houses and buildings.'], br: ['Location', 'BR-101 access', 'At the entrance of Porto Belo, next to Jardim Dourado. Itapema and Bombinhas are right there.'] },
+  es: { geral: ['Maqueta digital', 'Vivapark desde arriba', 'Más de 550 mil m² planificados por Jaime Lerner: casas, edificios, comercios, lagos y mucho verde, sin muros.'], vertice: ['Emprendimiento', 'Vértice', 'Dos torres escalonadas llenas de jardines, frente al lago y al boulevard, en el centro del barrio.'], lago: ['Ya listo', 'Lago y boulevard', 'Restaurantes frente al agua y el parque alrededor: el punto de encuentro del barrio al final del día.'], casas: ['Vivir', 'Casas', 'Lotes para casas en calles arboladas, con cableado subterráneo y monitoreo las 24 horas.'], mata: ['Naturaleza', 'Bosque preservado', '138 mil m² de áreas verdes en el proyecto, con parques de reserva ambiental alrededor.'], br: ['Ubicación', 'Acceso por la BR-101', 'En la entrada de Porto Belo, junto al Jardim Dourado. Itapema y Bombinhas quedan al lado.'] },
+};
+const LG = (document.documentElement.lang || 'pt').slice(0, 2);
+if (I18N[LG]) for (const [k, [a, b, c]] of Object.entries(I18N[LG])) Object.assign(STOPS[k], { k: a, n: b, d: c });
 const PINS = [['vertice', 742, 500, 2.05], ['lago', 760, 790, 0.1], ['casas', 1430, 560, 0.1], ['mata', 260, 300, 0.1], ['br', 300, 860, 0.06]];
 
 export function init(stage) {

@@ -13,6 +13,10 @@ const P = [
   { id: 'tekoa', nome: 'Tekoā', st: 'lanc', ll: [-27.0626, -48.5967], tw: [[-30, 0, 26, 24, 22], [34, 18, 20, 30, 26]] },
   { id: 'amazonia', nome: 'Amazônia', st: 'lanc', ll: [-27.1575, -48.5585], tw: [[0, 0, 8, 22, 18]], aprox: true },
 ];
+const ZT = { pt: { st: { pronto: 'Pronto para morar', obra: 'Em obras', lanc: 'Lançamento' }, tenet: 'Fase 1 em obras · Fase 2 em lançamento', aprox: 'Frente mar em Porto Belo (posição aproximada).', ver: 'Toque em "Ver detalhes" para a ficha completa e a tabela.' },
+  en: { st: { pronto: 'Move-in ready', obra: 'Under construction', lanc: 'New launch' }, tenet: 'Phase 1 under construction · Phase 2 new launch', aprox: 'Beachfront in Porto Belo (approximate position).', ver: 'Tap "View details" for the full specs and prices.' },
+  es: { st: { pronto: 'Listo para vivir', obra: 'En construcción', lanc: 'Lanzamiento' }, tenet: 'Etapa 1 en obra · Etapa 2 en lanzamiento', aprox: 'Frente al mar en Porto Belo (posición aproximada).', ver: 'Toque "Ver detalles" para la ficha completa y la lista.' } };
+const ZL = ZT[(document.documentElement.lang || 'pt').slice(0, 2)] || ZT.pt;
 const PLACES = [['Itapema', -27.093, -48.616], ['Meia Praia', -27.124, -48.604], ['Porto Belo', -27.161, -48.556], ['BR-101', -27.118, -48.628], ['Balneário Camboriú ↑', -27.056, -48.606]];
 
 export async function init(stage, opts = {}) {
@@ -140,9 +144,9 @@ export async function init(stage, opts = {}) {
     else {
       const p = P.find((x) => x.id === id); if (!p) return; cur = p;
       tgt = p.g.position.clone().add(new THREE.Vector3(0, 1, 0)); off = new THREE.Vector3(9, 7, 8);
-      card.querySelector('small').textContent = p.sub || ({ pronto: 'Pronto para morar', obra: 'Em obras', lanc: 'Lançamento' })[p.st];
+      card.querySelector('small').textContent = p.sub ? ZL.tenet : ZL.st[p.st];
       card.querySelector('strong').textContent = p.nome;
-      card.querySelector('p').textContent = p.aprox ? 'Frente mar em Porto Belo (posição aproximada).' : 'Toque em "Ver detalhes" para a ficha completa e a tabela.';
+      card.querySelector('p').textContent = p.aprox ? ZL.aprox : ZL.ver;
       card.classList.add('show'); clearTimeout(cardT); cardT = setTimeout(hideCard, 8000);
       risers.find((r) => r.g === p.g).t0 = performance.now() + 450;
       try { gtag('event', 'maquete_zah', { ponto: id }); } catch (_) {}
