@@ -528,7 +528,7 @@ fbq('track', 'PageView');
     </div>
     <div class="vp-3d-tour" role="toolbar" aria-label="Passeio pela maquete"><button type="button" data-k="geral">Visão geral</button><button type="button" data-k="lanc">Lançamentos</button><button type="button" data-k="vision">Vision</button><button type="button" data-k="vertice">Vértice</button><button type="button" data-k="lago">Lago e boulevard</button><button type="button" data-k="casas">Casas</button><button type="button" data-k="mata">Mata preservada</button><button type="button" data-k="br">BR-101</button></div>
   </div>
-  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maquete digital ilustrativa, montada sobre a implantação geral do projeto. Os prédios estão no lugar indicado pelo mapa de lotes do bairro; posições e alturas aproximadas. O bairro segue em expansão.</p>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maquete digital ilustrativa, montada sobre a implantação geral do projeto. Os prédios estão no lugar indicado pelo mapa de lotes do bairro; posições e alturas aproximadas. Em volta, o córrego, as ruas já abertas da fase 2, a avenida e a BR-101 vêm do OpenStreetMap (© colaboradores do OpenStreetMap).</p>
   <a class="vp-next rv" href="#pronto"><span>A seguir</span>O que já está pronto no bairro<i aria-hidden="true"></i></a></div>
 </section>
 
@@ -756,7 +756,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwm4u4hm').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwm6r0kd').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();

@@ -110,17 +110,14 @@ export function init(stage) {
   [[628, 668], [842, 668]].forEach(([x, y]) => { const m = box(1.25, 0.12, 0.55, roof); m.position.copy(P(x, y)); scene.add(m); });
 
   // chão em volta da planta: o resto do bairro (fase 2 do outro lado do parque), em traço de projeto
+  // entorno real (OpenStreetMap): o córrego Rio da Vovó com o parque linear, as ruas já abertas da fase 2,
+  // a Av. Gov. Celso Ramos, a BR-101 com o trevo e os lagos; georreferenciado na planta (C:/kr-cut/viva/entorno.mjs)
+  // a imagem cobre de -1400 a 2800 px na horizontal e de -700 a 1900 px na vertical da planta
   {
-    const cv = document.createElement('canvas'); cv.width = 1024; cv.height = 512; const x = cv.getContext('2d');
-    x.fillStyle = '#1c3a33'; x.fillRect(0, 0, 1024, 512);
-    x.strokeStyle = 'rgba(226,199,126,0.13)'; x.lineWidth = 1;
-    for (let i = 0; i <= 32; i++) { x.beginPath(); x.moveTo(i * 32, 0); x.lineTo(i * 32, 512); x.stroke(); }
-    for (let j = 0; j <= 16; j++) { x.beginPath(); x.moveTo(0, j * 32); x.lineTo(1024, j * 32); x.stroke(); }
-    const fade = x.createRadialGradient(512, 256, 120, 512, 256, 560); fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(1, 'rgba(0,0,0,1)');
-    x.globalCompositeOperation = 'destination-out'; x.fillStyle = fade; x.fillRect(0, 0, 1024, 512);
-    const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace;
-    const campo = new THREE.Mesh(new THREE.PlaneGeometry(32, 16), new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: 1, depthWrite: false }));
-    campo.rotation.x = -Math.PI / 2; campo.position.set(-3.2, -0.2, 0.2); campo.renderOrder = -1; scene.add(campo);
+    const tx = new THREE.TextureLoader().load(stage.getAttribute('data-tex').replace(/implantacao\.jpg$/, 'entorno.webp'));
+    tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    const campo = new THREE.Mesh(new THREE.PlaneGeometry(42, 26), new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: 1, depthWrite: false }));
+    campo.rotation.x = -Math.PI / 2; campo.position.copy(P(700, 600, -0.2)); campo.renderOrder = -1; scene.add(campo);
   }
 
   // os outros prédios do bairro, no lugar de cada um (mapa de lotes do Vivapark, posições aproximadas)
@@ -194,7 +191,7 @@ export function init(stage) {
   // controles: arrastar gira, pinça/scroll aproxima; giro automático lento quando parado
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true; controls.dampingFactor = 0.07; controls.enablePan = false; controls.enableZoom = false;
-  controls.minDistance = 3; controls.maxDistance = 19; controls.minPolarAngle = 0.25; controls.maxPolarAngle = 1.32;
+  controls.minDistance = 3; controls.maxDistance = 24; controls.minPolarAngle = 0.25; controls.maxPolarAngle = 1.32;
   controls.autoRotate = true; controls.autoRotateSpeed = 0.45;
   const touch = window.matchMedia('(pointer: coarse)').matches;
   controls.enabled = !touch; // no celular só gira depois de tocar em "Explorar", para não travar a rolagem da página
