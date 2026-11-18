@@ -195,6 +195,9 @@ img { max-width: 100%; }
 .vp-pin span { position: absolute; left: 14px; top: -13px; white-space: nowrap; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.2px; text-transform: uppercase; color: var(--white); padding: 6px 10px; border-radius: 100px; background: rgba(6,24,32,0.82); border: 1px solid rgba(226,199,126,0.45); backdrop-filter: blur(6px); }
 .vp-3d-card { position: absolute; left: 20px; top: 20px; max-width: 340px; padding: 16px 18px 15px; border-radius: 18px; background: rgba(6,24,32,0.86); border: 1px solid rgba(226,199,126,0.45); backdrop-filter: blur(10px); opacity: 0; transform: translateY(-8px); transition: opacity 0.35s, transform 0.35s; pointer-events: none; }
 .vp-3d-card.show { opacity: 1; transform: none; }
+.vp-3d-cx { position: absolute; right: 8px; top: 8px; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); background: rgba(6,24,32,0.6); color: #fff; font-size: 18px; line-height: 1; cursor: pointer; pointer-events: none; }
+.vp-3d-card.show .vp-3d-cx { pointer-events: auto; }
+.vp-3d-card strong { padding-right: 30px; }
 .vp-3d-card small { font-size: 10px; letter-spacing: 2.4px; text-transform: uppercase; color: var(--sea2); }
 .vp-3d-card strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; color: var(--sand2); margin: 2px 0 4px; }
 .vp-3d-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
@@ -430,7 +433,7 @@ fbq('track', 'PageView');
       <img class="vp-3d-fb" src="../images/vivapark/implantacao-md.jpg" alt="Implantação geral do Vivapark vista de cima" loading="lazy">
       <canvas aria-label="Maquete 3D interativa do Vivapark"></canvas>
       <div class="vp-3d-pins"></div>
-      <div class="vp-3d-card" role="status" aria-live="polite"><small></small><strong></strong><p></p></div>
+      <div class="vp-3d-card" role="status" aria-live="polite"><button class="vp-3d-cx" type="button" aria-label="Fechar">×</button><small></small><strong></strong><p></p></div>
       <div class="vp-3d-load"><i></i>Montando a maquete</div>
       <button class="vp-3d-live" type="button">Toque para explorar</button>
     </div>
@@ -616,7 +619,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwlivh8s').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwliy5r8').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();

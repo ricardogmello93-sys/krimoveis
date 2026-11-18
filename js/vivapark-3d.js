@@ -107,13 +107,15 @@ export function init(stage) {
   const pins = PINS.map(([k, x, y, h]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'vp-pin'; b.innerHTML = '<i></i><span>' + STOPS[k].n + '</span>'; b.addEventListener('click', () => go(k)); pinBox.appendChild(b); return { el: b, v: P(x, y, h) }; });
 
   // voo da câmera
-  let fly = null, idleT = 0;
+  let fly = null, idleT = 0, cardT = 0;
+  function hideCard() { clearTimeout(cardT); card.classList.remove('show'); }
   function go(k) {
     const s = STOPS[k]; if (!s) return;
     const tgt = P(s.t[0], s.t[1], s.t[2]);
     fly = { t0: performance.now(), d: 1700, p0: camera.position.clone(), q0: controls.target.clone(), p1: tgt.clone().add(new THREE.Vector3(...s.c)), q1: tgt };
     controls.autoRotate = false; idleT = performance.now();
     card.querySelector('small').textContent = s.k; card.querySelector('strong').textContent = s.n; card.querySelector('p').textContent = s.d; card.classList.add('show');
+    clearTimeout(cardT); cardT = setTimeout(hideCard, 7000); // o cartão some sozinho para liberar a maquete
     stage.parentNode.querySelectorAll('.vp-3d-tour button').forEach((b) => b.classList.toggle('on', b.getAttribute('data-k') === k));
     if (s.rise) risers.forEach((r) => { r.t0 = performance.now() + 500; });
     try { gtag('event', 'maquete_3d', { ponto: k }); } catch (_) {}
@@ -121,7 +123,12 @@ export function init(stage) {
   stage.parentNode.querySelectorAll('.vp-3d-tour button').forEach((b) => b.addEventListener('click', () => go(b.getAttribute('data-k'))));
   const live = stage.querySelector('.vp-3d-live');
   if (live) live.addEventListener('click', () => { const on = !stage.classList.contains('live'); stage.classList.toggle('live', on); controls.enabled = on || !touch; live.textContent = on ? 'Voltar à rolagem' : 'Toque para explorar'; });
-  controls.addEventListener('start', () => { fly = null; controls.autoRotate = false; idleT = performance.now(); });
+  controls.addEventListener('start', () => { fly = null; controls.autoRotate = false; idleT = performance.now(); hideCard(); });
+  // fechar o cartão: botão ×, toque fora dele na maquete
+  const cx = card.querySelector('.vp-3d-cx'); if (cx) cx.addEventListener('click', (e) => { e.stopPropagation(); hideCard(); });
+  let downAt = null;
+  canvas.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; });
+  canvas.addEventListener('pointerup', (e) => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 8) hideCard(); downAt = null; });
 
   function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
   new ResizeObserver(resize).observe(stage); resize();
