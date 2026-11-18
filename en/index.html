@@ -308,6 +308,11 @@ img { max-width: 100%; }
   .sim-form .lt-btn { width: 100%; }
   .sim-row { grid-template-columns: 1fr; }
 }
+.sim-curh { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+.sim-curh label { margin: 0; }
+.sim-cur { display: inline-flex; }
+.sim-cur button { padding: 6px 12px; font-size: 12px; }
+.sim-fx { display: block; margin-top: 6px; font-size: 12px; color: var(--muted, #9fb3b5); min-height: 1em; }
 
 .in-hero { position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; display: flex; align-items: center; }
 .in-hero img.k { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: ltKb 26s ease-in-out infinite alternate; }
@@ -546,7 +551,7 @@ fbq('track', 'PageView');
   <h2 class="lt-h2 rv" style="margin-bottom:30px">See how a <em>developer payment plan</em> works</h2>
   <div class="sim" id="sim" data-lang="en" data-origem="intl_en_simulador">
   <div class="sim-in">
-    <div class="sim-f"><label for="sPrice">Property price (BRL)</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Property price (BRL)"></div>
+    <div class="sim-f"><div class="sim-curh"><label for="sPrice">Property price</label><div class="sim-seg sim-cur" id="sCur" role="group"><button type="button" data-v="USD" hidden>US$</button><button type="button" class="on" data-v="BRL">R$</button></div></div><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Property price"><small class="sim-fx" id="sFx"></small></div>
     <div class="sim-f"><label for="sDown">Down payment <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
     <div class="sim-row">
       <div class="sim-f"><label for="sBq">Balloon payments: How many <b id="sBqV"></b></label><input type="range" id="sBq" min="0" max="12" step="1" value="4"></div>
@@ -574,7 +579,7 @@ fbq('track', 'PageView');
     </div>
     <div class="sim-rule" id="sRule"></div>
     <div class="sim-warn" id="sWarn">Down payment, balloons and handover add up to more than 100%. Lower one of them.</div>
-    <p class="sim-note">Amounts in Brazilian reais (BRL), without adjustment. During construction, most developers on this coast adjust installments by the CUB, the construction cost index of Santa Catarina. After handover, adjustment and any interest depend on the contract. Ricardo shows you the real terms of each project.</p>
+    <p class="sim-note"><span id="sNoteCur">Amounts in Brazilian reais (BRL), without adjustment.</span> During construction, most developers on this coast adjust installments by the CUB, the construction cost index of Santa Catarina. After handover, adjustment and any interest depend on the contract. Ricardo shows you the real terms of each project.</p>
   </div>
   <div class="sim-lead">
     <span class="sim-bonus">WhatsApp</span>
@@ -687,13 +692,24 @@ fbq('track', 'PageView');
 <script>
 (function () {
   var L = {"locale":"en-US","yearly":"Yearly","half":"Every 6 months","bad":"Check your WhatsApp number, including the country code.","badName":"Please enter your name.","ok":"We opened your WhatsApp with the simulation ready. Just tap send so Ricardo receives it.","okLink":"Did not open? Tap here","app":"Use the WhatsApp desktop app? Open in the app","leadOf":"of","dl":"Download simulation (PDF)","hold":"If the download does not start, press and hold the image to save it.","imgTitle":"Pre-construction payment plan","imgFor":"Prepared for","imgSub":"Itapema & Porto Belo · Brazil","imgNote":"Amounts in Brazilian reais, without adjustment. During construction, most developers adjust installments by the CUB/SC; after handover, as per contract.","imgPrice":"Property price","file":"payment-plan-ricardo-mello.pdf","monthly":"Monthly installment","monthlyA":"Monthly installment during construction","durObra":"during construction","afterKeys":"After handover","obraU":"months","ruleOk":"% paid by handover (minimum 60%)","ruleAuto":"Construction installments were adjusted to reach 60% by handover.","ruleBad":"With these numbers it is not possible to reach 60% by handover. Increase the down payment, the balloons during construction or the handover payment.","instA":"Installments during construction","instB":"Installments after handover","imgPct":"by handover","downL":"Down payment","boostL":"Balloons","keysL":"At handover","instL":"Installments"};
-  var MSG = (d) => `[Simulator · Brazil coast] Hi Ricardo! I ran the payment plan simulation on your website.\nName: ${d.name}\nCountry: ${d.country}\nWhatsApp: ${d.phone}\n\nProperty: ${d.price}\nDown payment (${d.downPct}%): ${d.down}\nBalloons: ${d.boostQty}x ${d.boost} (${d.every.toLowerCase()})\nAt handover (${d.keysPct}%): ${d.keys}\nConstruction: ${d.obra} months · ${d.pctObra}% paid by handover\nInstallments during construction: ${d.mA}x ${d.monthly}${d.mB ? '\nInstallments after handover: ' + d.mB + 'x ' + d.monthlyB : ''}\n\nPlease send me 3 real projects in Itapema and Porto Belo that fit this installment.`;
+  var MSG = (d) => `[Simulator · Brazil coast] Hi Ricardo! I ran the payment plan simulation on your website.\nName: ${d.name}\nCountry: ${d.country}\nWhatsApp: ${d.phone}\n\nProperty: ${d.price}${d.alt ? ' (' + d.alt + ')' : ''}\nDown payment (${d.downPct}%): ${d.down}\nBalloons: ${d.boostQty}x ${d.boost} (${d.every.toLowerCase()})\nAt handover (${d.keysPct}%): ${d.keys}\nConstruction: ${d.obra} months · ${d.pctObra}% paid by handover\nInstallments during construction: ${d.mA}x ${d.monthly}${d.mB ? '\nInstallments after handover: ' + d.mB + 'x ' + d.monthlyB : ''}\n\nPlease send me 3 real projects in Itapema and Porto Belo that fit this installment.`;
   var lang = "en", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
   var brl = new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  var cur = 'BRL', rate = 0, C = {"fxToday":"today’s rate","noteUsd":"Dollar amounts are converted at today’s rate; contracts are in Brazilian reais (BRL), so the dollar value moves with the exchange rate. No adjustment included.","noteBrl":"Amounts in Brazilian reais (BRL), without adjustment."};
+  var money = function (v) { return cur === 'USD' ? 'US$ ' + Math.round(v).toLocaleString(L.locale) : brl.format(v); };
+  function setCur(c, keep) {
+    if (c === cur || (c === 'USD' && !rate)) return;
+    var v = num($('sPrice').value);
+    if (!keep && v) v = c === 'USD' ? Math.round(v / rate / 1000) * 1000 : Math.round(v * rate / 1000) * 1000;
+    cur = c; $('sPrice').value = v ? v.toLocaleString(cur === 'USD' ? L.locale : 'pt-BR') : '';
+    var b = $('sCur'); if (b) [].forEach.call(b.children, function (x) { x.classList.toggle('on', x.getAttribute('data-v') === cur); });
+    var n = $('sNoteCur'); if (n) n.textContent = cur === 'USD' ? C.noteUsd : C.noteBrl;
+    calc();
+  }
   var every = 12, last = null;
   function num(s) { return parseInt(String(s).replace(/\D/g, ''), 10) || 0; }
-  function fmtInput() { var v = num($('sPrice').value); $('sPrice').value = v ? v.toLocaleString('pt-BR') : ''; }
+  function fmtInput() { var v = num($('sPrice').value); $('sPrice').value = v ? v.toLocaleString(cur === 'USD' ? L.locale : 'pt-BR') : ''; }
   function calc() {
     var price = num($('sPrice').value), d = +$('sDown').value, bq = +$('sBq').value, bp = +$('sBp').value, k = +$('sKeys').value, n = +$('sN').value, M = +$('sObra').value;
     var S = 100 - d - bq * bp - k;
@@ -703,7 +719,7 @@ fbq('track', 'PageView');
     var base = d + nB * bp + k, mA = Math.min(n, M), mB = n - mA, s = Math.max(S, 0), P = s / n, pA = P, pB = mB ? P : 0, auto = false;
     if (mB && base + P * mA < 60) { pA = Math.min(s / mA, (60 - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
     var pct = base + pA * mA, reach = pct >= 59.95;
-    var f = function (p) { return brl.format(price * p / 100); };
+    var f = function (p) { return money(price * p / 100); };
     $('sMonthly').textContent = S < 0 ? '-' : f(pA);
     $('sMonthlyN').textContent = S < 0 ? '' : mA + 'x · ' + L.durObra;
     var hasB = mB && price * pB / 100 >= 1;
@@ -714,15 +730,28 @@ fbq('track', 'PageView');
     $('oKeys').textContent = f(k);
     $('oInst').textContent = S < 0 ? '-' : mA + 'x ' + f(pA);
     $('oInstBRow').style.display = hasB ? '' : 'none'; $('oInstB').textContent = hasB ? mB + 'x ' + f(pB) : '';
-    $('oTot').textContent = brl.format(price);
+    $('oTot').textContent = money(price);
     var rule = $('sRule'); rule.style.display = S < 0 ? 'none' : '';
     rule.className = 'sim-rule' + (reach ? '' : ' bad');
     rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk + (auto ? '<small>' + L.ruleAuto + '</small>' : '') : L.ruleBad;
     var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [pA * mA, '#e9dcc3'], [pB * mB, '#8a8476']], sum = parts.reduce(function (a, p) { return a + p[0]; }, 0) || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
-    last = { parts: parts, price: brl.format(price), downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
+    last = { parts: parts, price: money(price), alt: cur === 'USD' && rate ? '≈ ' + brl.format(price * rate) : '', downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
   }
   ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra'].forEach(function (id) { $(id).addEventListener('input', calc); });
+  // páginas em inglês e espanhol: busca a cotação do dia e passa para dólar; sem cotação, segue em reais
+  if ($('sCur')) {
+    $('sCur').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setCur(b.getAttribute('data-v')); });
+    var gotRate = function (r) {
+      if (!(r > 1 && r < 20)) throw 0; rate = r;
+      $('sCur').querySelector('[data-v="USD"]').hidden = false;
+      $('sFx').textContent = 'US$ 1 = R$ ' + r.toLocaleString(L.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' · ' + C.fxToday;
+      if (!touched) setCur('USD');
+    };
+    fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL').then(function (r) { return r.json(); }).then(function (j) { gotRate(parseFloat(j.USDBRL.bid)); })
+      .catch(function () { return fetch('https://open.er-api.com/v6/latest/USD').then(function (r) { return r.json(); }).then(function (j) { gotRate(+j.rates.BRL); }); })
+      .catch(function () {});
+  }
   $('sPrice').addEventListener('input', function () { fmtInput(); calc(); });
   $('sEvery').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; every = +b.getAttribute('data-v'); [].forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); }); calc(); });
   var touched = false;
@@ -737,7 +766,7 @@ fbq('track', 'PageView');
     var c = $('sCountry'); var d = Object.assign({}, last, { name: name, phone: phone, country: c ? c.value : '' });
     var url = 'https://wa.me/5555999147822?text=' + encodeURIComponent(MSG(d));
     try {
-      gtag('event', 'generate_lead', { simulador: 'fluxo_construtora', idioma: lang, valor_imovel: num($('sPrice').value) });
+      gtag('event', 'generate_lead', { simulador: 'fluxo_construtora', idioma: lang, valor_imovel: cur === 'USD' ? Math.round(num($('sPrice').value) * rate) : num($('sPrice').value) });
       gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
       fbq('track', 'Lead', { content_name: 'simulador_fluxo_' + lang });
     } catch (_) {}
