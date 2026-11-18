@@ -109,6 +109,88 @@ export function init(stage) {
   });
   [[628, 668], [842, 668]].forEach(([x, y]) => { const m = box(1.25, 0.12, 0.55, roof); m.position.copy(P(x, y)); scene.add(m); });
 
+  // chão em volta da planta: o resto do bairro (fase 2 do outro lado do parque), em traço de projeto
+  {
+    const cv = document.createElement('canvas'); cv.width = 1024; cv.height = 512; const x = cv.getContext('2d');
+    x.fillStyle = '#1c3a33'; x.fillRect(0, 0, 1024, 512);
+    x.strokeStyle = 'rgba(226,199,126,0.13)'; x.lineWidth = 1;
+    for (let i = 0; i <= 32; i++) { x.beginPath(); x.moveTo(i * 32, 0); x.lineTo(i * 32, 512); x.stroke(); }
+    for (let j = 0; j <= 16; j++) { x.beginPath(); x.moveTo(0, j * 32); x.lineTo(1024, j * 32); x.stroke(); }
+    const fade = x.createRadialGradient(512, 256, 120, 512, 256, 560); fade.addColorStop(0, 'rgba(0,0,0,0)'); fade.addColorStop(1, 'rgba(0,0,0,1)');
+    x.globalCompositeOperation = 'destination-out'; x.fillStyle = fade; x.fillRect(0, 0, 1024, 512);
+    const tx = new THREE.CanvasTexture(cv); tx.colorSpace = THREE.SRGBColorSpace;
+    const campo = new THREE.Mesh(new THREE.PlaneGeometry(32, 16), new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: 1, depthWrite: false }));
+    campo.rotation.x = -Math.PI / 2; campo.position.set(-3.2, -0.2, 0.2); campo.renderOrder = -1; scene.add(campo);
+  }
+
+  // os outros prédios do bairro, no lugar de cada um (mapa de lotes do Vivapark, posições aproximadas)
+  // pronto = contorno aceso sobre o prédio que já está na planta; os demais "sobem" andar por andar, em holograma dourado;
+  // perto da entrega (2027) ganham grua girando
+  const EL = { pt: { pronto: 'Pronto para morar', lanc: 'Lançamento', ent: 'entrega', inc: 'Incorporação', aprox: 'Posição aproximada, conforme o mapa de lotes do bairro.', f2: 'Fase 2' },
+    en: { pronto: 'Move-in ready', lanc: 'New launch', ent: 'delivery', inc: 'Developer:', aprox: 'Approximate position, based on the neighborhood lot map.', f2: 'Phase 2' },
+    es: { pronto: 'Listo para vivir', lanc: 'Lanzamiento', ent: 'entrega', inc: 'Incorporación:', aprox: 'Posición aproximada, según el mapa de lotes del barrio.', f2: 'Fase 2' } }[LG] || null;
+  const L2 = EL || { pronto: 'Pronto para morar', lanc: 'Lançamento', ent: 'entrega', inc: 'Incorporação', aprox: 'Posição aproximada, conforme o mapa de lotes do bairro.', f2: 'Fase 2' };
+  const EMPS = [ // id, nome, x, y (px da planta), entrega (0 = pronto), incorporadora, andares (ilustrativo)
+    ['vistajardins', 'Vista Jardins', 930, 990, 0, 'Torresani', 0],
+    ['voz', 'Voz', 699, 252, 2027, 'Torresani', 14],
+    ['ventura', 'Ventura', 619, 262, 2028, 'Famex', 16],
+    ['vitta27', 'VITTA 27', 565, 391, 2031, 'Famex', 20],
+    ['veleiros', 'Veleiros Residence', 818, 393, 2029, 'Eccel', 18],
+    ['videiras', 'Videiras Residence', 1038, 364, 2028, 'Eccel', 14],
+    ['veccel', 'Veccel Corporate', 411, 536, 2030, 'Eccel', 12],
+    ['inc31', 'INC 31', 739, -60, 2033, 'ASRAMOS', 20],
+    ['vision', 'Vision Home Club', -147, 489, 2030, 'Grupo N1', 23],
+    ['verenna', 'Verenna', -525, 257, 2031, 'Conrado', 20],
+    ['valence', 'Valence', -830, 590, 2031, 'RDO', 20],
+  ];
+  const holoMat = new THREE.MeshBasicMaterial({ color: 0xe2c77e, transparent: true, opacity: 0.16, depthWrite: false, blending: THREE.AdditiveBlending });
+  const holoTop = new THREE.MeshBasicMaterial({ color: 0xffe3a0, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending });
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0xe8cf8a, transparent: true, opacity: 0.85 });
+  const floorLine = new THREE.LineBasicMaterial({ color: 0xe8cf8a, transparent: true, opacity: 0.3 });
+  const lineMatSoft = new THREE.LineBasicMaterial({ color: 0x6b6f6a, transparent: true, opacity: 0.35 });
+  const concrete = new THREE.MeshStandardMaterial({ color: 0xd9d3c7, roughness: 0.8 });
+  const craneMat = new THREE.MeshStandardMaterial({ color: 0xf2b705, roughness: 0.5, metalness: 0.2 });
+  const obras = [], cranes = [];
+  function crane(g, h, side) {
+    const c = new THREE.Group(); c.position.set(side * 0.62, 0, -0.1); g.add(c);
+    const H = h + 0.55; const mast = box(0.045, H, 0.045, craneMat); c.add(mast);
+    const top = new THREE.Group(); top.position.y = H; c.add(top);
+    const jib = box(1.5, 0.035, 0.035, craneMat); jib.position.x = 0.55; jib.position.y = -0.0175; top.add(jib);
+    const cj = box(0.45, 0.035, 0.035, craneMat); cj.position.x = -0.32; cj.position.y = -0.0175; top.add(cj);
+    const cw = box(0.12, 0.08, 0.08, concrete); cw.position.set(-0.48, -0.06, 0); top.add(cw);
+    const cab = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0.9, 0, 0), new THREE.Vector3(0.9, -H * 0.55, 0)]), new THREE.LineBasicMaterial({ color: 0x333333 })); top.add(cab);
+    cranes.push({ top, ph: Math.random() * 6 });
+  }
+  const empPins = [];
+  EMPS.forEach(([id, nome, x, y, ano, inc, fl], idx) => {
+    const g = new THREE.Group(); g.position.copy(P(x, y)); scene.add(g);
+    STOPS[id] = { t: [x, y, ano ? 0.6 : 0.2], c: [1.8, 2.1, 2.7], k: ano ? L2.lanc + ' · ' + L2.ent + ' ' + ano : L2.pronto, n: nome, d: L2.inc + ' ' + inc + '. ' + L2.aprox };
+    if (!ano) { // pronto: contorno aceso em volta do prédio da planta, alinhado com a BR
+      const ring = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.3, 0.02, 0.9)), new THREE.LineBasicMaterial({ color: 0x5fd38a, transparent: true, opacity: 0.9 }));
+      ring.rotation.y = -0.45; ring.position.y = 0.05; g.add(ring); obras.push({ ring });
+      empPins.push([id, nome, P(x, y, 0.35), 'ok']); return;
+    }
+    const W = 0.8, D = 0.52, fh = 0.075, H = fl * fh, floors = [];
+    const sol = ano <= 2027; // perto da entrega: concreto; os demais, holograma
+    for (let i = 0; i < fl; i++) {
+      const f = new THREE.Group(); f.position.y = i * fh; f.userData.i = i;
+      const slab = box(W, fh * 0.9, D, sol ? concrete : holoMat); f.add(slab);
+      f.add(new THREE.LineSegments(new THREE.EdgesGeometry(slab.geometry), sol ? lineMatSoft : floorLine));
+      f.visible = false; g.add(f); floors.push(f);
+    }
+    const shell = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(W, H, D).translate(0, H / 2, 0)), edgeMat); shell.visible = false; g.add(shell);
+    const scan = new THREE.Mesh(new THREE.BoxGeometry(W * 1.08, 0.012, D * 1.08), holoTop); g.add(scan);
+    const foot = new THREE.Mesh(new THREE.PlaneGeometry(W * 1.5, D * 1.6), new THREE.MeshBasicMaterial({ color: 0xe2c77e, transparent: true, opacity: 0.18, depthWrite: false })); foot.rotation.x = -Math.PI / 2; foot.position.y = 0.015; g.add(foot);
+    if (sol) crane(g, H, idx % 2 ? 1 : -1);
+    obras.push({ floors, shell, scan, H, fl, t0: null, delay: 600 + idx * 380 });
+    empPins.push([id, nome, P(x, y, H + 0.25), x < 0 ? 'f2' : '']);
+  });
+  { const vg = new THREE.Group(); vg.position.copy(P(546, 610)); scene.add(vg); crane(vg, 1.9, 0); } // grua ao lado do Vértice (entrega 2027)
+  const LZ = { pt: ['Lançamentos', 'Os prédios do bairro', 'Além do Vértice, mais onze prédios no lugar de cada lote: o Vista Jardins já pronto e os lançamentos subindo, inclusive o Vision Home Club, na fase 2, do outro lado do parque.'],
+    en: ['New launches', 'The neighborhood’s buildings', 'Besides Vértice, eleven more buildings, each on its own lot: Vista Jardins already finished and the new launches rising, including Vision Home Club in phase 2, across the park.'],
+    es: ['Lanzamientos', 'Los edificios del barrio', 'Además del Vértice, once edificios más, cada uno en su lote: el Vista Jardins ya listo y los lanzamientos subiendo, incluido el Vision Home Club, en la fase 2, al otro lado del parque.'] }[LG === 'en' || LG === 'es' ? LG : 'pt'];
+  STOPS.lanc = { t: [330, 560, 0], c: [2.5, 11.5, 10.5], k: LZ[0], n: LZ[1], d: LZ[2] };
+
   // controles: arrastar gira, pinça/scroll aproxima; giro automático lento quando parado
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true; controls.dampingFactor = 0.07; controls.enablePan = false; controls.enableZoom = false;
@@ -119,6 +201,9 @@ export function init(stage) {
 
   // pinos
   const pins = PINS.map(([k, x, y, h]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'vp-pin'; b.innerHTML = '<i></i><span>' + STOPS[k].n + '</span>'; b.addEventListener('click', () => go(k)); pinBox.appendChild(b); return { el: b, v: P(x, y, h) }; });
+  empPins.forEach(([k, nome, v, cls]) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'vp-pin em ' + cls; b.innerHTML = '<i></i><span>' + nome.replace(' Residence', '').replace(' Corporate', '') + '</span>'; b.addEventListener('click', () => go(k)); pinBox.appendChild(b); pins.push({ el: b, v }); });
+  { const s = document.createElement('span'); s.className = 'vp-f2'; s.textContent = L2.f2; pinBox.appendChild(s); pins.push({ el: s, v: P(-500, 760, 0.05) }); }
+  if (!document.getElementById('vpEmCss')) { const st = document.createElement('style'); st.id = 'vpEmCss'; st.textContent = '.vp-pin.em span{font-size:10px;padding:5px 9px;background:rgba(6,24,32,.82);border-color:rgba(226,199,126,.45)}.vp-pin.em i{background:#e2c77e;box-shadow:0 0 0 4px rgba(226,199,126,.25)}.vp-pin.em.ok i{background:#5fd38a;box-shadow:0 0 0 4px rgba(95,211,138,.25)}.vp-pin.em.dot span{opacity:0;transform:scale(.9);transition:opacity .2s}.vp-pin.em.dot:hover span,.vp-pin.em.dot:focus span{opacity:1}.vp-f2{position:absolute;left:0;top:0;font:600 11px "DM Sans",sans-serif;letter-spacing:3px;text-transform:uppercase;color:#f1e3bd;opacity:.85;pointer-events:none;white-space:nowrap;text-shadow:0 1px 6px rgba(0,0,0,.7);margin:-8px 0 0 -30px}@media (max-width:640px){.vp-pin.em span{font-size:8.5px;padding:4px 7px}}'; document.head.appendChild(st); }
 
   // voo da câmera
   let fly = null, cardT = 0, touched = false;
@@ -153,7 +238,7 @@ export function init(stage) {
     const d = camera.position.distanceTo(controls.target), nd = Math.min(controls.maxDistance, Math.max(controls.minDistance, d * Math.exp(s))), f = nd / d;
     if (Math.abs(f - 1) < 1e-6) { zq = 0; return; }
     camera.position.sub(za).multiplyScalar(f).add(za); controls.target.sub(za).multiplyScalar(f).add(za);
-    const tt = controls.target, dx = Math.max(-IMG_W / S / 2, Math.min(IMG_W / S / 2, tt.x)) - tt.x, dy = Math.max(0, Math.min(3, tt.y)) - tt.y, dz = Math.max(-IMG_H / S / 2, Math.min(IMG_H / S / 2, tt.z)) - tt.z;
+    const tt = controls.target, dx = Math.max(-IMG_W / S / 2 - 9, Math.min(IMG_W / S / 2, tt.x)) - tt.x, dy = Math.max(0, Math.min(3, tt.y)) - tt.y, dz = Math.max(-IMG_H / S / 2 - 1.5, Math.min(IMG_H / S / 2, tt.z)) - tt.z;
     if (dx || dy || dz) { tt.x += dx; tt.y += dy; tt.z += dz; camera.position.x += dx; camera.position.y += dy; camera.position.z += dz; }
   }
   const zb = document.createElement('div'); zb.className = 'zp-zoom';
@@ -202,10 +287,30 @@ export function init(stage) {
   function frame() {
     const dt = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dt;
     risers.forEach((r) => { if (r.t0 == null) r.t0 = performance.now(); r.p = Math.min(1, (performance.now() - r.t0) / 2200); const n = Math.max(0, r.p) * r.N; r.floors.forEach((f) => { const s = Math.max(0.0001, Math.min(1, n - f.userData.i)); f.scale.y = s; f.visible = s > 0.001; }); });
+    // obras: cada prédio "imprime" andar por andar, com a faixa de luz subindo; depois a faixa passeia pelo prédio pronto
+    const now = performance.now();
+    obras.forEach((o) => {
+      if (o.ring) { o.ring.material.opacity = 0.55 + 0.4 * Math.sin(now / 450); return; }
+      if (o.t0 == null) o.t0 = now + o.delay;
+      const p = Math.max(0, Math.min(1, (now - o.t0) / 3400)), n = p * o.fl;
+      o.floors.forEach((f) => { const s = Math.max(0.0001, Math.min(1, n - f.userData.i)); f.scale.y = s; f.visible = s > 0.001; });
+      o.shell.visible = p >= 1; o.scan.visible = p > 0;
+      o.scan.position.y = p < 1 ? n * (o.H / o.fl) : o.H * (0.5 - 0.5 * Math.cos((now - o.t0 - 3400) / 1300));
+    });
+    cranes.forEach((c) => { c.top.rotation.y = Math.sin(now / 3200 + c.ph) * 1.1; });
     if (fly) { const k = Math.min(1, (performance.now() - fly.t0) / fly.d), e = ease(k); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.q0, fly.q1, e); if (k >= 1) fly = null; }
     stepZoom(); controls.update(); sky.position.copy(camera.position); renderer.render(scene, camera);
     const w = stage.clientWidth, h = stage.clientHeight;
-    pins.forEach((p) => { v.copy(p.v).project(camera); const on = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05; p.el.style.opacity = on ? '1' : '0'; p.el.style.transform = 'translate(' + ((v.x + 1) / 2 * w).toFixed(1) + 'px,' + ((1 - v.y) / 2 * h).toFixed(1) + 'px)'; });
+    const placed = [];
+    pins.forEach((p) => {
+      v.copy(p.v).project(camera); const on = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05, sx = (v.x + 1) / 2 * w, sy = (1 - v.y) / 2 * h;
+      p.el.style.opacity = on ? '1' : '0'; p.el.style.transform = 'translate(' + sx.toFixed(1) + 'px,' + sy.toFixed(1) + 'px)';
+      // nomes que se encostam: o de trás fica só com o ponto (o nome aparece ao aproximar ou passar o mouse)
+      if (!on || !p.el.classList.contains('vp-pin')) return;
+      if (!p.lw) p.lw = (p.el.textContent.length * 7 + 34);
+      const r = [sx - 8, sy - 12, sx + p.lw, sy + 12], hit = placed.some((q) => r[0] < q[2] && r[2] > q[0] && r[1] < q[3] && r[3] > q[1]);
+      p.el.classList.toggle('dot', hit && p.el.classList.contains('em')); if (!hit || !p.el.classList.contains('em')) placed.push(r);
+    });
   }
   stage._frame = frame;
   (function loop() { requestAnimationFrame(loop); if (visible) frame(); })();

@@ -511,7 +511,7 @@ fbq('track', 'PageView');
   <div class="vp-sec" style="padding-top:0">
     <span class="lt-tag rv">Maqueta digital</span>
     <h2 class="vp-h2 rv">Explore el Vivapark <em>en 3D</em></h2>
-    <p class="vp-p rv">Gire, acerque y toque los puntos. Vea el Vértice subir desde el suelo, los lagos, el boulevard y las calles de casas, como si sobrevolara el barrio.</p>
+    <p class="vp-p rv">Gire, acerque y toque los puntos. Vea los edificios del barrio subiendo, cada uno en su lote, del Vértice al Vision, los lagos, el boulevard y las calles de casas, como si sobrevolara el barrio.</p>
   </div>
   <div class="vp-3d-wrap rv">
     <div class="vp-3d-stage" id="vp3d" data-tex="../images/vivapark/implantacao.jpg">
@@ -523,9 +523,9 @@ fbq('track', 'PageView');
       <button class="vp-3d-live" type="button">Toque para explorar</button>
       <button class="vp-3d-fs" type="button">⤢ Pantalla completa</button>
     </div>
-    <div class="vp-3d-tour" role="toolbar" aria-label="Recorrido por la maqueta"><button type="button" data-k="geral">Vista general</button><button type="button" data-k="vertice">Vértice</button><button type="button" data-k="lago">Lago y boulevard</button><button type="button" data-k="casas">Casas</button><button type="button" data-k="mata">Bosque preservado</button><button type="button" data-k="br">BR-101</button></div>
+    <div class="vp-3d-tour" role="toolbar" aria-label="Recorrido por la maqueta"><button type="button" data-k="geral">Vista general</button><button type="button" data-k="lanc">Lanzamientos</button><button type="button" data-k="vision">Vision</button><button type="button" data-k="vertice">Vértice</button><button type="button" data-k="lago">Lago y boulevard</button><button type="button" data-k="casas">Casas</button><button type="button" data-k="mata">Bosque preservado</button><button type="button" data-k="br">BR-101</button></div>
   </div>
-  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maqueta digital ilustrativa, montada sobre el plano general del proyecto. Posiciones y alturas aproximadas; el barrio sigue en expansión.</p>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maqueta digital ilustrativa, montada sobre la implantación general del proyecto. Los edificios están donde indica el mapa de lotes del barrio; posiciones y alturas aproximadas. El barrio sigue en expansión.</p>
   <a class="vp-next rv" href="#pronto"><span>A continuación</span>Lo que ya está listo en el barrio<i aria-hidden="true"></i></a></div>
 </section>
 
@@ -752,7 +752,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwm49bt9').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwm4u4hm').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();
