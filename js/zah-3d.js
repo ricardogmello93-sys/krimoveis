@@ -1,9 +1,11 @@
-﻿// Maquete do portfólio ZAH: relevo real de Itapema e Porto Belo (SRTM), mar animado, vias principais (OpenStreetMap)
-// e os prédios da ZAH subindo nos endereços. Alturas e posições aproximadas; o relevo é exagerado 2x e os prédios 3x.
+﻿// Maquete do portfólio ZAH: relevo real de Itapema e Porto Belo (SRTM), linha da costa, praias, ruas e o contorno real
+// de cada construção (OpenStreetMap), mar com raso turquesa e ondas quebrando na areia, janelas acendendo no fim de tarde,
+// e os prédios da ZAH subindo nos endereços. Alturas aproximadas; o relevo é exagerado 2x e as alturas dos prédios 1,8x.
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/+esm';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js/+esm';
 
-const VE = 2.0, BX = 3.0; // exagero do relevo e dos prédios
+const VE = 2.0, BX = 1.8; // exagero do relevo e da altura dos prédios
+const FH = 3 * BX / 100; // altura de um andar (unidades: 1 = 100 m)
 const ST = { pronto: 0x5fd38a, obra: 0x79c2cd, lanc: 0xe2c77e };
 const P = [
   { id: 'canvas', nome: 'Canvas', st: 'pronto', ll: [-27.1388, -48.5933], tw: [[0, 0, 16, 26, 22]] },
@@ -13,31 +15,30 @@ const P = [
   { id: 'tekoa', nome: 'Tekoā', st: 'lanc', ll: [-27.0626, -48.5967], tw: [[-30, 0, 26, 24, 22], [34, 18, 20, 30, 26]] },
   { id: 'amazonia', nome: 'Amazônia', st: 'lanc', ll: [-27.1575, -48.5585], tw: [[0, 0, 8, 22, 18]], aprox: true },
 ];
-const ZT = { pt: { st: { pronto: 'Pronto para morar', obra: 'Em obras', lanc: 'Lançamento' }, tenet: 'Fase 1 em obras · Fase 2 em lançamento', aprox: 'Frente mar em Porto Belo (posição aproximada).', ver: 'Toque em "Ver detalhes" para a ficha completa e a tabela.', zin: 'Aproximar', zout: 'Afastar', zall: 'Ver tudo', hint: 'Use + e − ou Ctrl + rolagem para aproximar' },
-  en: { st: { pronto: 'Move-in ready', obra: 'Under construction', lanc: 'New launch' }, tenet: 'Phase 1 under construction · Phase 2 new launch', aprox: 'Beachfront in Porto Belo (approximate position).', ver: 'Tap "View details" for the full specs and prices.', zin: 'Zoom in', zout: 'Zoom out', zall: 'See all', hint: 'Use + and − or Ctrl + scroll to zoom' },
-  es: { st: { pronto: 'Listo para vivir', obra: 'En construcción', lanc: 'Lanzamiento' }, tenet: 'Etapa 1 en obra · Etapa 2 en lanzamiento', aprox: 'Frente al mar en Porto Belo (posición aproximada).', ver: 'Toque "Ver detalles" para la ficha completa y la lista.', zin: 'Acercar', zout: 'Alejar', zall: 'Ver todo', hint: 'Use + y − o Ctrl + rueda para acercar' } };
+const ZT = { pt: { st: { pronto: 'Pronto para morar', obra: 'Em obras', lanc: 'Lançamento' }, tenet: 'Fase 1 em obras · Fase 2 em lançamento', aprox: 'Frente mar em Porto Belo (posição aproximada).', ver: 'Toque em "Ver detalhes" para a ficha completa e a tabela.', zin: 'Aproximar', zout: 'Afastar', zall: 'Ver tudo', hint: 'Use + e − ou Ctrl + rolagem para aproximar', orla: ['Passeio', 'Orla de Meia Praia', 'Sobrevoando a beira-mar de Meia Praia, em Itapema, com os prédios de frente para o mar. Toque na maquete para parar.'] },
+  en: { st: { pronto: 'Move-in ready', obra: 'Under construction', lanc: 'New launch' }, tenet: 'Phase 1 under construction · Phase 2 new launch', aprox: 'Beachfront in Porto Belo (approximate position).', ver: 'Tap "View details" for the full specs and prices.', zin: 'Zoom in', zout: 'Zoom out', zall: 'See all', hint: 'Use + and − or Ctrl + scroll to zoom', orla: ['Ride', 'Meia Praia beachfront', 'Flying along the Meia Praia seafront in Itapema, with the buildings facing the sea. Tap the model to stop.'] },
+  es: { st: { pronto: 'Listo para vivir', obra: 'En construcción', lanc: 'Lanzamiento' }, tenet: 'Etapa 1 en obra · Etapa 2 en lanzamiento', aprox: 'Frente al mar en Porto Belo (posición aproximada).', ver: 'Toque "Ver detalles" para la ficha completa y la lista.', zin: 'Acercar', zout: 'Alejar', zall: 'Ver todo', hint: 'Use + y − o Ctrl + rueda para acercar', orla: ['Paseo', 'Costanera de Meia Praia', 'Sobrevolando la costanera de Meia Praia, en Itapema, con los edificios frente al mar. Toque la maqueta para parar.'] } };
 const ZL = ZT[(document.documentElement.lang || 'pt').slice(0, 2)] || ZT.pt;
 const PLACES = [['Itapema', -27.093, -48.616], ['Meia Praia', -27.124, -48.604], ['Porto Belo', -27.161, -48.556], ['BR-101', -27.118, -48.628], ['Balneário Camboriú ↑', -27.056, -48.606]];
 
 export async function init(stage, opts = {}) {
   const canvas = stage.querySelector('canvas'), pinBox = stage.querySelector('.vp-3d-pins'), card = stage.querySelector('.vp-3d-card');
-  const data = await (await fetch(stage.getAttribute('data-terrain'))).json();
+  const touch = window.matchMedia('(pointer: coarse)').matches, big = !touch && Math.min(screen.width, screen.height) >= 700;
+  const tUrl = stage.getAttribute('data-terrain'), root = tUrl.replace(/js\/zah-terreno\.json.*$/, '');
+  const [data, city] = await Promise.all([fetch(tUrl).then((r) => r.json()), fetch(root + 'js/zah-cidade.json?v=5').then((r) => r.json()).catch(() => null)]);
   const [N, S, W, E] = data.box, nx = data.nx, ny = data.ny;
-  // mar = só o que está ligado à borda do mapa com altitude zero; áreas baixas da cidade continuam terra
-  const sea = new Uint8Array(nx * ny), stack = [];
-  for (let i = 0; i < nx; i++) for (const j of [0, ny - 1]) if (data.h[j * nx + i] <= 0) stack.push(j * nx + i);
-  for (let j = 0; j < ny; j++) for (const i of [0, nx - 1]) if (data.h[j * nx + i] <= 0) stack.push(j * nx + i);
-  while (stack.length) { const k = stack.pop(); if (sea[k] || data.h[k] > 0) continue; sea[k] = 1; const i = k % nx, j = (k / nx) | 0; if (i > 0) stack.push(k - 1); if (i < nx - 1) stack.push(k + 1); if (j > 0) stack.push(k - nx); if (j < ny - 1) stack.push(k + nx); }
-  data.h = data.h.map((m, k) => (sea[k] ? -6 : Math.max(m, 3)));
   const latC = (N + S) / 2, lonC = (W + E) / 2, kx = 111320 * Math.cos(latC * Math.PI / 180) / 100, kz = 110540 / 100;
   const X = (lon) => (lon - lonC) * kx, Z = (lat) => (latC - lat) * kz;
   const WU = (E - W) * kx, HU = (N - S) * kz;
-  const hAt = (lat, lon) => { // altura interpolada (unidades)
-    const fx = (lon - W) / (E - W) * (nx - 1), fy = (N - lat) / (N - S) * (ny - 1);
-    const i = Math.max(0, Math.min(nx - 2, Math.floor(fx))), j = Math.max(0, Math.min(ny - 2, Math.floor(fy))), u = fx - i, v = fy - j;
-    const g = (a, b) => Math.max(0.03, data.h[b * nx + a]);
-    return ((g(i, j) * (1 - u) + g(i + 1, j) * u) * (1 - v) + (g(i, j + 1) * (1 - u) + g(i + 1, j + 1) * u) * v) * VE / 100;
+  // relevo suavizado (interpolação cúbica do SRTM), em unidades; nunca abaixo de 1 m para a terra ficar acima da água
+  const hR = (i, j) => data.h[Math.max(0, Math.min(ny - 1, j)) * nx + Math.max(0, Math.min(nx - 1, i))];
+  const cub = (p0, p1, p2, p3, t) => p1 + 0.5 * t * (p2 - p0 + t * (2 * p0 - 5 * p1 + 4 * p2 - p3 + t * (3 * (p1 - p2) + p3 - p0)));
+  const hXZ = (x, z) => {
+    const fx = (x + WU / 2) / WU * (nx - 1), fy = (z + HU / 2) / HU * (ny - 1), i = Math.floor(fx), j = Math.floor(fy), u = fx - i, v = fy - j;
+    const r = (jj) => cub(hR(i - 1, jj), hR(i, jj), hR(i + 1, jj), hR(i + 2, jj), u);
+    return Math.max(1, cub(r(j - 1), r(j), r(j + 1), r(j + 2), v)) * VE / 100;
   };
+  const hAt = (lat, lon) => hXZ(X(lon), Z(lat));
 
   let renderer;
   try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true }); } catch (e) { stage.classList.add('nogl'); return; }
@@ -45,9 +46,9 @@ export async function init(stage, opts = {}) {
   renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene = new THREE.Scene(); scene.fog = new THREE.Fog(0xe9c79a, 90, 190);
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.5, 1600);
-  scene.add(new THREE.HemisphereLight(0xeaf2ff, 0x29403a, 1.05));
-  const sun = new THREE.DirectionalLight(0xffe2b8, 2.5); sun.position.set(60, 70, 40); sun.castShadow = true;
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1600);
+  scene.add(new THREE.HemisphereLight(0xeaf2ff, 0x3a4a3a, 0.95));
+  const sun = new THREE.DirectionalLight(0xffe2b8, 2.4); sun.position.set(60, 70, 40); sun.castShadow = true;
   // céu de fim de tarde: o sol baixo a oeste, atrás dos morros (é onde ele se põe visto do mar de Itapema)
   const SKY = { zen: new THREE.Color(0x0f3d63), mid: new THREE.Color(0x5f98bb), hc: new THREE.Color(0xd9c8b6), hw: new THREE.Color(0xf0b273), glow: new THREE.Color(0xff9c45), core: new THREE.Color(0xffe6a8) };
   const sunDir = new THREE.Vector3(-0.78, 0.05, 0.62).normalize();
@@ -58,88 +59,130 @@ export async function init(stage, opts = {}) {
     vertexShader: 'varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader: 'uniform vec3 sunDir, zen, mid, hc, hw, glow, core; varying vec3 vD; ' + HZ + ' void main(){ vec3 d = normalize(vD); float h = d.y; vec3 c = hz(d); c = mix(c, mid, smoothstep(0.0, 0.1, h)); c = mix(c, zen, smoothstep(0.1, 0.45, h)); float sd = max(dot(d, sunDir), 0.0); c += glow * (pow(sd, 8.0) * 0.22 * (1.0 - smoothstep(0.0, 0.3, h)) + pow(sd, 80.0) * 0.45 + pow(sd, 900.0) * 0.7); c = mix(c, core * 1.35, smoothstep(0.99950, 0.99966, sd)); gl_FragColor = vec4(c, 1.0);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}' }));
   sky.renderOrder = -10; sky.frustumCulled = false; scene.add(sky);
-  sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -70, right: 70, top: 70, bottom: -70, near: 1, far: 300 }); sun.shadow.bias = -0.0006; scene.add(sun);
+  sun.shadow.mapSize.set(big ? 4096 : 2048, big ? 4096 : 2048); Object.assign(sun.shadow.camera, { left: -70, right: 70, top: 70, bottom: -70, near: 1, far: 300 }); sun.shadow.bias = -0.0004; scene.add(sun);
+  // a sombra acompanha o ponto para onde a câmera olha: perto, fica nítida
+  const shadowFit = (tg, r) => { const c = sun.shadow.camera; c.left = c.bottom = -r; c.right = c.top = r; c.updateProjectionMatrix(); sun.target.position.copy(tg); sun.position.copy(tg).add(new THREE.Vector3(60, 70, 40)); sun.target.updateMatrixWorld(); };
+
+  // texturas: chão (areia, mata, ruas, costa) e mapa do mar (distância até a praia)
+  const tl = new THREE.TextureLoader(), maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const [chao, marT] = await Promise.all([tl.loadAsync(root + 'images/zah/' + (big ? 'chao.webp' : 'chao-m.webp') + '?v=2').catch(() => null), tl.loadAsync(root + 'images/zah/mar.png?v=2').catch(() => null)]);
+  if (chao) { chao.colorSpace = THREE.SRGBColorSpace; chao.anisotropy = Math.min(8, maxAniso); }
 
   // relevo
-  const geo = new THREE.PlaneGeometry(WU, HU, nx - 1, ny - 1);
-  const pos = geo.attributes.position, col = new Float32Array(pos.count * 3), c = new THREE.Color();
-  const cCity = new THREE.Color(0xd9cfbd), cLow = new THREE.Color(0x9fb27a), cMid = new THREE.Color(0x4f7a3c), cHigh = new THREE.Color(0x2d5130), cSand = new THREE.Color(0xe9dcc3);
-  for (let k = 0; k < pos.count; k++) {
-    const raw = data.h[k], m = Math.max(0, raw); pos.setZ(k, raw * VE / 100);
-    if (raw < 0) c.set(0x0b3a44); else if (m < 4) c.copy(cSand); else if (m < 14) c.copy(cCity).lerp(cLow, (m - 4) / 10); else if (m < 90) c.copy(cLow).lerp(cMid, (m - 14) / 76); else c.copy(cMid).lerp(cHigh, Math.min(1, (m - 90) / 200));
-    col.set([c.r, c.g, c.b], k * 3);
-  }
-  geo.setAttribute('color', new THREE.BufferAttribute(col, 3)); geo.computeVertexNormals();
-  const land = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, flatShading: false }));
+  const GX = big ? 241 : 151, GY = Math.round(GX * HU / WU);
+  const geo = new THREE.PlaneGeometry(WU, HU, GX - 1, GY - 1);
+  const pos = geo.attributes.position;
+  for (let k = 0; k < pos.count; k++) { const i = k % GX, j = (k / GX) | 0; pos.setZ(k, hXZ(-WU / 2 + WU * i / (GX - 1), -HU / 2 + HU * j / (GY - 1))); }
+  geo.computeVertexNormals();
+  const landMat = chao ? new THREE.MeshStandardMaterial({ map: chao, alphaTest: 0.5, roughness: 0.95, metalness: 0 }) : new THREE.MeshStandardMaterial({ color: 0x8aa070, roughness: 0.95 });
+  const land = new THREE.Mesh(geo, landMat);
   land.rotation.x = -Math.PI / 2; land.receiveShadow = true; scene.add(land);
 
-  // mar
-  // o mar vai até o horizonte e reflete o sol (o caminho dourado na água)
-  const waterMat = new THREE.ShaderMaterial({ uniforms: Object.assign({ t: { value: 0 }, fN: { value: 90 }, fF: { value: 190 }, deep: { value: new THREE.Color(0x0d5361) }, hi: { value: new THREE.Color(0x9fd8dc) } }, skyU),
+  // mar: fundo raso turquesa perto da areia, azul profundo longe; ondas que quebram em espuma na beira; reflexo do céu e do sol
+  const waterMat = new THREE.ShaderMaterial({ uniforms: Object.assign({ t: { value: 0 }, fN: { value: 90 }, fF: { value: 190 }, mar: { value: marT }, hasMar: { value: marT ? 1 : 0 }, box: { value: new THREE.Vector2(WU, HU) },
+      deep: { value: new THREE.Color(0x0a3d55) }, midc: { value: new THREE.Color(0x13707f) }, shal: { value: new THREE.Color(0x2fb3aa) }, sand: { value: new THREE.Color(0x8fd3c0) } }, skyU),
     vertexShader: 'varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
-    fragmentShader: 'uniform float t, fN, fF; uniform vec3 sunDir, zen, mid, hc, hw, glow, core, deep, hi; varying vec3 vW; ' + HZ + ' void main(){ vec2 p = vW.xz * vec2(0.9, 0.62); float w = sin(p.x*0.7 + p.y*0.35 + t*0.9) + sin(p.y*0.9 - p.x*0.2 - t*0.7)*0.6; vec3 c = mix(deep, hi, (w * 0.3 + 0.5) * 0.06); vec3 v = normalize(vW - cameraPosition); float fr = pow(1.0 - max(-v.y, 0.0), 5.0); c = mix(c, hz(v) * 0.85, fr * 0.6); vec2 q = vW.xz; vec3 n = normalize(vec3(sin(q.x*1.7 + q.y*0.9 + t*1.3) * 0.035 + sin(q.x*4.3 - q.y*2.9 - t*1.7) * 0.025 + sin(q.y*7.1 + q.x*3.7 + t*2.1) * 0.015, 1.0, sin(q.y*1.9 - q.x*1.1 + t*1.1) * 0.035 + sin(q.y*5.3 + q.x*2.3 - t*1.9) * 0.025 + sin(q.x*6.7 - q.y*4.1 + t*2.4) * 0.015)); float g = pow(max(dot(reflect(v, n), sunDir), 0.0), 260.0); c += glow * g * 1.8; float d = length(vW - cameraPosition); c = mix(c, hz(v), smoothstep(fN, fF, d)); gl_FragColor = vec4(c, 1.0);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}' });
+    fragmentShader: 'uniform float t, fN, fF, hasMar; uniform vec2 box; uniform sampler2D mar; uniform vec3 sunDir, zen, mid, hc, hw, glow, core, deep, midc, shal, sand; varying vec3 vW; ' + HZ +
+      ' float h21(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }' +
+      ' float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f); return mix(mix(h21(i), h21(i+vec2(1,0)), f.x), mix(h21(i+vec2(0,1)), h21(i+vec2(1,1)), f.x), f.y); }' +
+      ' void main(){ vec2 uv = vec2((vW.x + box.x*0.5)/box.x, 1.0 - (vW.z + box.y*0.5)/box.y); vec2 m = vec2(1.0); if (hasMar > 0.5 && uv.x > 0.0 && uv.x < 1.0 && uv.y > 0.0 && uv.y < 1.0) { m = texture2D(mar, uv).rg; float eg = smoothstep(0.0, 0.12, min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y))); m.g = mix(1.0, m.g, eg); } ' +
+      ' float dS = m.r, dD = m.g; vec2 q = vW.xz; ' +
+      ' vec3 c = mix(sand, shal, smoothstep(0.0, 0.05, dS)); c = mix(c, midc, smoothstep(0.08, 0.6, dS)); c = mix(c, deep, smoothstep(0.35, 1.0, dD)); ' +
+      ' float nz = vn(q*9.0 + vec2(t*0.15, -t*0.1)) * 0.6 + vn(q*23.0 - vec2(t*0.2, t*0.12)) * 0.4; c *= 0.94 + 0.1 * nz; ' +
+      ' vec3 n = normalize(vec3(sin(q.x*1.7 + q.y*0.9 + t*1.3) * 0.035 + sin(q.x*4.3 - q.y*2.9 - t*1.7) * 0.025 + sin(q.y*7.1 + q.x*3.7 + t*2.1) * 0.015 + (nz - 0.5) * 0.05, 1.0, sin(q.y*1.9 - q.x*1.1 + t*1.1) * 0.035 + sin(q.y*5.3 + q.x*2.3 - t*1.9) * 0.025 + sin(q.x*6.7 - q.y*4.1 + t*2.4) * 0.015 + (nz - 0.5) * 0.05)); ' +
+      ' vec3 v = normalize(vW - cameraPosition); float fr = pow(1.0 - max(-v.y, 0.0), 5.0); c = mix(c, hz(reflect(v, n)) * 0.9, fr * 0.55); ' +
+      ' float g = pow(max(dot(reflect(v, n), sunDir), 0.0), 260.0); c += glow * g * 1.8; ' +
+      // ondas: faixas que andam em direção à praia e se desfazem em espuma na areia
+      ' float w1 = dS * 70.0 - t * 1.25 + vn(q*4.0) * 2.5; float crest = pow(max(sin(w1), 0.0), 14.0) * (1.0 - smoothstep(0.03, 0.16, dS)) * smoothstep(0.004, 0.02, dS); ' +
+      ' float br = vn(q*60.0 + t*0.6); float shore = (1.0 - smoothstep(0.0, 0.022 + 0.012 * sin(t*1.25 + vn(q*6.0)*6.0), dS)) * (0.55 + 0.45 * br); ' +
+      ' float foam = clamp(crest * (0.5 + 0.7 * br) + shore, 0.0, 1.0); float px = fwidth(dS * 70.0); foam *= 1.0 - smoothstep(0.6, 2.5, px); c = mix(c, vec3(0.96, 0.98, 0.97), foam * 0.85); ' +
+      ' float d = length(vW - cameraPosition); c = mix(c, hz(v), smoothstep(fN, fF, d)); gl_FragColor = vec4(c, 1.0);\n#include <tonemapping_fragment>\n#include <colorspace_fragment>\n}' });
+  waterMat.extensions = { derivatives: true };
   const water = new THREE.Mesh(new THREE.PlaneGeometry(3000, 3000), waterMat); water.rotation.x = -Math.PI / 2; water.position.y = 0.0; scene.add(water);
 
-  // vias
-  const roadMat = { motorway: 0xf3eadb, trunk: 0xf3eadb, primary: 0xe2c77e, secondary: 0xbfb39a };
-  const groups = {};
-  data.roads.forEach((r) => { const arr = groups[r.t] || (groups[r.t] = []); for (let i = 1; i < r.p.length; i++) { const a = r.p[i - 1], b = r.p[i]; arr.push(X(a[1]), hAt(a[0], a[1]) + 0.06, Z(a[0]), X(b[1]), hAt(b[0], b[1]) + 0.06, Z(b[0])); } });
-  Object.entries(groups).forEach(([t, arr]) => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(arr, 3)); scene.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: roadMat[t] || 0xbfb39a, transparent: true, opacity: t === 'secondary' ? 0.45 : 0.8 }))); });
-
-  // cidade em volta: construções ao longo das ruas reais (altas perto da praia), num único desenho instanciado
-  if (data.bf && data.bf.length) {
-    const n = data.bf.length / 6, latC2 = (N + S) / 2, mxm = 111320 * Math.cos(latC2 * Math.PI / 180), mzm = 110540;
-    const bg = new THREE.BoxGeometry(1, 1, 1); bg.translate(0, 0.5, 0);
-    const im = new THREE.InstancedMesh(bg, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.75, metalness: 0.02 }), n);
-    im.castShadow = true; im.receiveShadow = true;
-    const mtx = new THREE.Matrix4(), q = new THREE.Quaternion(), sc = new THREE.Vector3(), ps = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0), cc = new THREE.Color();
-    for (let k = 0; k < n; k++) {
-      const xm = data.bf[k * 6], zm = data.bf[k * 6 + 1], fl = data.bf[k * 6 + 2], w = data.bf[k * 6 + 3], d = data.bf[k * 6 + 4], a = data.bf[k * 6 + 5];
-      const lon = W + xm / mxm, lat = N - zm / mzm;
-      ps.set(X(lon), hAt(lat, lon) - 0.02, Z(lat)); q.setFromAxisAngle(up, a * Math.PI / 180); sc.set(w / 100, fl * 3 * 1.8 / 100, d / 100);
-      mtx.compose(ps, q, sc); im.setMatrixAt(k, mtx);
-      const tone = 0.6 + ((k * 2654435761) % 1000) / 1000 * 0.16; cc.setRGB(tone * 0.97, tone * 0.96, tone * 0.93); im.setColorAt(k, cc);
-    }
-    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
-    scene.add(im);
+  // cidade: cada construção com o contorno real do OpenStreetMap; janelas por andar que acendem no fim de tarde
+  let orlaPath = null;
+  if (city && city.b) {
+    const ox = -WU / 2, oz = -HU / 2, vp = [], vc = [], vi = [], ix = [], c = new THREE.Color();
+    const hs = (n) => { const s = Math.sin(n * 12.9898) * 43758.5453; return s - Math.floor(s); };
+    city.b.forEach((b, bi) => {
+      const fl = b[0], n = (b.length - 1) / 2; if (n < 3) return;
+      const xs = [], zs = []; for (let i = 0; i < n; i++) { xs.push(b[1 + i * 2] / 100 + ox); zs.push(b[2 + i * 2] / 100 + oz); }
+      let a2 = 0, base = 1e9; for (let i = 0; i < n; i++) { const j = (i + 1) % n; a2 += xs[i] * zs[j] - xs[j] * zs[i]; base = Math.min(base, hXZ(xs[i], zs[i])); }
+      base -= 0.004; const top = base + fl * FH, r = hs(bi + 1), tower = fl >= 6;
+      // cores: torres claras (branco, areia, cinza, algumas com vidro azulado); casas em tons quentes com telhado de barro
+      if (tower) { const k = r * 5 | 0; c.setHex([0xf2eee6, 0xe9e1d2, 0xdcdcd8, 0xc9d6dc, 0xefe6d6][k]); } else c.setHSL(0.09 + r * 0.04, 0.25 + r * 0.2, 0.78 + r * 0.1);
+      const roof = tower ? new THREE.Color(0xb9b5ae) : new THREE.Color().setHSL(0.03 + r * 0.03, 0.45, 0.42 + r * 0.08);
+      const v0 = vp.length / 3, id = r;
+      for (let i = 0; i < n; i++) { vp.push(xs[i], base, zs[i]); vc.push(c.r, c.g, c.b); vi.push(base, id, tower ? 1 : 0); }
+      for (let i = 0; i < n; i++) { vp.push(xs[i], top, zs[i]); vc.push(c.r, c.g, c.b); vi.push(base, id, tower ? 1 : 0); }
+      for (let i = 0; i < n; i++) { vp.push(xs[i], top, zs[i]); vc.push(roof.r, roof.g, roof.b); vi.push(base, id, -1); }
+      for (let i = 0; i < n; i++) { const j = (i + 1) % n; if (a2 > 0) ix.push(v0 + i, v0 + n + j, v0 + j, v0 + i, v0 + n + i, v0 + n + j); else ix.push(v0 + i, v0 + j, v0 + n + j, v0 + i, v0 + n + j, v0 + n + i); }
+      const tri = THREE.ShapeUtils.triangulateShape(xs.map((x, i) => new THREE.Vector2(x, zs[i])), []);
+      tri.forEach(([p, q, s]) => { const cy = (zs[q] - zs[p]) * (xs[s] - xs[p]) - (xs[q] - xs[p]) * (zs[s] - zs[p]); if (cy > 0) ix.push(v0 + 2 * n + p, v0 + 2 * n + q, v0 + 2 * n + s); else ix.push(v0 + 2 * n + p, v0 + 2 * n + s, v0 + 2 * n + q); });
+    });
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(vp, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(vc, 3)); g.setAttribute('aI', new THREE.Float32BufferAttribute(vi, 3));
+    g.setIndex(vp.length / 3 > 65535 ? new THREE.Uint32BufferAttribute(ix, 1) : new THREE.Uint16BufferAttribute(ix, 1));
+    const cm = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.7, metalness: 0.02, flatShading: true });
+    cm.onBeforeCompile = (sh) => {
+      sh.uniforms.uFH = { value: FH };
+      sh.vertexShader = 'attribute vec3 aI; varying vec3 vI; varying vec3 vWp;\n' + sh.vertexShader.replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\n vWp = (modelMatrix * vec4(transformed, 1.0)).xyz; vI = aI;');
+      sh.fragmentShader = 'uniform float uFH; varying vec3 vI; varying vec3 vWp;\n float hh(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+        if (vI.z > -0.5) {
+          vec3 wn = normalize((vec4(normal, 0.0) * viewMatrix).xyz);
+          if (abs(wn.y) < 0.5) {
+            vec2 tg = normalize(vec2(-wn.z, wn.x)); float u = dot(vWp.xz, tg) / (vI.z > 0.5 ? 0.034 : 0.045); float v = (vWp.y - vI.x) / uFH;
+            vec2 cell = floor(vec2(u, v)), f = fract(vec2(u, v));
+            float win = step(0.2, f.x) * step(f.x, 0.8) * step(0.3, f.y) * step(f.y, 0.85) * step(0.6, v);
+            float aa = clamp(1.0 - (max(fwidth(u), fwidth(v)) - 0.1) * 4.5, 0.0, 1.0);
+            float lit = step(vI.z > 0.5 ? 0.62 : 0.8, hh(cell + vI.y * 97.0));
+            float wm = mix(0.33, win, aa) * (vI.z > 0.5 ? 1.0 : 0.6);
+            diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.16, 0.22, 0.27), wm * 0.8);
+            roughnessFactor = mix(roughnessFactor, 0.18, wm);
+            totalEmissiveRadiance += vec3(1.0, 0.7, 0.4) * mix(0.33 * (vI.z > 0.5 ? 0.38 : 0.2), win * lit, aa) * 1.1;
+          }
+        }`);
+    };
+    const cityMesh = new THREE.Mesh(g, cm); cityMesh.castShadow = !touch; cityMesh.receiveShadow = true; scene.add(cityMesh);
+    if (city.orla && city.orla.length > 4) orlaPath = { cam: new THREE.CatmullRomCurve3(city.orla.map((p) => new THREE.Vector3(p[0] / 100 + ox, 0, p[1] / 100 + oz))), tg: new THREE.CatmullRomCurve3(city.orla.map((p) => new THREE.Vector3(p[2] / 100 + ox, 0, p[3] / 100 + oz))) };
   }
 
-  // prédios
-  const white = new THREE.MeshStandardMaterial({ color: 0xf3eee4, roughness: 0.5, metalness: 0.05 });
+  // prédios da ZAH (destacados: cor do status, contorno e feixe de luz)
   const risers = [];
   P.forEach((p) => {
     const g = new THREE.Group(); const base = hAt(p.ll[0], p.ll[1]); g.position.set(X(p.ll[1]), base, Z(p.ll[0]));
     p.tw.forEach(([dx, dz, fl, w, d, st]) => {
-      const h = fl * 3 * BX / 100, ww = w * 2.2 / 100, dd = d * 2.2 / 100;
+      const h = fl * FH, ww = w * 1.4 / 100, dd = d * 1.4 / 100;
       const geo = new THREE.BoxGeometry(ww, h, dd); geo.translate(0, h / 2, 0);
       const lanc = (st || p.st) === 'lanc';
-      const mat = lanc ? new THREE.MeshStandardMaterial({ color: 0xe2c77e, emissive: 0xb8862b, emissiveIntensity: 0.35, roughness: 0.3, metalness: 0.3 }) : new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: ST[st || p.st], emissiveIntensity: 0.22, roughness: 0.45 });
-      const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.position.set(dx * 2.2 / 100, 0, dz * 2.2 / 100);
+      const mat = lanc ? new THREE.MeshStandardMaterial({ color: 0xe2c77e, emissive: 0xb8862b, emissiveIntensity: 0.4, roughness: 0.3, metalness: 0.3 }) : new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: ST[st || p.st], emissiveIntensity: 0.3, roughness: 0.45 });
+      const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.position.set(dx * 1.4 / 100, 0, dz * 1.4 / 100);
       const ed = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: ST[st || p.st], transparent: true, opacity: 0.9 })); m.add(ed);
       // faixas de andares
       const fg = new THREE.BufferGeometry(), fa = [];
-      for (let k = 1; k < fl; k += 2) { const y = k * 3 * BX / 100; fa.push(-ww / 2 - 0.002, y, dd / 2 + 0.002, ww / 2 + 0.002, y, dd / 2 + 0.002, ww / 2 + 0.002, y, dd / 2 + 0.002, ww / 2 + 0.002, y, -dd / 2 - 0.002); }
+      for (let k = 1; k < fl; k += 2) { const y = k * FH; fa.push(-ww / 2 - 0.002, y, dd / 2 + 0.002, ww / 2 + 0.002, y, dd / 2 + 0.002, ww / 2 + 0.002, y, dd / 2 + 0.002, ww / 2 + 0.002, y, -dd / 2 - 0.002); }
       fg.setAttribute('position', new THREE.Float32BufferAttribute(fa, 3)); m.add(new THREE.LineSegments(fg, new THREE.LineBasicMaterial({ color: 0x8d9a98, transparent: true, opacity: 0.5 })));
       g.add(m);
     });
     // anel no chão marcando o lugar
-    const ring = new THREE.Mesh(new THREE.RingGeometry(1.1, 1.25, 48), new THREE.MeshBasicMaterial({ color: ST[p.st], transparent: true, opacity: 0.85, side: THREE.DoubleSide }));
-    ring.rotation.x = -Math.PI / 2; ring.position.y = 0.08; g.add(ring);
+    const ring = new THREE.Mesh(new THREE.RingGeometry(0.62, 0.72, 48), new THREE.MeshBasicMaterial({ color: ST[p.st], transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false }));
+    ring.rotation.x = -Math.PI / 2; ring.position.y = 0.03; g.add(ring);
     // feixe de luz acima do prédio, para achar cada empreendimento no meio da cidade
-    const topH = Math.max(...p.tw.map((t) => t[2])) * 3 * BX / 100;
-    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.5, 7, 24, 1, true), new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, uniforms: { c: { value: new THREE.Color(ST[p.st]) } },
+    const topH = Math.max(...p.tw.map((t) => t[2])) * FH;
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.2, 6, 20, 1, true), new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, uniforms: { c: { value: new THREE.Color(ST[p.st]) } },
       vertexShader: 'varying float vY; void main(){ vY = position.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-      fragmentShader: 'uniform vec3 c; varying float vY; void main(){ float a = smoothstep(3.5, -3.5, vY) * 0.38; gl_FragColor = vec4(c, a); }' }));
-    beam.position.y = topH + 3.6; g.add(beam); g.userData.beam = beam;
-    g.userData.ring = ring; scene.add(g); p.g = g; p.top = new THREE.Vector3(g.position.x, base + Math.max(...p.tw.map((t) => t[2])) * 3 * BX / 100 + 1.2, g.position.z);
+      fragmentShader: 'uniform vec3 c; varying float vY; void main(){ float a = smoothstep(3.0, -3.0, vY) * 0.5; gl_FragColor = vec4(c, a); }' }));
+    beam.position.y = topH + 3.1; g.add(beam); g.userData.beam = beam;
+    g.userData.ring = ring; scene.add(g); p.g = g; p.top = new THREE.Vector3(g.position.x, base + topH + 0.6, g.position.z);
     risers.push({ g, t0: null });
   });
 
   // controles
   // o zoom é nosso (suave e na direção do ponto apontado); o OrbitControls só gira
   const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true; controls.dampingFactor = 0.07; controls.enablePan = false; controls.enableZoom = false; controls.minDistance = 6; controls.maxDistance = 120; controls.minPolarAngle = 0.25; controls.maxPolarAngle = 1.42;
-  const touch = window.matchMedia('(pointer: coarse)').matches; controls.enabled = !touch;
+  controls.enableDamping = true; controls.dampingFactor = 0.07; controls.enablePan = false; controls.enableZoom = false; controls.minDistance = 1.2; controls.maxDistance = 120; controls.minPolarAngle = 0.25; controls.maxPolarAngle = 1.48;
+  controls.enabled = !touch;
 
   // pinos
   const pins = [];
@@ -147,7 +190,7 @@ export async function init(stage, opts = {}) {
   PLACES.forEach(([n, la, lo]) => { const s = document.createElement('span'); s.className = 'zp-place'; s.textContent = n; pinBox.appendChild(s); pins.push({ el: s, v: new THREE.Vector3(X(lo), hAt(la, lo) + 0.4, Z(la)) }); });
 
   // voo, cartão
-  let fly = null, cardT = 0, cur = null, sway = false, swayBase = null, swayT0 = 0;
+  let fly = null, ride = null, cardT = 0, cur = null, sway = false, swayBase = null, swayT0 = 0;
   const hideCard = () => { clearTimeout(cardT); card.classList.remove('show'); };
   // visão geral: vista do mar para a orla, o mais perto possível com todos os prédios na tela
   const UP = new THREE.Vector3(0, 1, 0);
@@ -156,23 +199,22 @@ export async function init(stage, opts = {}) {
     const box = new THREE.Box3().setFromPoints(pts), ctr = box.getCenter(new THREE.Vector3()); ctr.y = 0.5;
     const port = camera.aspect < 1; // tela em pé: olha ao longo da costa, de Porto Belo para Itapema
     const dir = (port ? new THREE.Vector3(0.42, 0.24, 0.9) : new THREE.Vector3(0.94, 0.21, -0.34)).normalize(), cam = camera.clone(), pv = new THREE.Vector3();
-    // em pé, a mira sobe um pouco para o pôr do sol caber no alto da tela
-    const lift = 0, tg = new THREE.Vector3();
+    const tg = new THREE.Vector3();
     let d = 30;
     for (let i = 0; i < 80; i++) {
-      tg.copy(ctr); tg.y += d * lift;
+      tg.copy(ctr);
       cam.position.copy(dir).multiplyScalar(d).add(ctr); cam.lookAt(tg); cam.updateMatrixWorld();
       if (pts.every((pt) => { pv.copy(pt).project(cam); return Math.abs(pv.x) < 0.84 && pv.y < (port ? 0.5 : 0.42) && pv.y > -0.84; })) break;
       d *= 1.04;
     }
     controls.maxDistance = d * 1.35;
-    tg.copy(ctr); tg.y += d * lift;
+    tg.copy(ctr);
     return { tgt: tg, off: dir.multiplyScalar(d).add(ctr).sub(tg) };
   }
   // zoom suave: cada giro da roda, pinça ou botão soma um pouco e a câmera desliza até lá
   let zq = 0; const za = new THREE.Vector3(), ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
   function zoomBy(amt, cx, cy) {
-    sway = false; fly = null; hideCard();
+    sway = false; fly = null; ride = null; hideCard();
     if (cx == null) za.copy(controls.target);
     else {
       const r = canvas.getBoundingClientRect(); ndc.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1);
@@ -191,20 +233,27 @@ export async function init(stage, opts = {}) {
     const tt = controls.target, cx2 = Math.max(-WU / 2, Math.min(WU / 2, tt.x)) - tt.x, cy2 = Math.max(0, Math.min(40, tt.y)) - tt.y, cz2 = Math.max(-HU / 2, Math.min(HU / 2, tt.z)) - tt.z;
     if (cx2 || cy2 || cz2) { tt.x += cx2; tt.y += cy2; tt.z += cz2; camera.position.x += cx2; camera.position.y += cy2; camera.position.z += cz2; }
   }
+  function showCard(k, n, d) { const mb = card.querySelector('.zp-more'); if (mb) mb.style.display = cur ? '' : 'none'; card.querySelector('small').textContent = k; card.querySelector('strong').textContent = n; card.querySelector('p').textContent = d; card.classList.add('show'); clearTimeout(cardT); cardT = setTimeout(hideCard, 8000); }
   function go(id) {
-    let tgt, off;
-    if (id === 'geral') { const gv = geralView(); tgt = gv.tgt; off = gv.off; hideCard(); cur = null; sway = true; swayBase = null; }
+    let tgt, off; ride = null;
+    if (id === 'orla') {
+      if (!orlaPath) return;
+      // passeio: a câmera vem do mar e corre a orla de Meia Praia olhando para os prédios
+      const L = orlaPath.cam.getLength(); sway = false; cur = null; zq = 0; fly = null;
+      ride = { t0: performance.now() + 1600, d: Math.max(18000, L / 1.6 * 1000) };
+      const p0 = orlaPath.cam.getPointAt(0), q0 = orlaPath.tg.getPointAt(0);
+      fly = { t0: performance.now(), d: 1600, p0: camera.position.clone(), q0: controls.target.clone(), p1: new THREE.Vector3(p0.x + (p0.x - q0.x) * (camera.aspect < 1 ? 0.9 : 0), 1.0 + (camera.aspect < 1 ? 0.45 : 0), p0.z + (p0.z - q0.z) * (camera.aspect < 1 ? 0.9 : 0)), q1: new THREE.Vector3(q0.x, 0.45, q0.z) };
+      showCard(ZL.orla[0], ZL.orla[1], ZL.orla[2]);
+      try { gtag('event', 'maquete_zah', { ponto: id }); } catch (_) {}
+    } else if (id === 'geral') { const gv = geralView(); tgt = gv.tgt; off = gv.off; hideCard(); cur = null; sway = true; swayBase = null; }
     else {
       const p = P.find((x) => x.id === id); if (!p) return; cur = p;
-      tgt = p.g.position.clone().add(new THREE.Vector3(0, 1, 0)); off = new THREE.Vector3(11, 7, 5); sway = false;
-      card.querySelector('small').textContent = p.sub ? ZL.tenet : ZL.st[p.st];
-      card.querySelector('strong').textContent = p.nome;
-      card.querySelector('p').textContent = p.aprox ? ZL.aprox : ZL.ver;
-      card.classList.add('show'); clearTimeout(cardT); cardT = setTimeout(hideCard, 8000);
+      tgt = p.g.position.clone().add(new THREE.Vector3(0, 0.6, 0)); off = new THREE.Vector3(4.6, 2.6, 2.4); sway = false;
+      showCard(p.sub ? ZL.tenet : ZL.st[p.st], p.nome, p.aprox ? ZL.aprox : ZL.ver);
       risers.find((r) => r.g === p.g).t0 = performance.now() + 450;
       try { gtag('event', 'maquete_zah', { ponto: id }); } catch (_) {}
     }
-    zq = 0; fly = { t0: performance.now(), d: 1800, p0: camera.position.clone(), q0: controls.target.clone(), p1: tgt.clone().add(off), q1: tgt };
+    if (tgt) { zq = 0; fly = { t0: performance.now(), d: 1800, p0: camera.position.clone(), q0: controls.target.clone(), p1: tgt.clone().add(off), q1: tgt }; }
     stage.parentNode.querySelectorAll('.vp-3d-tour button').forEach((b) => b.classList.toggle('on', b.getAttribute('data-k') === id));
   }
   stage.parentNode.querySelectorAll('.vp-3d-tour button').forEach((b) => b.addEventListener('click', () => go(b.getAttribute('data-k'))));
@@ -212,10 +261,10 @@ export async function init(stage, opts = {}) {
   const cx = card.querySelector('.vp-3d-cx'); if (cx) cx.addEventListener('click', (e) => { e.stopPropagation(); hideCard(); });
   const live = stage.querySelector('.vp-3d-live');
   if (live) live.addEventListener('click', () => { const on = !stage.classList.contains('live'); stage.classList.toggle('live', on); controls.enabled = on || !touch; live.textContent = on ? 'Voltar à rolagem' : 'Toque para explorar'; });
-  controls.addEventListener('start', () => { fly = null; sway = false; hideCard(); });
+  controls.addEventListener('start', () => { fly = null; ride = null; sway = false; hideCard(); });
   let downAt = null, wheelOk = false;
   canvas.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; wheelOk = true; });
-  canvas.addEventListener('pointerup', (e) => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 8) hideCard(); downAt = null; });
+  canvas.addEventListener('pointerup', (e) => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 8) { hideCard(); ride = null; } downAt = null; });
   stage.addEventListener('mouseleave', () => { wheelOk = false; });
 
   // botões de zoom (bom no notebook com touch e no celular)
@@ -254,7 +303,7 @@ export async function init(stage, opts = {}) {
   function resize() {
     const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
     // tela cheia ou celular virado: refaz o enquadramento da visão geral
-    if (lastAsp && Math.abs(camera.aspect - lastAsp) > 0.15 && cur == null && stage.classList.contains('gl')) go('geral');
+    if (lastAsp && Math.abs(camera.aspect - lastAsp) > 0.15 && cur == null && !ride && stage.classList.contains('gl')) go('geral');
     lastAsp = camera.aspect;
   }
   new ResizeObserver(resize).observe(stage); resize();
@@ -268,15 +317,25 @@ export async function init(stage, opts = {}) {
   function frame() {
     waterMat.uniforms.t.value += Math.min(clock.getDelta(), 0.05);
     const now = performance.now();
-    risers.forEach((r) => { const k = r.t0 == null ? 0 : Math.max(0, Math.min(1, (now - r.t0) / 1600)); const e = 1 - Math.pow(1 - k, 3); r.g.children.forEach((ch) => { if (ch !== r.g.userData.ring && ch !== r.g.userData.beam) ch.scale.y = Math.max(0.001, e); }); r.g.userData.beam.material.uniforms.c.value; r.g.userData.beam.visible = e > 0.95; r.g.userData.ring.material.opacity = 0.5 + 0.4 * Math.sin(now / 500); });
+    risers.forEach((r) => { const k = r.t0 == null ? 0 : Math.max(0, Math.min(1, (now - r.t0) / 1600)); const e = 1 - Math.pow(1 - k, 3); r.g.children.forEach((ch) => { if (ch !== r.g.userData.ring && ch !== r.g.userData.beam) ch.scale.y = Math.max(0.001, e); }); r.g.userData.beam.visible = e > 0.95; r.g.userData.ring.material.opacity = 0.5 + 0.4 * Math.sin(now / 500); });
     if (fly) { const k = Math.min(1, (now - fly.t0) / fly.d), e = ease(k); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.q0, fly.q1, e); if (k >= 1) fly = null; }
+    else if (ride && orlaPath) { // passeio pela orla
+      const k = Math.max(0, Math.min(1, (now - ride.t0) / ride.d)), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      const pc = orlaPath.cam.getPointAt(e), pt = orlaPath.tg.getPointAt(Math.min(1, e + 0.02));
+      const far = camera.aspect < 1 ? 0.9 : 0; camera.position.set(pc.x + (pc.x - pt.x) * far, 1.0 + far * 0.5, pc.z + (pc.z - pt.z) * far); controls.target.set(pt.x, 0.45, pt.z);
+      if (k >= 1) ride = null;
+    }
     else if (sway) { // visão geral "respirando": balança devagar, sem sair do enquadramento
       if (!swayBase) { swayBase = camera.position.clone().sub(controls.target); swayT0 = now; }
       camera.position.copy(swayBase).applyAxisAngle(UP, 0.1 * Math.sin((now - swayT0) / 4200)).add(controls.target);
     }
     stepZoom();
     controls.update();
-    const cd = camera.position.distanceTo(controls.target); scene.fog.near = waterMat.uniforms.fN.value = cd + 35; scene.fog.far = waterMat.uniforms.fF.value = cd + 150;
+    const cd = camera.position.distanceTo(controls.target);
+    scene.fog.near = waterMat.uniforms.fN.value = cd + 35; scene.fog.far = waterMat.uniforms.fF.value = cd + 150;
+    // perto: plano de recorte mais próximo e sombra mais nítida em volta do que se vê
+    const nn = Math.max(0.03, Math.min(0.5, cd * 0.012)); if (Math.abs(camera.near - nn) > 0.005) { camera.near = nn; camera.updateProjectionMatrix(); }
+    shadowFit(controls.target, Math.max(6, Math.min(70, cd * 1.3)));
     sky.position.copy(camera.position); camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize(); sh.set(sunDir.x, sunDir.z).normalize(); scene.fog.color.copy(SKY.hc).lerp(SKY.hw, Math.pow(Math.max(fwd.x * sh.x + fwd.z * sh.y, 0), 2.5));
     renderer.render(scene, camera);
     const w = stage.clientWidth, h = stage.clientHeight;

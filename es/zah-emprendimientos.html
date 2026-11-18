@@ -519,10 +519,10 @@ fbq('track', 'PageView');
       <button class="vp-3d-live" type="button">Toque para explorar</button>
       <button class="vp-3d-fs" type="button">⤢ Pantalla completa</button>
     </div>
-    <div class="vp-3d-tour" role="toolbar" aria-label="Recorrido por la maqueta"><button type="button" data-k="geral">Vista general</button><button type="button" data-k="canvas">Canvas</button><button type="button" data-k="amrita">Amrita</button><button type="button" data-k="tenet">Tenet</button><button type="button" data-k="veda">Vedá</button><button type="button" data-k="amazonia">Amazônia</button><button type="button" data-k="tekoa">Tekoā</button></div>
+    <div class="vp-3d-tour" role="toolbar" aria-label="Recorrido por la maqueta"><button type="button" data-k="geral">Vista general</button><button type="button" data-k="orla">Paseo por la costanera</button><button type="button" data-k="canvas">Canvas</button><button type="button" data-k="amrita">Amrita</button><button type="button" data-k="tenet">Tenet</button><button type="button" data-k="veda">Vedá</button><button type="button" data-k="amazonia">Amazônia</button><button type="button" data-k="tekoa">Tekoā</button></div>
     <div class="zp-leg"><span><i style="background:#5fd38a"></i>Listo para vivir</span><span><i style="background:#79c2cd"></i>En construcción</span><span><i style="background:#e2c77e"></i>Lanzamiento</span></div>
   </div>
-  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maqueta ilustrativa. Relieve real (datos SRTM), exagerado 2 veces, y calles de OpenStreetMap (© colaboradores de OpenStreetMap). Edificios en escala ampliada, con posiciones y alturas aproximadas.</p>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maqueta ilustrativa. Relieve real (datos SRTM), exagerado 2 veces. Costa, calles y contorno de las construcciones de OpenStreetMap (© colaboradores de OpenStreetMap) y de Microsoft Building Footprints (ODbL). Alturas aproximadas y ampliadas 1,8 veces; posiciones de los emprendimientos aproximadas.</p>
   <a class="vp-next rv" href="#portfolio"><span>A continuación</span>Elija su emprendimiento<i aria-hidden="true"></i></a></div>
 </section>
 
@@ -753,7 +753,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=mwm49by1').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=c1795033757').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';

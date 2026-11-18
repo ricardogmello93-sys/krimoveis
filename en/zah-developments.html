@@ -519,10 +519,10 @@ fbq('track', 'PageView');
       <button class="vp-3d-live" type="button">Tap to explore</button>
       <button class="vp-3d-fs" type="button">⤢ Full screen</button>
     </div>
-    <div class="vp-3d-tour" role="toolbar" aria-label="Model tour"><button type="button" data-k="geral">Overview</button><button type="button" data-k="canvas">Canvas</button><button type="button" data-k="amrita">Amrita</button><button type="button" data-k="tenet">Tenet</button><button type="button" data-k="veda">Vedá</button><button type="button" data-k="amazonia">Amazônia</button><button type="button" data-k="tekoa">Tekoā</button></div>
+    <div class="vp-3d-tour" role="toolbar" aria-label="Model tour"><button type="button" data-k="geral">Overview</button><button type="button" data-k="orla">Beachfront ride</button><button type="button" data-k="canvas">Canvas</button><button type="button" data-k="amrita">Amrita</button><button type="button" data-k="tenet">Tenet</button><button type="button" data-k="veda">Vedá</button><button type="button" data-k="amazonia">Amazônia</button><button type="button" data-k="tekoa">Tekoā</button></div>
     <div class="zp-leg"><span><i style="background:#5fd38a"></i>Move-in ready</span><span><i style="background:#79c2cd"></i>Under construction</span><span><i style="background:#e2c77e"></i>New launch</span></div>
   </div>
-  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Illustrative model. Real terrain (SRTM data), exaggerated 2x, and roads from OpenStreetMap (© OpenStreetMap contributors). Buildings at enlarged scale, with approximate positions and heights.</p>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Illustrative model. Real terrain (SRTM data), exaggerated 2x. Coastline, streets and building outlines from OpenStreetMap (© OpenStreetMap contributors) and Microsoft Building Footprints (ODbL). Heights are approximate and enlarged 1.8x; development positions are approximate.</p>
   <a class="vp-next rv" href="#portfolio"><span>Next</span>Choose your development<i aria-hidden="true"></i></a></div>
 </section>
 
@@ -753,7 +753,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=mwm49by1').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=c1795033757').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';

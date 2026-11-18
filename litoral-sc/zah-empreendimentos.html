@@ -522,10 +522,10 @@ fbq('track', 'PageView');
       <button class="vp-3d-live" type="button">Toque para explorar</button>
       <button class="vp-3d-fs" type="button">⤢ Tela cheia</button>
     </div>
-    <div class="vp-3d-tour" role="toolbar" aria-label="Passeio pela maquete"><button type="button" data-k="geral">Visão geral</button><button type="button" data-k="canvas">Canvas</button><button type="button" data-k="amrita">Amrita</button><button type="button" data-k="tenet">Tenet</button><button type="button" data-k="veda">Vedá</button><button type="button" data-k="amazonia">Amazônia</button><button type="button" data-k="tekoa">Tekoā</button></div>
+    <div class="vp-3d-tour" role="toolbar" aria-label="Passeio pela maquete"><button type="button" data-k="geral">Visão geral</button><button type="button" data-k="orla">Passeio pela orla</button><button type="button" data-k="canvas">Canvas</button><button type="button" data-k="amrita">Amrita</button><button type="button" data-k="tenet">Tenet</button><button type="button" data-k="veda">Vedá</button><button type="button" data-k="amazonia">Amazônia</button><button type="button" data-k="tekoa">Tekoā</button></div>
     <div class="zp-leg"><span><i style="background:#5fd38a"></i>Pronto para morar</span><span><i style="background:#79c2cd"></i>Em obras</span><span><i style="background:#e2c77e"></i>Lançamento</span></div>
   </div>
-  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maquete ilustrativa. Relevo real (dados SRTM), exagerado 2 vezes, e vias do OpenStreetMap (© colaboradores do OpenStreetMap). Prédios em escala ampliada, com posições e alturas aproximadas.</p>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Maquete ilustrativa. Relevo real (dados SRTM), exagerado 2 vezes. Costa, ruas e contorno das construções do OpenStreetMap (© colaboradores do OpenStreetMap) e do Microsoft Building Footprints (ODbL). Alturas aproximadas e ampliadas 1,8 vez; posições dos empreendimentos aproximadas.</p>
   <a class="vp-next rv" href="#portfolio"><span>A seguir</span>Escolha o seu empreendimento<i aria-hidden="true"></i></a></div>
 </section>
 
@@ -757,7 +757,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=mwm49by1').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=c1795033757').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';
