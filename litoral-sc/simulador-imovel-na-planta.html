@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de imóvel na planta | Itapema e Porto Belo SC</title>
-<meta name="description" content="Simule o pagamento de um imóvel na planta direto com a construtora: entrada, reforços, chaves e parcelas em até 180x. Itapema e Porto Belo, SC.">
+<title>Simulador de Imóvel na Planta e Financiamento | Itapema e Porto Belo SC</title>
+<meta name="description" content="Simule a compra em Itapema e Porto Belo: direto com a construtora na planta, com entrada, reforços, chaves e parcelas, ou financiamento pelo banco. Cada construtora tem o seu fluxo.">
 <link rel="canonical" href="https://krimoveissm.com.br/litoral-sc/simulador-imovel-na-planta.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://krimoveissm.com.br/litoral-sc/simulador-imovel-na-planta.html">
 <meta property="og:title" content="Simulador de imóvel na planta · Itapema e Porto Belo">
-<meta property="og:description" content="Simule o pagamento de um imóvel na planta direto com a construtora: entrada, reforços, chaves e parcelas em até 180x. Itapema e Porto Belo, SC.">
+<meta property="og:description" content="Simule a compra em Itapema e Porto Belo: direto com a construtora na planta, com entrada, reforços, chaves e parcelas, ou financiamento pelo banco. Cada construtora tem o seu fluxo.">
 <meta property="og:image" content="https://krimoveissm.com.br/images/litoral/og-litoral.jpg">
 <meta property="og:locale" content="pt_BR">
 <meta name="theme-color" content="#061820">
@@ -78,7 +78,15 @@
       "name": "Em quantas vezes dá para parcelar?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Depende da construtora. Há lançamentos com saldo em 120 parcelas mensais ou mais. O Ricardo mostra a condição real de cada empreendimento."
+        "text": "Depende da construtora e do empreendimento: cada uma define a entrada, os reforços e o número de parcelas, e há lançamentos com saldo em 120 parcelas mensais ou mais. Quanto mais avançada a obra, menos parcelas sobram até as chaves. O Ricardo mostra a condição real de cada empreendimento."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Dá para financiar no banco em vez de pagar direto?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sim. Imóvel pronto pode ser financiado no banco, que costuma financiar até 70% a 80% do valor. Na planta, o mais comum é pagar direto com a construtora durante a obra e financiar o saldo na entrega das chaves. Em regra, o FGTS só pode ser usado para imóvel na cidade onde você mora ou trabalha."
       }
     },
     {
@@ -356,7 +364,25 @@ a.inline { color: var(--sand); text-underline-offset: 3px; }
 .rel div { padding: 14px 16px; } .rel span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--sea2); }
 .rel strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 400; margin-top: 4px; }
 @media (max-width: 760px) { .sm-hero-in { padding: 0 20px 96px; } .wrap { padding: 20px 16px 30px; } .rel { grid-template-columns: 1fr; } .txt { margin-top: 50px; } }
-</style>
+
+.md { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 14px; }
+.md-b { display: flex; align-items: center; gap: 14px; text-align: left; cursor: pointer; padding: 18px 20px; border-radius: 20px; border: 1px solid var(--mdl, rgba(255,255,255,0.14)); background: var(--mdbg, rgba(255,255,255,0.03)); color: inherit; font: inherit; transition: border-color .3s, background .3s, transform .3s, box-shadow .3s; }
+.md-b:hover { transform: translateY(-2px); }
+.md-b i { flex: 0 0 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; border: 1px solid var(--mdl, rgba(255,255,255,0.14)); color: var(--gold2); }
+.md-b i svg { width: 24px; height: 24px; }
+.md-b b { display: block; font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; line-height: 1.15; }
+.md-b small { display: block; margin-top: 3px; font-size: 13px; line-height: 1.45; opacity: .72; }
+.md-b.on { border-color: var(--gold2); background: linear-gradient(135deg, rgba(201,168,76,0.16), rgba(201,168,76,0.04)); box-shadow: 0 18px 50px rgba(0,0,0,0.28), inset 0 0 0 1px rgba(226,199,126,0.25); }
+.md-b.on i { background: linear-gradient(135deg, #f3eadb, #e2c77e 65%, #c9a84c); color: #0b091c; border-color: transparent; }
+.md-hint { font-size: 14px; line-height: 1.6; opacity: .78; margin: 0 2px 22px; }
+.md-hint b { color: var(--gold2); font-weight: 500; }
+.md-emp { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 16px; padding: 9px 16px; border-radius: 100px; border: 1px solid var(--gold2); background: rgba(201,168,76,0.1); font-size: 14px; }
+.md-emp small { font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold2); }
+.md-p[hidden], .md-emp[hidden] { display: none !important; }
+.md-p { animation: mdIn .45s ease; }
+@keyframes mdIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (max-width: 760px) { .md { grid-template-columns: 1fr; } .md-b { padding: 14px 16px; } .md-b b { font-size: 21px; } }
+.wrap { --mdl: rgba(169,221,227,0.22); --mdbg: rgba(14,51,64,0.45); } .md-b.on i { color: #061820; } .cond-litoral { margin: 0 0 22px; font-size: 14.5px; line-height: 1.65; color: var(--muted); border-left: 2px solid var(--gold2); padding: 4px 0 4px 16px; } .cond-litoral b { color: var(--white); font-weight: 500; }</style>
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -429,8 +455,8 @@ fbq('track', 'PageView');
   <div class="sm-hero-in">
     <nav class="crumbs" aria-label="Você está em"><a href="../index.html">Início</a> › <a href="./">Litoral SC</a> › Simulador</nav>
     <span class="lt-tag">Simulador gratuito</span>
-    <h1 class="lt-h1">Simulador de imóvel <em>na planta</em></h1>
-    <p class="sm-lead">Veja como fica o pagamento direto com a construtora em Itapema e Porto Belo: entrada, reforços, chaves e parcelas mensais.</p>
+    <h1 class="lt-h1">Simulador de imóvel <em>no litoral</em></h1>
+    <p class="sm-lead">Direto com a construtora ou financiado pelo banco: escolha o jeito de comprar em Itapema e Porto Belo e veja na hora quanto fica cada parte.</p>
   </div>
   <div class="lt-wave" aria-hidden="true">
   <svg class="w2" viewBox="0 0 2880 90" preserveAspectRatio="none"><path fill="rgba(121,194,205,0.18)" d="M0 50 C 240 20 480 20 720 50 S 1200 80 1440 50 S 1920 20 2160 50 S 2640 80 2880 50 V90 H0Z"/></svg>
@@ -438,7 +464,44 @@ fbq('track', 'PageView');
 </div>
 </header>
 <main class="wrap">
-  <div class="sim" id="sim" data-lang="pt" data-origem="litoral_simulador">
+  <div class="md" role="tablist" aria-label="Como você quer pagar"><button type="button" role="tab" class="md-b on" data-m="dir" aria-selected="true"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4h2v17M3 21h9M7 4l14 3M8 7h10l-3 0M17 7v4M15.5 11h3v3h-3zM12 21v-7h5v7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Direto com a construtora</b><small>Na planta · entrada, reforços, chaves e parcelas</small></span></button><button type="button" role="tab" class="md-b" data-m="fin" aria-selected="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Financiamento pelo banco</b><small>Imóvel pronto ou saldo nas chaves · até 35 anos</small></span></button></div>
+  <p class="md-hint">Lançamento na planta: use o <b>direto com a construtora</b>. Imóvel pronto, ou o saldo de um lançamento financiado na entrega das chaves: use o <b>financiamento pelo banco</b>.</p>
+  <div class="md-emp" id="mdEmp" hidden></div><input type="hidden" id="sEmp" value="">
+  <div class="md-p" data-m="fin" id="financiamento" hidden><div class="sim" id="bim" data-origem="litoral_simulador_fin">
+  <div class="sim-in">
+    <div class="sim-f"><label for="bPrice">Valor do imóvel</label><input class="sim-money" id="bPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"></div>
+    <div class="sim-f"><label for="bDown">Entrada <b id="bDownV"></b></label><input type="range" id="bDown" min="10" max="80" step="1" value="30"></div>
+    <div class="sim-row">
+      <div class="sim-f"><label for="bRenda">Renda bruta da família</label><input class="sim-sel" id="bRenda" inputmode="numeric" placeholder="R$ 20.000"></div>
+      <div class="sim-f"><label for="bIdade">Idade do comprador mais velho</label><input class="sim-sel" id="bIdade" inputmode="numeric" placeholder="40"></div>
+    </div>
+    <div class="sim-f"><label>Imóvel</label><div class="sim-seg" id="bTipo"><button type="button" class="on" data-v="Pronto">Pronto</button><button type="button" data-v="Na planta, financiado nas chaves">Na planta, financiar nas chaves</button></div></div>
+  </div>
+  <div class="sim-out" aria-live="polite">
+    <div class="sim-big"><span>Valor a financiar</span><b id="bFin">-</b><small id="bFinP"></small></div>
+    <div class="sim-list">
+      <div><span>Entrada</span><b id="bEnt">-</b></div>
+      <div><span>Parcela máxima pela renda (30%)</span><b id="bParc">-</b></div>
+      <div><span>Prazo máximo pela idade</span><b id="bPrazo">-</b></div>
+    </div>
+    <div class="sim-warn" id="bWarn">Os bancos costumam financiar até 70% a 80% do valor do imóvel. Com essa entrada, a diferença precisa vir de recursos próprios.</div>
+    <p class="sim-note">Estimativa inicial, sem juros, seguros e taxas, que mudam de banco para banco. Em regra, o FGTS só pode ser usado para imóvel na cidade onde você mora ou trabalha. Na planta, o mais comum é pagar direto com a construtora durante a obra e financiar o saldo no banco na entrega das chaves.</p>
+  </div>
+  <div class="sim-lead">
+    <span class="sim-bonus">WhatsApp</span>
+    <h3>Receba a simulação dos bancos e imóveis que cabem nela</h3>
+    <p>O Ricardo compara as condições e manda opções reais em Itapema e Porto Belo.</p>
+    <form class="sim-form" id="bForm" novalidate>
+      <div><label for="bName">Seu nome</label><input id="bName" autocomplete="name" required></div>
+      <div><label for="bPhone">Seu WhatsApp com DDD</label><input id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(47) 99999-9999" required></div>
+      <button type="submit" class="lt-btn lt-btn-gold"><span class="lt-dot"></span>Receber no WhatsApp</button>
+    </form>
+    <p class="sim-err" id="bErr"></p>
+    <div class="sim-ok" id="bOk"></div>
+    <p class="sim-consent">Ao enviar, você concorda em receber o contato do Ricardo pelo WhatsApp.</p>
+  </div>
+</div></div>
+  <div class="md-p" data-m="dir" id="direto"><p class="cond-litoral"><b>Cada construtora tem o seu fluxo.</b> A entrada, os reforços e o número de parcelas mudam de construtora para construtora e de um empreendimento para outro, e nos lançamentos do litoral em geral é preciso chegar a 60% pago até as chaves. Use o simulador para entender o fluxo; a condição real vem na tabela de cada empreendimento, que o Ricardo envia atualizada.</p><div class="sim" id="sim" data-lang="pt" data-origem="litoral_simulador">
   <div class="sim-in">
     <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"></div>
     <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
@@ -485,7 +548,7 @@ fbq('track', 'PageView');
     <div class="sim-ok" id="sOk"></div>
     <p class="sim-consent">Ao enviar, você concorda em receber o contato do Ricardo pelo WhatsApp.</p>
   </div>
-</div>
+</div></div>
   <article class="txt">
     <h2>Como funciona o <em>fluxo com a construtora</em></h2>
     <p>Nos lançamentos do litoral catarinense, boa parte das compras é feita com o pagamento direto à construtora durante a obra. O valor do imóvel é dividido em quatro partes:</p>
@@ -508,7 +571,8 @@ fbq('track', 'PageView');
     <div class="faq-item"><p class="faq-q">O que são os reforços (balões)?</p><p>São pagamentos maiores feitos em datas combinadas, como uma vez por ano. Eles reduzem o valor das parcelas mensais. Algumas construtoras pedem poucos reforços; outras distribuem vários ao longo do parcelamento.</p></div>
     <div class="faq-item"><p class="faq-q">As parcelas da construtora têm correção?</p><p>Sim. Durante a obra, a maioria das construtoras do litoral de SC corrige as parcelas pelo CUB, o Custo Unitário Básico da construção em Santa Catarina. Depois das chaves, a correção e os eventuais juros variam conforme o contrato. O simulador mostra os valores sem correção, para você entender o fluxo.</p></div>
     <div class="faq-item"><p class="faq-q">Quanto preciso pagar até as chaves?</p><p>Em geral, as construtoras do litoral exigem pelo menos 60% do valor pago até a entrega das chaves, somando entrada, reforços, parcelas da obra e a parcela das chaves. O restante pode ser parcelado depois da entrega. O simulador já calcula isso.</p></div>
-    <div class="faq-item"><p class="faq-q">Em quantas vezes dá para parcelar?</p><p>Depende da construtora. Há lançamentos com saldo em 120 parcelas mensais ou mais. O Ricardo mostra a condição real de cada empreendimento.</p></div>
+    <div class="faq-item"><p class="faq-q">Em quantas vezes dá para parcelar?</p><p>Depende da construtora e do empreendimento: cada uma define a entrada, os reforços e o número de parcelas, e há lançamentos com saldo em 120 parcelas mensais ou mais. Quanto mais avançada a obra, menos parcelas sobram até as chaves. O Ricardo mostra a condição real de cada empreendimento.</p></div>
+    <div class="faq-item"><p class="faq-q">Dá para financiar no banco em vez de pagar direto?</p><p>Sim. Imóvel pronto pode ser financiado no banco, que costuma financiar até 70% a 80% do valor. Na planta, o mais comum é pagar direto com a construtora durante a obra e financiar o saldo na entrega das chaves. Em regra, o FGTS só pode ser usado para imóvel na cidade onde você mora ou trabalha.</p></div>
     <div class="faq-item"><p class="faq-q">Preciso de aprovação no banco para comprar na planta?</p><p>Não no começo: o parcelamento direto com a construtora não depende de análise bancária na assinatura. Se o saldo for financiado no banco na entrega das chaves, a análise acontece nessa etapa.</p></div>
     <h2>Continue <em>explorando</em></h2>
     <div class="rel"><a href="lancamentos-itapema-porto-belo.html"><img src="../images/litoral/itapema-praia-reflexo.webp" srcset="../images/litoral/itapema-praia-reflexo-md.webp 900w, ../images/litoral/itapema-praia-reflexo.webp 1800w" sizes="(max-width: 760px) 100vw, 340px" alt="Lançamentos na planta" class="" loading="lazy" decoding="async"><div><span>Na planta</span><strong>Lançamentos na planta</strong></div></a><a href="investir-em-itapema-porto-belo.html"><img src="../images/litoral/itapema-nascer-do-sol.webp" srcset="../images/litoral/itapema-nascer-do-sol-md.webp 900w, ../images/litoral/itapema-nascer-do-sol.webp 1800w" sizes="(max-width: 760px) 100vw, 340px" alt="Investir no litoral de SC" class="" loading="lazy" decoding="async"><div><span>Investimento</span><strong>Investir no litoral de SC</strong></div></a><a href="comprar-imovel-litoral-sc-outro-estado.html"><img src="../images/litoral/porto-belo-barco-calmo.webp" srcset="../images/litoral/porto-belo-barco-calmo-md.webp 900w, ../images/litoral/porto-belo-barco-calmo.webp 1800w" sizes="(max-width: 760px) 100vw, 340px" alt="Comprar morando em outro estado" class="" loading="lazy" decoding="async"><div><span>Outro estado</span><strong>Comprar morando em outro estado</strong></div></a></div>
@@ -630,7 +694,7 @@ fbq('track', 'PageView');
     if (!name) { err.textContent = L.badName; err.style.display = 'block'; $('sName').focus(); return; }
     if (!okPhone) { err.textContent = L.bad; err.style.display = 'block'; $('sPhone').focus(); return; }
     err.style.display = 'none';
-    var c = $('sCountry'); var d = Object.assign({}, last, { name: name, phone: phone, country: c ? c.value : '' });
+    var c = $('sCountry'); var d = Object.assign({}, last, { name: name, phone: phone, country: c ? c.value : '', emp: ($('sEmp') || {}).value || '' });
     var url = 'https://wa.me/5555999147822?text=' + encodeURIComponent(MSG(d));
     try {
       gtag('event', 'generate_lead', { simulador: 'fluxo_construtora', idioma: lang, valor_imovel: cur === 'USD' ? Math.round(num($('sPrice').value) * rate) : num($('sPrice').value) });
@@ -708,6 +772,88 @@ fbq('track', 'PageView');
     });
   }
   calc();
+})();
+</script>
+<script>
+(function () {
+  var root = document.getElementById('bim'); if (!root) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  function num(s) { return parseInt(String(s).replace(/\D/g, ''), 10) || 0; }
+  function money(el) { el.addEventListener('input', function () { var v = num(el.value); el.value = v ? (el.id === 'bPrice' ? '' : 'R$ ') + v.toLocaleString('pt-BR') : ''; calc(); }); }
+  money($('bPrice')); money($('bRenda'));
+  $('bIdade').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 2); calc(); });
+  $('bDown').addEventListener('input', calc);
+  var tipo = 'Pronto';
+  $('bTipo').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; tipo = b.getAttribute('data-v'); [].forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); }); });
+  var R = {};
+  function calc() {
+    var price = num($('bPrice').value), d = +$('bDown').value, renda = num($('bRenda').value), idade = num($('bIdade').value);
+    var ent = price * d / 100, fin = price - ent, prazo = idade ? Math.max(0, Math.min(35, Math.floor(80.5 - idade))) : 0;
+    $('bDownV').textContent = d + '%';
+    $('bFin').textContent = price ? brl.format(fin) : '-';
+    $('bFinP').textContent = price ? (100 - d) + '% do imóvel' : '';
+    $('bEnt').textContent = price ? brl.format(ent) : '-';
+    $('bParc').textContent = renda ? brl.format(renda * 0.3) : 'informe a renda';
+    $('bPrazo').textContent = idade ? (prazo ? prazo + ' anos' : 'a confirmar') : 'informe a idade';
+    $('bWarn').style.display = d < 20 ? 'block' : 'none';
+    R = { price: price, d: d, ent: ent, fin: fin, renda: renda, idade: idade, prazo: prazo };
+  }
+  var used = false;
+  root.addEventListener('input', function () { if (used) return; used = true; try { gtag('event', 'simulador_uso', { simulador: 'financiamento_litoral' }); } catch (_) {} });
+  $('bForm').addEventListener('submit', function (e) {
+    e.preventDefault(); calc();
+    var name = $('bName').value.trim(), phone = $('bPhone').value.trim(), dg = phone.replace(/\D/g, ''), err = $('bErr');
+    var falta = !name ? 'Escreva seu nome.' : (dg.length < 10 || dg.length > 13) ? 'Confira o WhatsApp: precisa ter DDD e número.' : '';
+    if (falta) { err.textContent = falta; err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    var emp = ($('sEmp') || {}).value || '';
+    var msg = '[Simulador Litoral · financiamento] Olá Ricardo! Fiz a simulação de financiamento no site.' + (emp ? '\nEmpreendimento: ' + emp : '') + '\nNome: ' + name + '\nWhatsApp: ' + phone + '\n\nImóvel: ' + brl.format(R.price) + ' (' + tipo + ')\nEntrada (' + R.d + '%): ' + brl.format(R.ent) + '\nA financiar: ' + brl.format(R.fin) + '\nRenda bruta: ' + (R.renda ? brl.format(R.renda) : 'não informada') + '\nIdade do mais velho: ' + (R.idade || 'não informada') + (R.prazo ? ' (prazo até ' + R.prazo + ' anos)' : '') + '\n\nQuero a simulação dos bancos e imóveis em Itapema e Porto Belo que cabem nela.';
+    var url = 'https://wa.me/5555999147822?text=' + encodeURIComponent(msg);
+    try {
+      gtag('event', 'generate_lead', { simulador: 'financiamento_litoral', valor_imovel: R.price });
+      gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
+      fbq('track', 'Lead', { content_name: 'simulador_financiamento_litoral' });
+    } catch (_) {}
+    var ok = $('bOk'); ok.innerHTML = 'Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber. <a href="' + url + '" target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="' + root.getAttribute('data-origem') + '">Não abriu? Toque aqui</a>'; ok.style.display = 'block';
+    var go = window.__waPc ? window.__waAlt(url) : url;
+    if (window.__waPc) ok.innerHTML += '<br><a class="sim-app" href="' + window.__waAlt(url, true) + '">Usa o app do WhatsApp no computador? Abrir no app</a>';
+    var w = window.open(go, '_blank'); if (!w) window.location.href = go;
+  });
+  calc();
+})();
+</script>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.md-b'), panes = document.querySelectorAll('.md-p'); if (!tabs.length) return;
+  function show(m, scroll) {
+    tabs.forEach(function (t) { var on = t.getAttribute('data-m') === m; t.classList.toggle('on', on); t.setAttribute('aria-selected', on); });
+    panes.forEach(function (p) { p.hidden = p.getAttribute('data-m') !== m; });
+    try { history.replaceState(null, '', location.pathname + location.search + (m === 'dir' ? '#direto' : '#financiamento')); } catch (_) {}
+    if (scroll) { var md = document.querySelector('.md'); if (md) md.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  }
+  tabs.forEach(function (t) { t.addEventListener('click', function () { show(t.getAttribute('data-m')); try { gtag('event', 'simulador_modo', { modo: t.getAttribute('data-m') }); } catch (_) {} }); });
+  var q = new URLSearchParams(location.search), h = location.hash;
+  var m = q.get('modo') === 'direto' || h === '#direto' ? 'dir' : (q.get('modo') === 'fin' || h === '#financiamento' ? 'fin' : null);
+  if (m) show(m, true);
+  function prefill(emp, n) {
+    emp = (emp || '').slice(0, 80); n = parseInt(n, 10);
+    var e = document.getElementById('mdEmp');
+    if (emp) { e.hidden = false; e.innerHTML = '<small>Simulando</small><span></span>'; e.querySelector('span').textContent = emp + (n ? ' · até ' + n + 'x' : ''); }
+    else e.hidden = true;
+    document.getElementById('sEmp').value = emp;
+    var sN = document.getElementById('sN');
+    if (sN && n > 0 && n <= 240) {
+      if (![].some.call(sN.options, function (o) { return +o.value === n; })) { var o = document.createElement('option'); o.value = n; o.textContent = n + 'x'; sN.appendChild(o); }
+      sN.value = String(n); sN.dispatchEvent(new Event('input'));
+    }
+  }
+  if (q.get('emp') || q.get('n')) prefill(q.get('emp'), q.get('n'));
+  document.querySelectorAll('[data-sim-emp]').forEach(function (b) { b.addEventListener('click', function () {
+    show('dir'); prefill(b.getAttribute('data-sim-emp'), b.getAttribute('data-sim-n'));
+    var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    try { gtag('event', 'simulador_emp', { emp: b.getAttribute('data-sim-emp') }); } catch (_) {}
+  }); });
 })();
 </script>
 </body>
