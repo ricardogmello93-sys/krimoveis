@@ -71,7 +71,7 @@
       "name": "Em quantas vezes dá para pagar direto com a construtora em Santa Maria?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Depende da construtora e do empreendimento. Hoje há lançamentos em até 132 parcelas, como o Eclipse, em até 120, como o NEXT 323 e o Gran Progresso, e em até 80, como o Atrium. Quanto mais avançada a obra, menos parcelas sobram até as chaves."
+        "text": "Depende da construtora e do empreendimento. Hoje há lançamentos em até 132 parcelas, como o Eclipse, em até 120, como o NEXT 323 e o Gran Progresso, e em até 80, como o Atrium. O parcelamento começa na obra e segue depois das chaves; nos empreendimentos já em obra, o número de parcelas oferecido costuma diminuir com o tempo."
       }
     },
     {
@@ -137,6 +137,8 @@ img { max-width: 100%; }
 .sm-brand img { height: 27px; width: auto; display: block; }
 .sm-brand { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; color: var(--white); text-decoration: none; white-space: nowrap; }
 .sm-sp { flex: 1; }
+.sm-back { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px 7px 10px; border-radius: 100px; border: 1px solid rgba(196,184,247,0.3); background: rgba(255,255,255,0.04); color: var(--champ); text-decoration: none; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; transition: background .25s, border-color .25s; }
+.sm-back:hover { background: rgba(201,168,76,0.14); border-color: var(--gold2); }
 .sm-reg { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
 .sm-reg a { padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; text-decoration: none; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; }
 .sm-reg a.on { background: rgba(157,147,237,0.28); color: var(--white); }
@@ -273,6 +275,7 @@ a.inline:hover { color: var(--white); }
 .sticky .sm-btn { padding: 11px 22px; font-size: 12px; }
 @media (max-width: 860px) {
   .sm-nav { padding: 12px 18px; gap: 10px; }
+.sm-back { padding: 6px 11px 6px 8px; font-size: 11px; letter-spacing: 1px; }
   .sm-santa { display: none; }
   .sm-reg a.on { display: none; }
   .sm-reg { padding: 0; border: 0; background: none; }
@@ -363,23 +366,31 @@ a.inline:hover { color: var(--white); }
 .md-p[hidden], .md-emp[hidden] { display: none !important; }
 .md-p { animation: mdIn .45s ease; }
 @keyframes mdIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@media (max-width: 760px) { .md { grid-template-columns: 1fr; } .md-b { padding: 14px 16px; } .md-b b { font-size: 21px; } }
+@media (max-width: 760px) { .md { gap: 8px; } .md-b { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; border-radius: 16px; } .md-b i { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px; } .md-b i svg { width: 19px; height: 19px; } .md-b b { font-size: 18px; } .md-b small { display: none; } .md-hint { font-size: 13px; margin-bottom: 16px; } .d-intro { font-size: 13.5px; } }
 
-.cond { margin: 0 0 22px; border-radius: 24px; border: 1px solid var(--mdl, rgba(255,255,255,0.14)); background: var(--mdbg, rgba(255,255,255,0.03)); padding: 24px 26px; }
-.cond h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; line-height: 1.15; margin: 0; }
-.cond h3 em { font-style: italic; color: var(--gold2); }
-.cond > p { font-size: 14.5px; line-height: 1.65; opacity: .8; margin: 8px 0 16px; max-width: 760px; }
-.cond-l { display: grid; gap: 8px; }
-.cond-r { display: grid; grid-template-columns: 1.3fr 1fr 1.2fr auto; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: rgba(0,0,0,0.18); border: 1px solid var(--mdl, rgba(255,255,255,0.1)); }
-.cond-r b { font-weight: 500; font-size: 15.5px; }
-.cond-r small { display: block; font-size: 12px; opacity: .65; margin-top: 2px; }
-.cond-r .x { font-family: 'Cormorant Garamond', serif; font-size: 26px; line-height: 1; color: var(--gold2); }
-.cond-r .x small { display: inline; margin: 0 0 0 1px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: inherit; opacity: .7; }
-.cond-r .f { font-size: 13px; opacity: .8; line-height: 1.45; }
-.cond-r button { border: 1px solid var(--gold2); background: rgba(201,168,76,0.1); color: inherit; font: 500 11.5px 'DM Sans', sans-serif; letter-spacing: 1.4px; text-transform: uppercase; padding: 10px 16px; border-radius: 100px; cursor: pointer; white-space: nowrap; transition: background .25s; }
-.cond-r button:hover { background: rgba(201,168,76,0.25); }
-.cond-n { font-size: 12.5px; opacity: .65; margin: 14px 0 0; line-height: 1.6; }
-@media (max-width: 760px) { .cond { padding: 20px 16px; } .cond-r { grid-template-columns: 1fr auto; } .cond-r .f { grid-column: 1 / -1; order: 3; } .cond-r button { grid-column: 1 / -1; order: 4; } }
+.d-intro { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 0 2px 16px; max-width: 860px; }
+.d-intro b { color: var(--white); font-weight: 500; }
+.dsw { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid var(--goldline); background: rgba(11,9,28,0.45); margin: 0 0 18px; }
+.dsw button { border: 0; background: none; color: var(--soft); font: 500 13px 'DM Sans', sans-serif; letter-spacing: .4px; padding: 10px 18px; border-radius: 100px; cursor: pointer; transition: background .25s, color .25s; }
+.dsw button.on { background: linear-gradient(135deg, #f3eadb, #e2c77e 65%, #c9a84c); color: #0b091c; }
+.dpane[hidden] { display: none !important; }
+.cc-w { margin: 0 0 16px; }
+.cc-w small { display: block; font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--purple2); margin-bottom: 8px; }
+.cc-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+.cc { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 1px solid var(--goldline); background: rgba(201,168,76,0.06); color: var(--white); font: inherit; padding: 9px 14px; border-radius: 14px; cursor: pointer; transition: background .25s, border-color .25s; }
+.cc:hover, .cc.on { background: rgba(201,168,76,0.18); border-color: var(--gold2); }
+.cc b { font-weight: 500; font-size: 13.5px; white-space: nowrap; } .cc span { font-size: 12px; color: var(--gold2); }
+.cc-n { font-size: 12px; color: var(--soft); margin-top: 6px; }
+.rv-h { font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--purple2); }
+.rv-h b { color: var(--white); font-weight: 500; }
+.rv-l { display: grid; gap: 8px; }
+.rv-r { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(27,20,66,0.5); }
+.rv-r b { font-weight: 500; font-size: 14.5px; } .rv-r small { display: block; font-size: 11.5px; color: var(--soft); }
+.rv-r span { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold2); }
+.rv-r em { grid-column: 1 / -1; font-style: normal; font-size: 12.5px; color: var(--soft); }
+.rv-r.ok { border-color: var(--gold2); } .rv-r.ok em { color: var(--gold2); }
+#rv .sim-out .sm-btn { align-self: flex-start; white-space: normal; text-align: center; }
+@media (max-width: 760px) { .dsw { display: flex; } .dsw button { flex: 1; padding: 10px 8px; font-size: 12.5px; } #rv .sim-out .sm-btn { align-self: stretch; } }
 .smflux { --sea2: var(--purple2); --sand: var(--champ); --sand2: var(--champ); --foam: var(--champ); }
 
 .smflux .sim { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 0; border-radius: 28px; overflow: hidden; border: 1px solid rgba(196,184,247,0.22); background: linear-gradient(160deg, rgba(42,33,96,0.6), rgba(11,9,28,0.85)); box-shadow: 0 40px 90px rgba(0,0,0,0.35); }
@@ -484,6 +495,7 @@ fbq('track', 'PageView');
 <body>
 <nav class="sm-nav" id="smNav">
   <a href="index.html" class="sm-brand" aria-label="Kamila &amp; Ricardo · início"><img src="images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"></a>
+  <a href="santa-maria/" class="sm-back" id="smBack"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Voltar</span></a>
   <div class="sm-sp"></div>
   <div class="sm-reg"><a href="santa-maria/" class="on">Santa Maria</a><a href="litoral-sc/" class="sc"><i></i>Litoral SC</a></div>
   <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="sm-santa" loading="lazy">
@@ -500,7 +512,7 @@ fbq('track', 'PageView');
 </header>
 <main class="sw">
   <div class="md" role="tablist" aria-label="Como você quer pagar"><button type="button" role="tab" class="md-b on" data-m="fin" aria-selected="true"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Financiamento pelo banco</b><small>Caixa, MCMV e bancos · FGTS · até 35 anos</small></span></button><button type="button" role="tab" class="md-b" data-m="dir" aria-selected="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4h2v17M3 21h9M7 4l14 3M8 7h10l-3 0M17 7v4M15.5 11h3v3h-3zM12 21v-7h5v7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Direto com a construtora</b><small>Na planta · entrada, reforços, chaves e parcelas</small></span></button></div>
-  <p class="md-hint">Imóvel pronto, usado ou financiado na planta pela Caixa: use o <b>financiamento pelo banco</b>. Lançamento parcelado com a construtora durante a obra: use o <b>direto com a construtora</b>.</p>
+  <p class="md-hint">Imóvel pronto, usado ou financiado na planta pela Caixa: use o <b>financiamento pelo banco</b>. Lançamento parcelado direto com a construtora: use o <b>direto com a construtora</b>.</p>
   <div class="md-emp" id="mdEmp" hidden></div><input type="hidden" id="sEmp" value="">
   <div class="md-p" data-m="fin" id="financiamento"><div class="fs" id="fs">
   <div class="fs-in">
@@ -542,12 +554,27 @@ fbq('track', 'PageView');
     <p class="consent">Ao enviar, você concorda em receber o contato da Kamila pelo WhatsApp. Seus dados não são compartilhados.</p>
   </div>
 </div></div>
-  <div class="md-p" data-m="dir" id="direto" hidden><div class="cond">
-    <h3>Cada construtora tem <em>o seu fluxo</em></h3>
-    <p>O número de parcelas, a entrada e os reforços mudam de construtora para construtora, e até de um empreendimento para outro da mesma construtora. Em geral, quanto mais avançada a obra, menos parcelas sobram até as chaves. Estas são as condições de hoje nos lançamentos que acompanhamos: toque em <b>Simular</b> para preencher o simulador com o fluxo de cada um.</p>
-    <div class="cond-l"><div class="cond-r"><div><b>Residencial Eclipse</b><small>COASE · Bonfim · lançamento</small></div><div class="x">até 132<small>x</small></div><div class="f">Direto com a construtora durante a obra, sem depender de banco.</div><button type="button" data-sim-emp="Residencial Eclipse" data-sim-n="132">Simular</button></div><div class="cond-r"><div><b>NEXT 323</b><small>MRU · Centro, perto da UFN · lançamento</small></div><div class="x">até 120<small>x</small></div><div class="f">Parcelas mensais direto com a MRU durante a obra.</div><button type="button" data-sim-emp="NEXT 323" data-sim-n="120">Simular</button></div><div class="cond-r"><div><b>Residenziale Gran Progresso</b><small>COASE · Camobi · em obras</small></div><div class="x">até 120<small>x</small></div><div class="f">Torre B em até 120 parcelas; Torre A em até 60.</div><button type="button" data-sim-emp="Residenziale Gran Progresso" data-sim-n="120">Simular</button></div><div class="cond-r"><div><b>Atrium 225 Residence</b><small>COASE · Camobi · lançamento</small></div><div class="x">até 80<small>x</small></div><div class="f">Direto com a construtora, em até 80 parcelas mensais.</div><button type="button" data-sim-emp="Atrium 225 Residence" data-sim-n="80">Simular</button></div><div class="cond-r"><div><b>Residencial Giardino Di Napoli</b><small>COASE · Camobi · em obras</small></div><div class="x">até 80<small>x</small></div><div class="f">Direto em até 80 parcelas ou pelo Minha Casa Minha Vida.</div><button type="button" data-sim-emp="Residencial Giardino Di Napoli" data-sim-n="80">Simular</button></div><div class="cond-r"><div><b>Residencial Singular</b><small>MRU · Centro · em obras</small></div><div class="x">parcelado</div><div class="f">A obra já começou: o número de parcelas diminui a cada mês. Quanto antes, mais prazo.</div><button type="button" data-sim-emp="Residencial Singular" data-sim-n="">Simular</button></div></div>
-    <p class="cond-n">Condições informadas pelas construtoras e sujeitas a mudança sem aviso. A Kamila confirma a tabela atualizada antes de qualquer decisão.</p>
-  </div><div class="smflux"><div class="sim" id="sim" data-lang="smpt" data-origem="sm_simulador_direto">
+  <div class="md-p" data-m="dir" id="direto" hidden><p class="d-intro"><b>Como funciona:</b> você dá uma entrada e paga parcelas mensais direto com a construtora, e algumas pedem reforços por ano. As parcelas começam na obra e continuam depois das chaves. Cada construtora tem o seu fluxo.</p>
+  <div class="dsw" role="tablist" aria-label="Como simular"><button type="button" class="on" data-d="rev">Quanto posso pagar?</button><button type="button" data-d="fwd">Já sei o valor do imóvel</button></div>
+  <div class="dpane" data-d="rev"><div class="smflux"><div class="sim" id="rv">
+    <div class="sim-in">
+      <div class="sim-f"><label for="rEnt">Quanto você tem para a entrada</label><input class="sim-money" id="rEnt" inputmode="numeric" value="30.000"></div>
+      <div class="sim-f"><label for="rParc">Parcela mensal que cabe no bolso</label><input class="sim-money" id="rParc" inputmode="numeric" value="2.000"></div>
+      <div class="sim-row">
+        <div class="sim-f"><label for="rRef">Reforço por ano (opcional)</label><input class="sim-sel" id="rRef" inputmode="numeric" value="0"></div>
+        <div class="sim-f"><label for="rN">Em quantas parcelas</label><select class="sim-sel" id="rN"><option value="60">60x</option><option value="80">80x</option><option value="100">100x</option><option value="120" selected>120x</option><option value="132">132x</option></select></div>
+      </div>
+      <p class="sim-note">A entrada, as parcelas e os reforços somados mostram o valor do imóvel que cabe nesse fluxo.</p>
+    </div>
+    <div class="sim-out" aria-live="polite">
+      <div class="sim-big"><span>Imóvel de até</span><b id="rTot">-</b><small id="rDet"></small></div>
+      <div class="rv-h">Lançamentos que parcelam em <b id="rNn"></b></div>
+      <div class="rv-l" id="rList"></div>
+      <p class="sim-note">Estimativa sem correção e sem juros. Cada construtora define a entrada mínima, os reforços e o reajuste, e a Kamila confirma os valores de cada empreendimento.</p>
+      <a class="sm-btn sm-btn-gold" id="rWa" href="#" target="_blank" rel="noopener" data-corretor="Kamila" data-origem="sm_simulador_quanto"><span class="sm-dot"></span>Quero saber o que cabe com a Kamila</a>
+    </div>
+  </div></div></div>
+  <div class="dpane" data-d="fwd" hidden><div class="cc-w"><small>Preencher com o fluxo de um lançamento</small><div class="cc-row"><button type="button" class="cc" data-sim-emp="Residencial Eclipse" data-sim-n="132"><b>Eclipse</b><span>até 132x</span></button><button type="button" class="cc" data-sim-emp="NEXT 323" data-sim-n="120"><b>NEXT 323</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Residenziale Gran Progresso" data-sim-n="120"><b>Residenziale Gran Progresso</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Atrium 225 Residence" data-sim-n="80"><b>Atrium 225</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Giardino Di Napoli" data-sim-n="80"><b>Giardino Di Napoli</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Singular" data-sim-n=""><b>Singular</b><span>parcelado</span></button></div><p class="cc-n">Condições informadas pelas construtoras, sujeitas a mudança. Nos empreendimentos já em obra, o número de parcelas costuma diminuir com o tempo.</p></div><div class="smflux"><div class="sim" id="sim" data-lang="smpt" data-origem="sm_simulador_direto">
   <div class="sim-in">
     <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="350.000" aria-label="Valor do imóvel"></div>
     <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
@@ -595,6 +622,30 @@ fbq('track', 'PageView');
     <p class="sim-consent">Ao enviar, você concorda em receber o contato da Kamila pelo WhatsApp.</p>
   </div>
 </div></div></div>
+<script>
+(function () {
+  var D = [{"n":"Residencial Eclipse","c":"COASE · Bonfim · lançamento","x":132,"fx":null},{"n":"NEXT 323","c":"MRU · Centro, perto da UFN · lançamento","x":120,"fx":null},{"n":"Residenziale Gran Progresso","c":"COASE · Camobi · em obras","x":120,"fx":null},{"n":"Atrium 225 Residence","c":"COASE · Camobi · lançamento","x":80,"fx":null},{"n":"Residencial Giardino Di Napoli","c":"COASE · Camobi · em obras","x":80,"fx":null},{"n":"Residencial Singular","c":"MRU · Centro · em obras","x":0,"fx":null}];
+  var $ = function (i) { return document.getElementById(i); }; if (!$('rv')) return;
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  function num(s) { return parseInt(String(s).replace(/[^0-9]/g, ''), 10) || 0; }
+  ['rEnt', 'rParc', 'rRef'].forEach(function (id) { $(id).addEventListener('input', function () { var v = num(this.value); this.value = v ? v.toLocaleString('pt-BR') : ''; calc(); }); });
+  $('rN').addEventListener('change', calc);
+  function calc() {
+    var e = num($('rEnt').value), p = num($('rParc').value), r = num($('rRef').value), n = +$('rN').value, k = Math.floor(n / 12), X = e + p * n + r * k;
+    $('rTot').textContent = X ? brl.format(X) : '-';
+    $('rDet').textContent = brl.format(e) + ' de entrada + ' + n + 'x de ' + brl.format(p) + (r ? ' + ' + k + ' reforços de ' + brl.format(r) : '');
+    $('rNn').textContent = n + 'x ou mais';
+    var L = D.filter(function (d) { return d.x >= n; });
+    $('rList').innerHTML = L.length ? L.map(function (d) { var fx = d.fx, ok = fx && X >= fx[0], t = fx ? 'Unidades de ' + brl.format(fx[0]) + (fx[1] ? ' a ' + brl.format(fx[1]) : '') : 'Valores: consulte a Kamila'; return '<div class="rv-r' + (ok ? ' ok' : '') + '"><div><b>' + d.n + '</b><small>' + d.c + '</small></div><span>até ' + d.x + 'x</span><em>' + (ok ? '✓ Cabe no seu fluxo · ' : '') + t + '</em></div>'; }).join('') : '<p class="sim-note">Nenhum lançamento que acompanhamos parcela em tantas vezes hoje. Escolha menos parcelas ou fale com a Kamila.</p>';
+    $('rWa').href = 'https://wa.me/5555991346393?text=' + encodeURIComponent('Olá Kamila! Simulei no site quanto posso pagar direto com a construtora: entrada de ' + brl.format(e) + ' e parcela de ' + brl.format(p) + ' em ' + n + 'x' + (r ? ', com reforço anual de ' + brl.format(r) : '') + '. Isso dá um imóvel de até ' + brl.format(X) + '. Quero saber o que cabe nesse fluxo.');
+  }
+  function showD(d) { document.querySelectorAll('.dsw button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-d') === d); }); document.querySelectorAll('.dpane').forEach(function (p) { p.hidden = p.getAttribute('data-d') !== d; }); }
+  document.querySelectorAll('.dsw button').forEach(function (b) { b.addEventListener('click', function () { showD(b.getAttribute('data-d')); try { gtag('event', 'simulador_direto_modo', { modo: b.getAttribute('data-d') }); } catch (_) {} }); });
+  window.__showD = showD;
+  var used = false; $('rv').addEventListener('input', function () { if (used) return; used = true; try { gtag('event', 'simulador_uso', { simulador: 'quanto_posso_pagar' }); } catch (_) {} });
+  calc();
+})();
+</script></div>
   <article class="txt">
     <h2>O que o simulador <em>mostra na hora</em></h2>
     <ul>
@@ -604,7 +655,7 @@ fbq('track', 'PageView');
     </ul>
     <p>Os valores exatos (quanto o banco financia, a taxa e a parcela) dependem da análise de cada banco. Essa parte a Kamila faz com você, comparando a Caixa e os bancos privados.</p>
     <h2>Direto com <em>a construtora</em></h2>
-    <p>Nos lançamentos, o pagamento pode ser feito direto com a construtora durante a obra, sem depender do banco para começar. O valor do imóvel é dividido em <strong>entrada</strong>, <strong>reforços</strong> (pagamentos maiores, como uma vez por ano), <strong>parcela nas chaves</strong> e <strong>parcelas mensais</strong>. Quanto maiores a entrada e os reforços, menor fica a parcela.</p>
+    <p>Nos lançamentos, o pagamento pode ser feito direto com a construtora, sem depender do banco para começar. O número de parcelas não é o tempo da obra: em 132 parcelas, por exemplo, são 11 anos de pagamento, e a obra termina bem antes. Você paga uma parte durante a obra e continua pagando depois de receber as chaves. O valor do imóvel é dividido em <strong>entrada</strong>, <strong>reforços</strong> (pagamentos maiores, como uma vez por ano), <strong>parcela nas chaves</strong> e <strong>parcelas mensais</strong>. Quanto maiores a entrada e os reforços, menor fica a parcela.</p>
     <p><strong>Cada construtora define o próprio fluxo</strong>, e ele muda de um empreendimento para outro: hoje há lançamentos em Santa Maria em até 132, 120 ou 80 parcelas, e nos que já estão em obra o número de parcelas diminui com o tempo. Durante a obra, as construtoras avaliam propostas, e a Kamila negocia por você. Veja os lançamentos e a condição de cada um na <a class="inline" href="santa-maria/#empreendimentos">vitrine de empreendimentos</a> e no guia de <a class="inline" href="imoveis-na-planta-santa-maria.html">imóveis na planta</a>.</p>
     <h2>Caixa ou <em>banco privado?</em></h2>
     <p>A <strong>Caixa</strong> opera o Minha Casa Minha Vida, com juros menores e subsídio nas faixas de renda mais baixas. Acima do programa, Caixa e <strong>bancos privados</strong> financiam pelo SBPE, e taxa, prazo e valor financiado mudam de banco para banco. Veja os detalhes no guia de <a class="inline" href="financiamento-santa-maria.html">financiamento e FGTS em Santa Maria</a> e no guia do <a class="inline" href="mcmv-santa-maria.html">Minha Casa Minha Vida</a>.</p>
@@ -615,7 +666,7 @@ fbq('track', 'PageView');
     <div class="faq-item"><p class="faq-q">Qual a parcela máxima do financiamento?</p><p class="faq-a">Em geral, os bancos aceitam uma parcela de até 30% da renda bruta familiar. Com uma renda de R$ 6.000, por exemplo, a parcela pode chegar a cerca de R$ 1.800.</p></div>
     <div class="faq-item"><p class="faq-q">A idade influencia no financiamento?</p><p class="faq-a">Sim. Na Caixa, a soma da idade do comprador mais velho com o prazo do financiamento não pode passar de 80 anos e 6 meses, e o prazo máximo é de 35 anos. Quanto mais velho o comprador, menor o prazo e maior a parcela.</p></div>
     <div class="faq-item"><p class="faq-q">Qual a diferença entre a Caixa e os bancos privados?</p><p class="faq-a">A Caixa opera o Minha Casa Minha Vida, com juros menores e subsídio nas faixas de renda mais baixas. Acima do programa, Caixa e bancos privados financiam pelo SBPE, e as condições mudam de banco para banco. Por isso vale comparar.</p></div>
-    <div class="faq-item"><p class="faq-q">Em quantas vezes dá para pagar direto com a construtora em Santa Maria?</p><p class="faq-a">Depende da construtora e do empreendimento. Hoje há lançamentos em até 132 parcelas, como o Eclipse, em até 120, como o NEXT 323 e o Gran Progresso, e em até 80, como o Atrium. Quanto mais avançada a obra, menos parcelas sobram até as chaves.</p></div>
+    <div class="faq-item"><p class="faq-q">Em quantas vezes dá para pagar direto com a construtora em Santa Maria?</p><p class="faq-a">Depende da construtora e do empreendimento. Hoje há lançamentos em até 132 parcelas, como o Eclipse, em até 120, como o NEXT 323 e o Gran Progresso, e em até 80, como o Atrium. O parcelamento começa na obra e segue depois das chaves; nos empreendimentos já em obra, o número de parcelas oferecido costuma diminuir com o tempo.</p></div>
     <div class="faq-item"><p class="faq-q">Pagar direto com a construtora precisa de aprovação no banco?</p><p class="faq-a">Não para começar: o parcelamento direto com a construtora não depende de análise bancária na assinatura. Se o saldo for financiado no banco na entrega das chaves, a análise acontece nessa etapa.</p></div>
     <div class="faq-item"><p class="faq-q">Qual o teto do Minha Casa Minha Vida em Santa Maria?</p><p class="faq-a">Nas Faixas 1 e 2, o imóvel pode custar até R$ 240 mil em Santa Maria. Na Faixa 3, até R$ 400 mil, e na Faixa 4, até R$ 600 mil.</p></div>
   </article>
@@ -628,6 +679,8 @@ fbq('track', 'PageView');
 </footer>
 <script>
 (function () {
+  var bk = document.getElementById('smBack');
+  if (bk) bk.addEventListener('click', function (e) { try { var r = document.referrer; if (r && new URL(r).origin === location.origin && history.length > 1) { e.preventDefault(); history.back(); } } catch (_) {} });
   var nav = document.getElementById('smNav'), st = document.getElementById('smSticky') || document.createElement('div');
   function onScroll() { var y = window.scrollY; nav.classList.toggle('solid', y > 40); st.classList.toggle('show', y > 500); }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
@@ -885,6 +938,7 @@ fbq('track', 'PageView');
   var m = q.get('modo') === 'direto' || h === '#direto' ? 'dir' : (q.get('modo') === 'fin' || h === '#financiamento' ? 'fin' : null);
   if (m) show(m, true);
   function prefill(emp, n) {
+    if (window.__showD) window.__showD('fwd');
     emp = (emp || '').slice(0, 80); n = parseInt(n, 10);
     var e = document.getElementById('mdEmp');
     if (emp) { e.hidden = false; e.innerHTML = '<small>Simulando</small><span></span>'; e.querySelector('span').textContent = emp + (n ? ' · até ' + n + 'x' : ''); }
@@ -899,7 +953,7 @@ fbq('track', 'PageView');
   if (q.get('emp') || q.get('n')) prefill(q.get('emp'), q.get('n'));
   document.querySelectorAll('[data-sim-emp]').forEach(function (b) { b.addEventListener('click', function () {
     show('dir'); prefill(b.getAttribute('data-sim-emp'), b.getAttribute('data-sim-n'));
-    var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.cc').forEach(function (c) { c.classList.toggle('on', c === b); }); var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { gtag('event', 'simulador_emp', { emp: b.getAttribute('data-sim-emp') }); } catch (_) {}
   }); });
 })();

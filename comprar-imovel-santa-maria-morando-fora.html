@@ -147,6 +147,8 @@ img { max-width: 100%; }
 .sm-brand img { height: 27px; width: auto; display: block; }
 .sm-brand { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; color: var(--white); text-decoration: none; white-space: nowrap; }
 .sm-sp { flex: 1; }
+.sm-back { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px 7px 10px; border-radius: 100px; border: 1px solid rgba(196,184,247,0.3); background: rgba(255,255,255,0.04); color: var(--champ); text-decoration: none; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; transition: background .25s, border-color .25s; }
+.sm-back:hover { background: rgba(201,168,76,0.14); border-color: var(--gold2); }
 .sm-reg { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.04); }
 .sm-reg a { padding: 8px 16px; border-radius: 100px; font-size: 12px; font-weight: 500; letter-spacing: 1.4px; text-transform: uppercase; text-decoration: none; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; }
 .sm-reg a.on { background: rgba(157,147,237,0.28); color: var(--white); }
@@ -283,6 +285,7 @@ a.inline:hover { color: var(--white); }
 .sticky .sm-btn { padding: 11px 22px; font-size: 12px; }
 @media (max-width: 860px) {
   .sm-nav { padding: 12px 18px; gap: 10px; }
+.sm-back { padding: 6px 11px 6px 8px; font-size: 11px; letter-spacing: 1px; }
   .sm-santa { display: none; }
   .sm-reg a.on { display: none; }
   .sm-reg { padding: 0; border: 0; background: none; }
@@ -330,6 +333,7 @@ fbq('track', 'PageView');
 <body>
 <nav class="sm-nav" id="smNav">
   <a href="index.html" class="sm-brand" aria-label="Kamila &amp; Ricardo · início"><img src="images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"></a>
+  <a href="santa-maria/" class="sm-back" id="smBack"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Voltar</span></a>
   <div class="sm-sp"></div>
   <div class="sm-reg"><a href="santa-maria/" class="on">Santa Maria</a><a href="litoral-sc/" class="sc"><i></i>Litoral SC</a></div>
   <img src="images/logo-santa-branca.png" alt="Santa Imóveis" class="sm-santa" loading="lazy">
@@ -459,6 +463,8 @@ fbq('track', 'PageView');
 </div>
 <script>
 (function () {
+  var bk = document.getElementById('smBack');
+  if (bk) bk.addEventListener('click', function (e) { try { var r = document.referrer; if (r && new URL(r).origin === location.origin && history.length > 1) { e.preventDefault(); history.back(); } } catch (_) {} });
   var nav = document.getElementById('smNav'), st = document.getElementById('smSticky');
   function onScroll() { var y = window.scrollY; nav.classList.toggle('solid', y > 40); st.classList.toggle('show', y > 500); }
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();

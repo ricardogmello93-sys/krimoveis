@@ -381,7 +381,7 @@ a.inline { color: var(--sand); text-underline-offset: 3px; }
 .md-p[hidden], .md-emp[hidden] { display: none !important; }
 .md-p { animation: mdIn .45s ease; }
 @keyframes mdIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@media (max-width: 760px) { .md { grid-template-columns: 1fr; } .md-b { padding: 14px 16px; } .md-b b { font-size: 21px; } }
+@media (max-width: 760px) { .md { gap: 8px; } .md-b { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; border-radius: 16px; } .md-b i { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px; } .md-b i svg { width: 19px; height: 19px; } .md-b b { font-size: 18px; } .md-b small { display: none; } .md-hint { font-size: 13px; margin-bottom: 16px; } .d-intro { font-size: 13.5px; } }
 .finlit { --purple2: var(--sea2); --champ: var(--sand2); --goldline: rgba(201,168,76,0.4); --soft: rgba(230,244,245,0.6); }
 
 .finlit .fs { display: grid; grid-template-columns: 1.1fr 0.9fr; border-radius: 28px; overflow: hidden; border: 1px solid var(--goldline); background: linear-gradient(160deg, rgba(14,51,64,0.75), rgba(6,24,32,0.9)); box-shadow: 0 40px 90px rgba(0,0,0,0.4); }
@@ -534,7 +534,7 @@ fbq('track', 'PageView');
   </div>
   <div class="fs-out" aria-live="polite">
     <h3>Seu resultado inicial</h3>
-    <p class="fnote">Em regra, o FGTS só pode ser usado para imóvel na cidade onde você mora ou trabalha, e o Minha Casa Minha Vida tem teto de valor conforme a cidade. Na planta, o mais comum é pagar direto com a construtora durante a obra e financiar o saldo na entrega das chaves.</p>
+    <p class="fnote">Em regra, o FGTS só pode ser usado para imóvel na cidade onde você mora ou trabalha, e o Minha Casa Minha Vida tem teto de valor conforme a cidade. Na planta, o comum é pagar uma parte direto com a construtora durante a obra e o saldo depois das chaves, parcelado com a construtora ou financiado no banco.</p>
     <div id="fRes"><p class="res-empty">Preencha a renda e a idade para ver sua faixa do Minha Casa Minha Vida, a parcela máxima e o prazo.</p></div>
   </div>
   <div class="fs-lead">
@@ -905,6 +905,7 @@ fbq('track', 'PageView');
   var m = q.get('modo') === 'direto' || h === '#direto' ? 'dir' : (q.get('modo') === 'fin' || h === '#financiamento' ? 'fin' : null);
   if (m) show(m, true);
   function prefill(emp, n) {
+    if (window.__showD) window.__showD('fwd');
     emp = (emp || '').slice(0, 80); n = parseInt(n, 10);
     var e = document.getElementById('mdEmp');
     if (emp) { e.hidden = false; e.innerHTML = '<small>Simulando</small><span></span>'; e.querySelector('span').textContent = emp + (n ? ' · até ' + n + 'x' : ''); }
@@ -919,7 +920,7 @@ fbq('track', 'PageView');
   if (q.get('emp') || q.get('n')) prefill(q.get('emp'), q.get('n'));
   document.querySelectorAll('[data-sim-emp]').forEach(function (b) { b.addEventListener('click', function () {
     show('dir'); prefill(b.getAttribute('data-sim-emp'), b.getAttribute('data-sim-n'));
-    var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.cc').forEach(function (c) { c.classList.toggle('on', c === b); }); var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { gtag('event', 'simulador_emp', { emp: b.getAttribute('data-sim-emp') }); } catch (_) {}
   }); });
 })();
