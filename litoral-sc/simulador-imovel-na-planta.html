@@ -382,6 +382,49 @@ a.inline { color: var(--sand); text-underline-offset: 3px; }
 .md-p { animation: mdIn .45s ease; }
 @keyframes mdIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (max-width: 760px) { .md { grid-template-columns: 1fr; } .md-b { padding: 14px 16px; } .md-b b { font-size: 21px; } }
+.finlit { --purple2: var(--sea2); --champ: var(--sand2); --goldline: rgba(201,168,76,0.4); --soft: rgba(230,244,245,0.6); }
+
+.finlit .fs { display: grid; grid-template-columns: 1.1fr 0.9fr; border-radius: 28px; overflow: hidden; border: 1px solid var(--goldline); background: linear-gradient(160deg, rgba(14,51,64,0.75), rgba(6,24,32,0.9)); box-shadow: 0 40px 90px rgba(0,0,0,0.4); }
+.finlit .fs-in { padding: 36px 36px 30px; display: grid; gap: 20px; }
+.finlit .fs-step { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold2); display: flex; align-items: center; gap: 10px; }
+.finlit .fs-step::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.finlit .fs-g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.finlit .fs label { display: block; font-size: 12px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--purple2); margin-bottom: 8px; }
+.finlit .fs label small { text-transform: none; letter-spacing: 0; color: var(--soft); font-size: 12px; }
+.finlit .fs input, .finlit .fs select { width: 100%; font: 400 17px 'DM Sans', sans-serif; color: var(--white); background: rgba(6,24,32,0.6); border: 1px solid rgba(169,221,227,0.25); border-radius: 12px; padding: 12px 14px; outline: none; }
+.finlit .fs select option { color: #111; }
+.finlit .fs input:focus, .finlit .fs select:focus { border-color: var(--gold2); }
+.finlit .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.finlit .chips button { border: 1px solid rgba(169,221,227,0.28); background: rgba(6,24,32,0.45); color: var(--muted); font: 500 13px 'DM Sans', sans-serif; padding: 9px 14px; border-radius: 100px; cursor: pointer; }
+.finlit .chips button.on { background: rgba(201,168,76,0.18); border-color: var(--gold2); color: var(--white); }
+.finlit .fs-out { padding: 36px; background: rgba(3,14,19,0.55); border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; }
+.finlit .fs-out h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; }
+.finlit .res { border-radius: 16px; padding: 16px 18px; background: rgba(14,51,64,0.55); border: 1px solid var(--line); }
+.finlit .res span { display: block; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--purple2); }
+.finlit .res b { display: block; font-size: 26px; font-weight: 300; color: var(--champ); margin-top: 4px; letter-spacing: -0.5px; }
+.finlit .res p { font-size: 13.5px; color: var(--soft); line-height: 1.55; margin-top: 4px; }
+.finlit .res.hl { border-color: var(--goldline); background: rgba(201,168,76,0.08); } .finlit .res.hl b { color: var(--gold2); }
+.finlit .res-empty { color: var(--soft); font-size: 15px; line-height: 1.7; }
+.finlit .fs-lead { grid-column: 1 / -1; padding: 30px 36px 34px; border-top: 1px solid var(--goldline); background: linear-gradient(135deg, rgba(201,168,76,0.10), rgba(121,194,205,0.06)); }
+.finlit .fs-lead h3 { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 400; line-height: 1.15; }
+.finlit .fs-lead > p { color: var(--muted); font-size: 15px; margin: 6px 0 16px; }
+.finlit .fs-lead ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 18px; }
+.finlit .fs-lead li { font-size: 14px; color: var(--champ); } .finlit .fs-lead li::before { content: "✓ "; color: var(--gold2); }
+.finlit .lf { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
+.finlit .lf button { border: 0; cursor: pointer; }
+.finlit .err { display: none; color: #ffb4a0; font-size: 13.5px; margin-top: 10px; }
+.finlit .okm { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 12px; background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.35); color: var(--white); font-size: 15px; line-height: 1.6; } .finlit .okm a { color: var(--gold2); }
+.finlit .appl { display: inline-block; margin-top: 8px; font-size: 13.5px; color: var(--purple2) !important; }
+.finlit .consent { font-size: 12px; color: var(--soft); margin-top: 10px; }
+@media (max-width: 900px) {
+  .finlit .fs { grid-template-columns: 1fr; } .finlit .fs-out { border-left: 0; border-top: 1px solid var(--line); }
+  .finlit .fs-in, .finlit .fs-out { padding: 26px 20px; } .finlit .fs-lead { padding: 26px 20px 28px; }
+  .finlit .lf, .finlit .fs-g2 { grid-template-columns: 1fr; } .finlit .lf .sm-btn { width: 100%; }
+}
+
+.finlit .fnote { font-size: 12.5px; color: var(--soft); line-height: 1.6; margin-top: 4px; }
+.finlit .lf .lt-btn { border: 0; cursor: pointer; padding: 15px 24px; }
+@media (max-width: 900px) { .finlit .lf .lt-btn { width: 100%; } }
 .wrap { --mdl: rgba(169,221,227,0.22); --mdbg: rgba(14,51,64,0.45); } .md-b.on i { color: #061820; } .cond-litoral { margin: 0 0 22px; font-size: 14.5px; line-height: 1.65; color: var(--muted); border-left: 2px solid var(--gold2); padding: 4px 0 4px 16px; } .cond-litoral b { color: var(--white); font-weight: 500; }</style>
 <!-- Meta Pixel Code -->
 <script>
@@ -467,40 +510,47 @@ fbq('track', 'PageView');
   <div class="md" role="tablist" aria-label="Como você quer pagar"><button type="button" role="tab" class="md-b on" data-m="dir" aria-selected="true"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4h2v17M3 21h9M7 4l14 3M8 7h10l-3 0M17 7v4M15.5 11h3v3h-3zM12 21v-7h5v7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Direto com a construtora</b><small>Na planta · entrada, reforços, chaves e parcelas</small></span></button><button type="button" role="tab" class="md-b" data-m="fin" aria-selected="false"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i><span><b>Financiamento pelo banco</b><small>Imóvel pronto ou saldo nas chaves · até 35 anos</small></span></button></div>
   <p class="md-hint">Lançamento na planta: use o <b>direto com a construtora</b>. Imóvel pronto, ou o saldo de um lançamento financiado na entrega das chaves: use o <b>financiamento pelo banco</b>.</p>
   <div class="md-emp" id="mdEmp" hidden></div><input type="hidden" id="sEmp" value="">
-  <div class="md-p" data-m="fin" id="financiamento" hidden><div class="sim" id="bim" data-origem="litoral_simulador_fin">
-  <div class="sim-in">
-    <div class="sim-f"><label for="bPrice">Valor do imóvel</label><input class="sim-money" id="bPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"></div>
-    <div class="sim-f"><label for="bDown">Entrada <b id="bDownV"></b></label><input type="range" id="bDown" min="10" max="80" step="1" value="30"></div>
-    <div class="sim-row">
-      <div class="sim-f"><label for="bRenda">Renda bruta da família</label><input class="sim-sel" id="bRenda" inputmode="numeric" placeholder="R$ 20.000"></div>
-      <div class="sim-f"><label for="bIdade">Idade do comprador mais velho</label><input class="sim-sel" id="bIdade" inputmode="numeric" placeholder="40"></div>
+  <div class="md-p" data-m="fin" id="financiamento" hidden><div class="finlit"><div class="fs" id="fs">
+  <div class="fs-in">
+    <div class="fs-step">1 · O imóvel</div>
+    <div class="fs-g2">
+      <div><label for="fValor">Valor do imóvel <small>(aproximado)</small></label><input id="fValor" inputmode="numeric" placeholder="R$ 250.000"></div>
+      <div><label>Tipo</label><div class="chips" id="fTipo" role="radiogroup"><button type="button" role="radio" data-v="Novo ou na planta" class="on" aria-checked="true">Novo ou na planta</button><button type="button" role="radio" data-v="Usado" class="" aria-checked="false">Usado</button></div></div>
     </div>
-    <div class="sim-f"><label>Imóvel</label><div class="sim-seg" id="bTipo"><button type="button" class="on" data-v="Pronto">Pronto</button><button type="button" data-v="Na planta, financiado nas chaves">Na planta, financiar nas chaves</button></div></div>
-  </div>
-  <div class="sim-out" aria-live="polite">
-    <div class="sim-big"><span>Valor a financiar</span><b id="bFin">-</b><small id="bFinP"></small></div>
-    <div class="sim-list">
-      <div><span>Entrada</span><b id="bEnt">-</b></div>
-      <div><span>Parcela máxima pela renda (30%)</span><b id="bParc">-</b></div>
-      <div><span>Prazo máximo pela idade</span><b id="bPrazo">-</b></div>
+    <div class="fs-step">2 · Você</div>
+    <div class="fs-g2">
+      <div><label for="fRenda">Renda bruta da família <small>(por mês)</small></label><input id="fRenda" inputmode="numeric" placeholder="R$ 6.000"></div>
+      <div><label for="fIdade">Idade do comprador mais velho</label><input id="fIdade" inputmode="numeric" placeholder="32"></div>
     </div>
-    <div class="sim-warn" id="bWarn">Os bancos costumam financiar até 70% a 80% do valor do imóvel. Com essa entrada, a diferença precisa vir de recursos próprios.</div>
-    <p class="sim-note">Estimativa inicial, sem juros, seguros e taxas, que mudam de banco para banco. Em regra, o FGTS só pode ser usado para imóvel na cidade onde você mora ou trabalha. Na planta, o mais comum é pagar direto com a construtora durante a obra e financiar o saldo no banco na entrega das chaves.</p>
+    <div class="fs-g2">
+      <div><label for="fTrab">Tipo de renda</label><select id="fTrab"><option>Carteira assinada (CLT)</option><option>Servidor público</option><option>Autônomo ou MEI</option><option>Empresário</option><option>Aposentado ou pensionista</option></select></div>
+      <div><label for="fEntrada">Entrada disponível <small>(pode ser 0)</small></label><input id="fEntrada" inputmode="numeric" placeholder="R$ 30.000"></div>
+    </div>
+    <div class="fs-g2">
+      <div><label>Tem FGTS? <small>(3 anos ou mais de carteira)</small></label><div class="chips" id="fFgts" role="radiogroup"><button type="button" role="radio" data-v="Sim" class="" aria-checked="false">Sim</button><button type="button" role="radio" data-v="Não" class="" aria-checked="false">Não</button><button type="button" role="radio" data-v="Não sei" class="on" aria-checked="true">Não sei</button></div></div>
+      <div><label>Já tem imóvel no seu nome?</label><div class="chips" id="fTem" role="radiogroup"><button type="button" role="radio" data-v="Não" class="on" aria-checked="true">Não</button><button type="button" role="radio" data-v="Sim" class="" aria-checked="false">Sim</button></div></div>
+    </div>
+    <div><label>Prefere financiar pela</label><div class="chips" id="fBanco" role="radiogroup"><button type="button" role="radio" data-v="Caixa" class="" aria-checked="false">Caixa</button><button type="button" role="radio" data-v="Banco privado" class="" aria-checked="false">Banco privado</button><button type="button" role="radio" data-v="Quero comparar" class="on" aria-checked="true">Quero comparar</button></div></div>
   </div>
-  <div class="sim-lead">
-    <span class="sim-bonus">WhatsApp</span>
-    <h3>Receba a simulação dos bancos e imóveis que cabem nela</h3>
-    <p>O Ricardo compara as condições e manda opções reais em Itapema e Porto Belo.</p>
-    <form class="sim-form" id="bForm" novalidate>
-      <div><label for="bName">Seu nome</label><input id="bName" autocomplete="name" required></div>
-      <div><label for="bPhone">Seu WhatsApp com DDD</label><input id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(47) 99999-9999" required></div>
+  <div class="fs-out" aria-live="polite">
+    <h3>Seu resultado inicial</h3>
+    <p class="fnote">Em regra, o FGTS só pode ser usado para imóvel na cidade onde você mora ou trabalha, e o Minha Casa Minha Vida tem teto de valor conforme a cidade. Na planta, o mais comum é pagar direto com a construtora durante a obra e financiar o saldo na entrega das chaves.</p>
+    <div id="fRes"><p class="res-empty">Preencha a renda e a idade para ver sua faixa do Minha Casa Minha Vida, a parcela máxima e o prazo.</p></div>
+  </div>
+  <div class="fs-lead">
+    <h3>Receba a simulação completa da Caixa e dos bancos</h3>
+    <p>O Ricardo calcula com os bancos e responde pelo WhatsApp, sem custo, com imóveis em Itapema e Porto Belo que cabem na parcela:</p>
+    <ul><li>Quanto o banco financia</li><li>Valor da parcela</li><li>Entrada necessária</li><li>Se você tem direito a subsídio</li></ul>
+    <form class="lf" id="fForm" novalidate>
+      <div><label for="fNome">Seu nome</label><input id="fNome" autocomplete="name" required></div>
+      <div><label for="fFone">Seu WhatsApp com DDD</label><input id="fFone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(DDD) 99999-9999" required></div>
       <button type="submit" class="lt-btn lt-btn-gold"><span class="lt-dot"></span>Receber no WhatsApp</button>
     </form>
-    <p class="sim-err" id="bErr"></p>
-    <div class="sim-ok" id="bOk"></div>
-    <p class="sim-consent">Ao enviar, você concorda em receber o contato do Ricardo pelo WhatsApp.</p>
+    <p class="err" id="fErr"></p>
+    <div class="okm" id="fOk"></div>
+    <p class="consent">Ao enviar, você concorda em receber o contato do Ricardo pelo WhatsApp. Seus dados não são compartilhados.</p>
   </div>
-</div></div>
+</div></div></div>
   <div class="md-p" data-m="dir" id="direto"><p class="cond-litoral"><b>Cada construtora tem o seu fluxo.</b> A entrada, os reforços e o número de parcelas mudam de construtora para construtora e de um empreendimento para outro, e nos lançamentos do litoral em geral é preciso chegar a 60% pago até as chaves. Use o simulador para entender o fluxo; a condição real vem na tabela de cada empreendimento, que o Ricardo envia atualizada.</p><div class="sim" id="sim" data-lang="pt" data-origem="litoral_simulador">
   <div class="sim-in">
     <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"></div>
@@ -776,51 +826,69 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var root = document.getElementById('bim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
   var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
   function num(s) { return parseInt(String(s).replace(/\D/g, ''), 10) || 0; }
-  function money(el) { el.addEventListener('input', function () { var v = num(el.value); el.value = v ? (el.id === 'bPrice' ? '' : 'R$ ') + v.toLocaleString('pt-BR') : ''; calc(); }); }
-  money($('bPrice')); money($('bRenda'));
-  $('bIdade').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 2); calc(); });
-  $('bDown').addEventListener('input', calc);
-  var tipo = 'Pronto';
-  $('bTipo').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; tipo = b.getAttribute('data-v'); [].forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); }); });
+  function money(el) { el.addEventListener('input', function () { var v = num(el.value); el.value = v ? 'R$ ' + v.toLocaleString('pt-BR') : ''; }); }
+  ['fValor', 'fRenda', 'fEntrada'].forEach(function (id) { money($(id)); });
+  $('fIdade').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 2); });
+  var sel = {};
+  document.querySelectorAll('#fs .chips').forEach(function (g) {
+    sel[g.id] = g.querySelector('.on').getAttribute('data-v');
+    g.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; sel[g.id] = b.getAttribute('data-v'); [].forEach.call(g.children, function (c) { c.classList.toggle('on', c === b); c.setAttribute('aria-checked', c === b); }); calc(); });
+  });
+  // Faixas do MCMV (Portaria MCID 333/2026) e tetos em Santa Maria
+  function faixa(r) { if (r <= 3200) return [1, 240000]; if (r <= 5000) return [2, 240000]; if (r <= 9600) return [3, 400000]; if (r <= 13000) return [4, 600000]; return [0, 0]; }
   var R = {};
   function calc() {
-    var price = num($('bPrice').value), d = +$('bDown').value, renda = num($('bRenda').value), idade = num($('bIdade').value);
-    var ent = price * d / 100, fin = price - ent, prazo = idade ? Math.max(0, Math.min(35, Math.floor(80.5 - idade))) : 0;
-    $('bDownV').textContent = d + '%';
-    $('bFin').textContent = price ? brl.format(fin) : '-';
-    $('bFinP').textContent = price ? (100 - d) + '% do imóvel' : '';
-    $('bEnt').textContent = price ? brl.format(ent) : '-';
-    $('bParc').textContent = renda ? brl.format(renda * 0.3) : 'informe a renda';
-    $('bPrazo').textContent = idade ? (prazo ? prazo + ' anos' : 'a confirmar') : 'informe a idade';
-    $('bWarn').style.display = d < 20 ? 'block' : 'none';
-    R = { price: price, d: d, ent: ent, fin: fin, renda: renda, idade: idade, prazo: prazo };
+    var renda = num($('fRenda').value), idade = num($('fIdade').value), valor = num($('fValor').value), entrada = num($('fEntrada').value);
+    if (!renda || !idade) { $('fRes').innerHTML = '<p class="res-empty">Preencha a renda e a idade para ver sua faixa do Minha Casa Minha Vida, a parcela máxima e o prazo.</p>'; R = {}; return; }
+    var f = faixa(renda), parcela = renda * 0.3, prazo = Math.max(0, Math.min(35, Math.floor(80.5 - idade)));
+    var h = '';
+    if (f[0]) {
+      var obs = sel.fTem === 'Sim' && f[0] <= 2 ? 'Quem já tem imóvel normalmente não entra nas Faixas 1 e 2. O Ricardo vê a alternativa para o seu caso.' : 'O teto do imóvel na faixa depende da cidade. O Ricardo confere em Itapema e Porto Belo.';
+      if (valor && valor > 600000) obs = 'O imóvel informado passa do teto do Minha Casa Minha Vida (R$ 600 mil na Faixa 4). O caminho é o financiamento tradicional, e o Ricardo compara os bancos.';
+      h += '<div class="res hl"><span>Minha Casa Minha Vida</span><b>Faixa ' + f[0] + '</b><p>' + obs + '</p></div>';
+    } else {
+      h += '<div class="res hl"><span>Modalidade</span><b>Financiamento SBPE</b><p>Sua renda passa do limite do Minha Casa Minha Vida. Caixa e bancos privados financiam pelo SBPE, e vale comparar as condições.</p></div>';
+    }
+    h += '<div class="res"><span>Parcela máxima que os bancos costumam aceitar</span><b>' + brl.format(parcela) + '</b><p>Até 30% da renda bruta da família.</p></div>';
+    h += '<div class="res"><span>Prazo máximo pela idade</span><b>' + (prazo ? prazo + ' anos' : 'a confirmar') + '</b><p>Na Caixa, idade mais prazo não podem passar de 80 anos e 6 meses (prazo máximo de 35 anos).</p></div>';
+    if (valor) h += '<div class="res"><span>Valor a financiar</span><b>' + brl.format(Math.max(valor - entrada, 0)) + '</b><p>Valor do imóvel menos a entrada' + (sel.fFgts === 'Sim' ? '. O FGTS pode ajudar a reduzir esse valor.' : '.') + '</p></div>';
+    $('fRes').innerHTML = h;
+    R = { renda: renda, idade: idade, valor: valor, entrada: entrada, faixa: f[0] ? 'Faixa ' + f[0] : 'SBPE (acima do MCMV)', parcela: brl.format(parcela), prazo: prazo };
   }
+  ['fValor', 'fRenda', 'fIdade', 'fEntrada', 'fTrab'].forEach(function (id) { $(id).addEventListener('input', calc); $(id).addEventListener('change', calc); });
   var used = false;
-  root.addEventListener('input', function () { if (used) return; used = true; try { gtag('event', 'simulador_uso', { simulador: 'financiamento_litoral' }); } catch (_) {} });
-  $('bForm').addEventListener('submit', function (e) {
+  $('fs').addEventListener('input', function () { if (used) return; used = true; try { gtag('event', 'simulador_uso', { simulador: 'financiamento_litoral' }); } catch (_) {} });
+  $('fForm').addEventListener('submit', function (e) {
     e.preventDefault(); calc();
-    var name = $('bName').value.trim(), phone = $('bPhone').value.trim(), dg = phone.replace(/\D/g, ''), err = $('bErr');
-    var falta = !name ? 'Escreva seu nome.' : (dg.length < 10 || dg.length > 13) ? 'Confira o WhatsApp: precisa ter DDD e número.' : '';
+    var nome = $('fNome').value.trim(), fone = $('fFone').value.trim(), dg = fone.replace(/\D/g, ''), err = $('fErr');
+    var falta = !num($('fRenda').value) ? 'Informe a renda da família para o Ricardo conseguir simular.' : !num($('fIdade').value) ? 'Informe a idade do comprador mais velho.' : !nome ? 'Escreva seu nome.' : (dg.length < 10 || dg.length > 13) ? 'Confira o WhatsApp: precisa ter DDD e número.' : '';
     if (falta) { err.textContent = falta; err.style.display = 'block'; return; }
     err.style.display = 'none';
-    var emp = ($('sEmp') || {}).value || '';
-    var msg = '[Simulador Litoral · financiamento] Olá Ricardo! Fiz a simulação de financiamento no site.' + (emp ? '\nEmpreendimento: ' + emp : '') + '\nNome: ' + name + '\nWhatsApp: ' + phone + '\n\nImóvel: ' + brl.format(R.price) + ' (' + tipo + ')\nEntrada (' + R.d + '%): ' + brl.format(R.ent) + '\nA financiar: ' + brl.format(R.fin) + '\nRenda bruta: ' + (R.renda ? brl.format(R.renda) : 'não informada') + '\nIdade do mais velho: ' + (R.idade || 'não informada') + (R.prazo ? ' (prazo até ' + R.prazo + ' anos)' : '') + '\n\nQuero a simulação dos bancos e imóveis em Itapema e Porto Belo que cabem nela.';
+    var v = function (n) { return n ? brl.format(n) : 'não informado'; };
+    var msg = '[Simulador Litoral · financiamento] Olá Ricardo! Fiz a simulação de financiamento no site e quero receber a simulação completa e imóveis em Itapema e Porto Belo que cabem nela.\n' +
+      'Nome: ' + nome + '\nWhatsApp: ' + fone + '\n\n' +
+      'Imóvel: ' + v(R.valor) + ' (' + sel.fTipo + ')\n' +
+      'Renda bruta familiar: ' + brl.format(R.renda) + '\n' +
+      'Tipo de renda: ' + $('fTrab').value + '\n' +
+      'Idade do mais velho: ' + R.idade + ' anos\n' +
+      'Entrada disponível: ' + v(R.entrada) + '\n' +
+      'FGTS: ' + sel.fFgts + ' | Já tem imóvel: ' + sel.fTem + '\n' +
+      'Banco: ' + sel.fBanco + '\n\n' +
+      'Resultado inicial: ' + R.faixa + ', parcela máxima ' + R.parcela + ', prazo ' + (R.prazo ? R.prazo + ' anos' : 'a confirmar') + '.';
     var url = 'https://wa.me/5555999147822?text=' + encodeURIComponent(msg);
     try {
-      gtag('event', 'generate_lead', { simulador: 'financiamento_litoral', valor_imovel: R.price });
+      gtag('event', 'generate_lead', { simulador: 'financiamento_litoral', renda: R.renda, valor_imovel: R.valor });
       gtag('event', 'conversion', { 'send_to': 'AW-18162751528/-g3KCPn-ksAcEKiw1tRD', 'value': 1.0, 'currency': 'BRL' });
       fbq('track', 'Lead', { content_name: 'simulador_financiamento_litoral' });
     } catch (_) {}
-    var ok = $('bOk'); ok.innerHTML = 'Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber. <a href="' + url + '" target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="' + root.getAttribute('data-origem') + '">Não abriu? Toque aqui</a>'; ok.style.display = 'block';
+    var ok = $('fOk'); ok.innerHTML = 'Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber. <a href="' + url + '" target="_blank" rel="noopener" data-corretor="Ricardo" data-origem="litoral_simulador_fin">Não abriu? Toque aqui</a>'; ok.style.display = 'block';
     var go = window.__waPc ? window.__waAlt(url) : url;
-    if (window.__waPc) ok.innerHTML += '<br><a class="sim-app" href="' + window.__waAlt(url, true) + '">Usa o app do WhatsApp no computador? Abrir no app</a>';
+    if (window.__waPc) ok.innerHTML += '<br><a class="appl" href="' + window.__waAlt(url, true) + '">Usa o app do WhatsApp no computador? Abrir no app</a>';
     var w = window.open(go, '_blank'); if (!w) window.location.href = go;
   });
-  calc();
 })();
 </script>
 <script>
