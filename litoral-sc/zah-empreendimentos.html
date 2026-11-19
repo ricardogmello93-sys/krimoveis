@@ -632,7 +632,7 @@ fbq('track', 'PageView');
   <span class="lt-tag rv">Continue explorando</span>
   <h2 class="lt-h2 rv d1">Mais do litoral <em>para você</em></h2>
   <p class="lt-sub rv d2">Outros empreendimentos que estão saindo agora e o guia completo de Itapema e Porto Belo, com bairros, mapa e simulador.</p>
-  <div class="em-3d rv" style="grid-template-columns:1fr"><a href="vivapark-porto-belo.html" data-origem="litoral_zah_mais_vivapark"><img src="../images/vivapark/vertice-lago-md.webp" srcset="../images/vivapark/vertice-lago-md.webp 900w, ../images/vivapark/vertice-lago.webp 1800w" sizes="(max-width: 760px) 100vw, 1180px" alt="Vivapark · Porto Belo" loading="lazy"><div><strong>Vivapark · Porto Belo</strong><p>O primeiro bairro parque do Brasil, com lago, escola, PSG Academy e o Vision Home Club.</p><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l8 4.6v9.2l-8 4.6-8-4.6V7.4z"/><path d="M4 7.4l8 4.6 8-4.6M12 12v9.2"/></svg>Explorar em 3D</span></div></a></div>
+  <div class="em-3d rv" style="grid-template-columns:1fr"><a href="vivapark-porto-belo.html" data-origem="litoral_zah_mais_vivapark"><img src="../images/vivapark/vertice-lago-md.webp" srcset="../images/vivapark/vertice-lago-md.webp 900w, ../images/vivapark/vertice-lago.webp 1800w" sizes="(max-width: 760px) 100vw, 1180px" alt="Vivapark · Porto Belo" loading="lazy"><div><strong>Vivapark · Porto Belo</strong><p>O primeiro bairro parque do Brasil, com lago, escola, PSG Academy e o Vision Home Club.</p><span>Ver empreendimento <b aria-hidden="true">→</b></span></div></a></div>
   
   <a class="em-hub rv" href="./#empreendimentos">Ver todos os empreendimentos do litoral →</a>
 </section><!--/EMPMORE-->
@@ -757,7 +757,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=c1795033757').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=mwmytwx8').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';
