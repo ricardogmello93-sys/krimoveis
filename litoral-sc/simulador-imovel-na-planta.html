@@ -551,9 +551,9 @@ fbq('track', 'PageView');
     <p class="consent">Ao enviar, você concorda em receber o contato do Ricardo pelo WhatsApp. Seus dados não são compartilhados.</p>
   </div>
 </div></div></div>
-  <div class="md-p" data-m="dir" id="direto"><p class="cond-litoral"><b>Cada construtora tem o seu fluxo.</b> A entrada, os reforços e o número de parcelas mudam de construtora para construtora e de um empreendimento para outro, e nos lançamentos do litoral em geral é preciso chegar a 60% pago até as chaves. Use o simulador para entender o fluxo; a condição real vem na tabela de cada empreendimento, que o Ricardo envia atualizada.</p><div class="sim" id="sim" data-lang="pt" data-origem="litoral_simulador">
+  <div class="md-p" data-m="dir" id="direto"><p class="cond-litoral"><b>Monte do seu jeito:</b> mais entrada, mais ou menos reforços, ou tudo em parcelas. O fluxo é negociável, desde que chegue ao percentual pago até as chaves que a construtora pede, em geral perto de 60%.</p><div class="sim" id="sim" data-lang="pt" data-origem="litoral_simulador">
   <div class="sim-in">
-    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"><small class="sim-fx">Não sabe o valor? Coloque um valor aproximado e ajuste até a parcela caber no seu bolso.</small></div>
+    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"><small class="sim-fx">Coloque o valor que você imagina (200 mil, 300 mil...) e monte o fluxo do seu jeito.</small></div>
     <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
     <div class="sim-row">
       <div class="sim-f"><label for="sBq">Reforços (balões): Quantidade <b id="sBqV"></b></label><input type="range" id="sBq" min="0" max="12" step="1" value="4"></div>
@@ -567,6 +567,7 @@ fbq('track', 'PageView');
       <div class="sim-f"><label for="sN">Parcelas mensais</label><select class="sim-sel" id="sN"><option value="36">36x</option><option value="48">48x</option><option value="60">60x</option><option value="72">72x</option><option value="84">84x</option><option value="96">96x</option><option value="120" selected>120x</option><option value="132">132x</option><option value="150">150x</option><option value="180">180x</option></select></div>
       <div class="sim-f"><label for="sObra">Prazo da obra (até as chaves) <b id="sObraV"></b></label><input type="range" id="sObra" min="12" max="60" step="1" value="48"></div>
     </div>
+    <div class="sim-f"><label for="sMin">Pago até as chaves (mínimo) <b id="sMinV"></b></label><input type="range" id="sMin" min="0" max="90" step="5" value="60"></div>
   </div>
   <div class="sim-out" aria-live="polite">
     <div class="sim-big"><span>Parcela mensal durante a obra</span><b id="sMonthly">-</b><small id="sMonthlyN"></small><p class="sim-after" id="sAfter"></p></div>
@@ -672,7 +673,7 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Itapema e Porto Belo · SC","imgNote":"Valores sem correção. Durante a obra, a maioria das construtoras corrige as parcelas pelo CUB/SC; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-ricardo-mello.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (em geral, as construtoras pedem pelo menos 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
+  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Itapema e Porto Belo · SC","imgNote":"Valores sem correção. Durante a obra, a maioria das construtoras corrige as parcelas pelo CUB/SC; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-ricardo-mello.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo de {m}%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos {m}% até as chaves.","ruleBad":"Com esses valores não dá para chegar a {m}% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","minL":"Pago até as chaves (mínimo)","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
   var MSG = (d) => `[Simulador Litoral] Olá Ricardo! Fiz a simulação de fluxo no site.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses · ${d.pctObra}% pago até as chaves\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber 3 lançamentos reais em Itapema e Porto Belo que cabem nessa parcela.`;
   var lang = "pt", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
@@ -693,13 +694,14 @@ fbq('track', 'PageView');
   function fmtInput() { var v = num($('sPrice').value); $('sPrice').value = v ? v.toLocaleString(cur === 'USD' ? L.locale : 'pt-BR') : ''; }
   function calc() {
     var price = num($('sPrice').value), d = +$('sDown').value, bq = +$('sBq').value, bp = +$('sBp').value, k = +$('sKeys').value, n = +$('sN').value, M = +$('sObra').value;
+    var MIN = $('sMin') ? +$('sMin').value : 60; if ($('sMinV')) $('sMinV').textContent = MIN + '%';
     var S = 100 - d - bq * bp - k;
     $('sDownV').textContent = d + '%'; $('sBqV').textContent = bq + 'x'; $('sBpV').textContent = String(bp).replace('.', ',') + '%'; $('sKeysV').textContent = k + '%'; $('sObraV').textContent = M + ' ' + L.obraU;
     $('sWarn').style.display = S < 0 ? 'block' : 'none';
     var nB = 0; for (var i = 1; i <= bq; i++) if (i * every <= M) nB++;
     var base = d + nB * bp + k, mA = Math.min(n, M), mB = n - mA, s = Math.max(S, 0), P = s / n, pA = P, pB = mB ? P : 0, auto = false;
-    if (mB && base + P * mA < 60) { pA = Math.min(s / mA, (60 - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
-    var pct = base + pA * mA, reach = pct >= 59.95;
+    if (mB && base + P * mA < MIN) { pA = Math.min(s / mA, (MIN - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
+    var pct = base + pA * mA, reach = pct >= MIN - 0.05;
     var f = function (p) { return money(price * p / 100); };
     $('sMonthly').textContent = S < 0 ? '-' : f(pA);
     $('sMonthlyN').textContent = S < 0 ? '' : mA + 'x · ' + L.durObra;
@@ -714,12 +716,12 @@ fbq('track', 'PageView');
     $('oTot').textContent = money(price);
     var rule = $('sRule'); rule.style.display = S < 0 ? 'none' : '';
     rule.className = 'sim-rule' + (reach ? '' : ' bad');
-    rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk + (auto ? '<small>' + L.ruleAuto + '</small>' : '') : L.ruleBad;
+    rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk.replace('{m}', MIN) + (auto ? '<small>' + L.ruleAuto.replace('{m}', MIN) + '</small>' : '') : L.ruleBad.replace('{m}', MIN);
     var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [pA * mA, '#e9dcc3'], [pB * mB, '#8a8476']], sum = parts.reduce(function (a, p) { return a + p[0]; }, 0) || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
     last = { parts: parts, price: money(price), alt: cur === 'USD' && rate ? '≈ ' + brl.format(price * rate) : '', downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
   }
-  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra'].forEach(function (id) { $(id).addEventListener('input', calc); });
+  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra', 'sMin'].forEach(function (id) { if ($(id)) $(id).addEventListener('input', calc); });
   // páginas em inglês e espanhol: busca a cotação do dia e passa para dólar; sem cotação, segue em reais
   if ($('sCur')) {
     $('sCur').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setCur(b.getAttribute('data-v')); });

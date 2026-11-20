@@ -370,13 +370,7 @@ a.inline:hover { color: var(--white); }
 
 .d-intro { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 0 2px 16px; max-width: 880px; }
 .d-intro b { color: var(--white); font-weight: 500; }
-.cc-w { margin: 0 0 16px; }
-.cc-w small { display: block; font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--purple2); margin-bottom: 8px; }
-.cc-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
-.cc { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 1px solid var(--goldline); background: rgba(201,168,76,0.06); color: var(--white); font: inherit; padding: 9px 14px; border-radius: 14px; cursor: pointer; transition: background .25s, border-color .25s; text-align: left; }
-.cc:hover, .cc.on { background: rgba(201,168,76,0.18); border-color: var(--gold2); }
-.cc b { font-weight: 500; font-size: 13.5px; white-space: nowrap; } .cc span { font-size: 12px; color: var(--gold2); white-space: nowrap; }
-.cc-n { font-size: 12px; color: var(--soft); margin-top: 6px; }
+.d-intro small { display: block; margin-top: 6px; font-size: 12.5px; color: var(--soft); }
 @media (max-width: 760px) { .d-intro { font-size: 13.5px; } }
 .smflux { --sea2: var(--purple2); --sand: var(--champ); --sand2: var(--champ); --foam: var(--champ); }
 
@@ -540,11 +534,10 @@ fbq('track', 'PageView');
     <p class="consent">Ao enviar, você concorda em receber o contato da Kamila pelo WhatsApp. Seus dados não são compartilhados.</p>
   </div>
 </div></div>
-  <div class="md-p" data-m="dir" id="direto" hidden><p class="d-intro"><b>Como funciona:</b> você dá uma entrada, paga reforços (em geral de 3 a 5, um por ano), uma parcela nas chaves e parcelas mensais direto com a construtora. As parcelas começam na obra e continuam depois das chaves, e em média as construtoras pedem pelo menos 60% pago até a entrega (algumas, 65%). Cada construtora tem o seu fluxo.</p>
-  <div class="cc-w"><small>Preencher com o fluxo de um lançamento</small><div class="cc-row"><button type="button" class="cc" data-sim-emp="Residencial Eclipse" data-sim-n="132" data-sim-fl='{"d":10,"bq":3,"k":10}'><b>Eclipse</b><span>10% + 3 reforços + 10% chaves · 132x</span></button><button type="button" class="cc" data-sim-emp="NEXT 323" data-sim-n="120"><b>NEXT 323</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Residenziale Gran Progresso" data-sim-n="120"><b>Residenziale Gran Progresso</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Atrium 225 Residence" data-sim-n="80"><b>Atrium 225</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Giardino Di Napoli" data-sim-n="80"><b>Giardino Di Napoli</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Singular" data-sim-n=""><b>Singular</b><span>parcelado</span></button></div><p class="cc-n">Condições informadas pelas construtoras, sujeitas a mudança. Nos empreendimentos já em obra, o número de parcelas costuma diminuir com o tempo.</p></div>
+  <div class="md-p" data-m="dir" id="direto" hidden><p class="d-intro"><b>Monte do seu jeito:</b> mais entrada, mais ou menos reforços, ou tudo em parcelas. O fluxo é negociável, desde que chegue ao percentual pago até as chaves que a construtora pede, em geral perto de 60%.<small>Exemplo: no Eclipse, 10% de entrada, 3 reforços e 10% nas chaves, em até 132 parcelas.</small></p>
   <div class="smflux"><div class="sim" id="sim" data-lang="smpt" data-origem="sm_simulador_direto">
   <div class="sim-in">
-    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="350.000" aria-label="Valor do imóvel"><small class="sim-fx">Não sabe o valor? Coloque um valor aproximado e ajuste até a parcela caber no seu bolso.</small></div>
+    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="350.000" aria-label="Valor do imóvel"><small class="sim-fx">Coloque o valor que você imagina (200 mil, 300 mil...) e monte o fluxo do seu jeito.</small></div>
     <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
     <div class="sim-row">
       <div class="sim-f"><label for="sBq">Reforços (balões): Quantidade <b id="sBqV"></b></label><input type="range" id="sBq" min="0" max="12" step="1" value="4"></div>
@@ -558,6 +551,7 @@ fbq('track', 'PageView');
       <div class="sim-f"><label for="sN">Parcelas mensais</label><select class="sim-sel" id="sN"><option value="36">36x</option><option value="48">48x</option><option value="60">60x</option><option value="72">72x</option><option value="80">80x</option><option value="84">84x</option><option value="96">96x</option><option value="100">100x</option><option value="120" selected>120x</option><option value="132">132x</option><option value="150">150x</option><option value="180">180x</option></select></div>
       <div class="sim-f"><label for="sObra">Prazo da obra (até as chaves) <b id="sObraV"></b></label><input type="range" id="sObra" min="12" max="60" step="1" value="48"></div>
     </div>
+    <div class="sim-f"><label for="sMin">Pago até as chaves (mínimo) <b id="sMinV"></b></label><input type="range" id="sMin" min="0" max="90" step="5" value="60"></div>
   </div>
   <div class="sim-out" aria-live="polite">
     <div class="sim-big"><span>Parcela mensal durante a obra</span><b id="sMonthly">-</b><small id="sMonthlyN"></small><p class="sim-after" id="sAfter"></p></div>
@@ -716,7 +710,7 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para a Kamila receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Santa Maria · RS","imgNote":"Valores sem correção. Durante a obra as parcelas costumam ser corrigidas por um índice da construção; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-kamila-xavier.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (em geral, as construtoras pedem pelo menos 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
+  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para a Kamila receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Santa Maria · RS","imgNote":"Valores sem correção. Durante a obra as parcelas costumam ser corrigidas por um índice da construção; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-kamila-xavier.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo de {m}%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos {m}% até as chaves.","ruleBad":"Com esses valores não dá para chegar a {m}% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","minL":"Pago até as chaves (mínimo)","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
   var MSG = (d) => `[Simulador SM · direto com a construtora] Olá Kamila! Fiz a simulação de pagamento direto com a construtora no site.${d.emp ? '\nEmpreendimento: ' + d.emp : ''}\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber ${d.emp ? 'as condições do ' + d.emp + ' e ' : ''}os lançamentos de Santa Maria que cabem nessa parcela.`;
   var lang = "smpt", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
@@ -737,13 +731,14 @@ fbq('track', 'PageView');
   function fmtInput() { var v = num($('sPrice').value); $('sPrice').value = v ? v.toLocaleString(cur === 'USD' ? L.locale : 'pt-BR') : ''; }
   function calc() {
     var price = num($('sPrice').value), d = +$('sDown').value, bq = +$('sBq').value, bp = +$('sBp').value, k = +$('sKeys').value, n = +$('sN').value, M = +$('sObra').value;
+    var MIN = $('sMin') ? +$('sMin').value : 60; if ($('sMinV')) $('sMinV').textContent = MIN + '%';
     var S = 100 - d - bq * bp - k;
     $('sDownV').textContent = d + '%'; $('sBqV').textContent = bq + 'x'; $('sBpV').textContent = String(bp).replace('.', ',') + '%'; $('sKeysV').textContent = k + '%'; $('sObraV').textContent = M + ' ' + L.obraU;
     $('sWarn').style.display = S < 0 ? 'block' : 'none';
     var nB = 0; for (var i = 1; i <= bq; i++) if (i * every <= M) nB++;
     var base = d + nB * bp + k, mA = Math.min(n, M), mB = n - mA, s = Math.max(S, 0), P = s / n, pA = P, pB = mB ? P : 0, auto = false;
-    if (mB && base + P * mA < 60) { pA = Math.min(s / mA, (60 - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
-    var pct = base + pA * mA, reach = pct >= 59.95;
+    if (mB && base + P * mA < MIN) { pA = Math.min(s / mA, (MIN - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
+    var pct = base + pA * mA, reach = pct >= MIN - 0.05;
     var f = function (p) { return money(price * p / 100); };
     $('sMonthly').textContent = S < 0 ? '-' : f(pA);
     $('sMonthlyN').textContent = S < 0 ? '' : mA + 'x · ' + L.durObra;
@@ -758,12 +753,12 @@ fbq('track', 'PageView');
     $('oTot').textContent = money(price);
     var rule = $('sRule'); rule.style.display = S < 0 ? 'none' : '';
     rule.className = 'sim-rule' + (reach ? '' : ' bad');
-    rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk + (auto ? '<small>' + L.ruleAuto + '</small>' : '') : L.ruleBad;
+    rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk.replace('{m}', MIN) + (auto ? '<small>' + L.ruleAuto.replace('{m}', MIN) + '</small>' : '') : L.ruleBad.replace('{m}', MIN);
     var parts = [[d, '#e2c77e'], [bq * bp, '#c4b8f7'], [k, '#9d93ed'], [pA * mA, '#e9dcc3'], [pB * mB, '#8a8476']], sum = parts.reduce(function (a, p) { return a + p[0]; }, 0) || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
     last = { parts: parts, price: money(price), alt: cur === 'USD' && rate ? '≈ ' + brl.format(price * rate) : '', downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
   }
-  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra'].forEach(function (id) { $(id).addEventListener('input', calc); });
+  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra', 'sMin'].forEach(function (id) { if ($(id)) $(id).addEventListener('input', calc); });
   // páginas em inglês e espanhol: busca a cotação do dia e passa para dólar; sem cotação, segue em reais
   if ($('sCur')) {
     $('sCur').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setCur(b.getAttribute('data-v')); });

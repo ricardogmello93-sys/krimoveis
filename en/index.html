@@ -566,6 +566,7 @@ fbq('track', 'PageView');
       <div class="sim-f"><label for="sN">Monthly installments</label><select class="sim-sel" id="sN"><option value="36">36x</option><option value="48">48x</option><option value="60">60x</option><option value="72">72x</option><option value="84">84x</option><option value="96">96x</option><option value="120" selected>120x</option><option value="132">132x</option><option value="150">150x</option><option value="180">180x</option></select></div>
       <div class="sim-f"><label for="sObra">Construction time (until handover) <b id="sObraV"></b></label><input type="range" id="sObra" min="12" max="60" step="1" value="48"></div>
     </div>
+    <div class="sim-f"><label for="sMin">Paid by handover (minimum) <b id="sMinV"></b></label><input type="range" id="sMin" min="0" max="90" step="5" value="60"></div>
   </div>
   <div class="sim-out" aria-live="polite">
     <div class="sim-big"><span>Monthly installment during construction</span><b id="sMonthly">-</b><small id="sMonthlyN"></small><p class="sim-after" id="sAfter"></p></div>
@@ -692,7 +693,7 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"en-US","yearly":"Yearly","half":"Every 6 months","bad":"Check your WhatsApp number, including the country code.","badName":"Please enter your name.","ok":"We opened your WhatsApp with the simulation ready. Just tap send so Ricardo receives it.","okLink":"Did not open? Tap here","app":"Use the WhatsApp desktop app? Open in the app","leadOf":"of","dl":"Download simulation (PDF)","hold":"If the download does not start, press and hold the image to save it.","imgTitle":"Pre-construction payment plan","imgFor":"Prepared for","imgSub":"Itapema & Porto Belo · Brazil","imgNote":"Amounts in Brazilian reais, without adjustment. During construction, most developers adjust installments by the CUB/SC; after handover, as per contract.","imgPrice":"Property price","file":"payment-plan-ricardo-mello.pdf","monthly":"Monthly installment","monthlyA":"Monthly installment during construction","durObra":"during construction","afterKeys":"After handover","obraU":"months","ruleOk":"% paid by handover (minimum 60%)","ruleAuto":"Construction installments were adjusted to reach 60% by handover.","ruleBad":"With these numbers it is not possible to reach 60% by handover. Increase the down payment, the balloons during construction or the handover payment.","instA":"Installments during construction","instB":"Installments after handover","imgPct":"by handover","downL":"Down payment","boostL":"Balloons","keysL":"At handover","instL":"Installments"};
+  var L = {"locale":"en-US","yearly":"Yearly","half":"Every 6 months","bad":"Check your WhatsApp number, including the country code.","badName":"Please enter your name.","ok":"We opened your WhatsApp with the simulation ready. Just tap send so Ricardo receives it.","okLink":"Did not open? Tap here","app":"Use the WhatsApp desktop app? Open in the app","leadOf":"of","dl":"Download simulation (PDF)","hold":"If the download does not start, press and hold the image to save it.","imgTitle":"Pre-construction payment plan","imgFor":"Prepared for","imgSub":"Itapema & Porto Belo · Brazil","imgNote":"Amounts in Brazilian reais, without adjustment. During construction, most developers adjust installments by the CUB/SC; after handover, as per contract.","imgPrice":"Property price","file":"payment-plan-ricardo-mello.pdf","monthly":"Monthly installment","monthlyA":"Monthly installment during construction","durObra":"during construction","afterKeys":"After handover","obraU":"months","ruleOk":"% paid by handover (minimum {m}%)","ruleAuto":"Construction installments were adjusted to reach {m}% by handover.","ruleBad":"With these numbers it is not possible to reach {m}% by handover. Increase the down payment, the balloons during construction or the handover payment.","minL":"Paid by handover (minimum)","instA":"Installments during construction","instB":"Installments after handover","imgPct":"by handover","downL":"Down payment","boostL":"Balloons","keysL":"At handover","instL":"Installments"};
   var MSG = (d) => `[Simulator · Brazil coast] Hi Ricardo! I ran the payment plan simulation on your website.\nName: ${d.name}\nCountry: ${d.country}\nWhatsApp: ${d.phone}\n\nProperty: ${d.price}${d.alt ? ' (' + d.alt + ')' : ''}\nDown payment (${d.downPct}%): ${d.down}\nBalloons: ${d.boostQty}x ${d.boost} (${d.every.toLowerCase()})\nAt handover (${d.keysPct}%): ${d.keys}\nConstruction: ${d.obra} months · ${d.pctObra}% paid by handover\nInstallments during construction: ${d.mA}x ${d.monthly}${d.mB ? '\nInstallments after handover: ' + d.mB + 'x ' + d.monthlyB : ''}\n\nPlease send me 3 real projects in Itapema and Porto Belo that fit this installment.`;
   var lang = "en", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
@@ -713,13 +714,14 @@ fbq('track', 'PageView');
   function fmtInput() { var v = num($('sPrice').value); $('sPrice').value = v ? v.toLocaleString(cur === 'USD' ? L.locale : 'pt-BR') : ''; }
   function calc() {
     var price = num($('sPrice').value), d = +$('sDown').value, bq = +$('sBq').value, bp = +$('sBp').value, k = +$('sKeys').value, n = +$('sN').value, M = +$('sObra').value;
+    var MIN = $('sMin') ? +$('sMin').value : 60; if ($('sMinV')) $('sMinV').textContent = MIN + '%';
     var S = 100 - d - bq * bp - k;
     $('sDownV').textContent = d + '%'; $('sBqV').textContent = bq + 'x'; $('sBpV').textContent = String(bp).replace('.', ',') + '%'; $('sKeysV').textContent = k + '%'; $('sObraV').textContent = M + ' ' + L.obraU;
     $('sWarn').style.display = S < 0 ? 'block' : 'none';
     var nB = 0; for (var i = 1; i <= bq; i++) if (i * every <= M) nB++;
     var base = d + nB * bp + k, mA = Math.min(n, M), mB = n - mA, s = Math.max(S, 0), P = s / n, pA = P, pB = mB ? P : 0, auto = false;
-    if (mB && base + P * mA < 60) { pA = Math.min(s / mA, (60 - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
-    var pct = base + pA * mA, reach = pct >= 59.95;
+    if (mB && base + P * mA < MIN) { pA = Math.min(s / mA, (MIN - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
+    var pct = base + pA * mA, reach = pct >= MIN - 0.05;
     var f = function (p) { return money(price * p / 100); };
     $('sMonthly').textContent = S < 0 ? '-' : f(pA);
     $('sMonthlyN').textContent = S < 0 ? '' : mA + 'x · ' + L.durObra;
@@ -734,12 +736,12 @@ fbq('track', 'PageView');
     $('oTot').textContent = money(price);
     var rule = $('sRule'); rule.style.display = S < 0 ? 'none' : '';
     rule.className = 'sim-rule' + (reach ? '' : ' bad');
-    rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk + (auto ? '<small>' + L.ruleAuto + '</small>' : '') : L.ruleBad;
+    rule.innerHTML = reach ? '✓ ' + Math.round(pct) + L.ruleOk.replace('{m}', MIN) + (auto ? '<small>' + L.ruleAuto.replace('{m}', MIN) + '</small>' : '') : L.ruleBad.replace('{m}', MIN);
     var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [pA * mA, '#e9dcc3'], [pB * mB, '#8a8476']], sum = parts.reduce(function (a, p) { return a + p[0]; }, 0) || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
     last = { parts: parts, price: money(price), alt: cur === 'USD' && rate ? '≈ ' + brl.format(price * rate) : '', downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
   }
-  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra'].forEach(function (id) { $(id).addEventListener('input', calc); });
+  ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra', 'sMin'].forEach(function (id) { if ($(id)) $(id).addEventListener('input', calc); });
   // páginas em inglês e espanhol: busca a cotação do dia e passa para dólar; sem cotação, segue em reais
   if ($('sCur')) {
     $('sCur').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setCur(b.getAttribute('data-v')); });
