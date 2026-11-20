@@ -628,7 +628,7 @@ fbq('track', 'PageView');
       <div class="rv d1"><span>Torre 2</span><strong>103 a 180 m²</strong><small>2 y 3 dormitorios</small></div>
       <div class="rv d2"><span>Torre 3</span><strong>136 a 171 m²</strong><small>2 y 3 dormitorios</small></div>
     </div>
-    <p class="vp-cap">Metrajes divulgados para el emprendimiento. Confirme en la lista vigente, porque disponibilidad y condiciones cambian por etapa.</p>
+    <p class="vp-cap">Metrajes divulgados para el emprendimiento. Confírmelo con Ricardo, porque disponibilidad y condiciones cambian por etapa.</p>
     <a class="vp-next rv" href="#quem"><span>A continuación</span>Quién lo acompañará<i aria-hidden="true"></i></a>
   </div>
 </section>
@@ -753,7 +753,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwodih66').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwp0t6fw').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();
