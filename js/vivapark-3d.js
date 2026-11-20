@@ -66,7 +66,7 @@ export function init(stage) {
     vertexShader: 'varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
     fragmentShader: 'uniform float t; varying vec3 vW; void main(){ vec2 p = vW.xz * 0.9; float w = sin(p.x*1.1 + t*0.6) * sin(p.y*1.5 - t*0.45) + sin((p.x-p.y)*0.8 + t*0.8)*0.5; vec3 c = mix(vec3(0.05,0.24,0.33), vec3(0.10,0.38,0.45), 0.5 + 0.25*w); c += smoothstep(1.0, 1.45, w) * vec3(0.9,0.75,0.55) * 0.25; gl_FragColor = vec4(c, 1.0); }'
   });
-  let ground = null;
+  let ground = null, tick = null;
   const loadGround = fetch(stage.getAttribute('data-mapa')).then((r) => r.json()).then((M) => {
     const HU = 1 / (M.mpx * 100), VE = 1.6; let H0 = 0; // metros -> unidades; relevo exagerado 1,6x; o Vivapark fica na cota 0
     const yOf = (h) => (h <= 0 ? -0.32 : (h - H0) * VE * HU);
@@ -151,6 +151,19 @@ export function init(stage) {
     const trees = new THREE.InstancedMesh(treeG, treeM, T.length), mtx = new THREE.Matrix4(), tc = new THREE.Color();
     T.forEach(([x, z, s], i) => { mtx.makeScale(s, s * (1.1 + rnd() * 0.5), s); mtx.setPosition(x, yAt(x, z) - 0.01, z); trees.setMatrixAt(i, mtx); tc.setHSL(0.25 + rnd() * 0.08, 0.32 + rnd() * 0.18, 0.24 + rnd() * 0.12); trees.setColorAt(i, tc); });
     trees.castShadow = !window.matchMedia('(pointer: coarse)').matches; trees.receiveShadow = true; scene.add(trees);
+    // carros: andam pelas vias principais (BR-101, marginais, Av. Gov. Celso Ramos e ruas maiores)
+    const routes = M.roads.filter((r) => /^(br|primary|secondary|tertiary)$/.test(r.t) && r.p.length > 1).map((r) => { const L = [0]; for (let k = 1; k < r.p.length; k++) L.push(L[k - 1] + Math.hypot(r.p[k][0] - r.p[k - 1][0], r.p[k][1] - r.p[k - 1][1])); return { p: r.p, L, len: L[L.length - 1], br: r.t === 'br', w: r.w }; }).filter((r) => r.len > 1.5);
+    const NC = routes.length ? Math.min(window.matchMedia('(pointer: coarse)').matches ? 70 : 140, routes.length * 6) : 0;
+    if (NC) {
+      const carG = new THREE.BoxGeometry(0.075, 0.035, 0.035); carG.translate(0, 0.0175, 0);
+      const cars = new THREE.InstancedMesh(carG, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4, metalness: 0.3 }), NC);
+      const pal = [0xf2f2f2, 0x1d1f22, 0x9aa3ab, 0xb3262b, 0x2d4f8a, 0xdcdcd5, 0x6b6f72];
+      const C = []; for (let i = 0; i < NC; i++) { const r = routes[i % routes.length]; C.push({ r, d: rnd() * r.len, v: (r.br ? 0.55 : 0.28) * (0.8 + rnd() * 0.4) * (rnd() < 0.5 ? 1 : -1), side: rnd() < 0.5 ? 1 : -1 }); cars.setColorAt(i, new THREE.Color(pal[i % pal.length])); }
+      cars.castShadow = false; scene.add(cars);
+      const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), sc4 = new THREE.Vector3(1, 1, 1), p4 = new THREE.Vector3();
+      tick = (dt) => { C.forEach((c, i) => { c.d += c.v * dt; if (c.d > c.r.len) c.d -= c.r.len; if (c.d < 0) c.d += c.r.len; const L = c.r.L; let k = 1; while (k < L.length - 1 && L[k] < c.d) k++; const [x1, z1] = c.r.p[k - 1], [x2, z2] = c.r.p[k], t = (c.d - L[k - 1]) / Math.max(1e-6, L[k] - L[k - 1]), dx = x2 - x1, dz = z2 - z1, ln = Math.hypot(dx, dz) || 1, off = (c.r.br ? c.r.w * 0.2 : c.r.w * 0.15) * (c.v > 0 ? 1 : -1); const x = x1 + dx * t - dz / ln * off, z = z1 + dz * t + dx / ln * off; p4.set(x, yAt(x, z) + 0.016, z); e4.set(0, -Math.atan2(dz, dx) + (c.v < 0 ? Math.PI : 0), 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cars.setMatrixAt(i, m4); }); cars.instanceMatrix.needsUpdate = true; };
+      tick(0);
+    }
     stage.classList.add('ready');
   }).catch(() => stage.classList.add('nogl'));
 
@@ -203,9 +216,9 @@ export function init(stage) {
     ['ventura', 'Ventura', 619, 262, 2028, 'Famex', 16],
     ['vitta27', 'VITTA 27', 565, 391, 2031, 'Famex', 20],
     ['veleiros', 'Veleiros Residence', 818, 393, 2029, 'Eccel', 18],
-    ['videiras', 'Videiras Residence', 1038, 364, 2028, 'Eccel', 14],
+    ['videiras', 'Videiras Residence', 1038, 364, 2028, 'Eccel', 30],
     ['veccel', 'Veccel Corporate', 411, 536, 2030, 'Eccel', 12],
-    ['inc31', 'INC 31', 739, -60, 2033, 'ASRAMOS', 20],
+    ['inc31', 'INC 31', 739, -60, 2033, 'ASRAMOS', 34],
     ['vision', 'Vision Home Club', -147, 489, 2030, 'Grupo N1', 23],
     ['verenna', 'Verenna', -525, 257, 2031, 'Conrado', 20],
     ['valence', 'Valence', -830, 590, 2031, 'RDO', 20],
@@ -235,7 +248,9 @@ export function init(stage) {
     if (!ano) { // pronto: contorno aceso em volta do prédio da planta, alinhado com a BR
       const ring = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.3, 0.02, 0.9)), new THREE.LineBasicMaterial({ color: 0x5fd38a, transparent: true, opacity: 0.9 }));
       ring.rotation.y = -0.45; ring.position.y = 0.05; g.add(ring); obras.push({ ring });
-      empPins.push([id, nome, P(x, y, 0.35), 'ok']); return;
+      const vj = new THREE.Group(); vj.rotation.y = -0.45; g.add(vj);
+      for (let i = 0; i < 8; i++) { const w = 2.1 - (i % 2) * 0.06, d = 0.7 - (i % 3) * 0.04; const f = box(w, 0.068, d, white); f.position.y = i * 0.075; vj.add(f); const pl = box(w * 0.96, 0.02, 0.06, green); pl.position.set(0, i * 0.075 + 0.068, d / 2 - 0.02); vj.add(pl); }
+      empPins.push([id, nome, P(x, y, 0.85), 'ok']); return;
     }
     const W = 0.8, D = 0.52, fh = 0.075, H = fl * fh, floors = [];
     const sol = ano <= 2027; // perto da entrega: concreto; os demais, holograma
@@ -253,6 +268,32 @@ export function init(stage) {
     empPins.push([id, nome, P(x, y, H + 0.25), x < 0 ? 'f2' : '']);
   });
   { const vg = new THREE.Group(); vg.position.copy(P(546, 610)); scene.add(vg); crane(vg, 1.9, 0); } // grua ao lado do Vértice (entrega 2027)
+  // o que já funciona no bairro (posições do Google Maps, convertidas para a maquete)
+  const LUG = { pt: { k: 'Já funciona', colegio: ['Colégio Bom Jesus', 'Desde fevereiro de 2025, da educação infantil ao ensino médio, com capacidade para mil alunos. Fica ao lado do Vértice.'], boulevard: ['Gastronomia do boulevard', 'Restaurantes e cafés de frente para o lago: o ponto de encontro do bairro no fim do dia.'], wave: ['Academia Wave', 'A academia do bairro, a poucos passos do lago e do boulevard.'], quadras: ['Quadras e MUV Arena', 'Tênis, padel, beach tennis e vôlei de praia, abertos desde a inauguração do bairro.'] },
+    en: { k: 'Open today', colegio: ['Colégio Bom Jesus school', 'Since February 2025, from early childhood to high school, for up to a thousand students. Right next to Vértice.'], boulevard: ['Boulevard dining', 'Restaurants and cafés facing the lake: where the neighborhood meets at the end of the day.'], wave: ['Wave gym', 'The neighborhood gym, a few steps from the lake and the boulevard.'], quadras: ['Courts and MUV Arena', 'Tennis, padel, beach tennis and beach volleyball, open since the neighborhood opened.'] },
+    es: { k: 'Ya funciona', colegio: ['Colegio Bom Jesus', 'Desde febrero de 2025, de la educación infantil a la secundaria, con capacidad para mil alumnos. Junto al Vértice.'], boulevard: ['Gastronomía del boulevard', 'Restaurantes y cafés frente al lago: el punto de encuentro del barrio al final del día.'], wave: ['Gimnasio Wave', 'El gimnasio del barrio, a pocos pasos del lago y del boulevard.'], quadras: ['Canchas y MUV Arena', 'Tenis, pádel, beach tennis y vóley de playa, abiertos desde la inauguración del barrio.'] } }[LG === 'en' || LG === 'es' ? LG : 'pt'];
+  const lit = new THREE.MeshStandardMaterial({ color: 0xfff1d0, emissive: 0xffc46b, emissiveIntensity: 0.55, roughness: 0.6 });
+  const court = (c) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.85 });
+  const place = (id, x, y, build, h, a = 0, cam = [1.4, 1.5, 2.0], sc = 1) => { const g = new THREE.Group(); g.position.copy(P(x, y)); g.rotation.y = a; g.scale.setScalar(sc); scene.add(g); build(g); STOPS[id] = { t: [x, y, h * 0.5], c: cam, k: LUG.k, n: LUG[id][0], d: LUG[id][1] }; empPins.push([id, LUG[id][0], P(x, y, h + 0.22), 'ok']); };
+  // Colégio Bom Jesus: blocos de 3 andares em "L", faixas de janelas e quadra
+  place('colegio', 508, 506, (g) => {
+    const a = box(1.15, 0.24, 0.36, white); a.position.set(0, 0, -0.18); g.add(a);
+    const b = box(0.36, 0.24, 0.8, white); b.position.set(-0.4, 0, 0.3); g.add(b);
+    for (let i = 0; i < 3; i++) { const w1 = box(1.16, 0.02, 0.37, lit); w1.position.set(0, 0.035 + i * 0.075, -0.18); g.add(w1); const w2 = box(0.37, 0.02, 0.81, lit); w2.position.set(-0.4, 0.035 + i * 0.075, 0.3); g.add(w2); }
+    const q = box(0.55, 0.008, 0.36, court(0x3d7fae)); q.position.set(0.25, 0, 0.35); g.add(q);
+  }, 0.24, -0.45, [-1.1, 2.9, 1.5], 0.62);
+  // gastronomia do boulevard: quiosques com pérgolas, de frente para o lago
+  place('boulevard', 808, 626, (g) => {
+    for (let i = -2; i <= 2; i++) { const k = box(0.24, 0.1, 0.2, glass); k.position.set(i * 0.3, 0, 0); g.add(k); const r = box(0.3, 0.02, 0.26, roof); r.position.set(i * 0.3, 0.1, 0); g.add(r); const l = box(0.22, 0.03, 0.005, lit); l.position.set(i * 0.3, 0.05, 0.103); g.add(l); }
+  }, 0.12, -0.45);
+  // academia Wave
+  place('wave', 706, 589, (g) => { const m = box(0.5, 0.14, 0.32, glass); g.add(m); const t = box(0.52, 0.02, 0.34, white); t.position.y = 0.14; g.add(t); const l = box(0.5, 0.05, 0.005, lit); l.position.set(0, 0.06, 0.161); g.add(l); }, 0.16, -0.45);
+  // quadras (tênis, padel, beach tennis, vôlei) e a MUV Arena
+  place('quadras', 1293, 751, (g) => {
+    const cs = [[-0.75, -0.2, 0.36, 0.2, 0xb8613f], [-0.35, -0.2, 0.36, 0.2, 0xb8613f], [0.05, -0.2, 0.24, 0.14, 0x3d7fae], [0.35, -0.2, 0.24, 0.14, 0x3d7fae], [-0.6, 0.18, 0.26, 0.16, 0xe3cf9a], [-0.25, 0.18, 0.26, 0.16, 0xe3cf9a], [0.1, 0.18, 0.26, 0.16, 0xe3cf9a]];
+    cs.forEach(([x, z, w, d, c]) => { const q = box(w, 0.008, d, court(c)); q.position.set(x, 0, z); g.add(q); const e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w * 0.86, 0.001, d * 0.8)), new THREE.LineBasicMaterial({ color: 0xffffff })); e.position.set(x, 0.012, z); g.add(e); });
+    const arena = box(0.42, 0.12, 0.3, white); arena.position.set(0.55, 0, 0.15); g.add(arena); const l = box(0.4, 0.04, 0.005, lit); l.position.set(0.55, 0.05, 0.302); g.add(l);
+  }, 0.14, -0.45);
   const LZ = { pt: ['Lançamentos', 'Os prédios do bairro', 'Além do Vértice, mais onze prédios no lugar de cada lote: o Vista Jardins já pronto e os lançamentos subindo, inclusive o Vision Home Club, na fase 2, do outro lado do parque.'],
     en: ['New launches', 'The neighborhood’s buildings', 'Besides Vértice, eleven more buildings, each on its own lot: Vista Jardins already finished and the new launches rising, including Vision Home Club in phase 2, across the park.'],
     es: ['Lanzamientos', 'Los edificios del barrio', 'Además del Vértice, once edificios más, cada uno en su lote: el Vista Jardins ya listo y los lanzamientos subiendo, incluido el Vision Home Club, en la fase 2, al otro lado del parque.'] }[LG === 'en' || LG === 'es' ? LG : 'pt'];
@@ -352,7 +393,7 @@ export function init(stage) {
   const v = new THREE.Vector3(); const clock = new THREE.Clock(); let visible = true;
   new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(stage);
   function frame() {
-    const dt = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dt;
+    const dt = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dt; if (tick) tick(dt);
     risers.forEach((r) => { if (r.t0 == null) r.t0 = performance.now(); r.p = Math.min(1, (performance.now() - r.t0) / 2200); const n = Math.max(0, r.p) * r.N; r.floors.forEach((f) => { const s = Math.max(0.0001, Math.min(1, n - f.userData.i)); f.scale.y = s; f.visible = s > 0.001; }); });
     // obras: cada prédio "imprime" andar por andar, com a faixa de luz subindo; depois a faixa passeia pelo prédio pronto
     const now = performance.now();
