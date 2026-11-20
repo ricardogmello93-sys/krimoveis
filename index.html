@@ -294,6 +294,16 @@ a { color: inherit; text-decoration: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* RODAPÉ */
+.g-mais { background: linear-gradient(180deg, var(--night), #07060f); border-top: 1px solid rgba(255,255,255,0.06); padding: 80px 40px 90px; }
+.g-mais-in { max-width: 900px; margin: 0 auto; }
+.g-mais h2 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(30px, 4vw, 46px); line-height: 1.1; margin: 12px 0 18px; }
+.g-mais h2 em { font-style: italic; color: #e2c77e; }
+.g-mais p { font-size: 15.5px; line-height: 1.8; color: var(--soft); margin: 0 0 14px; }
+.g-mais p a { color: #e2c77e; text-underline-offset: 3px; }
+.g-mais-l { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.g-mais-l a { font-size: 13px; color: var(--white); text-decoration: none; padding: 8px 14px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.03); transition: border-color .25s, background .25s; }
+.g-mais-l a:hover { border-color: #e2c77e; background: rgba(226,199,126,0.1); }
+@media (max-width: 760px) { .g-mais { padding: 56px 20px 70px; } .g-mais p { font-size: 14.5px; } }
 .g-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 40px calc(14px + env(safe-area-inset-bottom)); font-size: 12.5px; color: var(--soft); border-top: 1px solid rgba(201,168,76,0.15); z-index: 20; background: var(--night); }
 .g-wa { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .g-wa a { display: inline-flex; align-items: center; gap: 8px; color: var(--white); padding: 7px 14px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.16); transition: border-color 0.25s, background 0.25s; }
@@ -438,6 +448,19 @@ fbq('track', 'PageView');
     </div>
   </footer>
 </div>
+
+<section class="g-mais" aria-label="Sobre a KR Corretores">
+  <div class="g-mais-in">
+    <span class="g-tag">KR Corretores</span>
+    <h2>Kamila e Ricardo, <em>corretores de imóveis</em></h2>
+    <p>Atendemos duas regiões. Em <a href="santa-maria/">Santa Maria (RS)</a>, a Kamila Xavier, engenheira civil e corretora (CRECI/RS 78710), cuida de lançamentos, imóveis prontos, terrenos, financiamento pela Caixa, Minha Casa Minha Vida e FGTS, com o olhar técnico de quem avalia cada imóvel antes da compra. No <a href="litoral-sc/">litoral de Santa Catarina</a>, o Ricardo Mello, administrador e corretor (CRECI/RS 082996), acompanha os lançamentos de Itapema e Porto Belo, com pagamento direto com a construtora.</p>
+    <p>O atendimento é pelo WhatsApp, inclusive para quem mora em outra cidade, estado ou país. Somos parceiros da Santa Imóveis e temos nota 5,0 no Google.</p>
+    <nav class="g-mais-l" aria-label="Páginas principais">
+      <a href="santa-maria/">Imóveis em Santa Maria</a><a href="levve-garden-living-camobi.html">Levve Garden Living</a><a href="apartamento-1-dormitorio-camobi-santa-maria.html">1 dormitório em Camobi</a><a href="simulador-financiamento-santa-maria.html">Simulador de Santa Maria</a>
+      <a href="litoral-sc/">Imóveis em Itapema e Porto Belo</a><a href="litoral-sc/zah-empreendimentos.html">ZAH Empreendimentos</a><a href="litoral-sc/vivapark-porto-belo.html">Vivapark e Vision</a><a href="litoral-sc/simulador-imovel-na-planta.html">Simulador do litoral</a><a href="sobre.html">Quem somos</a>
+    </nav>
+  </div>
+</section>
 
 <div class="g-cursor" id="cur" aria-hidden="true"><span></span></div>
 <div class="g-curtain" id="curtain" aria-hidden="true"><span></span></div>
