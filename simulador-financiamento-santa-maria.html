@@ -368,29 +368,16 @@ a.inline:hover { color: var(--white); }
 @keyframes mdIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (max-width: 760px) { .md { gap: 8px; } .md-b { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; border-radius: 16px; } .md-b i { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px; } .md-b i svg { width: 19px; height: 19px; } .md-b b { font-size: 18px; } .md-b small { display: none; } .md-hint { font-size: 13px; margin-bottom: 16px; } .d-intro { font-size: 13.5px; } }
 
-.d-intro { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 0 2px 16px; max-width: 860px; }
+.d-intro { font-size: 14.5px; line-height: 1.65; color: var(--muted); margin: 0 2px 16px; max-width: 880px; }
 .d-intro b { color: var(--white); font-weight: 500; }
-.dsw { display: inline-flex; padding: 4px; border-radius: 100px; border: 1px solid var(--goldline); background: rgba(11,9,28,0.45); margin: 0 0 18px; }
-.dsw button { border: 0; background: none; color: var(--soft); font: 500 13px 'DM Sans', sans-serif; letter-spacing: .4px; padding: 10px 18px; border-radius: 100px; cursor: pointer; transition: background .25s, color .25s; }
-.dsw button.on { background: linear-gradient(135deg, #f3eadb, #e2c77e 65%, #c9a84c); color: #0b091c; }
-.dpane[hidden] { display: none !important; }
 .cc-w { margin: 0 0 16px; }
 .cc-w small { display: block; font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--purple2); margin-bottom: 8px; }
 .cc-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
-.cc { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 1px solid var(--goldline); background: rgba(201,168,76,0.06); color: var(--white); font: inherit; padding: 9px 14px; border-radius: 14px; cursor: pointer; transition: background .25s, border-color .25s; }
+.cc { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; border: 1px solid var(--goldline); background: rgba(201,168,76,0.06); color: var(--white); font: inherit; padding: 9px 14px; border-radius: 14px; cursor: pointer; transition: background .25s, border-color .25s; text-align: left; }
 .cc:hover, .cc.on { background: rgba(201,168,76,0.18); border-color: var(--gold2); }
-.cc b { font-weight: 500; font-size: 13.5px; white-space: nowrap; } .cc span { font-size: 12px; color: var(--gold2); }
+.cc b { font-weight: 500; font-size: 13.5px; white-space: nowrap; } .cc span { font-size: 12px; color: var(--gold2); white-space: nowrap; }
 .cc-n { font-size: 12px; color: var(--soft); margin-top: 6px; }
-.rv-h { font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--purple2); }
-.rv-h b { color: var(--white); font-weight: 500; }
-.rv-l { display: grid; gap: 8px; }
-.rv-r { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(27,20,66,0.5); }
-.rv-r b { font-weight: 500; font-size: 14.5px; } .rv-r small { display: block; font-size: 11.5px; color: var(--soft); }
-.rv-r span { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold2); }
-.rv-r em { grid-column: 1 / -1; font-style: normal; font-size: 12.5px; color: var(--soft); }
-.rv-r.ok { border-color: var(--gold2); } .rv-r.ok em { color: var(--gold2); }
-#rv .sim-out .sm-btn { align-self: flex-start; white-space: normal; text-align: center; }
-@media (max-width: 760px) { .dsw { display: flex; } .dsw button { flex: 1; padding: 10px 8px; font-size: 12.5px; } #rv .sim-out .sm-btn { align-self: stretch; } }
+@media (max-width: 760px) { .d-intro { font-size: 13.5px; } }
 .smflux { --sea2: var(--purple2); --sand: var(--champ); --sand2: var(--champ); --foam: var(--champ); }
 
 .smflux .sim { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 0; border-radius: 28px; overflow: hidden; border: 1px solid rgba(196,184,247,0.22); background: linear-gradient(160deg, rgba(42,33,96,0.6), rgba(11,9,28,0.85)); box-shadow: 0 40px 90px rgba(0,0,0,0.35); }
@@ -465,7 +452,6 @@ a.inline:hover { color: var(--white); }
 .smflux .sim-cur button { padding: 6px 12px; font-size: 12px; }
 .smflux .sim-fx { display: block; margin-top: 6px; font-size: 12px; color: var(--muted, #9fb3b5); min-height: 1em; }
 
-.smflux .sim-rule { display: none !important; }
 .smflux .sim-form .sm-btn { border: 0; cursor: pointer; padding: 15px 24px; }
 @media (max-width: 900px) { .smflux .sim-form .sm-btn { width: 100%; } }
 .sw { --mdl: rgba(196,184,247,0.2); --mdbg: rgba(27,20,66,0.45); }</style>
@@ -554,29 +540,11 @@ fbq('track', 'PageView');
     <p class="consent">Ao enviar, você concorda em receber o contato da Kamila pelo WhatsApp. Seus dados não são compartilhados.</p>
   </div>
 </div></div>
-  <div class="md-p" data-m="dir" id="direto" hidden><p class="d-intro"><b>Como funciona:</b> você dá uma entrada e paga parcelas mensais direto com a construtora, e algumas pedem reforços por ano. As parcelas começam na obra e continuam depois das chaves. Cada construtora tem o seu fluxo.</p>
-  <div class="dsw" role="tablist" aria-label="Como simular"><button type="button" class="on" data-d="rev">Quanto posso pagar?</button><button type="button" data-d="fwd">Já sei o valor do imóvel</button></div>
-  <div class="dpane" data-d="rev"><div class="smflux"><div class="sim" id="rv">
-    <div class="sim-in">
-      <div class="sim-f"><label for="rEnt">Quanto você tem para a entrada</label><input class="sim-money" id="rEnt" inputmode="numeric" value="30.000"></div>
-      <div class="sim-f"><label for="rParc">Parcela mensal que cabe no bolso</label><input class="sim-money" id="rParc" inputmode="numeric" value="2.000"></div>
-      <div class="sim-row">
-        <div class="sim-f"><label for="rRef">Reforço por ano (opcional)</label><input class="sim-sel" id="rRef" inputmode="numeric" value="0"></div>
-        <div class="sim-f"><label for="rN">Em quantas parcelas</label><select class="sim-sel" id="rN"><option value="60">60x</option><option value="80">80x</option><option value="100">100x</option><option value="120" selected>120x</option><option value="132">132x</option></select></div>
-      </div>
-      <p class="sim-note">A entrada, as parcelas e os reforços somados mostram o valor do imóvel que cabe nesse fluxo.</p>
-    </div>
-    <div class="sim-out" aria-live="polite">
-      <div class="sim-big"><span>Imóvel de até</span><b id="rTot">-</b><small id="rDet"></small></div>
-      <div class="rv-h">Lançamentos que parcelam em <b id="rNn"></b></div>
-      <div class="rv-l" id="rList"></div>
-      <p class="sim-note">Estimativa sem correção e sem juros. Cada construtora define a entrada mínima, os reforços e o reajuste, e a Kamila confirma os valores de cada empreendimento.</p>
-      <a class="sm-btn sm-btn-gold" id="rWa" href="#" target="_blank" rel="noopener" data-corretor="Kamila" data-origem="sm_simulador_quanto"><span class="sm-dot"></span>Quero saber o que cabe com a Kamila</a>
-    </div>
-  </div></div></div>
-  <div class="dpane" data-d="fwd" hidden><div class="cc-w"><small>Preencher com o fluxo de um lançamento</small><div class="cc-row"><button type="button" class="cc" data-sim-emp="Residencial Eclipse" data-sim-n="132"><b>Eclipse</b><span>até 132x</span></button><button type="button" class="cc" data-sim-emp="NEXT 323" data-sim-n="120"><b>NEXT 323</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Residenziale Gran Progresso" data-sim-n="120"><b>Residenziale Gran Progresso</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Atrium 225 Residence" data-sim-n="80"><b>Atrium 225</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Giardino Di Napoli" data-sim-n="80"><b>Giardino Di Napoli</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Singular" data-sim-n=""><b>Singular</b><span>parcelado</span></button></div><p class="cc-n">Condições informadas pelas construtoras, sujeitas a mudança. Nos empreendimentos já em obra, o número de parcelas costuma diminuir com o tempo.</p></div><div class="smflux"><div class="sim" id="sim" data-lang="smpt" data-origem="sm_simulador_direto">
+  <div class="md-p" data-m="dir" id="direto" hidden><p class="d-intro"><b>Como funciona:</b> você dá uma entrada, paga reforços (em geral de 3 a 5, um por ano), uma parcela nas chaves e parcelas mensais direto com a construtora. As parcelas começam na obra e continuam depois das chaves, e em média as construtoras pedem pelo menos 60% pago até a entrega (algumas, 65%). Cada construtora tem o seu fluxo.</p>
+  <div class="cc-w"><small>Preencher com o fluxo de um lançamento</small><div class="cc-row"><button type="button" class="cc" data-sim-emp="Residencial Eclipse" data-sim-n="132" data-sim-fl='{"d":10,"bq":3,"k":10}'><b>Eclipse</b><span>10% + 3 reforços + 10% chaves · 132x</span></button><button type="button" class="cc" data-sim-emp="NEXT 323" data-sim-n="120"><b>NEXT 323</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Residenziale Gran Progresso" data-sim-n="120"><b>Residenziale Gran Progresso</b><span>até 120x</span></button><button type="button" class="cc" data-sim-emp="Atrium 225 Residence" data-sim-n="80"><b>Atrium 225</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Giardino Di Napoli" data-sim-n="80"><b>Giardino Di Napoli</b><span>até 80x</span></button><button type="button" class="cc" data-sim-emp="Residencial Singular" data-sim-n=""><b>Singular</b><span>parcelado</span></button></div><p class="cc-n">Condições informadas pelas construtoras, sujeitas a mudança. Nos empreendimentos já em obra, o número de parcelas costuma diminuir com o tempo.</p></div>
+  <div class="smflux"><div class="sim" id="sim" data-lang="smpt" data-origem="sm_simulador_direto">
   <div class="sim-in">
-    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="350.000" aria-label="Valor do imóvel"></div>
+    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="350.000" aria-label="Valor do imóvel"><small class="sim-fx">Não sabe o valor? Coloque um valor aproximado e ajuste até a parcela caber no seu bolso.</small></div>
     <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
     <div class="sim-row">
       <div class="sim-f"><label for="sBq">Reforços (balões): Quantidade <b id="sBqV"></b></label><input type="range" id="sBq" min="0" max="12" step="1" value="4"></div>
@@ -622,30 +590,6 @@ fbq('track', 'PageView');
     <p class="sim-consent">Ao enviar, você concorda em receber o contato da Kamila pelo WhatsApp.</p>
   </div>
 </div></div></div>
-<script>
-(function () {
-  var D = [{"n":"Residencial Eclipse","c":"COASE · Bonfim · lançamento","x":132,"fx":null},{"n":"NEXT 323","c":"MRU · Centro, perto da UFN · lançamento","x":120,"fx":null},{"n":"Residenziale Gran Progresso","c":"COASE · Camobi · em obras","x":120,"fx":null},{"n":"Atrium 225 Residence","c":"COASE · Camobi · lançamento","x":80,"fx":null},{"n":"Residencial Giardino Di Napoli","c":"COASE · Camobi · em obras","x":80,"fx":null},{"n":"Residencial Singular","c":"MRU · Centro · em obras","x":0,"fx":null}];
-  var $ = function (i) { return document.getElementById(i); }; if (!$('rv')) return;
-  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
-  function num(s) { return parseInt(String(s).replace(/[^0-9]/g, ''), 10) || 0; }
-  ['rEnt', 'rParc', 'rRef'].forEach(function (id) { $(id).addEventListener('input', function () { var v = num(this.value); this.value = v ? v.toLocaleString('pt-BR') : ''; calc(); }); });
-  $('rN').addEventListener('change', calc);
-  function calc() {
-    var e = num($('rEnt').value), p = num($('rParc').value), r = num($('rRef').value), n = +$('rN').value, k = Math.floor(n / 12), X = e + p * n + r * k;
-    $('rTot').textContent = X ? brl.format(X) : '-';
-    $('rDet').textContent = brl.format(e) + ' de entrada + ' + n + 'x de ' + brl.format(p) + (r ? ' + ' + k + ' reforços de ' + brl.format(r) : '');
-    $('rNn').textContent = n + 'x ou mais';
-    var L = D.filter(function (d) { return d.x >= n; });
-    $('rList').innerHTML = L.length ? L.map(function (d) { var fx = d.fx, ok = fx && X >= fx[0], t = fx ? 'Unidades de ' + brl.format(fx[0]) + (fx[1] ? ' a ' + brl.format(fx[1]) : '') : 'Valores: consulte a Kamila'; return '<div class="rv-r' + (ok ? ' ok' : '') + '"><div><b>' + d.n + '</b><small>' + d.c + '</small></div><span>até ' + d.x + 'x</span><em>' + (ok ? '✓ Cabe no seu fluxo · ' : '') + t + '</em></div>'; }).join('') : '<p class="sim-note">Nenhum lançamento que acompanhamos parcela em tantas vezes hoje. Escolha menos parcelas ou fale com a Kamila.</p>';
-    $('rWa').href = 'https://wa.me/5555991346393?text=' + encodeURIComponent('Olá Kamila! Simulei no site quanto posso pagar direto com a construtora: entrada de ' + brl.format(e) + ' e parcela de ' + brl.format(p) + ' em ' + n + 'x' + (r ? ', com reforço anual de ' + brl.format(r) : '') + '. Isso dá um imóvel de até ' + brl.format(X) + '. Quero saber o que cabe nesse fluxo.');
-  }
-  function showD(d) { document.querySelectorAll('.dsw button').forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-d') === d); }); document.querySelectorAll('.dpane').forEach(function (p) { p.hidden = p.getAttribute('data-d') !== d; }); }
-  document.querySelectorAll('.dsw button').forEach(function (b) { b.addEventListener('click', function () { showD(b.getAttribute('data-d')); try { gtag('event', 'simulador_direto_modo', { modo: b.getAttribute('data-d') }); } catch (_) {} }); });
-  window.__showD = showD;
-  var used = false; $('rv').addEventListener('input', function () { if (used) return; used = true; try { gtag('event', 'simulador_uso', { simulador: 'quanto_posso_pagar' }); } catch (_) {} });
-  calc();
-})();
-</script></div>
   <article class="txt">
     <h2>O que o simulador <em>mostra na hora</em></h2>
     <ul>
@@ -772,7 +716,7 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para a Kamila receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Santa Maria · RS","imgNote":"Valores sem correção. Durante a obra as parcelas costumam ser corrigidas por um índice da construção; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-kamila-xavier.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
+  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para a Kamila receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Santa Maria · RS","imgNote":"Valores sem correção. Durante a obra as parcelas costumam ser corrigidas por um índice da construção; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-kamila-xavier.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (em geral, as construtoras pedem pelo menos 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
   var MSG = (d) => `[Simulador SM · direto com a construtora] Olá Kamila! Fiz a simulação de pagamento direto com a construtora no site.${d.emp ? '\nEmpreendimento: ' + d.emp : ''}\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber ${d.emp ? 'as condições do ' + d.emp + ' e ' : ''}os lançamentos de Santa Maria que cabem nessa parcela.`;
   var lang = "smpt", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
@@ -798,7 +742,7 @@ fbq('track', 'PageView');
     $('sWarn').style.display = S < 0 ? 'block' : 'none';
     var nB = 0; for (var i = 1; i <= bq; i++) if (i * every <= M) nB++;
     var base = d + nB * bp + k, mA = Math.min(n, M), mB = n - mA, s = Math.max(S, 0), P = s / n, pA = P, pB = mB ? P : 0, auto = false;
-    if (false) { pA = Math.min(s / mA, (60 - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
+    if (mB && base + P * mA < 60) { pA = Math.min(s / mA, (60 - base) / mA); pB = (s - pA * mA) / mB; auto = true; }
     var pct = base + pA * mA, reach = pct >= 59.95;
     var f = function (p) { return money(price * p / 100); };
     $('sMonthly').textContent = S < 0 ? '-' : f(pA);
@@ -937,7 +881,7 @@ fbq('track', 'PageView');
   var q = new URLSearchParams(location.search), h = location.hash;
   var m = q.get('modo') === 'direto' || h === '#direto' ? 'dir' : (q.get('modo') === 'fin' || h === '#financiamento' ? 'fin' : null);
   if (m) show(m, true);
-  function prefill(emp, n) {
+  function prefill(emp, n, fl) {
     if (window.__showD) window.__showD('fwd');
     emp = (emp || '').slice(0, 80); n = parseInt(n, 10);
     var e = document.getElementById('mdEmp');
@@ -949,10 +893,11 @@ fbq('track', 'PageView');
       if (![].some.call(sN.options, function (o) { return +o.value === n; })) { var o = document.createElement('option'); o.value = n; o.textContent = n + 'x'; sN.appendChild(o); }
       sN.value = String(n); sN.dispatchEvent(new Event('input'));
     }
+    if (fl) [['sDown', fl.d], ['sBq', fl.bq], ['sKeys', fl.k]].forEach(function (x) { var el = document.getElementById(x[0]); if (el && x[1] != null) { el.value = x[1]; el.dispatchEvent(new Event('input')); } });
   }
   if (q.get('emp') || q.get('n')) prefill(q.get('emp'), q.get('n'));
   document.querySelectorAll('[data-sim-emp]').forEach(function (b) { b.addEventListener('click', function () {
-    show('dir'); prefill(b.getAttribute('data-sim-emp'), b.getAttribute('data-sim-n'));
+    show('dir'); var fl = null; try { fl = JSON.parse(b.getAttribute('data-sim-fl') || 'null'); } catch (_) {} prefill(b.getAttribute('data-sim-emp'), b.getAttribute('data-sim-n'), fl);
     document.querySelectorAll('.cc').forEach(function (c) { c.classList.toggle('on', c === b); }); var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { gtag('event', 'simulador_emp', { emp: b.getAttribute('data-sim-emp') }); } catch (_) {}
   }); });

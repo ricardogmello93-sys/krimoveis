@@ -553,7 +553,7 @@ fbq('track', 'PageView');
 </div></div></div>
   <div class="md-p" data-m="dir" id="direto"><p class="cond-litoral"><b>Cada construtora tem o seu fluxo.</b> A entrada, os reforços e o número de parcelas mudam de construtora para construtora e de um empreendimento para outro, e nos lançamentos do litoral em geral é preciso chegar a 60% pago até as chaves. Use o simulador para entender o fluxo; a condição real vem na tabela de cada empreendimento, que o Ricardo envia atualizada.</p><div class="sim" id="sim" data-lang="pt" data-origem="litoral_simulador">
   <div class="sim-in">
-    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"></div>
+    <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="900.000" aria-label="Valor do imóvel"><small class="sim-fx">Não sabe o valor? Coloque um valor aproximado e ajuste até a parcela caber no seu bolso.</small></div>
     <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
     <div class="sim-row">
       <div class="sim-f"><label for="sBq">Reforços (balões): Quantidade <b id="sBqV"></b></label><input type="range" id="sBq" min="0" max="12" step="1" value="4"></div>
@@ -672,7 +672,7 @@ fbq('track', 'PageView');
 </script>
 <script>
 (function () {
-  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Itapema e Porto Belo · SC","imgNote":"Valores sem correção. Durante a obra, a maioria das construtoras corrige as parcelas pelo CUB/SC; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-ricardo-mello.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
+  var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Itapema e Porto Belo · SC","imgNote":"Valores sem correção. Durante a obra, a maioria das construtoras corrige as parcelas pelo CUB/SC; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-ricardo-mello.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (em geral, as construtoras pedem pelo menos 60%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos 60% até as chaves.","ruleBad":"Com esses valores não dá para chegar a 60% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
   var MSG = (d) => `[Simulador Litoral] Olá Ricardo! Fiz a simulação de fluxo no site.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses · ${d.pctObra}% pago até as chaves\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber 3 lançamentos reais em Itapema e Porto Belo que cabem nessa parcela.`;
   var lang = "pt", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
@@ -904,7 +904,7 @@ fbq('track', 'PageView');
   var q = new URLSearchParams(location.search), h = location.hash;
   var m = q.get('modo') === 'direto' || h === '#direto' ? 'dir' : (q.get('modo') === 'fin' || h === '#financiamento' ? 'fin' : null);
   if (m) show(m, true);
-  function prefill(emp, n) {
+  function prefill(emp, n, fl) {
     if (window.__showD) window.__showD('fwd');
     emp = (emp || '').slice(0, 80); n = parseInt(n, 10);
     var e = document.getElementById('mdEmp');
@@ -916,10 +916,11 @@ fbq('track', 'PageView');
       if (![].some.call(sN.options, function (o) { return +o.value === n; })) { var o = document.createElement('option'); o.value = n; o.textContent = n + 'x'; sN.appendChild(o); }
       sN.value = String(n); sN.dispatchEvent(new Event('input'));
     }
+    if (fl) [['sDown', fl.d], ['sBq', fl.bq], ['sKeys', fl.k]].forEach(function (x) { var el = document.getElementById(x[0]); if (el && x[1] != null) { el.value = x[1]; el.dispatchEvent(new Event('input')); } });
   }
   if (q.get('emp') || q.get('n')) prefill(q.get('emp'), q.get('n'));
   document.querySelectorAll('[data-sim-emp]').forEach(function (b) { b.addEventListener('click', function () {
-    show('dir'); prefill(b.getAttribute('data-sim-emp'), b.getAttribute('data-sim-n'));
+    show('dir'); var fl = null; try { fl = JSON.parse(b.getAttribute('data-sim-fl') || 'null'); } catch (_) {} prefill(b.getAttribute('data-sim-emp'), b.getAttribute('data-sim-n'), fl);
     document.querySelectorAll('.cc').forEach(function (c) { c.classList.toggle('on', c === b); }); var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { gtag('event', 'simulador_emp', { emp: b.getAttribute('data-sim-emp') }); } catch (_) {}
   }); });
