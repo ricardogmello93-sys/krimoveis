@@ -516,8 +516,8 @@ fbq('track', 'PageView');
     <p class="vp-p rv">Rotate, zoom and tap the points. Watch the neighborhood’s buildings rise, each on its own lot, from Vértice to Vision, plus the lakes, the boulevard and the streets of houses, as if you were flying over the neighborhood.</p>
   </div>
   <div class="vp-3d-wrap rv">
-    <div class="vp-3d-stage" id="vp3d" data-tex="../images/vivapark/implantacao.jpg">
-      <img class="vp-3d-fb" src="../images/vivapark/implantacao-md.webp" alt="Vivapark master plan seen from above" loading="lazy">
+    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwp5n3nt">
+      <img class="vp-3d-fb" src="../images/vivapark/vision-aereo.webp" alt="Vista aérea do Vision Home Club no Vivapark (imagem ilustrativa)" loading="lazy">
       <canvas aria-label="Interactive 3D model of Vivapark"></canvas>
       <div class="vp-3d-pins"></div>
       <div class="vp-3d-card" role="status" aria-live="polite"><button class="vp-3d-cx" type="button" aria-label="Close">×</button><small></small><strong></strong><p></p></div>
@@ -527,7 +527,7 @@ fbq('track', 'PageView');
     </div>
     <div class="vp-3d-tour" role="toolbar" aria-label="Model tour"><button type="button" data-k="geral">Overview</button><button type="button" data-k="lanc">New launches</button><button type="button" data-k="vision">Vision</button><button type="button" data-k="vertice">Vértice</button><button type="button" data-k="lago">Lake and boulevard</button><button type="button" data-k="casas">Houses</button><button type="button" data-k="mata">Preserved forest</button><button type="button" data-k="br">BR-101</button></div>
   </div>
-  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Illustrative digital model built on the project’s master plan. Buildings are placed where the neighborhood’s lot map shows them; positions and heights are approximate. Around it, the stream, the phase 2 streets already open, the avenue and the BR-101 come from OpenStreetMap (© OpenStreetMap contributors).</p>
+  <div class="vp-sec" style="padding-top:0"><p class="vp-cap">Illustrative digital model built from scratch: real terrain (SRTM data, exaggerated 1.6x), streets, streams, lakes and woods from OpenStreetMap (© OpenStreetMap contributors). Buildings are placed where the neighborhood’s lot map shows them; positions, heights and trees are approximate.</p>
   <a class="vp-next rv" href="#pronto"><span>Next</span>What’s already open in the neighborhood<i aria-hidden="true"></i></a></div>
 </section>
 
@@ -754,7 +754,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwp10bfd').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwp5n3nu').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();

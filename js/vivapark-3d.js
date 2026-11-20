@@ -1,4 +1,4 @@
-﻿// Maquete digital do Vivapark: implantação geral como chão, prédios em 3D que sobem, lagos com água animada,
+﻿// Maquete digital do Vivapark feita do zero: relevo real, morros e mar, ruas, lagos, córregos e matas do OpenStreetMap, prédios em 3D que sobem,
 // passeio guiado por botões e giro livre (arrastar / pinça). Ilustrativa: posições e alturas aproximadas.
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/+esm';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js/+esm';
@@ -52,27 +52,107 @@ export function init(stage) {
   sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -11, right: 11, top: 8, bottom: -8, near: 1, far: 40 });
   sun.shadow.bias = -0.0008; scene.add(sun);
 
-  // chão: a implantação geral do bairro
-  const tex = new THREE.TextureLoader().load(stage.getAttribute('data-tex'), () => stage.classList.add('ready'));
-  tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(IMG_W / S, IMG_H / S), new THREE.MeshStandardMaterial({ map: tex, roughness: 1, metalness: 0 }));
-  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
-  // borda: a planta "flutua" sobre o fundo, com uma base fina dourada
-  const base = new THREE.Mesh(new THREE.BoxGeometry(IMG_W / S + 0.12, 0.18, IMG_H / S + 0.12), new THREE.MeshStandardMaterial({ color: 0x0c2a33, roughness: 0.8 }));
-  base.position.y = -0.095; scene.add(base);
-  const rim = new THREE.LineSegments(new THREE.EdgesGeometry(base.geometry), new THREE.LineBasicMaterial({ color: 0xe2c77e, transparent: true, opacity: 0.55 }));
-  rim.position.copy(base.position); scene.add(rim);
-
-  // lagos com água animada
+  // chão feito do zero (sem a planta da construtora): relevo real (SRTM), morros e mar em volta, ruas, lagos, córregos,
+  // matas e construções do OpenStreetMap. Dados em js/vivapark-mapa.json (C:/kr-cut/viva/maquete-dados.mjs).
+  scene.fog = new THREE.Fog(0xcbb79b, 26, 120);
+  camera.far = 400; camera.updateProjectionMatrix();
   const waterMat = new THREE.ShaderMaterial({
-    transparent: true, uniforms: { t: { value: 0 } },
-    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
-    fragmentShader: 'uniform float t; varying vec2 vUv; void main(){ vec2 c = vUv - 0.5; float r = length(c); vec2 p = vUv * 9.0; float w = sin(p.x*1.7 + t*0.9) * sin(p.y*2.3 - t*0.7) + sin((p.x+p.y)*1.3 + t*1.2)*0.6; float s = smoothstep(0.55, 1.35, w); vec3 deep = vec3(0.07,0.27,0.27); vec3 hi = vec3(0.72,0.9,0.88); vec3 col = mix(deep, hi, s*0.55); float edge = smoothstep(0.5, 0.38, r); gl_FragColor = vec4(col, (0.55 + s*0.3)*edge); }',
+    transparent: true, side: THREE.DoubleSide, uniforms: { t: { value: 0 } },
+    vertexShader: 'varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
+    fragmentShader: 'uniform float t; varying vec3 vW; void main(){ vec2 p = vW.xz * 4.0; float w = sin(p.x*1.7 + t*0.9) * sin(p.y*2.3 - t*0.7) + sin((p.x+p.y)*1.3 + t*1.2)*0.6; float s = smoothstep(0.75, 1.45, w); vec3 c = mix(vec3(0.09,0.33,0.38), vec3(0.17,0.50,0.55), 0.5 + 0.3*sin(p.x*0.35 + p.y*0.2 + t*0.25)); c += s * vec3(0.75,0.72,0.6) * 0.35; gl_FragColor = vec4(c, 0.94); }'
   });
-  [[603, 762, 74, 48], [838, 792, 96, 64]].forEach(([x, y, rx, ry]) => {
-    const m = new THREE.Mesh(new THREE.CircleGeometry(0.5, 64), waterMat);
-    m.rotation.x = -Math.PI / 2; m.scale.set(rx * 2 / S, ry * 2 / S, 1); m.position.copy(P(x, y, 0.012)); scene.add(m);
+  const seaMat = new THREE.ShaderMaterial({
+    uniforms: { t: waterMat.uniforms.t },
+    vertexShader: 'varying vec3 vW; void main(){ vec4 w = modelMatrix * vec4(position,1.0); vW = w.xyz; gl_Position = projectionMatrix * viewMatrix * w; }',
+    fragmentShader: 'uniform float t; varying vec3 vW; void main(){ vec2 p = vW.xz * 0.9; float w = sin(p.x*1.1 + t*0.6) * sin(p.y*1.5 - t*0.45) + sin((p.x-p.y)*0.8 + t*0.8)*0.5; vec3 c = mix(vec3(0.05,0.24,0.33), vec3(0.10,0.38,0.45), 0.5 + 0.25*w); c += smoothstep(1.0, 1.45, w) * vec3(0.9,0.75,0.55) * 0.25; gl_FragColor = vec4(c, 1.0); }'
   });
+  let ground = null;
+  const loadGround = fetch(stage.getAttribute('data-mapa')).then((r) => r.json()).then((M) => {
+    const HU = 1 / (M.mpx * 100), VE = 1.6; let H0 = 0; // metros -> unidades; relevo exagerado 1,6x; o Vivapark fica na cota 0
+    const yOf = (h) => (h <= 0 ? -0.32 : (h - H0) * VE * HU);
+    const sampler = (G) => (x, z) => { const fx = (x - G.x0) / (G.x1 - G.x0) * (G.nx - 1), fz = (z - G.z0) / (G.z1 - G.z0) * (G.ny - 1); if (fx < 0 || fz < 0 || fx > G.nx - 1 || fz > G.ny - 1) return null; const i = Math.min(G.nx - 2, Math.floor(fx)), j = Math.min(G.ny - 2, Math.floor(fz)), u = fx - i, v = fz - j, h = (a, b) => G.h[b * G.nx + a]; return (h(i, j) * (1 - u) + h(i + 1, j) * u) * (1 - v) + (h(i, j + 1) * (1 - u) + h(i + 1, j + 1) * u) * v; };
+    const hIn = sampler(M.grid), hFar = sampler(M.far);
+    { const v = P(740, 560); H0 = hIn(v.x, v.z) ?? 4; }
+    const tri = (G, drop) => (x, z) => { const fx = (x - G.x0) / (G.x1 - G.x0) * (G.nx - 1), fz = (z - G.z0) / (G.z1 - G.z0) * (G.ny - 1); if (fx < 0 || fz < 0 || fx > G.nx - 1 || fz > G.ny - 1) return null; const i = Math.min(G.nx - 2, Math.floor(fx)), j = Math.min(G.ny - 2, Math.floor(fz)), u = fx - i, v = fz - j, Y = (a, b) => yOf(G.h[b * G.nx + a]) - drop; const ya = Y(i, j), yb = Y(i + 1, j), yd = Y(i, j + 1), ye = Y(i + 1, j + 1); return u + v <= 1 ? ya + u * (yb - ya) + v * (yd - ya) : ye + (1 - u) * (yd - ye) + (1 - v) * (yb - ye); };
+    const yIn = tri(M.grid, 0), yFar = tri(M.far, 0.04);
+    const yAt = (x, z) => yIn(x, z) ?? yFar(x, z) ?? 0;
+    // terreno: grade com cores pelo relevo (várzea verde-clara, morros de mata, areia junto ao mar)
+    const cLow = new THREE.Color(0x6f8a52), cField = new THREE.Color(0x87995e), cHill = new THREE.Color(0x3b5a34), cTop = new THREE.Color(0x56664a), cSand = new THREE.Color(0xd8c79e), cDeep = new THREE.Color(0x0b2c38);
+    function terrain(G, drop, near) {
+      const pos = [], col = [], idx = [], c = new THREE.Color();
+      for (let j = 0; j < G.ny; j++) for (let i = 0; i < G.nx; i++) {
+        const x = G.x0 + (G.x1 - G.x0) * i / (G.nx - 1), z = G.z0 + (G.z1 - G.z0) * j / (G.ny - 1), h = G.h[j * G.nx + i];
+        pos.push(x, yOf(h) - drop, z);
+        const nz = (Math.sin(i * 1.7 + j * 0.9) + Math.sin(i * 0.6 - j * 1.3)) * 0.12 + 0.3; if (h <= 0) c.copy(cDeep); else if (!near && h <= 2) c.copy(cSand); else if (h < 25) c.copy(cLow).lerp(cField, nz); else if (h < 260) c.copy(cLow).lerp(cHill, Math.min(1, (h - 25) / 120)); else c.copy(cHill).lerp(cTop, Math.min(1, (h - 260) / 300));
+        col.push(c.r, c.g, c.b);
+      }
+      for (let j = 0; j < G.ny - 1; j++) for (let i = 0; i < G.nx - 1; i++) { const a = j * G.nx + i, b = a + 1, d = a + G.nx, e = d + 1; idx.push(a, d, b, b, d, e); }
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(idx); g.computeVertexNormals();
+      const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95, metalness: 0, flatShading: !near })); m.receiveShadow = true; scene.add(m); return m;
+    }
+    const sea = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), seaMat); sea.rotation.x = -Math.PI / 2; sea.position.y = -0.2; scene.add(sea);
+    terrain(M.far, 0.04, false);
+    ground = terrain(M.grid, 0, true);
+    // faixas (ruas, BR, córregos) acompanhando o relevo
+    function ribbon(pts, w, mat, lift) {
+      const pos = [], idx = []; let n = 0;
+      for (let k = 1; k < pts.length; k++) {
+        const [x1, z1] = pts[k - 1], [x2, z2] = pts[k], dx = x2 - x1, dz = z2 - z1, L = Math.hypot(dx, dz); if (L < 1e-4) continue;
+        const nx = -dz / L * w / 2, nz = dx / L * w / 2, y1 = yAt(x1, z1) + lift, y2 = yAt(x2, z2) + lift;
+        pos.push(x1 + nx, y1, z1 + nz, x1 - nx, y1, z1 - nz, x2 + nx, y2, z2 + nz, x2 - nx, y2, z2 - nz); idx.push(n, n + 1, n + 2, n + 1, n + 3, n + 2); n += 4;
+        if (k < pts.length - 1) { const disc = 6; for (let q = 0; q < disc; q++) { const a1 = q / disc * Math.PI * 2, a2 = (q + 1) / disc * Math.PI * 2; pos.push(x2, y2, z2, x2 + Math.cos(a1) * w / 2, y2, z2 + Math.sin(a1) * w / 2, x2 + Math.cos(a2) * w / 2, y2, z2 + Math.sin(a2) * w / 2); idx.push(n, n + 1, n + 2); n += 3; } }
+      }
+      if (!n) return; const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+      const m = new THREE.Mesh(g, mat); m.receiveShadow = true; scene.add(m);
+    }
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0xd9d2c3, roughness: 0.9, polygonOffset: true, polygonOffsetFactor: -2, side: THREE.DoubleSide });
+    const brMat = new THREE.MeshStandardMaterial({ color: 0x4a4d50, roughness: 0.85, polygonOffset: true, polygonOffsetFactor: -2, side: THREE.DoubleSide });
+    const brLine = new THREE.MeshBasicMaterial({ color: 0xf2e6c8, polygonOffset: true, polygonOffsetFactor: -3, side: THREE.DoubleSide });
+    const obraMat = new THREE.MeshStandardMaterial({ color: 0xc9a86a, roughness: 1, transparent: true, opacity: 0.7, polygonOffset: true, polygonOffsetFactor: -2, side: THREE.DoubleSide });
+    const streamMat = new THREE.MeshStandardMaterial({ color: 0x3f8fae, roughness: 0.4, metalness: 0.1, polygonOffset: true, polygonOffsetFactor: -2, side: THREE.DoubleSide });
+    M.streams.forEach((r) => ribbon(r.p, r.w, streamMat, 0.01));
+    M.roads.forEach((r) => { if (r.t === 'br') { ribbon(r.p, r.w * 0.75, brMat, 0.014); ribbon(r.p, 0.012, brLine, 0.018); } else ribbon(r.p, Math.max(r.w * 0.62, 0.04), r.t === 'obra' ? obraMat : roadMat, 0.012); });
+    // polígonos no chão (lagos, gramados, matas, lotes em obra)
+    const flat = (pts, mat, lift, level) => { if (pts.length < 3) return null; const sh = new THREE.Shape(pts.map(([x, z]) => new THREE.Vector2(x, -z))); const g = new THREE.ShapeGeometry(sh); g.rotateX(-Math.PI / 2); const pa = g.attributes.position; let lv = -1e9; if (level) for (let k = 0; k < pa.count; k++) lv = Math.max(lv, yAt(pa.getX(k), pa.getZ(k))); for (let k = 0; k < pa.count; k++) pa.setY(k, (level ? lv : yAt(pa.getX(k), pa.getZ(k))) + lift); g.computeVertexNormals(); const m = new THREE.Mesh(g, mat); m.receiveShadow = true; scene.add(m); return m; };
+    const grass = new THREE.MeshStandardMaterial({ color: 0x7fa05a, roughness: 1, polygonOffset: true, polygonOffsetFactor: -1, side: THREE.DoubleSide });
+    const woodGround = new THREE.MeshStandardMaterial({ color: 0x3f6534, roughness: 1, polygonOffset: true, polygonOffsetFactor: -1, side: THREE.DoubleSide });
+    const lotMat = new THREE.MeshStandardMaterial({ color: 0xb9a37a, roughness: 1, transparent: true, opacity: 0.5, polygonOffset: true, polygonOffsetFactor: -1, side: THREE.DoubleSide });
+    M.lots.forEach((l) => flat(l.p, lotMat, 0.008));
+    M.green.forEach((g) => flat(g.p, g.k === 'mata' ? woodGround : grass, 0.009));
+    M.water.forEach((p) => flat(p, waterMat, 0.03, true));
+    // os dois lagos do Vivapark (o do Vértice e o do boulevard) ainda não estão no mapa aberto: desenhados por nós
+    [[603, 762, 74, 48], [838, 792, 96, 64]].forEach(([x, y, rx, ry]) => { const pts = []; for (let k = 0; k < 48; k++) { const a = k / 48 * Math.PI * 2, wob = 1 + 0.08 * Math.sin(a * 3 + x); const q = P(x + Math.cos(a) * rx * wob, y + Math.sin(a) * ry * wob); pts.push([q.x, q.z]); } flat(pts, waterMat, 0.03, true); });
+    // construções existentes (contorno real, altura pelos andares)
+    const bMat = new THREE.MeshStandardMaterial({ color: 0xece6da, roughness: 0.7 });
+    M.build.forEach((b) => { if (b.p.length < 3) return; const sh = new THREE.Shape(b.p.map(([x, z]) => new THREE.Vector2(x, -z))); const h = Math.max(0.05, b.lv * 0.075); const g = new THREE.ExtrudeGeometry(sh, { depth: h, bevelEnabled: false }); g.rotateX(-Math.PI / 2); let cx = 0, cz = 0; b.p.forEach(([x, z]) => { cx += x; cz += z; }); const m = new THREE.Mesh(g, bMat); m.position.y = yAt(cx / b.p.length, cz / b.p.length); m.castShadow = true; m.receiveShadow = true; scene.add(m); });
+    // árvores: matas do mapa e os morros em volta
+    const inPoly = (x, z, P) => { let o = false; for (let i = 0, j = P.length - 1; i < P.length; j = i++) { const [xi, zi] = P[i], [xj, zj] = P[j]; if ((zi > z) !== (zj > z) && x < (xj - xi) * (z - zi) / (zj - zi) + xi) o = !o; } return o; };
+    let seed = 11; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    const T = [];
+    // mapa de ocupação (ruas, lagos e prédios) para as árvores não invadirem nada
+    const OC = 0.12, occ = new Set(), ok = (x, z) => !occ.has(Math.round(x / OC) + ':' + Math.round(z / OC));
+    const mark = (x, z, r) => { for (let a = -r; a <= r; a += OC) for (let b = -r; b <= r; b += OC) occ.add(Math.round((x + a) / OC) + ':' + Math.round((z + b) / OC)); };
+    M.roads.forEach((r) => { const hw = (r.t === 'br' ? r.w * 0.75 : Math.max(r.w * 0.62, 0.04)) / 2 + 0.05; for (let k = 1; k < r.p.length; k++) { const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], L = Math.hypot(x2 - x1, z2 - z1), n = Math.ceil(L / 0.08); for (let q = 0; q <= n; q++) mark(x1 + (x2 - x1) * q / n, z1 + (z2 - z1) * q / n, hw); } });
+    [[603, 762, 80, 54], [838, 792, 102, 70]].forEach(([x, y, rx, ry]) => { for (let a = -rx; a <= rx; a += 10) for (let b = -ry; b <= ry; b += 10) if ((a * a) / (rx * rx) + (b * b) / (ry * ry) <= 1) { const q = P(x + a, y + b); mark(q.x, q.z, 0.06); } });
+    M.water.forEach((p) => { const xs = p.map((q) => q[0]), zs = p.map((q) => q[1]); for (let x = Math.min(...xs); x <= Math.max(...xs); x += OC) for (let z = Math.min(...zs); z <= Math.max(...zs); z += OC) if (inPoly(x, z, p)) mark(x, z, 0.05); });
+    { const v0 = P(545, 440), v1 = P(930, 640); mark((v0.x + v1.x) / 2, (v0.z + v1.z) / 2, 2.1); }
+    EMPS.forEach(([, , x, y]) => { const q = P(x, y); mark(q.x, q.z, 0.6); });
+    // árvores nas calçadas das ruas do bairro e em volta
+    M.roads.forEach((r) => { if (!/^(residential|living_street|tertiary|unclassified|secondary)$/.test(r.t)) return; const off = Math.max(r.w * 0.62, 0.04) / 2 + 0.07; for (let k = 1; k < r.p.length; k++) { const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], L = Math.hypot(x2 - x1, z2 - z1); if (L < 0.2) continue; const ux = (x2 - x1) / L, uz = (z2 - z1) / L; for (let d = 0.16; d < L - 0.12; d += 0.3) for (const sd of [-1, 1]) { const x = x1 + ux * d - uz * off * sd, z = z1 + uz * d + ux * off * sd; if (Math.abs(x) > 16 || Math.abs(z) > 14 || !ok(x, z) || rnd() < 0.12) continue; T.push([x, z, 0.55 + rnd() * 0.3]); } } });
+    // mata ciliar nos córregos
+    M.streams.forEach((r) => { for (let k = 1; k < r.p.length; k++) { const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], L = Math.hypot(x2 - x1, z2 - z1); for (let d = 0; d < L; d += 0.13) { const x = x1 + (x2 - x1) * d / L + (rnd() - 0.5) * 0.5, z = z1 + (z2 - z1) * d / L + (rnd() - 0.5) * 0.5; if (rnd() < 0.75 && ok(x, z) && yIn(x, z) != null) T.push([x, z, 0.75 + rnd() * 0.6]); } } });
+    // grupos de árvores nos campos
+    for (let k = 0; k < 14000 && T.length < 16000; k++) { const x = M.grid.x0 + rnd() * (M.grid.x1 - M.grid.x0), z = M.grid.z0 + rnd() * (M.grid.z1 - M.grid.z0); const n = Math.sin(x * 0.55 + 1.3) * Math.sin(z * 0.7 - 0.4) + Math.sin((x - z) * 0.31) * 0.6; if (n < 0.55 || !ok(x, z)) continue; T.push([x, z, 0.8 + rnd() * 0.7]); }
+    M.green.forEach((g) => { const xs = g.p.map((p) => p[0]), zs = g.p.map((p) => p[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), z0 = Math.min(...zs), z1 = Math.max(...zs); const n = Math.min(900, Math.round((x1 - x0) * (z1 - z0) * (g.k === 'mata' ? 26 : 6))); for (let k = 0; k < n * 2 && T.length < 9000; k++) { const x = x0 + rnd() * (x1 - x0), z = z0 + rnd() * (z1 - z0); if (inPoly(x, z, g.p)) T.push([x, z, 0.7 + rnd() * 0.6]); } });
+    for (let k = 0; k < 7000; k++) { const x = M.far.x0 + rnd() * (M.far.x1 - M.far.x0), z = M.far.z0 + rnd() * (M.far.z1 - M.far.z0); const h = hFar(x, z); if (h == null || h < 22 || hIn(x, z) != null) continue; T.push([x, z, 1.4 + rnd() * 1.4]); }
+    if (window.matchMedia('(pointer: coarse)').matches) { let a = 0; for (let b = 0; b < T.length; b += 2) T[a++] = T[b]; T.length = a; }
+    const treeG = new THREE.IcosahedronGeometry(0.07, 0); treeG.translate(0, 0.07, 0);
+    const treeM = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9, flatShading: true });
+    const trees = new THREE.InstancedMesh(treeG, treeM, T.length), mtx = new THREE.Matrix4(), tc = new THREE.Color();
+    T.forEach(([x, z, s], i) => { mtx.makeScale(s, s * (1.1 + rnd() * 0.5), s); mtx.setPosition(x, yAt(x, z) - 0.01, z); trees.setMatrixAt(i, mtx); tc.setHSL(0.25 + rnd() * 0.08, 0.32 + rnd() * 0.18, 0.24 + rnd() * 0.12); trees.setColorAt(i, tc); });
+    trees.castShadow = !window.matchMedia('(pointer: coarse)').matches; trees.receiveShadow = true; scene.add(trees);
+    stage.classList.add('ready');
+  }).catch(() => stage.classList.add('nogl'));
 
   // materiais
   const white = new THREE.MeshStandardMaterial({ color: 0xf1ece2, roughness: 0.55, metalness: 0.04 });
@@ -109,17 +189,6 @@ export function init(stage) {
     const m = box(w / S, h, d / S, white); m.position.copy(P(x, y)); m.rotation.y = -a * Math.PI / 180; scene.add(m);
   });
   [[628, 668], [842, 668]].forEach(([x, y]) => { const m = box(1.25, 0.12, 0.55, roof); m.position.copy(P(x, y)); scene.add(m); });
-
-  // chão em volta da planta: o resto do bairro (fase 2 do outro lado do parque), em traço de projeto
-  // entorno real (OpenStreetMap): o córrego Rio da Vovó com o parque linear, as ruas já abertas da fase 2,
-  // a Av. Gov. Celso Ramos, a BR-101 com o trevo e os lagos; georreferenciado na planta (C:/kr-cut/viva/entorno.mjs)
-  // a imagem cobre de -1400 a 2800 px na horizontal e de -700 a 1900 px na vertical da planta
-  {
-    const tx = new THREE.TextureLoader().load(stage.getAttribute('data-tex').replace(/implantacao\.jpg$/, 'entorno.webp'));
-    tx.colorSpace = THREE.SRGBColorSpace; tx.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-    const campo = new THREE.Mesh(new THREE.PlaneGeometry(42, 26), new THREE.MeshStandardMaterial({ map: tx, transparent: true, roughness: 1, depthWrite: false }));
-    campo.rotation.x = -Math.PI / 2; campo.position.copy(P(700, 600, -0.2)); campo.renderOrder = -1; scene.add(campo);
-  }
 
   // os outros prédios do bairro, no lugar de cada um (mapa de lotes do Vivapark, posições aproximadas)
   // pronto = contorno aceso sobre o prédio que já está na planta; os demais "sobem" andar por andar, em holograma dourado;
@@ -227,7 +296,7 @@ export function init(stage) {
   function zoomBy(amt, cx, cy) {
     fly = null; controls.autoRotate = false; touched = true; hideCard();
     if (cx == null) za.copy(controls.target);
-    else { const r = canvas.getBoundingClientRect(); ndc.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera); const hit = ray.intersectObject(ground, false)[0]; za.copy(hit ? hit.point : controls.target); }
+    else { const r = canvas.getBoundingClientRect(); ndc.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera); const hit = ground ? ray.intersectObject(ground, false)[0] : null; za.copy(hit ? hit.point : controls.target); }
     zq = Math.max(-2.5, Math.min(2.5, zq + amt));
   }
   function stepZoom() {
