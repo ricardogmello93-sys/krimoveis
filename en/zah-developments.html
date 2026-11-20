@@ -753,7 +753,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=mwobd0kb').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=mwodihdl').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';
