@@ -41,6 +41,7 @@ const POI_ICON = {
 const ZL = ZT[(document.documentElement.lang || 'pt').slice(0, 2)] || ZT.pt;
 const PLACES = [['Itapema', -27.093, -48.616], ['Meia Praia', -27.124, -48.604], ['Porto Belo', -27.161, -48.556], ['BR-101', -27.118, -48.628], ['Balneário Camboriú ↑', -27.056, -48.606]];
 
+const NAVT = {"pt":["Arraste para andar pelo mapa · botão direito ou Shift para girar · duplo clique para ir até lá","Um dedo anda pelo mapa · dois dedos giram e aproximam · toque duas vezes para ir até lá"],"en":["Drag to move around · right-click or Shift to rotate · double-click to go there","One finger moves the map · two fingers rotate and zoom · double-tap to go there"],"es":["Arrastre para moverse · clic derecho o Shift para girar · doble clic para ir allí","Un dedo mueve el mapa · dos dedos giran y acercan · toque dos veces para ir allí"]};
 export async function init(stage, opts = {}) {
   const canvas = stage.querySelector('canvas'), pinBox = stage.querySelector('.vp-3d-pins'), card = stage.querySelector('.vp-3d-card');
   const touch = window.matchMedia('(pointer: coarse)').matches, big = !touch && Math.min(screen.width, screen.height) >= 700;
@@ -398,9 +399,9 @@ export async function init(stage, opts = {}) {
   });
 
   // controles
-  // o zoom é nosso (suave e na direção do ponto apontado); o OrbitControls só gira
+  // o zoom é nosso (suave e na direção do ponto apontado); o OrbitControls anda e gira
   const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true; controls.dampingFactor = 0.07; controls.enablePan = false; controls.enableZoom = false; controls.minDistance = 1.2; controls.maxDistance = 120; controls.minPolarAngle = 0.25; controls.maxPolarAngle = 1.48;
+  controls.enableDamping = true; controls.dampingFactor = 0.07; controls.enablePan = true; controls.screenSpacePanning = false; controls.enableZoom = false; controls.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE }; controls.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_ROTATE }; controls.minDistance = 1.2; controls.maxDistance = 120; controls.minPolarAngle = 0.25; controls.maxPolarAngle = 1.48;
   controls.enabled = !touch;
 
   // pinos
@@ -500,6 +501,36 @@ export async function init(stage, opts = {}) {
   const hint = document.createElement('div'); hint.className = 'zp-hint'; hint.textContent = ZL.hint; stage.appendChild(hint); let hintT = 0;
   if (!document.getElementById('zpZoomCss')) { const st = document.createElement('style'); st.id = 'zpZoomCss'; st.textContent = '.zp-zoom{position:absolute;right:16px;top:16px;z-index:3;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;border:1px solid rgba(226,199,126,.5);background:rgba(6,24,32,.86);backdrop-filter:blur(8px)}.zp-zoom button{width:46px;height:46px;display:grid;place-items:center;border:0;background:none;color:#f1e3bd;font:300 26px/1 "DM Sans",sans-serif;cursor:pointer;transition:background .2s}.zp-zoom button+button{border-top:1px solid rgba(226,199,126,.22)}.zp-zoom button:hover{background:rgba(226,199,126,.14)}.zp-zoom button:active{background:rgba(226,199,126,.26)}.zp-hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;padding:12px 18px;border-radius:100px;background:rgba(6,24,32,.88);border:1px solid rgba(226,199,126,.4);color:#f1e3bd;font:500 13px "DM Sans",sans-serif;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap}.zp-hint.on{opacity:1}@media (max-width:640px){.zp-zoom{right:12px;top:34%}.zp-zoom button{width:42px;height:42px}}'; document.head.appendChild(st); }
 
+
+  // arrastar anda pelo mapa; botão direito, Shift ou dois dedos giram; duplo clique/toque vai até o ponto
+  let ctlUntil = 0;
+  controls.addEventListener('start', () => { ctlUntil = 1e15; });
+  controls.addEventListener('end', () => { ctlUntil = performance.now() + 1500; });
+  function holdTarget() {
+    const tt = controls.target; let dy = 0;
+    if (performance.now() < ctlUntil) dy = (Math.max(0.25, hXZ(tt.x, tt.z) + 0.3) - tt.y) * 0.08; // ao andar, a mira acompanha o relevo
+    const dx = Math.max(-WU / 2, Math.min(WU / 2, tt.x)) - tt.x, dz = Math.max(-HU / 2, Math.min(HU / 2, tt.z)) - tt.z, dyc = Math.max(0, Math.min(40, tt.y + dy)) - tt.y;
+    if (dx || dz || dyc) { tt.x += dx; tt.y += dyc; tt.z += dz; camera.position.x += dx; camera.position.y += dyc; camera.position.z += dz; }
+  }
+  function flyHere(cx, cy) {
+    const r = canvas.getBoundingClientRect(); ndc.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera);
+    const pt = (touch ? ray.ray.intersectPlane(zPlane, new THREE.Vector3()) : (ray.intersectObjects([land, water], false)[0] || {}).point); if (!pt) return;
+    const off = camera.position.clone().sub(controls.target), L = off.length(), nl = Math.max(controls.minDistance * 1.25, L * 0.6); off.multiplyScalar(nl / L);
+    ride = null; sway = false; hideCard(); zq = 0; pt.x = Math.max(-WU / 2, Math.min(WU / 2, pt.x)); pt.z = Math.max(-HU / 2, Math.min(HU / 2, pt.z));
+    fly = { t0: performance.now(), d: 1100, p0: camera.position.clone(), q0: controls.target.clone(), p1: pt.clone().add(off), q1: pt.clone() };
+  }
+  let dn = null, lastTap = null;
+  canvas.addEventListener('pointerdown', (e) => { dn = e.isPrimary ? [e.clientX, e.clientY, performance.now()] : null; if (!e.isPrimary) lastTap = null; });
+  canvas.addEventListener('pointerup', (e) => {
+    if (!dn || !e.isPrimary) { dn = null; return; }
+    const t = performance.now(), tap = Math.hypot(e.clientX - dn[0], e.clientY - dn[1]) < 8 && t - dn[2] < 450 && (e.button === 0 || e.pointerType === 'touch');
+    if (tap) { if (lastTap && t - lastTap[2] < 380 && Math.hypot(e.clientX - lastTap[0], e.clientY - lastTap[1]) < 26) { lastTap = null; flyHere(e.clientX, e.clientY); } else lastTap = [e.clientX, e.clientY, t]; } else lastTap = null;
+    dn = null;
+  });
+  // dica de como andar, uma vez só, no primeiro toque
+  { const lg = ['pt', 'en', 'es'].includes((document.documentElement.lang || 'pt').slice(0, 2)) ? (document.documentElement.lang || 'pt').slice(0, 2) : 'pt'; let shown = false;
+    canvas.addEventListener('pointerdown', () => { if (shown) return; shown = true; const old = hint.textContent; hint.textContent = NAVT[lg][touch ? 1 : 0]; hint.classList.add('on'); clearTimeout(hintT); hintT = setTimeout(() => { hint.classList.remove('on'); setTimeout(() => { hint.textContent = old; }, 400); }, 5200); }); }
+
   // roda do mouse: dentro da maquete aproxima/afasta; antes de clicar nela, a página continua rolando (pinça do touchpad sempre aproxima)
   canvas.addEventListener('wheel', (e) => {
     if (!e.ctrlKey && !wheelOk && !stage.classList.contains('fs')) { hint.classList.add('on'); clearTimeout(hintT); hintT = setTimeout(() => hint.classList.remove('on'), 1400); return; }
@@ -559,7 +590,7 @@ export async function init(stage, opts = {}) {
       camera.position.copy(swayBase).applyAxisAngle(UP, 0.1 * Math.sin((now - swayT0) / 4200)).add(controls.target);
     }
     stepZoom();
-    controls.update();
+    controls.update(); holdTarget();
     const cd = camera.position.distanceTo(controls.target);
     scene.fog.near = waterMat.uniforms.fN.value = cd + 35; scene.fog.far = waterMat.uniforms.fF.value = cd + 150;
     // perto: plano de recorte mais próximo e sombra mais nítida em volta do que se vê
