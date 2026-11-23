@@ -29,8 +29,8 @@ const PINS = [['vertice', 742, 500, 2.05], ['lago', 760, 790, 0.1], ['casas', 14
 export function init(stage) {
   const canvas = stage.querySelector('canvas'), pinBox = stage.querySelector('.vp-3d-pins'), card = stage.querySelector('.vp-3d-card');
   let renderer;
-  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' }); } catch (e) { stage.classList.add('nogl'); return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: !window.matchMedia('(pointer: coarse)').matches, powerPreference: 'high-performance' }); } catch (e) { stage.classList.add('nogl'); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.4 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
@@ -49,7 +49,7 @@ export function init(stage) {
   scene.add(new THREE.HemisphereLight(0xe6f4ff, 0x1d3a3a, 1.15));
   const sun = new THREE.DirectionalLight(0xffe4bd, 2.3);
   sun.position.set(-7, 11, 5); sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -11, right: 11, top: 8, bottom: -8, near: 1, far: 40 });
+  sun.shadow.mapSize.set(window.matchMedia('(pointer: coarse)').matches ? 1024 : 2048, window.matchMedia('(pointer: coarse)').matches ? 1024 : 2048); Object.assign(sun.shadow.camera, { left: -11, right: 11, top: 8, bottom: -8, near: 1, far: 40 });
   sun.shadow.bias = -0.0008; scene.add(sun);
 
   // chão feito do zero (sem a planta da construtora): relevo real (SRTM), morros e mar em volta, ruas, lagos, córregos,
@@ -465,12 +465,14 @@ export function init(stage) {
   stage.parentNode.querySelectorAll('.vp-3d-tour button').forEach((b) => b.addEventListener('click', () => go(b.getAttribute('data-k'))));
   const live = stage.querySelector('.vp-3d-live');
   if (live) live.addEventListener('click', () => { const on = !stage.classList.contains('live'); stage.classList.toggle('live', on); controls.enabled = on || !touch; live.textContent = on ? 'Voltar à rolagem' : 'Toque para explorar'; });
-  controls.addEventListener('start', () => { fly = null; controls.autoRotate = false; touched = true; hideCard(); });
+  const busy = { until: 0 }, lastR = { t: 0 };
+  controls.addEventListener('start', () => { fly = null; controls.autoRotate = false; touched = true; hideCard(); busy.until = performance.now() + 1e9; });
+  controls.addEventListener('end', () => { busy.until = performance.now() + 1800; });
 
   // zoom suave: roda, pinça e botões somam um pouco e a câmera desliza até lá, na direção do ponto apontado
   let zq = 0, wheelOk = false; const za = new THREE.Vector3(), ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
   function zoomBy(amt, cx, cy) {
-    fly = null; controls.autoRotate = false; touched = true; hideCard();
+    fly = null; controls.autoRotate = false; touched = true; hideCard(); busy.until = performance.now() + 1500;
     if (cx == null) za.copy(controls.target);
     else { const r = canvas.getBoundingClientRect(); ndc.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera); const hit = ground ? ray.intersectObject(ground, false)[0] : null; za.copy(hit ? hit.point : controls.target); }
     zq = Math.max(-2.5, Math.min(2.5, zq + amt));
@@ -528,6 +530,7 @@ export function init(stage) {
   const v = new THREE.Vector3(); const clock = new THREE.Clock(); let visible = true;
   new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(stage);
   function frame() {
+    if (touch) { const nw = performance.now(); if (!fly && Math.abs(zq) < 1e-4 && nw > busy.until && nw - lastR.t < 30) return; lastR.t = nw; }
     const dt = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dt; if (tick) tick(dt);
     risers.forEach((r) => { if (r.t0 == null) r.t0 = performance.now(); r.p = Math.min(1, (performance.now() - r.t0) / 2200); const n = Math.max(0, r.p) * r.N; r.floors.forEach((f) => { const s = Math.max(0.0001, Math.min(1, n - f.userData.i)); f.scale.y = s; f.visible = s > 0.001; }); });
     // obras: cada prédio "imprime" andar por andar, com a faixa de luz subindo; depois a faixa passeia pelo prédio pronto

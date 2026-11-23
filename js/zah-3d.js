@@ -41,10 +41,10 @@ export async function init(stage, opts = {}) {
   const hAt = (lat, lon) => hXZ(X(lon), Z(lat));
 
   let renderer;
-  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true }); } catch (e) { stage.classList.add('nogl'); return; }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: !touch, powerPreference: 'high-performance' }); } catch (e) { stage.classList.add('nogl'); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, touch ? 1.4 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
-  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.enabled = !touch; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene = new THREE.Scene(); scene.fog = new THREE.Fog(0xe9c79a, 90, 190);
   const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1600);
   scene.add(new THREE.HemisphereLight(0xeaf2ff, 0x3a4a3a, 0.95));
@@ -69,7 +69,7 @@ export async function init(stage, opts = {}) {
   if (chao) { chao.colorSpace = THREE.SRGBColorSpace; chao.anisotropy = Math.min(8, maxAniso); }
 
   // relevo
-  const GX = big ? 241 : 151, GY = Math.round(GX * HU / WU);
+  const GX = big ? 241 : touch ? 101 : 151, GY = Math.round(GX * HU / WU);
   const geo = new THREE.PlaneGeometry(WU, HU, GX - 1, GY - 1);
   const pos = geo.attributes.position;
   for (let k = 0; k < pos.count; k++) { const i = k % GX, j = (k / GX) | 0; pos.setZ(k, hXZ(-WU / 2 + WU * i / (GX - 1), -HU / 2 + HU * j / (GY - 1))); }
@@ -88,8 +88,8 @@ export async function init(stage, opts = {}) {
       ' void main(){ vec2 uv = vec2((vW.x + box.x*0.5)/box.x, 1.0 - (vW.z + box.y*0.5)/box.y); vec2 m = vec2(1.0); if (hasMar > 0.5 && uv.x > 0.0 && uv.x < 1.0 && uv.y > 0.0 && uv.y < 1.0) { m = texture2D(mar, uv).rg; float eg = smoothstep(0.0, 0.12, min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y))); m.g = mix(1.0, m.g, eg); } ' +
       ' float dS = m.r, dD = m.g; vec2 q = vW.xz; ' +
       ' vec3 c = mix(sand, shal, smoothstep(0.0, 0.05, dS)); c = mix(c, midc, smoothstep(0.08, 0.6, dS)); c = mix(c, deep, smoothstep(0.35, 1.0, dD)); ' +
-      ' float nz = vn(q*9.0 + vec2(t*0.15, -t*0.1)) * 0.6 + vn(q*23.0 - vec2(t*0.2, t*0.12)) * 0.4; c *= 0.94 + 0.1 * nz; ' +
-      ' vec3 n = normalize(vec3(sin(q.x*1.7 + q.y*0.9 + t*1.3) * 0.035 + sin(q.x*4.3 - q.y*2.9 - t*1.7) * 0.025 + sin(q.y*7.1 + q.x*3.7 + t*2.1) * 0.015 + (nz - 0.5) * 0.05, 1.0, sin(q.y*1.9 - q.x*1.1 + t*1.1) * 0.035 + sin(q.y*5.3 + q.x*2.3 - t*1.9) * 0.025 + sin(q.x*6.7 - q.y*4.1 + t*2.4) * 0.015 + (nz - 0.5) * 0.05)); ' +
+      (touch ? ' float nz = vn(q*12.0 + vec2(t*0.15, -t*0.1)); c *= 0.94 + 0.1 * nz; ' : ' float nz = vn(q*9.0 + vec2(t*0.15, -t*0.1)) * 0.6 + vn(q*23.0 - vec2(t*0.2, t*0.12)) * 0.4; c *= 0.94 + 0.1 * nz; ') +
+      (touch ? ' vec3 n = normalize(vec3(sin(q.x*1.7 + q.y*0.9 + t*1.3) * 0.035 + sin(q.x*4.3 - q.y*2.9 - t*1.7) * 0.025 + (nz - 0.5) * 0.05, 1.0, sin(q.y*1.9 - q.x*1.1 + t*1.1) * 0.035 + sin(q.y*5.3 + q.x*2.3 - t*1.9) * 0.025 + (nz - 0.5) * 0.05)); ' : ' vec3 n = normalize(vec3(sin(q.x*1.7 + q.y*0.9 + t*1.3) * 0.035 + sin(q.x*4.3 - q.y*2.9 - t*1.7) * 0.025 + sin(q.y*7.1 + q.x*3.7 + t*2.1) * 0.015 + (nz - 0.5) * 0.05, 1.0, sin(q.y*1.9 - q.x*1.1 + t*1.1) * 0.035 + sin(q.y*5.3 + q.x*2.3 - t*1.9) * 0.025 + sin(q.x*6.7 - q.y*4.1 + t*2.4) * 0.015 + (nz - 0.5) * 0.05)); ') +
       ' vec3 v = normalize(vW - cameraPosition); float fr = pow(1.0 - max(-v.y, 0.0), 5.0); c = mix(c, hz(reflect(v, n)) * 0.9, fr * 0.55); ' +
       ' float g = pow(max(dot(reflect(v, n), sunDir), 0.0), 260.0); c += glow * g * 1.8; ' +
       // ondas: faixas que andam em direção à praia e se desfazem em espuma na areia
@@ -105,9 +105,12 @@ export async function init(stage, opts = {}) {
   if (city && city.b) {
     const ox = -WU / 2, oz = -HU / 2, vp = [], vc = [], vi = [], ix = [], c = new THREE.Color();
     const hs = (n) => { const s = Math.sin(n * 12.9898) * 43758.5453; return s - Math.floor(s); };
+    const lodF = touch ? P.map((p) => [X(p.ll[1]), Z(p.ll[0])]) : null; if (lodF && city.orla) city.orla.forEach((o, i) => { if (i % 3 === 0) lodF.push([o[0] / 100 + ox, o[1] / 100 + oz]); });
+    const lodNear = (x, z, r2) => lodF.some((f) => (f[0] - x) * (f[0] - x) + (f[1] - z) * (f[1] - z) < r2);
     city.b.forEach((b, bi) => {
       const fl = b[0], n = (b.length - 1) / 2; if (n < 3) return;
       const xs = [], zs = []; for (let i = 0; i < n; i++) { xs.push(b[1 + i * 2] / 100 + ox); zs.push(b[2 + i * 2] / 100 + oz); }
+      if (lodF && fl <= 4 && !lodNear(xs[0], zs[0], fl <= 2 ? 40 : 150)) return;
       let a2 = 0, base = 1e9; for (let i = 0; i < n; i++) { const j = (i + 1) % n; a2 += xs[i] * zs[j] - xs[j] * zs[i]; base = Math.min(base, hXZ(xs[i], zs[i])); }
       base -= 0.004; const top = base + fl * FH, r = hs(bi + 1), tower = fl >= 6;
       // cores: torres claras (branco, areia, cinza, algumas com vidro azulado); casas em tons quentes com telhado de barro
@@ -408,14 +411,15 @@ export async function init(stage, opts = {}) {
     return { tgt: tg, off: dir.multiplyScalar(d).add(ctr).sub(tg) };
   }
   // zoom suave: cada giro da roda, pinça ou botão soma um pouco e a câmera desliza até lá
-  let zq = 0; const za = new THREE.Vector3(), ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  let zq = 0; const za = new THREE.Vector3(), ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), zPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.25), zPt = new THREE.Vector3(), busy = { until: 0 };
   function zoomBy(amt, cx, cy) {
-    sway = false; fly = null; ride = null; hideCard();
+    sway = false; fly = null; ride = null; hideCard(); busy.until = performance.now() + 1500;
     if (cx == null) za.copy(controls.target);
     else {
       const r = canvas.getBoundingClientRect(); ndc.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1);
-      ray.setFromCamera(ndc, camera); const hit = ray.intersectObjects([land, water], false)[0];
-      za.copy(hit ? hit.point : controls.target);
+      ray.setFromCamera(ndc, camera);
+      if (touch) { const pt = ray.ray.intersectPlane(zPlane, zPt); za.copy(pt || controls.target); }
+      else { const hit = ray.intersectObjects([land, water], false)[0]; za.copy(hit ? hit.point : controls.target); }
     }
     zq = Math.max(-2.5, Math.min(2.5, zq + amt));
   }
@@ -457,9 +461,10 @@ export async function init(stage, opts = {}) {
   const cx = card.querySelector('.vp-3d-cx'); if (cx) cx.addEventListener('click', (e) => { e.stopPropagation(); hideCard(); });
   const live = stage.querySelector('.vp-3d-live');
   if (live) live.addEventListener('click', () => { const on = !stage.classList.contains('live'); stage.classList.toggle('live', on); controls.enabled = on || !touch; live.textContent = on ? 'Voltar à rolagem' : 'Toque para explorar'; });
-  controls.addEventListener('start', () => { fly = null; ride = null; sway = false; hideCard(); });
+  controls.addEventListener('start', () => { fly = null; ride = null; sway = false; hideCard(); busy.until = performance.now() + 1e9; });
+  controls.addEventListener('end', () => { busy.until = performance.now() + 1800; });
   let downAt = null, wheelOk = false;
-  canvas.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; wheelOk = true; });
+  canvas.addEventListener('pointerdown', (e) => { downAt = [e.clientX, e.clientY]; wheelOk = true; busy.until = Math.max(busy.until, performance.now() + 1500); });
   canvas.addEventListener('pointerup', (e) => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 8) { hideCard(); ride = null; } downAt = null; });
   stage.addEventListener('mouseleave', () => { wheelOk = false; });
 
@@ -505,12 +510,16 @@ export async function init(stage, opts = {}) {
   new ResizeObserver(resize).observe(stage); resize();
   { const gv = geralView(); controls.target.copy(gv.tgt); camera.position.copy(gv.tgt).add(gv.off.clone().multiplyScalar(1.7)); }
   go('geral'); risers.forEach((r, i) => { r.t0 = performance.now() + 900 + i * 260; });
+  try { if (renderer.compileAsync) await renderer.compileAsync(scene, camera); } catch (_) {}
+  try { renderer.render(scene, camera); } catch (_) {}
   stage.classList.add('gl', 'ready');
 
   const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
   const fwd = new THREE.Vector3(), sh = new THREE.Vector2(), v = new THREE.Vector3(), clock = new THREE.Clock(); let visible = true;
   new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(stage);
+  let lastR = 0;
   function frame() {
+    if (touch) { const nw = performance.now(); if (!fly && !ride && Math.abs(zq) < 1e-4 && nw > busy.until && nw - lastR < 30) return; lastR = nw; }
     const dtv = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dtv; if (vidaTick) vidaTick(dtv);
     const now = performance.now();
     risers.forEach((r) => { const k = r.t0 == null ? 0 : Math.max(0, Math.min(1, (now - r.t0) / 1600)); const e = 1 - Math.pow(1 - k, 3); r.g.children.forEach((ch) => { if (ch !== r.g.userData.ring && ch !== r.g.userData.beam) ch.scale.y = Math.max(0.001, e); }); r.g.userData.beam.visible = e > 0.95; r.g.userData.ring.material.opacity = 0.5 + 0.4 * Math.sin(now / 500); });
