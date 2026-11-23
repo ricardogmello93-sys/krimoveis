@@ -166,12 +166,68 @@ export function init(stage) {
     const ticks = [];
 
     // carros
-    const DENS = { br: 0.8, primary: 0.7, secondary: 0.55, tertiary: 0.45, residential: 0.34, unclassified: 0.26, service: 0.1 };
+    const DENS = { br: 0.9, primary: 0.9, secondary: 0.8, tertiary: 0.7, residential: 0.6, unclassified: 0.45, service: 0.2 };
     const routes = M.roads.filter((r) => DENS[r.t] != null && r.p.length > 1).map(mkRoute).filter((r) => r.len > 0.5);
-    const want = routes.map((r) => { const m = r.p[r.p.length >> 1], d = near(m[0], m[1]); return r.len * DENS[r.t] * (d < 9 ? 1 : d < 20 ? 0.5 : 0.2); });
-    const wsum = want.reduce((x, y) => x + y, 0), fct = Math.min(1, (coarse ? 170 : 380) / Math.max(1e-6, wsum));
+    // carros: andam numa rede de ruas ligadas; escolhem o caminho nos cruzamentos, fazem retorno nas ruas sem saída e nunca somem nas pontas
+    function buildNet(rts, tol) {
+  const CS = tol * 4, grid = new Map(), K = (i, j) => i + ',' + j;
+  const put = (i, j, v) => { const k = K(i, j); let a = grid.get(k); if (!a) grid.set(k, a = []); a.push(v); };
+  rts.forEach((r, ri) => { for (let i = 1; i < r.p.length; i++) { const a = r.p[i - 1], b = r.p[i], L = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.ceil(L / (CS / 2))); for (let q = 0; q <= n; q++) { const x = a[0] + (b[0] - a[0]) * q / n, z = a[1] + (b[1] - a[1]) * q / n; put(Math.floor(x / CS), Math.floor(z / CS), ri * 100000 + i); } } });
+  // pontos de corte por rua: { i (trecho), t, x, z }
+  const cuts = rts.map(() => []), snap = rts.map(() => [null, null]);
+  rts.forEach((r, ri) => {
+    [0, r.p.length - 1].forEach((vi, side) => {
+      const P0 = r.p[vi], ci = Math.floor(P0[0] / CS), cj = Math.floor(P0[1] / CS); let best = null; const seen = new Set();
+      for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) for (const code of grid.get(K(ci + a, cj + b)) || []) {
+        if (seen.has(code)) continue; seen.add(code); const sj = Math.floor(code / 100000), si = code % 100000; if (sj === ri) continue;
+        const A = rts[sj].p[si - 1], B = rts[sj].p[si], dx = B[0] - A[0], dz = B[1] - A[1], l2 = dx * dx + dz * dz || 1e-9;
+        const t = Math.max(0, Math.min(1, ((P0[0] - A[0]) * dx + (P0[1] - A[1]) * dz) / l2)), qx = A[0] + dx * t, qz = A[1] + dz * t, d = Math.hypot(qx - P0[0], qz - P0[1]);
+        if (d <= tol && (!best || d < best.d)) best = { d, sj, si, t, x: qx, z: qz };
+      }
+      if (best) { snap[ri][side] = [best.x, best.z]; cuts[best.sj].push({ i: best.si, t: best.t, x: best.x, z: best.z }); }
+    });
+  });
+  // trechos entre cruzamentos
+
+  const nodes = [], ngrid = new Map(), NK = (i, j) => i + ',' + j, NC = tol * 2;
+  const nodeId = (x, z) => { const ci = Math.floor(x / NC), cj = Math.floor(z / NC); for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) for (const id of ngrid.get(NK(ci + a, cj + b)) || []) if (Math.hypot(nodes[id][0] - x, nodes[id][1] - z) <= tol) return id; const id = nodes.length; nodes.push([x, z]); const k = NK(ci, cj); let arr = ngrid.get(k); if (!arr) ngrid.set(k, arr = []); arr.push(id); return id; };
+  const edges = [];
+  rts.forEach((r, ri) => {
+    // vértices com cortes inseridos
+    const P = r.p.map((q) => q.slice()); if (snap[ri][0]) P[0] = snap[ri][0].slice(); if (snap[ri][1]) P[P.length - 1] = snap[ri][1].slice();
+    const items = []; // { pos: i + t, x, z, node }
+    P.forEach((q, i) => items.push({ pos: i, x: q[0], z: q[1], node: i === 0 || i === P.length - 1 }));
+    cuts[ri].forEach((c) => items.push({ pos: (c.i - 1) + c.t, x: c.x, z: c.z, node: true }));
+    items.sort((u, v) => u.pos - v.pos);
+    // junta pontos repetidos (mesma posição) mantendo a marca de nó
+    const pts = []; items.forEach((it) => { const l = pts[pts.length - 1]; if (l && Math.hypot(l.x - it.x, l.z - it.z) < 1e-6) { l.node = l.node || it.node; } else pts.push({ x: it.x, z: it.z, node: it.node }); });
+    let a = 0;
+    for (let i = 1; i < pts.length; i++) {
+      if (!pts[i].node) continue;
+      const seg = pts.slice(a, i + 1).map((q) => [q.x, q.z]); a = i;
+      const na = nodeId(seg[0][0], seg[0][1]), nb = nodeId(seg[seg.length - 1][0], seg[seg.length - 1][1]); seg[0] = nodes[na].slice(); seg[seg.length - 1] = nodes[nb].slice(); // as pontas colam exatamente no nó
+      const L = [0]; for (let k = 1; k < seg.length; k++) L.push(L[k - 1] + Math.hypot(seg[k][0] - seg[k - 1][0], seg[k][1] - seg[k - 1][1]));
+      if (L[L.length - 1] < 1e-4) continue;
+      edges.push({ p: seg, L, len: L[L.length - 1], c: r.c, w: r.w, na, nb, ri });
+    }
+  });
+  const adj = nodes.map(() => []);
+  edges.forEach((e, i) => { adj[e.na].push({ e: i, end: 0 }); adj[e.nb].push({ e: i, end: 1 }); });
+  // componentes (rede ligada)
+  const par = nodes.map((_, i) => i), find = (x) => { while (par[x] !== x) { par[x] = par[par[x]]; x = par[x]; } return x; };
+  edges.forEach((e) => { par[find(e.na)] = find(e.nb); });
+  const clen = new Map(); edges.forEach((e) => { const r = find(e.na); e.comp = r; clen.set(r, (clen.get(r) || 0) + e.len); });
+  edges.forEach((e) => { e.compLen = clen.get(e.comp); });
+  return { edges, adj, nodes };
+}
+    const aw = (a) => { while (a > Math.PI) a -= 6.2832; while (a < -Math.PI) a += 6.2832; return a; };
+    const net = buildNet(routes.map((r) => ({ p: r.p, c: r.t, w: r.w })), 0.06);
+    const E = net.edges, okE = E.map((e) => e.compLen >= 4);
+    const want = E.map((e, i) => { if (!okE[i]) return 0; const m = e.p[e.p.length >> 1]; return e.len * DENS[e.c] * ((d) => (d < 9 ? 1 : d < 20 ? 0.5 : 0.2))(near(m[0], m[1])); });
+    const wsum = want.reduce((x, y) => x + y, 0) || 1, fct = Math.min(1, (coarse ? 170 : 380) / wsum);
+    const tanAt = (e, end) => { const n = e.p.length, a = end === 0 ? e.p[0] : e.p[n - 1], b = end === 0 ? e.p[1] : e.p[n - 2], dx = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(dx, dz) || 1; return [dx / l, dz / l]; }; // direção saindo do nó
     const C = [];
-    routes.forEach((r, i) => { const n = Math.floor(want[i] * fct + rnd()); for (let q = 0; q < n; q++) C.push({ r, o: { d: rnd() * r.len, k: 1 }, v: (r.br ? 0.55 : r.t === 'secondary' || r.t === 'primary' || r.t === 'tertiary' ? 0.32 : 0.2) * (0.8 + rnd() * 0.4) * (rnd() < 0.5 ? 1 : -1) }); });
+    E.forEach((e, i) => { const n = Math.floor(want[i] * fct + rnd()); for (let q = 0; q < n; q++) { const dir = rnd() < 0.5 ? 1 : -1, c = { e: i, dir, d: rnd() * e.len, k: 1, v: (e.c === 'br' ? 0.55 : /^(primary|secondary|tertiary)$/.test(e.c) ? 0.32 : 0.2) * (0.8 + rnd() * 0.4), lat: 0, yaw: 0 }, [px, pz, ux, uz] = seg(e, { d: c.d, k: 1 }); c.yaw = -Math.atan2(uz * dir, ux * dir); C.push(c); } });
     if (C.length) {
       const carG = merge([[new THREE.BoxGeometry(0.082, 0.02, 0.036).translate(0, 0.012, 0), 1], [new THREE.BoxGeometry(0.044, 0.017, 0.031).translate(-0.006, 0.0305, 0), 0.5]]).scale(1.25, 1.25, 1.25);
       const cars = new THREE.InstancedMesh(carG, new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.4, metalness: 0.3 }), C.length);
@@ -180,9 +236,24 @@ export function init(stage) {
       cars.castShadow = false; cars.frustumCulled = false; scene.add(cars);
       ticks.push((dt) => {
         C.forEach((c, i) => {
-          c.o.d += c.v * dt; if (c.o.d > c.r.len) { c.o.d -= c.r.len; c.o.k = 1; } if (c.o.d < 0) { c.o.d += c.r.len; c.o.k = c.r.L.length - 1; }
-          const [px, pz, ux, uz] = seg(c.r, c.o), off = (c.r.br ? c.r.w * 0.2 : Math.min(c.r.w * 0.15, 0.03)) * (c.v > 0 ? 1 : -1), x = px - uz * off, z = pz + ux * off;
-          p4.set(x, yAt(x, z) + 0.016, z); e4.set(0, -Math.atan2(uz, ux) + (c.v < 0 ? Math.PI : 0), 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cars.setMatrixAt(i, m4);
+          const e = E[c.e], o = { d: c.d, k: c.k }; let [px, pz, ux, uz] = seg(e, o); c.k = o.k;
+          // gira para a direção do trecho e só anda forte quando já está alinhado (retornos viram curva, não deslize)
+          const tgt = -Math.atan2(uz * c.dir, ux * c.dir), dy = aw(tgt - c.yaw); c.yaw += dy * Math.min(1, dt * 6);
+          c.d += c.dir * c.v * Math.max(0.15, 1 - Math.abs(dy) / 1.1) * dt;
+          const endNode = c.dir > 0 ? e.nb : e.na, adj = net.adj[endNode], margin = adj.length === 1 ? 0.05 : 0;
+          if (c.dir > 0 ? c.d >= e.len - margin : c.d <= margin) {
+            const arrive = c.dir > 0 ? 1 : 0, cand = adj.filter((a) => !(a.e === c.e && a.end === arrive));
+            if (!cand.length) { c.dir = -c.dir; c.d = Math.max(margin, Math.min(e.len - margin, c.d)); }
+            else {
+              const ax = ux * c.dir, az = uz * c.dir; let tot = 0; const ws = cand.map((a) => { const [lx2, lz2] = tanAt(E[a.e], a.end); const w = Math.exp(1.6 * (ax * lx2 + az * lz2)) * (E[a.e].c === 'br' ? 2 : E[a.e].c === 'residential' || E[a.e].c === 'service' || E[a.e].c === 'unclassified' ? 1 : 1.5); tot += w; return w; });
+              let r2 = rnd() * tot, pk = cand[cand.length - 1]; for (let j = 0; j < cand.length; j++) { r2 -= ws[j]; if (r2 <= 0) { pk = cand[j]; break; } }
+              c.e = pk.e; c.dir = pk.end === 0 ? 1 : -1; c.d = pk.end === 0 ? 0 : E[pk.e].len; c.k = pk.end === 0 ? 1 : E[pk.e].L.length - 1;
+            }
+          }
+          const e2 = E[c.e], o2 = { d: c.d, k: c.k }; [px, pz, ux, uz] = seg(e2, o2); c.k = o2.k;
+          c.lat += ((E[c.e].c === 'br' ? E[c.e].w * 0.2 : Math.min(E[c.e].w * 0.15, 0.03)) * c.dir - c.lat) * Math.min(1, dt * 5);
+          const x = px - uz * c.lat, z = pz + ux * c.lat;
+          p4.set(x, yAt(x, z) + 0.016, z); e4.set(0, c.yaw, 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cars.setMatrixAt(i, m4);
         });
         cars.instanceMatrix.needsUpdate = true;
       });

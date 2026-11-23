@@ -25,7 +25,7 @@ export async function init(stage, opts = {}) {
   const canvas = stage.querySelector('canvas'), pinBox = stage.querySelector('.vp-3d-pins'), card = stage.querySelector('.vp-3d-card');
   const touch = window.matchMedia('(pointer: coarse)').matches, big = !touch && Math.min(screen.width, screen.height) >= 700;
   const tUrl = stage.getAttribute('data-terrain'), root = tUrl.replace(/js\/zah-terreno\.json.*$/, '');
-  const [data, city, vida] = await Promise.all([fetch(tUrl).then((r) => r.json()), fetch(root + 'js/zah-cidade.json?v=5').then((r) => r.json()).catch(() => null), fetch(root + 'js/zah-vida.json?v=1').then((r) => r.json()).catch(() => null)]);
+  const [data, city, vida] = await Promise.all([fetch(tUrl).then((r) => r.json()), fetch(root + 'js/zah-cidade.json?v=5').then((r) => r.json()).catch(() => null), fetch(root + 'js/zah-vida.json?v=2').then((r) => r.json()).catch(() => null)]);
   const [N, S, W, E] = data.box, nx = data.nx, ny = data.ny;
   const latC = (N + S) / 2, lonC = (W + E) / 2, kx = 111320 * Math.cos(latC * Math.PI / 180) / 100, kz = 110540 / 100;
   const X = (lon) => (lon - lonC) * kx, Z = (lat) => (latC - lat) * kz;
@@ -162,29 +162,100 @@ export async function init(stage, opts = {}) {
     const mkRoute = (pts, extra) => { const p = pts.map(([x, z]) => [wx(x), wz(z)]), L = [0]; for (let k = 1; k < p.length; k++) L.push(L[k - 1] + Math.hypot(p[k][0] - p[k - 1][0], p[k][1] - p[k - 1][1])); return Object.assign({ p, L, len: L[L.length - 1] }, extra); };
     const pairs = (a, from) => { const o = []; for (let i = from; i + 1 < a.length; i += 2) o.push([a[i], a[i + 1]]); return o; };
     const seg = (r, o) => { const L = r.L, nS = L.length - 1; let k = o.k || 1; while (k < nS && L[k] < o.d) k++; while (k > 1 && L[k - 1] > o.d) k--; o.k = k; const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], t = (o.d - L[k - 1]) / Math.max(1e-6, L[k] - L[k - 1]), dx = x2 - x1, dz = z2 - z1, ln = Math.hypot(dx, dz) || 1; return [x1 + dx * t, z1 + dz * t, dx / ln, dz / ln]; };
+    const aw = (a) => { while (a > Math.PI) a -= 6.2832; while (a < -Math.PI) a += 6.2832; return a; };
     const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), sc4 = new THREE.Vector3(1, 1, 1), p4 = new THREE.Vector3();
     const ticks = [];
     const roads = vida.roads.map((r) => mkRoute(pairs(r, 1), { c: r[0] })).filter((r) => r.len > 0.5);
     const RW = [0.12, 0.09, 0.07, 0.055, 0.03];
 
-    // carros
     const DENS = [0.6, 0.5, 0.4, 0.2], SPD = [0.5, 0.32, 0.27, 0.2];
-    const cr = roads.filter((r) => r.c <= 3), want = cr.map((r) => { const m = r.p[r.p.length >> 1]; return r.len * DENS[r.c] * prox(m[0], m[1]); });
-    const wsum = want.reduce((x, y) => x + y, 0) || 1, fct = Math.min(1, 440 * q / wsum), cars = [];
-    cr.forEach((r, i) => { const n = Math.floor(want[i] * fct + rnd()); for (let k = 0; k < n; k++) cars.push({ r, o: { d: rnd() * r.len, k: 1 }, v: SPD[r.c] * (0.8 + rnd() * 0.4) * (rnd() < 0.5 ? 1 : -1) }); });
-    if (cars.length) {
+    // carros: andam numa rede de ruas ligadas; escolhem o caminho nos cruzamentos, fazem retorno nas ruas sem saída e nunca somem nas pontas
+    function buildNet(rts, tol) {
+  const CS = tol * 4, grid = new Map(), K = (i, j) => i + ',' + j;
+  const put = (i, j, v) => { const k = K(i, j); let a = grid.get(k); if (!a) grid.set(k, a = []); a.push(v); };
+  rts.forEach((r, ri) => { for (let i = 1; i < r.p.length; i++) { const a = r.p[i - 1], b = r.p[i], L = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.ceil(L / (CS / 2))); for (let q = 0; q <= n; q++) { const x = a[0] + (b[0] - a[0]) * q / n, z = a[1] + (b[1] - a[1]) * q / n; put(Math.floor(x / CS), Math.floor(z / CS), ri * 100000 + i); } } });
+  // pontos de corte por rua: { i (trecho), t, x, z }
+  const cuts = rts.map(() => []), snap = rts.map(() => [null, null]);
+  rts.forEach((r, ri) => {
+    [0, r.p.length - 1].forEach((vi, side) => {
+      const P0 = r.p[vi], ci = Math.floor(P0[0] / CS), cj = Math.floor(P0[1] / CS); let best = null; const seen = new Set();
+      for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) for (const code of grid.get(K(ci + a, cj + b)) || []) {
+        if (seen.has(code)) continue; seen.add(code); const sj = Math.floor(code / 100000), si = code % 100000; if (sj === ri) continue;
+        const A = rts[sj].p[si - 1], B = rts[sj].p[si], dx = B[0] - A[0], dz = B[1] - A[1], l2 = dx * dx + dz * dz || 1e-9;
+        const t = Math.max(0, Math.min(1, ((P0[0] - A[0]) * dx + (P0[1] - A[1]) * dz) / l2)), qx = A[0] + dx * t, qz = A[1] + dz * t, d = Math.hypot(qx - P0[0], qz - P0[1]);
+        if (d <= tol && (!best || d < best.d)) best = { d, sj, si, t, x: qx, z: qz };
+      }
+      if (best) { snap[ri][side] = [best.x, best.z]; cuts[best.sj].push({ i: best.si, t: best.t, x: best.x, z: best.z }); }
+    });
+  });
+  // trechos entre cruzamentos
+
+  const nodes = [], ngrid = new Map(), NK = (i, j) => i + ',' + j, NC = tol * 2;
+  const nodeId = (x, z) => { const ci = Math.floor(x / NC), cj = Math.floor(z / NC); for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) for (const id of ngrid.get(NK(ci + a, cj + b)) || []) if (Math.hypot(nodes[id][0] - x, nodes[id][1] - z) <= tol) return id; const id = nodes.length; nodes.push([x, z]); const k = NK(ci, cj); let arr = ngrid.get(k); if (!arr) ngrid.set(k, arr = []); arr.push(id); return id; };
+  const edges = [];
+  rts.forEach((r, ri) => {
+    // vértices com cortes inseridos
+    const P = r.p.map((q) => q.slice()); if (snap[ri][0]) P[0] = snap[ri][0].slice(); if (snap[ri][1]) P[P.length - 1] = snap[ri][1].slice();
+    const items = []; // { pos: i + t, x, z, node }
+    P.forEach((q, i) => items.push({ pos: i, x: q[0], z: q[1], node: i === 0 || i === P.length - 1 }));
+    cuts[ri].forEach((c) => items.push({ pos: (c.i - 1) + c.t, x: c.x, z: c.z, node: true }));
+    items.sort((u, v) => u.pos - v.pos);
+    // junta pontos repetidos (mesma posição) mantendo a marca de nó
+    const pts = []; items.forEach((it) => { const l = pts[pts.length - 1]; if (l && Math.hypot(l.x - it.x, l.z - it.z) < 1e-6) { l.node = l.node || it.node; } else pts.push({ x: it.x, z: it.z, node: it.node }); });
+    let a = 0;
+    for (let i = 1; i < pts.length; i++) {
+      if (!pts[i].node) continue;
+      const seg = pts.slice(a, i + 1).map((q) => [q.x, q.z]); a = i;
+      const na = nodeId(seg[0][0], seg[0][1]), nb = nodeId(seg[seg.length - 1][0], seg[seg.length - 1][1]); seg[0] = nodes[na].slice(); seg[seg.length - 1] = nodes[nb].slice(); // as pontas colam exatamente no nó
+      const L = [0]; for (let k = 1; k < seg.length; k++) L.push(L[k - 1] + Math.hypot(seg[k][0] - seg[k - 1][0], seg[k][1] - seg[k - 1][1]));
+      if (L[L.length - 1] < 1e-4) continue;
+      edges.push({ p: seg, L, len: L[L.length - 1], c: r.c, w: r.w, na, nb, ri });
+    }
+  });
+  const adj = nodes.map(() => []);
+  edges.forEach((e, i) => { adj[e.na].push({ e: i, end: 0 }); adj[e.nb].push({ e: i, end: 1 }); });
+  // componentes (rede ligada)
+  const par = nodes.map((_, i) => i), find = (x) => { while (par[x] !== x) { par[x] = par[par[x]]; x = par[x]; } return x; };
+  edges.forEach((e) => { par[find(e.na)] = find(e.nb); });
+  const clen = new Map(); edges.forEach((e) => { const r = find(e.na); e.comp = r; clen.set(r, (clen.get(r) || 0) + e.len); });
+  edges.forEach((e) => { e.compLen = clen.get(e.comp); });
+  return { edges, adj, nodes };
+}
+    const net = buildNet(roads.filter((r) => r.c <= 3).map((r) => ({ p: r.p, c: r.c, w: RW[r.c] })), 0.08);
+    const E = net.edges, okE = E.map((e) => e.compLen >= 20);
+    const want = E.map((e, i) => { if (!okE[i]) return 0; const m = e.p[e.p.length >> 1]; return e.len * DENS[e.c] * prox(m[0], m[1]); });
+    const wsum = want.reduce((x, y) => x + y, 0) || 1, fct = Math.min(1, 440 * q / wsum);
+    const tanAt = (e, end) => { const n = e.p.length, a = end === 0 ? e.p[0] : e.p[n - 1], b = end === 0 ? e.p[1] : e.p[n - 2], dx = b[0] - a[0], dz = b[1] - a[1], l = Math.hypot(dx, dz) || 1; return [dx / l, dz / l]; }; // direção saindo do nó
+    const C = [];
+    E.forEach((e, i) => { const n = Math.floor(want[i] * fct + rnd()); for (let q = 0; q < n; q++) { const dir = rnd() < 0.5 ? 1 : -1, c = { e: i, dir, d: rnd() * e.len, k: 1, v: SPD[e.c] * (0.8 + rnd() * 0.4), lat: 0, yaw: 0 }, [px, pz, ux, uz] = seg(e, { d: c.d, k: 1 }); c.yaw = -Math.atan2(uz * dir, ux * dir); C.push(c); } });
+    if (C.length) {
       const carG = merge([[new THREE.BoxGeometry(0.11, 0.026, 0.048).translate(0, 0.016, 0), 1], [new THREE.BoxGeometry(0.06, 0.022, 0.042).translate(-0.008, 0.04, 0), 0.5]]);
-      const cm2 = new THREE.InstancedMesh(carG, new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.4, metalness: 0.3 }), cars.length);
+      const cars = new THREE.InstancedMesh(carG, new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.4, metalness: 0.3 }), C.length);
       const pal = [0xf2f2f2, 0x1d1f22, 0x9aa3ab, 0xb3262b, 0x2d4f8a, 0xdcdcd5, 0x6b6f72, 0xe0b33a, 0x2f7d4f];
-      cars.forEach((c, i) => cm2.setColorAt(i, new THREE.Color(pal[(i * 7 + (i >> 3)) % pal.length])));
-      cm2.frustumCulled = false; scene.add(cm2);
+      C.forEach((c, i) => cars.setColorAt(i, new THREE.Color(pal[(i * 7 + (i >> 3)) % pal.length])));
+      cars.castShadow = false; cars.frustumCulled = false; scene.add(cars);
       ticks.push((dt) => {
-        cars.forEach((c, i) => {
-          c.o.d += c.v * dt; if (c.o.d > c.r.len) { c.o.d -= c.r.len; c.o.k = 1; } if (c.o.d < 0) { c.o.d += c.r.len; c.o.k = c.r.L.length - 1; }
-          const [px, pz, ux, uz] = seg(c.r, c.o), off = RW[c.r.c] * 0.22 * (c.v > 0 ? 1 : -1), x = px - uz * off, z = pz + ux * off;
-          p4.set(x, hXZ(x, z) + 0.004, z); e4.set(0, -Math.atan2(uz, ux) + (c.v < 0 ? Math.PI : 0), 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cm2.setMatrixAt(i, m4);
+        C.forEach((c, i) => {
+          const e = E[c.e], o = { d: c.d, k: c.k }; let [px, pz, ux, uz] = seg(e, o); c.k = o.k;
+          // gira para a direção do trecho e só anda forte quando já está alinhado (retornos viram curva, não deslize)
+          const tgt = -Math.atan2(uz * c.dir, ux * c.dir), dy = aw(tgt - c.yaw); c.yaw += dy * Math.min(1, dt * 6);
+          c.d += c.dir * c.v * Math.max(0.15, 1 - Math.abs(dy) / 1.1) * dt;
+          const endNode = c.dir > 0 ? e.nb : e.na, adj = net.adj[endNode], margin = adj.length === 1 ? 0.05 : 0;
+          if (c.dir > 0 ? c.d >= e.len - margin : c.d <= margin) {
+            const arrive = c.dir > 0 ? 1 : 0, cand = adj.filter((a) => !(a.e === c.e && a.end === arrive));
+            if (!cand.length) { c.dir = -c.dir; c.d = Math.max(margin, Math.min(e.len - margin, c.d)); }
+            else {
+              const ax = ux * c.dir, az = uz * c.dir; let tot = 0; const ws = cand.map((a) => { const [lx2, lz2] = tanAt(E[a.e], a.end); const w = Math.exp(1.6 * (ax * lx2 + az * lz2)) * (E[a.e].c === 0 ? 2 : E[a.e].c === 3 ? 1 : 1.5); tot += w; return w; });
+              let r2 = rnd() * tot, pk = cand[cand.length - 1]; for (let j = 0; j < cand.length; j++) { r2 -= ws[j]; if (r2 <= 0) { pk = cand[j]; break; } }
+              c.e = pk.e; c.dir = pk.end === 0 ? 1 : -1; c.d = pk.end === 0 ? 0 : E[pk.e].len; c.k = pk.end === 0 ? 1 : E[pk.e].L.length - 1;
+            }
+          }
+          const e2 = E[c.e], o2 = { d: c.d, k: c.k }; [px, pz, ux, uz] = seg(e2, o2); c.k = o2.k;
+          c.lat += (E[c.e].w * 0.22 * c.dir - c.lat) * Math.min(1, dt * 5);
+          const x = px - uz * c.lat, z = pz + ux * c.lat;
+          p4.set(x, hXZ(x, z) + 0.004, z); e4.set(0, c.yaw, 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cars.setMatrixAt(i, m4);
         });
-        cm2.instanceMatrix.needsUpdate = true;
+        cars.instanceMatrix.needsUpdate = true;
       });
     }
 
@@ -248,13 +319,12 @@ export async function init(stage, opts = {}) {
       wg.setAttribute('position', new THREE.Float32BufferAttribute([-0.1, 0, 0, -1, 0, -0.16, -1, 0, 0.16], 3)); wg.setAttribute('color', new THREE.Float32BufferAttribute([1, 1, 1, 0.55, 1, 1, 1, 0, 1, 1, 1, 0], 4)); wg.setIndex([0, 2, 1]);
       const wake = new THREE.InstancedMesh(wg, new THREE.MeshBasicMaterial({ color: 0xffffff, vertexColors: true, transparent: true, depthWrite: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2 }), moving.length);
       wake.frustumCulled = false; scene.add(wake);
-      const aw = (a) => { while (a > Math.PI) a -= 6.2832; while (a < -Math.PI) a += 6.2832; return a; };
       ticks.push((dt, now) => {
         let wi = 0;
         grp.forEach((g) => { g.list.forEach((b, i) => {
           let x, z;
           if (b.fix) { const o = { d: b.o.d, k: b.o.k }, [px, pz] = seg(b.l, o); x = px; z = pz; b.yaw += Math.sin(now / 5000 + b.ph) * dt * 0.05; }
-          else { b.o.d += b.dir * b.v * dt; if (b.o.d > b.l.len) { b.o.d = b.l.len; b.dir = -1; } else if (b.o.d < 0) { b.o.d = 0; b.dir = 1; } const [px, pz, ux, uz] = seg(b.l, b.o); x = px; z = pz; const tgt = -Math.atan2(uz, ux) + (b.dir < 0 ? Math.PI : 0); b.yaw += aw(tgt - b.yaw) * Math.min(1, dt * 1.5); }
+          else { const [qx, qz, vx, vz] = seg(b.l, b.o), tgt = -Math.atan2(vz, vx) + (b.dir < 0 ? Math.PI : 0), dy = aw(tgt - b.yaw); b.yaw += dy * Math.min(1, dt * 1.5); const fim = Math.max(0.12, Math.min(1, (b.dir > 0 ? b.l.len - b.o.d : b.o.d) / 0.8)); b.o.d += b.dir * b.v * fim * Math.max(0.05, 1 - Math.abs(dy) / 0.9) * dt; if (b.o.d >= b.l.len) { b.o.d = b.l.len; b.dir = -1; } else if (b.o.d <= 0) { b.o.d = 0; b.dir = 1; } const [px, pz] = seg(b.l, b.o); x = px; z = pz; }
           const bob = Math.sin(now / 900 + b.ph) * 0.003, roll = Math.sin(now / 1300 + b.ph) * 0.05 + (b.fix ? 0 : 0.04);
           e4.set(roll, b.yaw, Math.sin(now / 1100 + b.ph) * 0.02, 'YXZ'); q4.setFromEuler(e4); p4.set(x, 0.004 + bob, z); sc4.set(1.4, 1.4, 1.4); m4.compose(p4, q4, sc4); sc4.set(1, 1, 1); g.hull.setMatrixAt(i, m4); g.top.setMatrixAt(i, m4);
           if (!b.fix) { e4.set(0, b.yaw, 0, 'YXZ'); q4.setFromEuler(e4); p4.set(x, 0.012, z); sc4.set(b.K.wake * 1.4, 1, 1.4); m4.compose(p4, q4, sc4); sc4.set(1, 1, 1); wake.setMatrixAt(wi++, m4); }

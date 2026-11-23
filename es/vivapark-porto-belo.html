@@ -524,7 +524,7 @@ fbq('track', 'PageView');
     <p class="vp-p rv">Gire, acerque y toque los puntos. Vea los edificios del barrio subiendo, cada uno en su lote, del Vértice al Vision, los lagos, el boulevard y las calles de casas, como si sobrevolara el barrio.</p>
   </div>
   <div class="vp-3d-wrap rv">
-    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwsngn9k">
+    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwso6xro">
       <img class="vp-3d-fb" src="../images/vivapark/vision-aereo.webp" alt="Vista aérea do Vision Home Club no Vivapark (imagem ilustrativa)" loading="lazy">
       <canvas aria-label="Maqueta 3D interactiva del Vivapark"></canvas>
       <div class="vp-3d-pins"></div>
@@ -762,7 +762,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwsngn9o').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwso6xrp').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();
