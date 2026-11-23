@@ -15,9 +15,29 @@ const P = [
   { id: 'tekoa', nome: 'Tekoā', st: 'lanc', ll: [-27.0626, -48.5967], tw: [[-30, 0, 26, 24, 22], [34, 18, 20, 30, 26]] },
   { id: 'amazonia', nome: 'Amazônia', st: 'lanc', ll: [-27.1575, -48.5585], tw: [[0, 0, 8, 22, 18]], aprox: true },
 ];
-const ZT = { pt: { st: { pronto: 'Pronto para morar', obra: 'Em obras', lanc: 'Lançamento' }, tenet: 'Fase 1 em obras · Fase 2 em lançamento', aprox: 'Frente mar em Porto Belo (posição aproximada).', ver: 'Toque em "Ver detalhes" para a ficha completa e a tabela.', zin: 'Aproximar', zout: 'Afastar', zall: 'Ver tudo', hint: 'Use + e − ou Ctrl + rolagem para aproximar', orla: ['Passeio', 'Orla de Meia Praia', 'Sobrevoando a beira-mar de Meia Praia, em Itapema, com os prédios de frente para o mar. Toque na maquete para parar.'] },
-  en: { st: { pronto: 'Move-in ready', obra: 'Under construction', lanc: 'New launch' }, tenet: 'Phase 1 under construction · Phase 2 new launch', aprox: 'Beachfront in Porto Belo (approximate position).', ver: 'Tap "View details" for the full specs and prices.', zin: 'Zoom in', zout: 'Zoom out', zall: 'See all', hint: 'Use + and − or Ctrl + scroll to zoom', orla: ['Ride', 'Meia Praia beachfront', 'Flying along the Meia Praia seafront in Itapema, with the buildings facing the sea. Tap the model to stop.'] },
-  es: { st: { pronto: 'Listo para vivir', obra: 'En construcción', lanc: 'Lanzamiento' }, tenet: 'Etapa 1 en obra · Etapa 2 en lanzamiento', aprox: 'Frente al mar en Porto Belo (posición aproximada).', ver: 'Toque "Ver detalles" para la ficha completa y la lista.', zin: 'Acercar', zout: 'Alejar', zall: 'Ver todo', hint: 'Use + y − o Ctrl + rueda para acercar', orla: ['Paseo', 'Costanera de Meia Praia', 'Sobrevolando la costanera de Meia Praia, en Itapema, con los edificios frente al mar. Toque la maqueta para parar.'] } };
+const ZT = { pt: { st: { pronto: 'Pronto para morar', obra: 'Em obras', lanc: 'Lançamento' }, tenet: 'Fase 1 em obras · Fase 2 em lançamento', aprox: 'Frente mar em Porto Belo (posição aproximada).', ver: 'Toque em "Ver detalhes" para a ficha completa e a tabela.', zin: 'Aproximar', zout: 'Afastar', zall: 'Ver tudo', poi: 'Pontos de referência', hint: 'Use + e − ou Ctrl + rolagem para aproximar', orla: ['Passeio', 'Orla de Meia Praia', 'Sobrevoando a beira-mar de Meia Praia, em Itapema, com os prédios de frente para o mar. Toque na maquete para parar.'] },
+  en: { st: { pronto: 'Move-in ready', obra: 'Under construction', lanc: 'New launch' }, tenet: 'Phase 1 under construction · Phase 2 new launch', aprox: 'Beachfront in Porto Belo (approximate position).', ver: 'Tap "View details" for the full specs and prices.', zin: 'Zoom in', zout: 'Zoom out', zall: 'See all', poi: 'Landmarks', hint: 'Use + and − or Ctrl + scroll to zoom', orla: ['Ride', 'Meia Praia beachfront', 'Flying along the Meia Praia seafront in Itapema, with the buildings facing the sea. Tap the model to stop.'] },
+  es: { st: { pronto: 'Listo para vivir', obra: 'En construcción', lanc: 'Lanzamiento' }, tenet: 'Etapa 1 en obra · Etapa 2 en lanzamiento', aprox: 'Frente al mar en Porto Belo (posición aproximada).', ver: 'Toque "Ver detalles" para la ficha completa y la lista.', zin: 'Acercar', zout: 'Alejar', zall: 'Ver todo', poi: 'Puntos de referencia', hint: 'Use + y − o Ctrl + rueda para acercar', orla: ['Paseo', 'Costanera de Meia Praia', 'Sobrevolando la costanera de Meia Praia, en Itapema, con los edificios frente al mar. Toque la maqueta para parar.'] } };
+
+// pontos de referência: só entram os confirmados em duas fontes (OpenStreetMap + site/endereço oficial ou guia local), com a rua batendo no mapa
+const POI = [
+  { k: 'hosp', t: 1, ll: [-27.09534, -48.62440], n: ['Hospital Municipal Santo Antônio', 'Santo Antônio Municipal Hospital', 'Hospital Municipal Santo Antônio'] },
+  { k: 'hall', t: 1, ll: [-27.09580, -48.61701], n: ['Prefeitura de Itapema', 'Itapema City Hall', 'Alcaldía de Itapema'] },
+  { k: 'bus', t: 1, ll: [-27.10502, -48.61730], n: ['Rodoviária de Itapema', 'Itapema Bus Station', 'Terminal de buses de Itapema'] },
+  { k: 'cart', t: 2, ll: [-27.10586, -48.61603], n: ['Comper', 'Comper', 'Comper'] },
+  { k: 'view', t: 1, ll: [-27.08760, -48.60369], n: ['Mirante do Encanto', 'Mirante do Encanto lookout', 'Mirador Mirante do Encanto'] },
+  { k: 'bag', t: 1, ll: [-27.11885, -48.61021], n: ['Havan', 'Havan', 'Havan'] },
+  { k: 'mall', t: 1, ll: [-27.12853, -48.60103], n: ['Shopping Russi & Russi', 'Russi & Russi Shopping', 'Shopping Russi & Russi'] },
+  { k: 'cart', t: 2, ll: [-27.12704, -48.60213], n: ['Supermercados Koch', 'Koch Supermarket', 'Supermercados Koch'] },
+  { k: 'park', t: 2, ll: [-27.14276, -48.59424], n: ['Parque das Capivaras', 'Capivaras Park', 'Parque das Capivaras'] },
+  { k: 'water', t: 1, ll: [-27.16043, -48.58663], n: ['Parque Porto das Águas', 'Porto das Águas water park', 'Parque Porto das Águas'] },
+];
+const POI_ICON = {
+  hosp: '<path d="M12 6v12M6 12h12"/>', hall: '<path d="M3.5 10 12 4.5 20.5 10M5.5 20V10.5M10 20V10.5M14 20V10.5M18.5 20V10.5M3.5 20h17"/>',
+  bus: '<rect x="5.5" y="4.5" width="13" height="11.5" rx="2.2"/><path d="M5.5 11h13M8.5 19.5V16M15.5 19.5V16"/>', cart: '<path d="M3.5 5h2.2l2 9.5h9.6l2-7H7"/><circle cx="9.5" cy="18.5" r="1.1"/><circle cx="16" cy="18.5" r="1.1"/>',
+  view: '<path d="M12 20.5s6-5.2 6-9.8a6 6 0 0 0-12 0c0 4.600 6 9.800 6 9.800z"/><circle cx="12" cy="10.6" r="2.100"/>', bag: '<path d="M6 8.500h12l-1 11H7l-1-11zM9 8.500a3 3 0 0 1 6 0"/>',
+  mall: '<path d="M6 8.500h12l-1 11H7l-1-11zM9 8.500a3 3 0 0 1 6 0"/>', park: '<path d="M12 3.800 17 12h-3l4 6H6l4-6H7l5-8.200zM12 18v3"/>', water: '<path d="M3 13.500c3 0 3-2 6-2s3 2 6 2 3-2 6-2M3 18.500c3 0 3-2 6-2s3 2 6 2 3-2 6-2"/><circle cx="12" cy="6.500" r="2.300"/>',
+};
 const ZL = ZT[(document.documentElement.lang || 'pt').slice(0, 2)] || ZT.pt;
 const PLACES = [['Itapema', -27.093, -48.616], ['Meia Praia', -27.124, -48.604], ['Porto Belo', -27.161, -48.556], ['BR-101', -27.118, -48.628], ['Balneário Camboriú ↑', -27.056, -48.606]];
 
@@ -388,6 +408,10 @@ export async function init(stage, opts = {}) {
   P.forEach((p) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'vp-pin zp ' + p.st; b.innerHTML = '<i></i><span>' + p.nome + '</span>'; b.addEventListener('click', () => go(p.id)); pinBox.appendChild(b); pins.push({ el: b, v: p.top }); });
   PLACES.forEach(([n, la, lo]) => { const s = document.createElement('span'); s.className = 'zp-place'; s.textContent = n; pinBox.appendChild(s); pins.push({ el: s, v: new THREE.Vector3(X(lo), hAt(la, lo) + 0.4, Z(la)) }); });
 
+  // pontos de referência
+  const li = ['pt', 'en', 'es'].indexOf((document.documentElement.lang || 'pt').slice(0, 2)); let poiOn = true;
+  POI.forEach((o) => { const b = document.createElement('span'); b.className = 'zp-poi t' + o.t; b.innerHTML = '<i><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + POI_ICON[o.k] + '</svg></i><b>' + o.n[Math.max(0, li)] + '</b>'; pinBox.appendChild(b); pins.push({ el: b, v: new THREE.Vector3(X(o.ll[1]), hAt(o.ll[0], o.ll[1]) + 0.32, Z(o.ll[0])), poi: o }); });
+
   // voo, cartão
   let fly = null, ride = null, cardT = 0, cur = null, sway = false, swayBase = null, swayT0 = 0;
   const hideCard = () => { clearTimeout(cardT); card.classList.remove('show'); };
@@ -470,8 +494,8 @@ export async function init(stage, opts = {}) {
 
   // botões de zoom (bom no notebook com touch e no celular)
   const zb = document.createElement('div'); zb.className = 'zp-zoom';
-  zb.innerHTML = '<button type="button" data-z="in" aria-label="' + ZL.zin + '">+</button><button type="button" data-z="out" aria-label="' + ZL.zout + '">−</button><button type="button" data-z="all" aria-label="' + ZL.zall + '" title="' + ZL.zall + '"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>';
-  zb.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; const k = b.getAttribute('data-z'); if (k === 'all') go('geral'); else zoomBy(k === 'in' ? -0.55 : 0.55); });
+  zb.innerHTML = '<button type="button" data-z="in" aria-label="' + ZL.zin + '">+</button><button type="button" data-z="out" aria-label="' + ZL.zout + '">−</button><button type="button" data-z="poi" class="on" aria-label="' + ZL.poi + '" title="' + ZL.poi + '"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.500s6-5.200 6-9.800a6 6 0 0 0-12 0c0 4.600 6 9.800 6 9.800z"/><circle cx="12" cy="10.600" r="2.100"/></svg></button><button type="button" data-z="all" aria-label="' + ZL.zall + '" title="' + ZL.zall + '"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>';
+  zb.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; const k = b.getAttribute('data-z'); if (k === 'poi') { poiOn = !poiOn; b.classList.toggle('on', poiOn); } else if (k === 'all') go('geral'); else zoomBy(k === 'in' ? -0.55 : 0.55); });
   stage.appendChild(zb);
   const hint = document.createElement('div'); hint.className = 'zp-hint'; hint.textContent = ZL.hint; stage.appendChild(hint); let hintT = 0;
   if (!document.getElementById('zpZoomCss')) { const st = document.createElement('style'); st.id = 'zpZoomCss'; st.textContent = '.zp-zoom{position:absolute;right:16px;top:16px;z-index:3;display:flex;flex-direction:column;border-radius:16px;overflow:hidden;border:1px solid rgba(226,199,126,.5);background:rgba(6,24,32,.86);backdrop-filter:blur(8px)}.zp-zoom button{width:46px;height:46px;display:grid;place-items:center;border:0;background:none;color:#f1e3bd;font:300 26px/1 "DM Sans",sans-serif;cursor:pointer;transition:background .2s}.zp-zoom button+button{border-top:1px solid rgba(226,199,126,.22)}.zp-zoom button:hover{background:rgba(226,199,126,.14)}.zp-zoom button:active{background:rgba(226,199,126,.26)}.zp-hint{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;padding:12px 18px;border-radius:100px;background:rgba(6,24,32,.88);border:1px solid rgba(226,199,126,.4);color:#f1e3bd;font:500 13px "DM Sans",sans-serif;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap}.zp-hint.on{opacity:1}@media (max-width:640px){.zp-zoom{right:12px;top:34%}.zp-zoom button{width:42px;height:42px}}'; document.head.appendChild(st); }
@@ -544,7 +568,7 @@ export async function init(stage, opts = {}) {
     sky.position.copy(camera.position); camera.getWorldDirection(fwd); fwd.y = 0; fwd.normalize(); sh.set(sunDir.x, sunDir.z).normalize(); scene.fog.color.copy(SKY.hc).lerp(SKY.hw, Math.pow(Math.max(fwd.x * sh.x + fwd.z * sh.y, 0), 2.5));
     renderer.render(scene, camera);
     const w = stage.clientWidth, h = stage.clientHeight;
-    pins.forEach((p) => { v.copy(p.v).project(camera); const on = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05; p.el.style.opacity = on ? '1' : '0'; p.el.style.transform = 'translate(' + ((v.x + 1) / 2 * w).toFixed(1) + 'px,' + ((1 - v.y) / 2 * h).toFixed(1) + 'px)'; });
+    pins.forEach((p) => { v.copy(p.v).project(camera); let on = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05; if (p.poi) { const d = camera.position.distanceTo(p.v); on = on && poiOn && d < (p.poi.t === 1 ? 30 : 12); p.el.classList.toggle('lab', d < (p.poi.t === 1 ? 8 : 5)); } p.el.style.opacity = on ? '1' : '0'; p.el.style.transform = 'translate(' + ((v.x + 1) / 2 * w).toFixed(1) + 'px,' + ((1 - v.y) / 2 * h).toFixed(1) + 'px)'; });
   }
   stage._frame = frame;
   (function loop() { requestAnimationFrame(loop); if (visible) frame(); })();

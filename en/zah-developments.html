@@ -373,6 +373,12 @@ img { max-width: 100%; }
 .vp-pin.zp i { background: #e2c77e; } .vp-pin.zp.pronto i { background: #5fd38a; } .vp-pin.zp.obra i { background: #79c2cd; }
 .vp-3d-card small { display: block; padding-right: 34px; }
 .zp-place { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; color: rgba(255,255,255,0.85); text-shadow: 0 2px 8px rgba(0,0,0,0.8); pointer-events: none; transition: opacity 0.3s; }
+.zp-poi { position: absolute; left: 0; top: 0; display: flex; align-items: center; pointer-events: none; transition: opacity 0.35s; will-change: transform; }
+.zp-poi i { flex: none; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; display: grid; place-items: center; color: var(--champ, #f3eadb); background: rgba(14,10,38,0.82); border: 1px solid rgba(226,199,126,0.7); box-shadow: 0 4px 14px rgba(0,0,0,0.5), 0 0 0 4px rgba(226,199,126,0.12); backdrop-filter: blur(6px); }
+.zp-poi b { position: absolute; left: 20px; top: -13px; height: 26px; display: flex; align-items: center; padding: 0 12px 0 11px; border-radius: 0 100px 100px 0; margin-left: -8px; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 0.4px; white-space: nowrap; color: #f6efe0; background: rgba(14,10,38,0.84); border: 1px solid rgba(226,199,126,0.45); border-left: 0; opacity: 0; transform: translateX(-6px); transition: opacity 0.3s, transform 0.3s; padding-left: 15px; }
+.zp-poi.lab b { opacity: 1; transform: none; }
+.zp-zoom button[data-z="poi"] { color: rgba(244,242,238,0.55); } .zp-zoom button[data-z="poi"].on { color: var(--gold2, #e2c77e); }
+@media (max-width: 760px) { .zp-poi i { width: 24px; height: 24px; margin: -12px 0 0 -12px; } .zp-poi b { top: -12px; height: 24px; font-size: 10.5px; } }
 .zp-more { margin-top: 10px; font: 500 11px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; padding: 9px 14px; border-radius: 100px; border: 0; background: linear-gradient(135deg, var(--sand2), var(--gold2)); color: var(--abyss); cursor: pointer; pointer-events: none; }
 .vp-3d-card.show .zp-more { pointer-events: auto; }
 .zp-leg { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 12px; font-size: 12px; color: var(--soft); }
@@ -761,7 +767,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=mwsoulbg').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=mwtn2vym').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';
