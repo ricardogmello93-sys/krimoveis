@@ -94,6 +94,7 @@ export function init(stage) {
     terrain(M.far, 0.04, false);
     ground = terrain(M.grid, 0, true);
     // faixas (ruas, BR, córregos) acompanhando o relevo
+    const ribAcc = new Map();
     function ribbon(pts0, w, mat, lift) {
       // pontos intermediários a cada ~0,16 u: a faixa segue o terreno (antes um trecho longo reto "afundava" no morro e a rua parecia cortada)
       const pts = [], org = [];
@@ -105,8 +106,8 @@ export function init(stage) {
         pos.push(x1 + nx, y1, z1 + nz, x1 - nx, y1, z1 - nz, x2 + nx, y2, z2 + nz, x2 - nx, y2, z2 - nz); idx.push(n, n + 1, n + 2, n + 1, n + 3, n + 2); n += 4;
         if (k < pts.length - 1 && org[k]) { const disc = 6; for (let q = 0; q < disc; q++) { const a1 = q / disc * Math.PI * 2, a2 = (q + 1) / disc * Math.PI * 2; pos.push(x2, y2, z2, x2 + Math.cos(a1) * w / 2, y2, z2 + Math.sin(a1) * w / 2, x2 + Math.cos(a2) * w / 2, y2, z2 + Math.sin(a2) * w / 2); idx.push(n, n + 1, n + 2); n += 3; } }
       }
-      if (!n) return; const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
-      const m = new THREE.Mesh(g, mat); m.receiveShadow = true; scene.add(m);
+      if (!n) return; let A = ribAcc.get(mat); if (!A) ribAcc.set(mat, A = { pos: [], idx: [], n: 0 });
+      for (let i = 0; i < pos.length; i++) A.pos.push(pos[i]); for (let i = 0; i < idx.length; i++) A.idx.push(idx[i] + A.n); A.n += n;
     }
     const roadMat = new THREE.MeshStandardMaterial({ color: 0xd9d2c3, roughness: 0.9, polygonOffset: true, polygonOffsetFactor: -2, side: THREE.DoubleSide });
     const brMat = new THREE.MeshStandardMaterial({ color: 0x4a4d50, roughness: 0.85, polygonOffset: true, polygonOffsetFactor: -2, side: THREE.DoubleSide });
@@ -115,6 +116,7 @@ export function init(stage) {
     const streamMat = new THREE.MeshStandardMaterial({ color: 0x3f8fae, roughness: 0.4, metalness: 0.1, polygonOffset: true, polygonOffsetFactor: -2, side: THREE.DoubleSide });
     M.streams.forEach((r) => ribbon(r.p, r.w, streamMat, 0.01));
     M.roads.forEach((r) => { if (r.t === 'br') { ribbon(r.p, r.w * 0.75, brMat, 0.014); ribbon(r.p, 0.012, brLine, 0.018); } else ribbon(r.p, Math.max(r.w * 0.62, 0.04), r.t === 'obra' ? obraMat : roadMat, 0.012); });
+    ribAcc.forEach((A, mat) => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(A.pos, 3)); g.setIndex(A.idx); g.computeVertexNormals(); const m = new THREE.Mesh(g, mat); m.receiveShadow = true; scene.add(m); });
     // polígonos no chão (lagos, gramados, matas, lotes em obra)
     const flat = (pts, mat, lift, level) => { if (pts.length < 3) return null; const sh = new THREE.Shape(pts.map(([x, z]) => new THREE.Vector2(x, -z))); const g = new THREE.ShapeGeometry(sh); g.rotateX(-Math.PI / 2); const pa = g.attributes.position; let lv = -1e9; if (level) for (let k = 0; k < pa.count; k++) lv = Math.max(lv, yAt(pa.getX(k), pa.getZ(k))); for (let k = 0; k < pa.count; k++) pa.setY(k, (level ? lv : yAt(pa.getX(k), pa.getZ(k))) + lift); g.computeVertexNormals(); const m = new THREE.Mesh(g, mat); m.receiveShadow = true; scene.add(m); return m; };
     const grass = new THREE.MeshStandardMaterial({ color: 0x7fa05a, roughness: 1, polygonOffset: true, polygonOffsetFactor: -1, side: THREE.DoubleSide });
@@ -140,13 +142,14 @@ export function init(stage) {
     M.water.forEach((p) => { const xs = p.map((q) => q[0]), zs = p.map((q) => q[1]); for (let x = Math.min(...xs); x <= Math.max(...xs); x += OC) for (let z = Math.min(...zs); z <= Math.max(...zs); z += OC) if (inPoly(x, z, p)) mark(x, z, 0.05); });
     { const v0 = P(545, 440), v1 = P(930, 640); mark((v0.x + v1.x) / 2, (v0.z + v1.z) / 2, 2.1); }
     EMPS.forEach(([, , x, y]) => { const q = P(x, y); mark(q.x, q.z, 0.6); });
+    { const q = P(1293, 911), ca = Math.cos(-0.45), sa = Math.sin(-0.45); for (let u = -1.15; u <= 1.15; u += 0.12) for (let v = -0.5; v <= 0.58; v += 0.12) mark(q.x + u * ca + v * sa, q.z - u * sa + v * ca, 0.1); } // sem árvore em cima das quadras
     // árvores nas calçadas das ruas do bairro e em volta
     M.roads.forEach((r) => { if (!/^(residential|living_street|tertiary|unclassified|secondary)$/.test(r.t)) return; const off = Math.max(r.w * 0.62, 0.04) / 2 + 0.07; for (let k = 1; k < r.p.length; k++) { const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], L = Math.hypot(x2 - x1, z2 - z1); if (L < 0.2) continue; const ux = (x2 - x1) / L, uz = (z2 - z1) / L; for (let d = 0.16; d < L - 0.12; d += 0.3) for (const sd of [-1, 1]) { const x = x1 + ux * d - uz * off * sd, z = z1 + uz * d + ux * off * sd; if (Math.abs(x) > 16 || Math.abs(z) > 14 || !ok(x, z) || rnd() < 0.12) continue; T.push([x, z, 0.55 + rnd() * 0.3]); } } });
     // mata ciliar nos córregos
     M.streams.forEach((r) => { for (let k = 1; k < r.p.length; k++) { const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], L = Math.hypot(x2 - x1, z2 - z1); for (let d = 0; d < L; d += 0.13) { const x = x1 + (x2 - x1) * d / L + (rnd() - 0.5) * 0.5, z = z1 + (z2 - z1) * d / L + (rnd() - 0.5) * 0.5; if (rnd() < 0.75 && ok(x, z) && yIn(x, z) != null) T.push([x, z, 0.75 + rnd() * 0.6]); } } });
     // grupos de árvores nos campos
     for (let k = 0; k < 14000 && T.length < 16000; k++) { const x = M.grid.x0 + rnd() * (M.grid.x1 - M.grid.x0), z = M.grid.z0 + rnd() * (M.grid.z1 - M.grid.z0); const n = Math.sin(x * 0.55 + 1.3) * Math.sin(z * 0.7 - 0.4) + Math.sin((x - z) * 0.31) * 0.6; if (n < 0.55 || !ok(x, z)) continue; T.push([x, z, 0.8 + rnd() * 0.7]); }
-    M.green.forEach((g) => { const xs = g.p.map((p) => p[0]), zs = g.p.map((p) => p[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), z0 = Math.min(...zs), z1 = Math.max(...zs); const n = Math.min(900, Math.round((x1 - x0) * (z1 - z0) * (g.k === 'mata' ? 26 : 6))); for (let k = 0; k < n * 2 && T.length < 9000; k++) { const x = x0 + rnd() * (x1 - x0), z = z0 + rnd() * (z1 - z0); if (inPoly(x, z, g.p)) T.push([x, z, 0.7 + rnd() * 0.6]); } });
+    M.green.forEach((g) => { const xs = g.p.map((p) => p[0]), zs = g.p.map((p) => p[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), z0 = Math.min(...zs), z1 = Math.max(...zs); const n = Math.min(900, Math.round((x1 - x0) * (z1 - z0) * (g.k === 'mata' ? 26 : 6))); for (let k = 0; k < n * 2 && T.length < 9000; k++) { const x = x0 + rnd() * (x1 - x0), z = z0 + rnd() * (z1 - z0); if (inPoly(x, z, g.p) && ok(x, z)) T.push([x, z, 0.7 + rnd() * 0.6]); } });
     for (let k = 0; k < 7000; k++) { const x = M.far.x0 + rnd() * (M.far.x1 - M.far.x0), z = M.far.z0 + rnd() * (M.far.z1 - M.far.z0); const h = hFar(x, z); if (h == null || h < 22 || hIn(x, z) != null) continue; T.push([x, z, 1.4 + rnd() * 1.4]); }
     if (window.matchMedia('(pointer: coarse)').matches) { let a = 0; for (let b = 0; b < T.length; b += 2) T[a++] = T[b]; T.length = a; }
     const treeG = new THREE.IcosahedronGeometry(0.07, 0); treeG.translate(0, 0.07, 0);
@@ -161,6 +164,7 @@ export function init(stage) {
     const seg = (r, o) => { const L = r.L, nS = L.length - 1; let k = o.k || 1; while (k < nS && L[k] < o.d) k++; while (k > 1 && L[k - 1] > o.d) k--; o.k = k; const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], t = (o.d - L[k - 1]) / Math.max(1e-6, L[k] - L[k - 1]), dx = x2 - x1, dz = z2 - z1, ln = Math.hypot(dx, dz) || 1; return [x1 + dx * t, z1 + dz * t, dx / ln, dz / ln]; };
     const merge = (list) => { const pos = [], nor = [], col = [], ix = []; let o = 0; list.forEach(([g, c]) => { const p = g.attributes.position, nn = g.attributes.normal; for (let i = 0; i < p.count; i++) { pos.push(p.getX(i), p.getY(i), p.getZ(i)); nor.push(nn.getX(i), nn.getY(i), nn.getZ(i)); col.push(c, c, c); } for (let i = 0; i < g.index.count; i++) ix.push(g.index.getX(i) + o); o += p.count; }); const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(ix); return g; };
     const cen = P(900, 700); // centro do bairro (lagos e boulevard)
+    const QC = P(1293, 911), blockedQ = (x, z) => { const dx = x - QC.x, dz = z - QC.z, ca = Math.cos(-0.45), sa = Math.sin(-0.45), lx = dx * ca - dz * sa, lz = dx * sa + dz * ca; return Math.abs(lx) < 1.12 && lz > -0.48 && lz < 0.55; }; // área das quadras: ninguém entra
     const near = (x, z) => Math.hypot(x - cen.x, z - cen.z);
     const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), sc4 = new THREE.Vector3(1, 1, 1), p4 = new THREE.Vector3();
     const ticks = [];
@@ -262,13 +266,13 @@ export function init(stage) {
     // gente a pé
     const people = [];
     const lake = (x, y, rx, ry, n) => { for (let i = 0; i < n; i++) people.push({ k: 'e', c: P(x, y), rx: rx / S, rz: ry / S, a: rnd() * 6.283, w: (rnd() < 0.7 ? 1 : -1) * (0.05 + rnd() * 0.035) / (rx / S) }); };
-    const wander = (x, y, r, n) => { const c = P(x, y), R = r / S; for (let i = 0; i < n; i++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * R; people.push({ k: 'w', c, R, x: c.x + Math.cos(a) * d, z: c.z + Math.sin(a) * d, tx: 0, tz: 0, wait: 0.2 + rnd() * 4, v: 0.03 + rnd() * 0.03 }); } };
+    const wander = (x, y, r, n) => { const c = P(x, y), R = r / S; for (let i = 0; i < n; i++) { let a, d, px, pz, tr = 0; do { a = rnd() * 6.283; d = Math.sqrt(rnd()) * R; px = c.x + Math.cos(a) * d; pz = c.z + Math.sin(a) * d; } while (blockedQ(px, pz) && ++tr < 30); people.push({ k: 'w', c, R, x: px, z: pz, tx: 0, tz: 0, wait: 0.2 + rnd() * 4, v: 0.03 + rnd() * 0.03 }); } };
     lake(603, 762, 100, 70, coarse ? 4 : 9);
     lake(838, 792, 126, 88, coarse ? 5 : 11);
     wander(810, 700, 80, coarse ? 7 : 14); // boulevard
     wander(700, 690, 55, coarse ? 3 : 7);
     wander(470, 575, 70, coarse ? 4 : 8); // colégio
-    wander(1293, 800, 95, coarse ? 5 : 11); // quadras
+    wander(1293, 911, 160, coarse ? 6 : 12); // quem assiste, em volta das quadras
     wander(845, 300, 70, coarse ? 3 : 6); // PSG Academy
     // calçadas das ruas do bairro
     const walk = routes.filter((r) => /^(residential|tertiary|unclassified)$/.test(r.t) && r.len > 0.6 && near(r.p[r.p.length >> 1][0], r.p[r.p.length >> 1][1]) < 8);
@@ -284,7 +288,7 @@ export function init(stage) {
       const step = (p, dt) => {
         if (p.k === 'e') { p.a += p.w * dt; p.x = p.c.x + Math.cos(p.a) * p.rx; p.z = p.c.z + Math.sin(p.a) * p.rz; }
         else if (p.k === 'r') { p.o.d += p.dir * p.v * dt; if (p.o.d > p.r.len) { p.o.d = p.r.len; p.dir = -1; } else if (p.o.d < 0) { p.o.d = 0; p.dir = 1; } const [px, pz, ux, uz] = seg(p.r, p.o); p.x = px - uz * p.off; p.z = pz + ux * p.off; }
-        else { if (p.wait > 0) { p.wait -= dt; if (p.wait <= 0 || !p.tx) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * p.R; p.tx = p.c.x + Math.cos(a) * d; p.tz = p.c.z + Math.sin(a) * d; } } else { const dx = p.tx - p.x, dz = p.tz - p.z, L = Math.hypot(dx, dz); if (L < 0.02) p.wait = 1 + rnd() * 4; else { p.x += dx / L * p.v * dt; p.z += dz / L * p.v * dt; } } }
+        else { if (p.wait > 0) { p.wait -= dt; if (p.wait <= 0 || !p.tx) { let ok2 = false; for (let t = 0; t < 12 && !ok2; t++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * p.R, tx = p.c.x + Math.cos(a) * d, tz = p.c.z + Math.sin(a) * d; if (!blockedQ(tx, tz) && !blockedQ((tx + p.x) / 2, (tz + p.z) / 2) && !blockedQ((tx * 3 + p.x) / 4, (tz * 3 + p.z) / 4) && !blockedQ((tx + p.x * 3) / 4, (tz + p.z * 3) / 4)) { p.tx = tx; p.tz = tz; ok2 = true; } } if (!ok2) { p.tx = p.x; p.tz = p.z; } } } else { const dx = p.tx - p.x, dz = p.tz - p.z, L = Math.hypot(dx, dz); if (L < 0.02) p.wait = 1 + rnd() * 4; else { p.x += dx / L * p.v * dt; p.z += dz / L * p.v * dt; } } }
       };
       ticks.push((dt) => { people.forEach((p, i) => { step(p, dt); m4.identity(); m4.setPosition(p.x, yAt(p.x, p.z) + 0.004, p.z); bod.setMatrixAt(i, m4); hed.setMatrixAt(i, m4); }); bod.instanceMatrix.needsUpdate = true; hed.instanceMatrix.needsUpdate = true; });
     }
@@ -302,24 +306,28 @@ export function init(stage) {
 
   // Vértice: dois blocos em "V" (altos nas pontas, descendo para o meio), com jardins em cada terraço
   const risers = [];
+  // andares animados em UMA malha por prédio: cada vértice sabe o andar (aA.x) e a base dele (aA.y); o shader "sobe" o andar esticando a altura a partir da base
+  const mergeA = (parts) => { const pos = [], nor = [], aA = [], ix = []; let o = 0; parts.forEach(({ g, i, by }) => { const p = g.attributes.position, nn = g.attributes.normal; for (let k = 0; k < p.count; k++) { pos.push(p.getX(k), p.getY(k), p.getZ(k)); if (nn) nor.push(nn.getX(k), nn.getY(k), nn.getZ(k)); aA.push(i, by); } if (g.index) for (let k = 0; k < g.index.count; k++) ix.push(g.index.getX(k) + o); o += p.count; }); const G = new THREE.BufferGeometry(); G.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); if (nor.length) G.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3)); G.setAttribute('aA', new THREE.Float32BufferAttribute(aA, 2)); if (ix.length) G.setIndex(ix); return G; };
+  const riseHook = (u) => (sh) => { sh.uniforms.uN = u; sh.vertexShader = 'attribute vec2 aA; uniform float uN;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n float sA = clamp(uN - aA.x, 0.0, 1.0); transformed.y = aA.y + (position.y - aA.y) * max(sA, 0.0001);').replace('#include <project_vertex>', '#include <project_vertex>\n if (sA < 0.001) gl_Position = vec4(2.0, 2.0, 2.0, 1.0);'); };
+  const riseMat = (mat, u) => { const m = mat.clone(); m.onBeforeCompile = riseHook(u); return m; };
+  const riseDepth = (u) => { const m = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking }); m.onBeforeCompile = riseHook(u); return m; };
+  const riseMesh = (parts, mat, u, shadow) => { const m = new THREE.Mesh(mergeA(parts), riseMat(mat, u)); if (shadow) { m.castShadow = true; m.receiveShadow = true; m.customDepthMaterial = riseDepth(u); } return m; };
   function vertice(x0, x1, z0, z1) {
     const g = new THREE.Group(), W = (x1 - x0) / S, D = (z1 - z0) / S, N = 26, fh = 0.07, pod = 0.04;
     const c = P((x0 + x1) / 2, (z0 + z1) / 2); g.position.copy(c);
     const podium = box(W, pod, D, glass); g.add(podium);
-    const floors = [], B = 7, lineMat = new THREE.LineBasicMaterial({ color: 0x55605e, transparent: true, opacity: 0.35 });
+    const B = 7, lineMat = new THREE.LineBasicMaterial({ color: 0x55605e, transparent: true, opacity: 0.35 }), uN = { value: 0 }, sp = [], pp = [], lp = [];
     for (let i = 0; i < N; i++) {
       // base cheia de 7 andares e depois o "V": as alas sobem nas pontas e se abrem no meio, em terraços
       const k = i < B ? 0.97 : 0.97 - 0.78 * Math.pow((i - B + 1) / (N - B), 0.55), ww = (W / 2) * k, dd = D * 0.34;
       [-1, 1].forEach((side) => {
-        const f = new THREE.Group();
-        const slab = box(ww, fh * 0.82, dd, white); f.add(slab);
-        const ln = new THREE.LineSegments(new THREE.EdgesGeometry(slab.geometry), lineMat); f.add(ln);
-        const pl = box(0.06, 0.03, dd * 0.96, green); pl.position.set(-side * (ww / 2 - 0.03), fh * 0.82, 0); f.add(pl);
-        f.position.set(side * (W / 2 - ww / 2), pod + i * fh, -D / 2 + dd / 2 + 0.05);
-        f.userData.i = i; g.add(f); floors.push(f);
+        const px = side * (W / 2 - ww / 2), py = pod + i * fh, pz = -D / 2 + dd / 2 + 0.05, sg = new THREE.BoxGeometry(ww, fh * 0.82, dd).translate(0, fh * 0.41, 0);
+        sp.push({ g: sg.clone().translate(px, py, pz), i, by: py }); lp.push({ g: new THREE.EdgesGeometry(sg).translate(px, py, pz), i, by: py });
+        pp.push({ g: new THREE.BoxGeometry(0.06, 0.03, dd * 0.96).translate(0, 0.015, 0).translate(px - side * (ww / 2 - 0.03), py + fh * 0.82, pz), i, by: py });
       });
     }
-    scene.add(g); risers.push({ floors, N, p: 0 });
+    g.add(riseMesh(sp, white, uN, true)); g.add(riseMesh(pp, green, uN, true)); const lm = new THREE.LineSegments(mergeA(lp), riseMat(lineMat, uN)); g.add(lm);
+    scene.add(g); risers.push({ N, p: 0, uN });
   }
   vertice(560, 725, 455, 615); vertice(755, 915, 455, 615);
 
@@ -378,19 +386,16 @@ export function init(stage) {
       for (let i = 0; i < 8; i++) { const w = 2.1 - (i % 2) * 0.06, d = 0.7 - (i % 3) * 0.04; const f = box(w, 0.068, d, white); f.position.y = i * 0.075; vj.add(f); const pl = box(w * 0.96, 0.02, 0.06, green); pl.position.set(0, i * 0.075 + 0.068, d / 2 - 0.02); vj.add(pl); }
       empPins.push([id, nome, P(x, y, 0.85), 'ok']); return;
     }
-    const W = 0.8, D = 0.52, fh = 0.075, H = fl * fh, floors = [];
+    const W = 0.8, D = 0.52, fh = 0.075, H = fl * fh, uN = { value: 0 }, sp = [], lp = [];
     const sol = ano <= 2027; // perto da entrega: concreto; os demais, holograma
-    for (let i = 0; i < fl; i++) {
-      const f = new THREE.Group(); f.position.y = i * fh; f.userData.i = i;
-      const slab = box(W, fh * 0.9, D, sol ? concrete : holoMat); f.add(slab);
-      f.add(new THREE.LineSegments(new THREE.EdgesGeometry(slab.geometry), sol ? lineMatSoft : floorLine));
-      f.visible = false; g.add(f); floors.push(f);
-    }
+    const slab0 = new THREE.BoxGeometry(W, fh * 0.9, D).translate(0, fh * 0.45, 0), edg0 = new THREE.EdgesGeometry(slab0);
+    for (let i = 0; i < fl; i++) { sp.push({ g: slab0.clone().translate(0, i * fh, 0), i, by: i * fh }); lp.push({ g: edg0.clone().translate(0, i * fh, 0), i, by: i * fh }); }
+    g.add(riseMesh(sp, sol ? concrete : holoMat, uN, true)); g.add(new THREE.LineSegments(mergeA(lp), riseMat(sol ? lineMatSoft : floorLine, uN)));
     const shell = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(W, H, D).translate(0, H / 2, 0)), edgeMat); shell.visible = false; g.add(shell);
     const scan = new THREE.Mesh(new THREE.BoxGeometry(W * 1.08, 0.012, D * 1.08), holoTop); g.add(scan);
     const foot = new THREE.Mesh(new THREE.PlaneGeometry(W * 1.5, D * 1.6), new THREE.MeshBasicMaterial({ color: 0xe2c77e, transparent: true, opacity: 0.18, depthWrite: false })); foot.rotation.x = -Math.PI / 2; foot.position.y = 0.015; g.add(foot);
     if (sol) crane(g, H, idx % 2 ? 1 : -1);
-    obras.push({ floors, shell, scan, H, fl, t0: null, delay: 600 + idx * 380 });
+    obras.push({ uN, shell, scan, H, fl, t0: null, delay: 600 + idx * 380 });
     empPins.push([id, nome, P(x, y, H + 0.25), x < 0 ? 'f2' : '']);
   });
   { const vg = new THREE.Group(); vg.position.copy(P(546, 610)); scene.add(vg); crane(vg, 1.9, 0); } // grua ao lado do Vértice (entrega 2027)
@@ -424,9 +429,33 @@ export function init(stage) {
   // academia Wave
   place('wave', 706, 589, (g) => { const m = box(0.5, 0.14, 0.32, glass); g.add(m); const t = box(0.52, 0.02, 0.34, white); t.position.y = 0.14; g.add(t); const l = box(0.5, 0.05, 0.005, lit); l.position.set(0, 0.06, 0.161); g.add(l); }, 0.16, -0.45);
   // quadras (tênis, padel, beach tennis, vôlei) e a MUV Arena
-  place('quadras', 1293, 751, (g) => {
+  const games = []; // jogos nas quadras (animados a cada quadro)
+  place('quadras', 1293, 911, (g) => {
     const cs = [[-0.75, -0.2, 0.36, 0.2, 0xb8613f], [-0.35, -0.2, 0.36, 0.2, 0xb8613f], [0.05, -0.2, 0.24, 0.14, 0x3d7fae], [0.35, -0.2, 0.24, 0.14, 0x3d7fae], [-0.6, 0.18, 0.26, 0.16, 0xe3cf9a], [-0.25, 0.18, 0.26, 0.16, 0xe3cf9a], [0.1, 0.18, 0.26, 0.16, 0xe3cf9a]];
     cs.forEach(([x, z, w, d, c]) => { const q = box(w, 0.008, d, court(c)); q.position.set(x, 0, z); g.add(q); const e = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(w * 0.86, 0.001, d * 0.8)), new THREE.LineBasicMaterial({ color: 0xffffff })); e.position.set(x, 0.012, z); g.add(e); });
+    // gente jogando: tênis no saibro (2), padel nas quadras azuis (4) e vôlei de areia (4), com bola e rede
+    { const shirt = [0xf2f2f2, 0xe2483c, 0x2d8fd6, 0xf2b705, 0x2fb37a, 0xe66fa6, 0x222428, 0xff8a2b], skin = [0xf2c9a5, 0xd9a27a, 0xb7794f, 0x8a5a3c], pmc = {};
+      const pmat = (hex) => pmc[hex] || (pmc[hex] = new THREE.MeshStandardMaterial({ color: hex, roughness: 0.8, flatShading: true }));
+      const bodyG = new THREE.CylinderGeometry(0.0062, 0.0078, 0.026, 6).translate(0, 0.013, 0).scale(1.3, 1.3, 1.3), headG = new THREE.SphereGeometry(0.0068, 6, 4).translate(0, 0.0335, 0).scale(1.3, 1.3, 1.3);
+      const netM = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6 });
+      cs.forEach(([cx, cz, w, d, c], ci) => {
+        const kind = c === 0xb8613f ? 't' : c === 0x3d7fae ? 'p' : 'v', top = 0.008;
+        const net = box(0.003, kind === 'v' ? 0.034 : 0.02, d * 0.9, netM); net.position.set(cx, top, cz); net.castShadow = false; g.add(net);
+        const ps = []; for (const side of [-1, 1]) for (const row of (kind === 't' ? [0] : [-1, 1])) {
+          const pg = new THREE.Group(); const b = new THREE.Mesh(bodyG, pmat(shirt[(ci * 3 + (side + 1) * 2 + row + 3) % shirt.length])), h = new THREE.Mesh(headG, pmat(skin[(ci + row + 2) % skin.length])); pg.add(b); pg.add(h); g.add(pg);
+          ps.push({ pg, side, off: row * d * 0.17, x: cx + side * w * 0.34, z: cz + row * d * 0.17, ph: ci * 1.7 + row });
+        }
+        const ball = new THREE.Mesh(new THREE.SphereGeometry(0.0062, 8, 6), new THREE.MeshStandardMaterial({ color: kind === 'v' ? 0xffffff : 0xe8f03a, emissive: kind === 'v' ? 0x444444 : 0x5a6000, roughness: 0.6 })); g.add(ball);
+        const T = kind === 't' ? 1.15 : kind === 'p' ? 0.95 : 1.55, arc = kind === 'v' ? 0.06 : 0.032, seed = ci * 37.7 + 1.3, t0 = ci * 0.37; let last = 0;
+        games.push((now) => {
+          const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016); last = now;
+          const t = now / 1000 / T + t0, ri = Math.floor(t), u = t - ri, hit = ri % 2 ? 1 : -1;
+          const zs = cz + Math.sin(ri * 78.233 + seed) * d * 0.3, zr = cz + Math.sin((ri + 1) * 78.233 + seed) * d * 0.3;
+          ball.position.set(cx + hit * w * 0.34 * (1 - 2 * u), top + 0.012 + arc * 4 * u * (1 - u), zs + (zr - zs) * u);
+          ps.forEach((p) => { const tz = (p.side === hit ? zs : zr) + p.off, dz = tz - p.z; p.z += dz * Math.min(1, dt * 7); const mv = Math.abs(dz) > 0.004 ? Math.abs(Math.sin(now / 120 + p.ph)) * 0.003 : 0; p.pg.position.set(p.x, top + mv, p.z); });
+        });
+      });
+    }
     const arena = box(0.42, 0.12, 0.3, white); arena.position.set(0.55, 0, 0.15); g.add(arena); const l = box(0.4, 0.04, 0.005, lit); l.position.set(0.55, 0.05, 0.302); g.add(l);
   }, 0.14, -0.45);
   const LZ = { pt: ['Lançamentos', 'Os prédios do bairro', 'Além do Vértice, mais onze prédios no lugar de cada lote: o Vista Jardins já pronto e os lançamentos subindo, inclusive o Vision Home Club, na fase 2, do outro lado do parque.'],
@@ -532,18 +561,19 @@ export function init(stage) {
   function frame() {
     if (touch) { const nw = performance.now(); if (!fly && Math.abs(zq) < 1e-4 && nw > busy.until && nw - lastR.t < 30) return; lastR.t = nw; }
     const dt = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dt; if (tick) tick(dt);
-    risers.forEach((r) => { if (r.t0 == null) r.t0 = performance.now(); r.p = Math.min(1, (performance.now() - r.t0) / 2200); const n = Math.max(0, r.p) * r.N; r.floors.forEach((f) => { const s = Math.max(0.0001, Math.min(1, n - f.userData.i)); f.scale.y = s; f.visible = s > 0.001; }); });
+    risers.forEach((r) => { if (r.t0 == null) r.t0 = performance.now(); r.p = Math.min(1, (performance.now() - r.t0) / 2200); const n = Math.max(0, r.p) * r.N; r.uN.value = n; });
     // obras: cada prédio "imprime" andar por andar, com a faixa de luz subindo; depois a faixa passeia pelo prédio pronto
     const now = performance.now();
     obras.forEach((o) => {
       if (o.ring) { o.ring.material.opacity = 0.55 + 0.4 * Math.sin(now / 450); return; }
       if (o.t0 == null) o.t0 = now + o.delay;
       const p = Math.max(0, Math.min(1, (now - o.t0) / 3400)), n = p * o.fl;
-      o.floors.forEach((f) => { const s = Math.max(0.0001, Math.min(1, n - f.userData.i)); f.scale.y = s; f.visible = s > 0.001; });
+      o.uN.value = n;
       o.shell.visible = p >= 1; o.scan.visible = p > 0;
       o.scan.position.y = p < 1 ? n * (o.H / o.fl) : o.H * (0.5 - 0.5 * Math.cos((now - o.t0 - 3400) / 1300));
     });
     cranes.forEach((c) => { c.top.rotation.y = Math.sin(now / 3200 + c.ph) * 1.1; });
+    games.forEach((f) => f(now));
     if (fly) { const k = Math.min(1, (performance.now() - fly.t0) / fly.d), e = ease(k); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.q0, fly.q1, e); if (k >= 1) fly = null; }
     stepZoom(); controls.update(); sky.position.copy(camera.position); renderer.render(scene, camera);
     const w = stage.clientWidth, h = stage.clientHeight;
