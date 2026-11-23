@@ -25,7 +25,7 @@ export async function init(stage, opts = {}) {
   const canvas = stage.querySelector('canvas'), pinBox = stage.querySelector('.vp-3d-pins'), card = stage.querySelector('.vp-3d-card');
   const touch = window.matchMedia('(pointer: coarse)').matches, big = !touch && Math.min(screen.width, screen.height) >= 700;
   const tUrl = stage.getAttribute('data-terrain'), root = tUrl.replace(/js\/zah-terreno\.json.*$/, '');
-  const [data, city] = await Promise.all([fetch(tUrl).then((r) => r.json()), fetch(root + 'js/zah-cidade.json?v=5').then((r) => r.json()).catch(() => null)]);
+  const [data, city, vida] = await Promise.all([fetch(tUrl).then((r) => r.json()), fetch(root + 'js/zah-cidade.json?v=5').then((r) => r.json()).catch(() => null), fetch(root + 'js/zah-vida.json?v=1').then((r) => r.json()).catch(() => null)]);
   const [N, S, W, E] = data.box, nx = data.nx, ny = data.ny;
   const latC = (N + S) / 2, lonC = (W + E) / 2, kx = 111320 * Math.cos(latC * Math.PI / 180) / 100, kz = 110540 / 100;
   const X = (lon) => (lon - lonC) * kx, Z = (lat) => (latC - lat) * kz;
@@ -146,6 +146,132 @@ export async function init(stage, opts = {}) {
     };
     const cityMesh = new THREE.Mesh(g, cm); cityMesh.castShadow = !touch; cityMesh.receiveShadow = true; scene.add(cityMesh);
     if (city.orla && city.orla.length > 4) orlaPath = { cam: new THREE.CatmullRomCurve3(city.orla.map((p) => new THREE.Vector3(p[0] / 100 + ox, 0, p[1] / 100 + oz))), tg: new THREE.CatmullRomCurve3(city.orla.map((p) => new THREE.Vector3(p[2] / 100 + ox, 0, p[3] / 100 + oz))) };
+  }
+
+  // vida: carros e gente nas ruas, gente e guarda-sóis na areia, nadadores, barcos e gaivotas (dados em js/zah-vida.json)
+  let vidaTick = null;
+  if (vida) {
+    const vox = -WU / 2, voz = -HU / 2, wx = (m) => m / 100 + vox, wz = (m) => m / 100 + voz;
+    let sd = 5; const rnd = () => ((sd = (sd * 16807) % 2147483647) / 2147483647);
+    const pick = (a) => a[(rnd() * a.length) | 0];
+    const q = touch ? 0.5 : 1; // celular: metade
+    // onde a vida se concentra: perto dos prédios da ZAH e da orla de Meia Praia
+    const focus = P.map((p) => [X(p.ll[1]), Z(p.ll[0])]); if (city && city.orla) city.orla.forEach((o, i) => { if (i % 4 === 0) focus.push([o[0] / 100 + vox, o[1] / 100 + voz]); });
+    const prox = (x, z) => { let d = 1e9; for (const f of focus) d = Math.min(d, Math.hypot(x - f[0], z - f[1])); return d < 14 ? 1 : d < 35 ? 0.45 : 0.1; };
+    const merge = (list) => { const pos = [], nor = [], col = [], ix = []; let o = 0; list.forEach(([g, c]) => { const p = g.attributes.position, nn = g.attributes.normal; for (let i = 0; i < p.count; i++) { pos.push(p.getX(i), p.getY(i), p.getZ(i)); nor.push(nn.getX(i), nn.getY(i), nn.getZ(i)); col.push(c, c, c); } for (let i = 0; i < g.index.count; i++) ix.push(g.index.getX(i) + o); o += p.count; }); const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(ix); return g; };
+    const mkRoute = (pts, extra) => { const p = pts.map(([x, z]) => [wx(x), wz(z)]), L = [0]; for (let k = 1; k < p.length; k++) L.push(L[k - 1] + Math.hypot(p[k][0] - p[k - 1][0], p[k][1] - p[k - 1][1])); return Object.assign({ p, L, len: L[L.length - 1] }, extra); };
+    const pairs = (a, from) => { const o = []; for (let i = from; i + 1 < a.length; i += 2) o.push([a[i], a[i + 1]]); return o; };
+    const seg = (r, o) => { const L = r.L, nS = L.length - 1; let k = o.k || 1; while (k < nS && L[k] < o.d) k++; while (k > 1 && L[k - 1] > o.d) k--; o.k = k; const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], t = (o.d - L[k - 1]) / Math.max(1e-6, L[k] - L[k - 1]), dx = x2 - x1, dz = z2 - z1, ln = Math.hypot(dx, dz) || 1; return [x1 + dx * t, z1 + dz * t, dx / ln, dz / ln]; };
+    const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), sc4 = new THREE.Vector3(1, 1, 1), p4 = new THREE.Vector3();
+    const ticks = [];
+    const roads = vida.roads.map((r) => mkRoute(pairs(r, 1), { c: r[0] })).filter((r) => r.len > 0.5);
+    const RW = [0.12, 0.09, 0.07, 0.055, 0.03];
+
+    // carros
+    const DENS = [0.6, 0.5, 0.4, 0.2], SPD = [0.5, 0.32, 0.27, 0.2];
+    const cr = roads.filter((r) => r.c <= 3), want = cr.map((r) => { const m = r.p[r.p.length >> 1]; return r.len * DENS[r.c] * prox(m[0], m[1]); });
+    const wsum = want.reduce((x, y) => x + y, 0) || 1, fct = Math.min(1, 440 * q / wsum), cars = [];
+    cr.forEach((r, i) => { const n = Math.floor(want[i] * fct + rnd()); for (let k = 0; k < n; k++) cars.push({ r, o: { d: rnd() * r.len, k: 1 }, v: SPD[r.c] * (0.8 + rnd() * 0.4) * (rnd() < 0.5 ? 1 : -1) }); });
+    if (cars.length) {
+      const carG = merge([[new THREE.BoxGeometry(0.11, 0.026, 0.048).translate(0, 0.016, 0), 1], [new THREE.BoxGeometry(0.06, 0.022, 0.042).translate(-0.008, 0.04, 0), 0.5]]);
+      const cm2 = new THREE.InstancedMesh(carG, new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.4, metalness: 0.3 }), cars.length);
+      const pal = [0xf2f2f2, 0x1d1f22, 0x9aa3ab, 0xb3262b, 0x2d4f8a, 0xdcdcd5, 0x6b6f72, 0xe0b33a, 0x2f7d4f];
+      cars.forEach((c, i) => cm2.setColorAt(i, new THREE.Color(pal[(i * 7 + (i >> 3)) % pal.length])));
+      cm2.frustumCulled = false; scene.add(cm2);
+      ticks.push((dt) => {
+        cars.forEach((c, i) => {
+          c.o.d += c.v * dt; if (c.o.d > c.r.len) { c.o.d -= c.r.len; c.o.k = 1; } if (c.o.d < 0) { c.o.d += c.r.len; c.o.k = c.r.L.length - 1; }
+          const [px, pz, ux, uz] = seg(c.r, c.o), off = RW[c.r.c] * 0.22 * (c.v > 0 ? 1 : -1), x = px - uz * off, z = pz + ux * off;
+          p4.set(x, hXZ(x, z) + 0.004, z); e4.set(0, -Math.atan2(uz, ux) + (c.v < 0 ? Math.PI : 0), 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cm2.setMatrixAt(i, m4);
+        });
+        cm2.instanceMatrix.needsUpdate = true;
+      });
+    }
+
+    // gente: calçadas (ruas e passeios perto do mar), areia e água rasa
+    const people = [], sandP = pairs3(vida.sand), swimP = pairs(vida.swim, 0);
+    function pairs3(a) { const o = []; for (let i = 0; i + 2 < a.length; i += 3) o.push([a[i], a[i + 1], a[i + 2]]); return o; }
+    const wlk = roads.filter((r) => r.c >= 2).map((r) => { const m = r.p[r.p.length >> 1]; return { r, w: r.len * (r.c === 4 ? 1.1 : r.c === 3 ? 0.35 : 0.5) * prox(m[0], m[1]) }; });
+    const wsm = wlk.reduce((x, y) => x + y.w, 0) || 1, wf = Math.min(1, 150 * q / wsm);
+    wlk.forEach(({ r, w }) => { const n = Math.min(6, Math.floor(w * wf + rnd())); for (let k = 0; k < n; k++) people.push({ k: 'r', r, o: { d: rnd() * r.len, k: 1 }, dir: rnd() < 0.5 ? 1 : -1, v: 0.05 + rnd() * 0.05, off: (rnd() < 0.5 ? 1 : -1) * (RW[r.c] / 2 + 0.018) }); });
+    // areia: banhistas (alguns passeando, a maioria parada perto do guarda-sol)
+    const sandOk = sandP.filter((p) => p[2] >= 5 && prox(wx(p[0]), wz(p[1])) > 0.2);
+    const NS = Math.round(300 * q), umbrellas = [];
+    for (let i = 0; i < NS && sandOk.length; i++) { const p = pick(sandOk), x = wx(p[0]) + (rnd() - 0.5) * 0.3, z = wz(p[1]) + (rnd() - 0.5) * 0.3, R = Math.max(0.03, Math.min(0.3, (p[2] - 4) / 100)); people.push({ k: 'w', c: [wx(p[0]), wz(p[1])], R, x, z, tx: 0, tz: 0, wait: 0.2 + rnd() * (rnd() < 0.7 ? 40 : 4), v: 0.05 + rnd() * 0.04 }); }
+    for (let i = 0; i < Math.round(180 * q) && sandOk.length; i++) { const p = pick(sandOk).slice(); if (p[2] < 9) continue; umbrellas.push([wx(p[0]) + (rnd() - 0.5) * 0.2, wz(p[1]) + (rnd() - 0.5) * 0.2]); }
+    // nadadores
+    const swimmers = []; for (let i = 0; i < Math.round(70 * q) && swimP.length; i++) { const p = pick(swimP); if (prox(wx(p[0]), wz(p[1])) < 0.2 && rnd() < 0.7) continue; swimmers.push({ x: wx(p[0]), z: wz(p[1]), a: rnd() * 6.28, ph: rnd() * 6.28, v: 0.02 + rnd() * 0.03 }); }
+    if (people.length) {
+      const skin = [0xf2c9a5, 0xd9a27a, 0xb7794f, 0x8a5a3c, 0xf0d2b8], cloth = [0xf2f2f2, 0xc43c3c, 0x2d6fb5, 0xe2b53a, 0x3f9a5a, 0x7a4fb0, 0xe0701f, 0x2a2c30, 0xd96c9a, 0x49b3b0];
+      const pm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8, flatShading: true });
+      const bod = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.0075, 0.0095, 0.03, 6).translate(0, 0.015, 0).scale(1.3, 1.3, 1.3), pm, people.length);
+      const hed = new THREE.InstancedMesh(new THREE.SphereGeometry(0.0085, 6, 4).translate(0, 0.038, 0).scale(1.3, 1.3, 1.3), pm, people.length);
+      people.forEach((p, i) => { bod.setColorAt(i, new THREE.Color(cloth[(rnd() * cloth.length) | 0])); hed.setColorAt(i, new THREE.Color(skin[(rnd() * skin.length) | 0])); });
+      bod.frustumCulled = hed.frustumCulled = false; scene.add(bod); scene.add(hed);
+      const step = (p, dt) => {
+        if (p.k === 'r') { p.o.d += p.dir * p.v * dt; if (p.o.d > p.r.len) { p.o.d = p.r.len; p.dir = -1; } else if (p.o.d < 0) { p.o.d = 0; p.dir = 1; } const [px, pz, ux, uz] = seg(p.r, p.o); p.x = px - uz * p.off; p.z = pz + ux * p.off; }
+        else if (p.wait > 0) { p.wait -= dt; if (p.wait <= 0) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * p.R; p.tx = p.c[0] + Math.cos(a) * d; p.tz = p.c[1] + Math.sin(a) * d; } }
+        else { const dx = p.tx - p.x, dz = p.tz - p.z, L = Math.hypot(dx, dz); if (L < 0.02) p.wait = 2 + rnd() * 14; else { p.x += dx / L * p.v * dt; p.z += dz / L * p.v * dt; } }
+      };
+      ticks.push((dt) => { people.forEach((p, i) => { step(p, dt); m4.identity(); m4.setPosition(p.x, hXZ(p.x, p.z) + 0.003, p.z); bod.setMatrixAt(i, m4); hed.setMatrixAt(i, m4); }); bod.instanceMatrix.needsUpdate = true; hed.instanceMatrix.needsUpdate = true; });
+    }
+    if (umbrellas.length) {
+      const ug = merge([[new THREE.ConeGeometry(0.03, 0.014, 8).translate(0, 0.05, 0), 1], [new THREE.CylinderGeometry(0.0016, 0.0016, 0.05, 4).translate(0, 0.025, 0), 0.35]]).scale(1.4, 1.4, 1.4);
+      const um = new THREE.InstancedMesh(ug, new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.7, side: THREE.DoubleSide }), umbrellas.length);
+      const up = [0xe2483c, 0xf2b705, 0x2d8fd6, 0xffffff, 0x2fb37a, 0xe66fa6, 0xff8a2b];
+      umbrellas.forEach(([x, z], i) => { e4.set((rnd() - 0.5) * 0.18, rnd() * 6.28, (rnd() - 0.5) * 0.18); q4.setFromEuler(e4); p4.set(x, hXZ(x, z) + 0.001, z); m4.compose(p4, q4, sc4); um.setMatrixAt(i, m4); um.setColorAt(i, new THREE.Color(up[i % up.length])); });
+      um.frustumCulled = false; scene.add(um);
+    }
+    if (swimmers.length) {
+      const sw = new THREE.InstancedMesh(new THREE.SphereGeometry(0.011, 6, 4), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8, flatShading: true }), swimmers.length);
+      const sk = [0xf2c9a5, 0xd9a27a, 0xb7794f, 0xe33b3b, 0xffffff, 0x2d8fd6]; swimmers.forEach((p, i) => sw.setColorAt(i, new THREE.Color(sk[i % sk.length])));
+      sw.frustumCulled = false; scene.add(sw);
+      ticks.push((dt, now) => { swimmers.forEach((p, i) => { p.a += (rnd() - 0.5) * dt * 2; p.x += Math.cos(p.a) * p.v * dt * 0.4; p.z += Math.sin(p.a) * p.v * dt * 0.4; m4.identity(); m4.setPosition(p.x, 0.004 + Math.sin(now / 700 + p.ph) * 0.003, p.z); sw.setMatrixAt(i, m4); }); sw.instanceMatrix.needsUpdate = true; });
+    }
+
+    // barcos: veleiros, lanchas e escunas andando nas faixas de mar paralelas à costa; pesqueiros fundeados perto da praia
+    const lanes = vida.lanes.map((l) => mkRoute(pairs(l, 1), { d: l[0] })).filter((l) => l.len > 1.2);
+    const lw = lanes.map((l) => { const m = l.p[l.p.length >> 1]; return l.len * prox(m[0], m[1]); }), lsum = lw.reduce((x, y) => x + y, 0) || 1;
+    const pickLane = (ok) => { let t = rnd() * lsum, best = null; for (let i = 0; i < lanes.length; i++) { t -= lw[i]; if (ok(lanes[i])) best = lanes[i]; if (t <= 0 && best) return best; } return best; };
+    const KINDS = [
+      { n: Math.round(24 * q), v: [0.05, 0.1], ok: (l) => l.d >= 330, hull: [[new THREE.BoxGeometry(0.3, 0.036, 0.085).translate(0, 0.018, 0), 1]], top: () => { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute([0.02, 0.04, 0, 0.02, 0.4, 0, -0.12, 0.04, 0, 0.06, 0.05, 0.01, 0.06, 0.32, 0.01, 0.17, 0.05, 0.01], 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute([0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1], 3)); g.setIndex([0, 1, 2, 3, 4, 5]); return g; }, topMat: () => new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6, side: THREE.DoubleSide }), wake: 1 },
+      { n: Math.round(16 * q), v: [0.12, 0.22], ok: (l) => l.d >= 200, hull: [[new THREE.BoxGeometry(0.27, 0.03, 0.08).translate(0, 0.015, 0), 1]], top: () => new THREE.BoxGeometry(0.11, 0.04, 0.06).translate(-0.02, 0.05, 0), topMat: () => new THREE.MeshStandardMaterial({ color: 0xf6f6f2, roughness: 0.5 }), wake: 1.3 },
+      { n: Math.round(5 * q) || 1, v: [0.04, 0.07], ok: (l) => l.d >= 200 && l.d <= 500, hull: [[new THREE.BoxGeometry(0.55, 0.05, 0.14).translate(0, 0.025, 0), 1]], top: () => merge([[new THREE.BoxGeometry(0.4, 0.012, 0.12).translate(0, 0.108, 0), 1], [new THREE.BoxGeometry(0.4, 0.05, 0.1).translate(-0.02, 0.07, 0), 0.8]]), topMat: () => new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.6 }), wake: 1.8 },
+      { n: Math.round(18 * q), v: [0, 0], ok: (l) => l.d <= 200, hull: [[new THREE.BoxGeometry(0.2, 0.03, 0.065).translate(0, 0.015, 0), 1]], top: () => new THREE.BoxGeometry(0.06, 0.035, 0.05).translate(0.03, 0.045, 0), topMat: () => new THREE.MeshStandardMaterial({ color: 0xf2eee6, roughness: 0.6 }), wake: 0 },
+    ];
+    const hullCol = [[0xffffff, 0xf2f2f2, 0xd9e3ea, 0x1f3a5f], [0xffffff, 0xf2f2f2, 0xc43c3c, 0x1f3a5f], [0x7a4a28, 0x8a5a33], [0x2d6fb5, 0xe2b53a, 0xc43c3c, 0xf2f2f2, 0x3f9a5a]];
+    const boats = [];
+    KINDS.forEach((K, ki) => { for (let i = 0; i < K.n; i++) { const l = pickLane(K.ok); if (!l) break; boats.push({ K, ki, l, o: { d: rnd() * l.len, k: 1 }, dir: rnd() < 0.5 ? 1 : -1, v: K.v[0] + rnd() * (K.v[1] - K.v[0]), yaw: rnd() * 6.28, ph: rnd() * 6.28, fix: K.v[1] === 0 }); } });
+    if (boats.length) {
+      const grp = KINDS.map((K, ki) => { const list = boats.filter((b) => b.ki === ki); if (!list.length) return null; const hull = new THREE.InstancedMesh(merge(K.hull), new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.5, metalness: 0.1 }), list.length), top = new THREE.InstancedMesh(K.top(), K.topMat(), list.length); list.forEach((b, i) => hull.setColorAt(i, new THREE.Color(hullCol[ki][(rnd() * hullCol[ki].length) | 0]))); hull.frustumCulled = top.frustumCulled = false; scene.add(hull); scene.add(top); return { list, hull, top }; }).filter(Boolean);
+      const moving = boats.filter((b) => !b.fix), wg = new THREE.BufferGeometry();
+      wg.setAttribute('position', new THREE.Float32BufferAttribute([-0.1, 0, 0, -1, 0, -0.16, -1, 0, 0.16], 3)); wg.setAttribute('color', new THREE.Float32BufferAttribute([1, 1, 1, 0.55, 1, 1, 1, 0, 1, 1, 1, 0], 4)); wg.setIndex([0, 2, 1]);
+      const wake = new THREE.InstancedMesh(wg, new THREE.MeshBasicMaterial({ color: 0xffffff, vertexColors: true, transparent: true, depthWrite: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2 }), moving.length);
+      wake.frustumCulled = false; scene.add(wake);
+      const aw = (a) => { while (a > Math.PI) a -= 6.2832; while (a < -Math.PI) a += 6.2832; return a; };
+      ticks.push((dt, now) => {
+        let wi = 0;
+        grp.forEach((g) => { g.list.forEach((b, i) => {
+          let x, z;
+          if (b.fix) { const o = { d: b.o.d, k: b.o.k }, [px, pz] = seg(b.l, o); x = px; z = pz; b.yaw += Math.sin(now / 5000 + b.ph) * dt * 0.05; }
+          else { b.o.d += b.dir * b.v * dt; if (b.o.d > b.l.len) { b.o.d = b.l.len; b.dir = -1; } else if (b.o.d < 0) { b.o.d = 0; b.dir = 1; } const [px, pz, ux, uz] = seg(b.l, b.o); x = px; z = pz; const tgt = -Math.atan2(uz, ux) + (b.dir < 0 ? Math.PI : 0); b.yaw += aw(tgt - b.yaw) * Math.min(1, dt * 1.5); }
+          const bob = Math.sin(now / 900 + b.ph) * 0.003, roll = Math.sin(now / 1300 + b.ph) * 0.05 + (b.fix ? 0 : 0.04);
+          e4.set(roll, b.yaw, Math.sin(now / 1100 + b.ph) * 0.02, 'YXZ'); q4.setFromEuler(e4); p4.set(x, 0.004 + bob, z); sc4.set(1.4, 1.4, 1.4); m4.compose(p4, q4, sc4); sc4.set(1, 1, 1); g.hull.setMatrixAt(i, m4); g.top.setMatrixAt(i, m4);
+          if (!b.fix) { e4.set(0, b.yaw, 0, 'YXZ'); q4.setFromEuler(e4); p4.set(x, 0.012, z); sc4.set(b.K.wake * 1.4, 1, 1.4); m4.compose(p4, q4, sc4); sc4.set(1, 1, 1); wake.setMatrixAt(wi++, m4); }
+        }); g.hull.instanceMatrix.needsUpdate = true; g.top.instanceMatrix.needsUpdate = true; });
+        wake.instanceMatrix.needsUpdate = true;
+      });
+    }
+
+    // gaivotas: giram devagar sobre a praia e o mar
+    { const NG = Math.round(26 * q), gs = [], base = sandP.length ? sandP : [[5000, 9000, 20]];
+      for (let i = 0; i < NG; i++) { const p = pick(base); gs.push({ c: [wx(p[0]), wz(p[1])], r: 0.4 + rnd() * 1.8, a: rnd() * 6.28, w: (0.25 + rnd() * 0.3) * (rnd() < 0.5 ? 1 : -1), h: 0.35 + rnd() * 0.7, ph: rnd() * 6.28 }); }
+      const bg = new THREE.BufferGeometry(); bg.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, -0.05, 0.012, 0.13, 0.02, 0, 0.02, 0, 0, 0, -0.05, 0.012, -0.13, 0.02, 0, -0.02], 3)); bg.computeVertexNormals();
+      const gm = new THREE.InstancedMesh(bg, new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }), NG); gm.frustumCulled = false; scene.add(gm);
+      ticks.push((dt, now) => { gs.forEach((g, i) => { g.a += g.w * dt; const x = g.c[0] + Math.cos(g.a) * g.r, z = g.c[1] + Math.sin(g.a) * g.r; e4.set(Math.sin(now / 180 + g.ph) * 0.35, -g.a + (g.w > 0 ? Math.PI / 2 : -Math.PI / 2), 0, 'YXZ'); q4.setFromEuler(e4); p4.set(x, g.h + Math.sin(now / 900 + g.ph) * 0.06, z); m4.compose(p4, q4, sc4); gm.setMatrixAt(i, m4); }); gm.instanceMatrix.needsUpdate = true; });
+    }
+    vidaTick = (dt) => { const now = performance.now(); ticks.forEach((f) => f(dt, now)); };
+    vidaTick(0.01);
   }
 
   // prédios da ZAH (destacados: cor do status, contorno e feixe de luz)
@@ -315,7 +441,7 @@ export async function init(stage, opts = {}) {
   const fwd = new THREE.Vector3(), sh = new THREE.Vector2(), v = new THREE.Vector3(), clock = new THREE.Clock(); let visible = true;
   new IntersectionObserver((es) => { visible = es[0].isIntersecting; }).observe(stage);
   function frame() {
-    waterMat.uniforms.t.value += Math.min(clock.getDelta(), 0.05);
+    const dtv = Math.min(clock.getDelta(), 0.05); waterMat.uniforms.t.value += dtv; if (vidaTick) vidaTick(dtv);
     const now = performance.now();
     risers.forEach((r) => { const k = r.t0 == null ? 0 : Math.max(0, Math.min(1, (now - r.t0) / 1600)); const e = 1 - Math.pow(1 - k, 3); r.g.children.forEach((ch) => { if (ch !== r.g.userData.ring && ch !== r.g.userData.beam) ch.scale.y = Math.max(0.001, e); }); r.g.userData.beam.visible = e > 0.95; r.g.userData.ring.material.opacity = 0.5 + 0.4 * Math.sin(now / 500); });
     if (fly) { const k = Math.min(1, (now - fly.t0) / fly.d), e = ease(k); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.q0, fly.q1, e); if (k >= 1) fly = null; }

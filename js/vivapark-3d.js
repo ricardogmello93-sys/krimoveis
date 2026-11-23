@@ -94,13 +94,16 @@ export function init(stage) {
     terrain(M.far, 0.04, false);
     ground = terrain(M.grid, 0, true);
     // faixas (ruas, BR, córregos) acompanhando o relevo
-    function ribbon(pts, w, mat, lift) {
+    function ribbon(pts0, w, mat, lift) {
+      // pontos intermediários a cada ~0,16 u: a faixa segue o terreno (antes um trecho longo reto "afundava" no morro e a rua parecia cortada)
+      const pts = [], org = [];
+      for (let k = 0; k < pts0.length; k++) { if (k) { const [xa, za] = pts0[k - 1], [xb, zb] = pts0[k], nn = Math.ceil(Math.hypot(xb - xa, zb - za) / 0.16); for (let q = 1; q < nn; q++) { pts.push([xa + (xb - xa) * q / nn, za + (zb - za) * q / nn]); org.push(false); } } pts.push(pts0[k]); org.push(true); }
       const pos = [], idx = []; let n = 0;
       for (let k = 1; k < pts.length; k++) {
         const [x1, z1] = pts[k - 1], [x2, z2] = pts[k], dx = x2 - x1, dz = z2 - z1, L = Math.hypot(dx, dz); if (L < 1e-4) continue;
         const nx = -dz / L * w / 2, nz = dx / L * w / 2, y1 = yAt(x1, z1) + lift, y2 = yAt(x2, z2) + lift;
         pos.push(x1 + nx, y1, z1 + nz, x1 - nx, y1, z1 - nz, x2 + nx, y2, z2 + nz, x2 - nx, y2, z2 - nz); idx.push(n, n + 1, n + 2, n + 1, n + 3, n + 2); n += 4;
-        if (k < pts.length - 1) { const disc = 6; for (let q = 0; q < disc; q++) { const a1 = q / disc * Math.PI * 2, a2 = (q + 1) / disc * Math.PI * 2; pos.push(x2, y2, z2, x2 + Math.cos(a1) * w / 2, y2, z2 + Math.sin(a1) * w / 2, x2 + Math.cos(a2) * w / 2, y2, z2 + Math.sin(a2) * w / 2); idx.push(n, n + 1, n + 2); n += 3; } }
+        if (k < pts.length - 1 && org[k]) { const disc = 6; for (let q = 0; q < disc; q++) { const a1 = q / disc * Math.PI * 2, a2 = (q + 1) / disc * Math.PI * 2; pos.push(x2, y2, z2, x2 + Math.cos(a1) * w / 2, y2, z2 + Math.sin(a1) * w / 2, x2 + Math.cos(a2) * w / 2, y2, z2 + Math.sin(a2) * w / 2); idx.push(n, n + 1, n + 2); n += 3; } }
       }
       if (!n) return; const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
       const m = new THREE.Mesh(g, mat); m.receiveShadow = true; scene.add(m);
@@ -151,19 +154,71 @@ export function init(stage) {
     const trees = new THREE.InstancedMesh(treeG, treeM, T.length), mtx = new THREE.Matrix4(), tc = new THREE.Color();
     T.forEach(([x, z, s], i) => { mtx.makeScale(s, s * (1.1 + rnd() * 0.5), s); mtx.setPosition(x, yAt(x, z) - 0.01, z); trees.setMatrixAt(i, mtx); tc.setHSL(0.25 + rnd() * 0.08, 0.32 + rnd() * 0.18, 0.24 + rnd() * 0.12); trees.setColorAt(i, tc); });
     trees.castShadow = !window.matchMedia('(pointer: coarse)').matches; trees.receiveShadow = true; scene.add(trees);
-    // carros: andam pelas vias principais (BR-101, marginais, Av. Gov. Celso Ramos e ruas maiores)
-    const routes = M.roads.filter((r) => /^(br|primary|secondary|tertiary)$/.test(r.t) && r.p.length > 1).map((r) => { const L = [0]; for (let k = 1; k < r.p.length; k++) L.push(L[k - 1] + Math.hypot(r.p[k][0] - r.p[k - 1][0], r.p[k][1] - r.p[k - 1][1])); return { p: r.p, L, len: L[L.length - 1], br: r.t === 'br', w: r.w }; }).filter((r) => r.len > 1.5);
-    const NC = routes.length ? Math.min(window.matchMedia('(pointer: coarse)').matches ? 70 : 140, routes.length * 6) : 0;
-    if (NC) {
-      const carG = new THREE.BoxGeometry(0.075, 0.035, 0.035); carG.translate(0, 0.0175, 0);
-      const cars = new THREE.InstancedMesh(carG, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4, metalness: 0.3 }), NC);
-      const pal = [0xf2f2f2, 0x1d1f22, 0x9aa3ab, 0xb3262b, 0x2d4f8a, 0xdcdcd5, 0x6b6f72];
-      const C = []; for (let i = 0; i < NC; i++) { const r = routes[i % routes.length]; C.push({ r, d: rnd() * r.len, v: (r.br ? 0.55 : 0.28) * (0.8 + rnd() * 0.4) * (rnd() < 0.5 ? 1 : -1), side: rnd() < 0.5 ? 1 : -1 }); cars.setColorAt(i, new THREE.Color(pal[i % pal.length])); }
-      cars.castShadow = false; scene.add(cars);
-      const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), sc4 = new THREE.Vector3(1, 1, 1), p4 = new THREE.Vector3();
-      tick = (dt) => { C.forEach((c, i) => { c.d += c.v * dt; if (c.d > c.r.len) c.d -= c.r.len; if (c.d < 0) c.d += c.r.len; const L = c.r.L; let k = 1; while (k < L.length - 1 && L[k] < c.d) k++; const [x1, z1] = c.r.p[k - 1], [x2, z2] = c.r.p[k], t = (c.d - L[k - 1]) / Math.max(1e-6, L[k] - L[k - 1]), dx = x2 - x1, dz = z2 - z1, ln = Math.hypot(dx, dz) || 1, off = (c.r.br ? c.r.w * 0.2 : c.r.w * 0.15) * (c.v > 0 ? 1 : -1); const x = x1 + dx * t - dz / ln * off, z = z1 + dz * t + dx / ln * off; p4.set(x, yAt(x, z) + 0.016, z); e4.set(0, -Math.atan2(dz, dx) + (c.v < 0 ? Math.PI : 0), 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cars.setMatrixAt(i, m4); }); cars.instanceMatrix.needsUpdate = true; };
-      tick(0);
+    // vida na maquete: carros em todas as ruas (mais perto do bairro) e gente a pé (calçadas, volta dos lagos, boulevard, colégio, quadras)
+    const coarse = window.matchMedia('(pointer: coarse)').matches;
+    const mkRoute = (r) => { const L = [0]; for (let k = 1; k < r.p.length; k++) L.push(L[k - 1] + Math.hypot(r.p[k][0] - r.p[k - 1][0], r.p[k][1] - r.p[k - 1][1])); return { p: r.p, L, len: L[L.length - 1], br: r.t === 'br', w: r.w, t: r.t }; };
+    // ponto e direção a d unidades do começo da rua (o é { d, k }: guarda o trecho para não procurar do zero a cada quadro)
+    const seg = (r, o) => { const L = r.L, nS = L.length - 1; let k = o.k || 1; while (k < nS && L[k] < o.d) k++; while (k > 1 && L[k - 1] > o.d) k--; o.k = k; const [x1, z1] = r.p[k - 1], [x2, z2] = r.p[k], t = (o.d - L[k - 1]) / Math.max(1e-6, L[k] - L[k - 1]), dx = x2 - x1, dz = z2 - z1, ln = Math.hypot(dx, dz) || 1; return [x1 + dx * t, z1 + dz * t, dx / ln, dz / ln]; };
+    const merge = (list) => { const pos = [], nor = [], col = [], ix = []; let o = 0; list.forEach(([g, c]) => { const p = g.attributes.position, nn = g.attributes.normal; for (let i = 0; i < p.count; i++) { pos.push(p.getX(i), p.getY(i), p.getZ(i)); nor.push(nn.getX(i), nn.getY(i), nn.getZ(i)); col.push(c, c, c); } for (let i = 0; i < g.index.count; i++) ix.push(g.index.getX(i) + o); o += p.count; }); const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3)); g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); g.setIndex(ix); return g; };
+    const cen = P(900, 700); // centro do bairro (lagos e boulevard)
+    const near = (x, z) => Math.hypot(x - cen.x, z - cen.z);
+    const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), e4 = new THREE.Euler(), sc4 = new THREE.Vector3(1, 1, 1), p4 = new THREE.Vector3();
+    const ticks = [];
+
+    // carros
+    const DENS = { br: 0.8, primary: 0.7, secondary: 0.55, tertiary: 0.45, residential: 0.34, unclassified: 0.26, service: 0.1 };
+    const routes = M.roads.filter((r) => DENS[r.t] != null && r.p.length > 1).map(mkRoute).filter((r) => r.len > 0.5);
+    const want = routes.map((r) => { const m = r.p[r.p.length >> 1], d = near(m[0], m[1]); return r.len * DENS[r.t] * (d < 9 ? 1 : d < 20 ? 0.5 : 0.2); });
+    const wsum = want.reduce((x, y) => x + y, 0), fct = Math.min(1, (coarse ? 170 : 380) / Math.max(1e-6, wsum));
+    const C = [];
+    routes.forEach((r, i) => { const n = Math.floor(want[i] * fct + rnd()); for (let q = 0; q < n; q++) C.push({ r, o: { d: rnd() * r.len, k: 1 }, v: (r.br ? 0.55 : r.t === 'secondary' || r.t === 'primary' || r.t === 'tertiary' ? 0.32 : 0.2) * (0.8 + rnd() * 0.4) * (rnd() < 0.5 ? 1 : -1) }); });
+    if (C.length) {
+      const carG = merge([[new THREE.BoxGeometry(0.082, 0.02, 0.036).translate(0, 0.012, 0), 1], [new THREE.BoxGeometry(0.044, 0.017, 0.031).translate(-0.006, 0.0305, 0), 0.5]]).scale(1.25, 1.25, 1.25);
+      const cars = new THREE.InstancedMesh(carG, new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true, roughness: 0.4, metalness: 0.3 }), C.length);
+      const pal = [0xf2f2f2, 0x1d1f22, 0x9aa3ab, 0xb3262b, 0x2d4f8a, 0xdcdcd5, 0x6b6f72, 0xe0b33a, 0x2f7d4f];
+      C.forEach((c, i) => cars.setColorAt(i, new THREE.Color(pal[(i * 7 + (i >> 3)) % pal.length])));
+      cars.castShadow = false; cars.frustumCulled = false; scene.add(cars);
+      ticks.push((dt) => {
+        C.forEach((c, i) => {
+          c.o.d += c.v * dt; if (c.o.d > c.r.len) { c.o.d -= c.r.len; c.o.k = 1; } if (c.o.d < 0) { c.o.d += c.r.len; c.o.k = c.r.L.length - 1; }
+          const [px, pz, ux, uz] = seg(c.r, c.o), off = (c.r.br ? c.r.w * 0.2 : Math.min(c.r.w * 0.15, 0.03)) * (c.v > 0 ? 1 : -1), x = px - uz * off, z = pz + ux * off;
+          p4.set(x, yAt(x, z) + 0.016, z); e4.set(0, -Math.atan2(uz, ux) + (c.v < 0 ? Math.PI : 0), 0); q4.setFromEuler(e4); m4.compose(p4, q4, sc4); cars.setMatrixAt(i, m4);
+        });
+        cars.instanceMatrix.needsUpdate = true;
+      });
     }
+
+    // gente a pé
+    const people = [];
+    const lake = (x, y, rx, ry, n) => { for (let i = 0; i < n; i++) people.push({ k: 'e', c: P(x, y), rx: rx / S, rz: ry / S, a: rnd() * 6.283, w: (rnd() < 0.7 ? 1 : -1) * (0.05 + rnd() * 0.035) / (rx / S) }); };
+    const wander = (x, y, r, n) => { const c = P(x, y), R = r / S; for (let i = 0; i < n; i++) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * R; people.push({ k: 'w', c, R, x: c.x + Math.cos(a) * d, z: c.z + Math.sin(a) * d, tx: 0, tz: 0, wait: 0.2 + rnd() * 4, v: 0.03 + rnd() * 0.03 }); } };
+    lake(603, 762, 100, 70, coarse ? 4 : 9);
+    lake(838, 792, 126, 88, coarse ? 5 : 11);
+    wander(810, 700, 80, coarse ? 7 : 14); // boulevard
+    wander(700, 690, 55, coarse ? 3 : 7);
+    wander(470, 575, 70, coarse ? 4 : 8); // colégio
+    wander(1293, 800, 95, coarse ? 5 : 11); // quadras
+    wander(845, 300, 70, coarse ? 3 : 6); // PSG Academy
+    // calçadas das ruas do bairro
+    const walk = routes.filter((r) => /^(residential|tertiary|unclassified)$/.test(r.t) && r.len > 0.6 && near(r.p[r.p.length >> 1][0], r.p[r.p.length >> 1][1]) < 8);
+    const wlk = walk.map((r) => r.len * 0.8), wsm = wlk.reduce((x, y) => x + y, 0) || 1, wf = Math.min(1, (coarse ? 50 : 110) / wsm);
+    walk.forEach((r, i) => { const n = Math.min(5, Math.floor(wlk[i] * wf + rnd())); for (let q = 0; q < n; q++) people.push({ k: 'r', r, o: { d: rnd() * r.len, k: 1 }, dir: rnd() < 0.5 ? 1 : -1, v: 0.045 + rnd() * 0.04, off: (rnd() < 0.5 ? 1 : -1) * (Math.max(r.w * 0.62, 0.04) / 2 + 0.03) }); });
+    if (people.length) {
+      const skin = [0xf2c9a5, 0xd9a27a, 0xb7794f, 0x8a5a3c, 0xf0d2b8], cloth = [0xf2f2f2, 0xc43c3c, 0x2d6fb5, 0xe2b53a, 0x3f9a5a, 0x7a4fb0, 0xe0701f, 0x2a2c30, 0xd96c9a, 0x49b3b0];
+      const pm = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8, flatShading: true });
+      const bod = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.0055, 0.0068, 0.022, 6).translate(0, 0.011, 0).scale(1.25, 1.25, 1.25), pm, people.length);
+      const hed = new THREE.InstancedMesh(new THREE.SphereGeometry(0.0058, 6, 4).translate(0, 0.0278, 0).scale(1.25, 1.25, 1.25), pm, people.length);
+      people.forEach((p, i) => { bod.setColorAt(i, new THREE.Color(cloth[(rnd() * cloth.length) | 0])); hed.setColorAt(i, new THREE.Color(skin[(rnd() * skin.length) | 0])); });
+      bod.frustumCulled = hed.frustumCulled = false; scene.add(bod); scene.add(hed);
+      const step = (p, dt) => {
+        if (p.k === 'e') { p.a += p.w * dt; p.x = p.c.x + Math.cos(p.a) * p.rx; p.z = p.c.z + Math.sin(p.a) * p.rz; }
+        else if (p.k === 'r') { p.o.d += p.dir * p.v * dt; if (p.o.d > p.r.len) { p.o.d = p.r.len; p.dir = -1; } else if (p.o.d < 0) { p.o.d = 0; p.dir = 1; } const [px, pz, ux, uz] = seg(p.r, p.o); p.x = px - uz * p.off; p.z = pz + ux * p.off; }
+        else { if (p.wait > 0) { p.wait -= dt; if (p.wait <= 0 || !p.tx) { const a = rnd() * 6.283, d = Math.sqrt(rnd()) * p.R; p.tx = p.c.x + Math.cos(a) * d; p.tz = p.c.z + Math.sin(a) * d; } } else { const dx = p.tx - p.x, dz = p.tz - p.z, L = Math.hypot(dx, dz); if (L < 0.02) p.wait = 1 + rnd() * 4; else { p.x += dx / L * p.v * dt; p.z += dz / L * p.v * dt; } } }
+      };
+      ticks.push((dt) => { people.forEach((p, i) => { step(p, dt); m4.identity(); m4.setPosition(p.x, yAt(p.x, p.z) + 0.004, p.z); bod.setMatrixAt(i, m4); hed.setMatrixAt(i, m4); }); bod.instanceMatrix.needsUpdate = true; hed.instanceMatrix.needsUpdate = true; });
+    }
+    tick = (dt) => { ticks.forEach((f) => f(dt)); };
+    tick(0.01);
     stage.classList.add('ready');
   }).catch(() => stage.classList.add('nogl'));
 
