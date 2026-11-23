@@ -527,7 +527,7 @@ fbq('track', 'PageView');
     <p class="vp-p rv">Gire, aproxime e toque nos pontos. Veja os prédios do bairro subindo cada um no seu lote, do Vértice ao Vision, os lagos, o boulevard e as ruas de casas, como se você estivesse sobrevoando o bairro.</p>
   </div>
   <div class="vp-3d-wrap rv">
-    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwsp71gg">
+    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwtn4wer">
       <img class="vp-3d-fb" src="../images/vivapark/vision-aereo.webp" alt="Vista aérea do Vision Home Club no Vivapark (imagem ilustrativa)" loading="lazy">
       <canvas aria-label="Maquete 3D interativa do Vivapark"></canvas>
       <div class="vp-3d-pins"></div>
@@ -650,8 +650,8 @@ fbq('track', 'PageView');
     <div class="vp-duo" id="vpDuo">
       <div class="vp-arch" aria-hidden="true"></div>
       <div class="vp-pp g"><img src="../images/vivapark/gustavo-recorte.webp" alt="Gustavo Souza, advogado, investidor e corretor de imóveis" loading="lazy"></div>
-      <div class="vp-pp r"><img src="../images/ricardo-recorte.webp" alt="Ricardo Mello, corretor de imóveis" loading="lazy"></div>
-      <div class="vp-names"><div><strong>Ricardo Mello</strong><span>Corretor de imóveis</span></div><div><strong>Gustavo Souza</strong><span>Advogado · Investidor · Corretor</span></div></div>
+      <div class="vp-pp r"><img src="../images/ricardo-recorte.webp" alt="Ricardo Mello, administrador e corretor de imóveis" loading="lazy"></div>
+      <div class="vp-names"><div><strong>Ricardo Mello</strong><span>Administrador · Corretor de imóveis</span></div><div><strong>Gustavo Souza</strong><span>Advogado · Investidor · Corretor</span></div></div>
     </div>
     <div>
       <span class="lt-tag rv">Quem vai te acompanhar</span>
@@ -766,7 +766,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwsp71gh').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwtn4wes').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();

@@ -627,8 +627,8 @@ fbq('track', 'PageView');
     <div class="vp-duo" id="vpDuo">
       <div class="vp-arch" aria-hidden="true"></div>
       <div class="vp-pp g"><img src="../images/vivapark/gustavo-recorte.webp" alt="Gustavo Souza, abogado, inversor y corredor inmobiliario" loading="lazy"></div>
-      <div class="vp-pp r"><img src="../images/ricardo-recorte.webp" alt="Ricardo Mello, corredor inmobiliario" loading="lazy"></div>
-      <div class="vp-names"><div><strong>Ricardo Mello</strong><span>Corredor inmobiliario</span></div><div><strong>Gustavo Souza</strong><span>Abogado · Inversor · Corredor</span></div></div>
+      <div class="vp-pp r"><img src="../images/ricardo-recorte.webp" alt="Ricardo Mello, administrador y corredor inmobiliario" loading="lazy"></div>
+      <div class="vp-names"><div><strong>Ricardo Mello</strong><span>Administrador · Corredor inmobiliario</span></div><div><strong>Gustavo Souza</strong><span>Abogado · Inversor · Corredor</span></div></div>
     </div>
     <div>
       <span class="lt-tag rv">Quién lo acompañará</span>
@@ -767,7 +767,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=mwtn2vym').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=mwtn4wnk').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';
