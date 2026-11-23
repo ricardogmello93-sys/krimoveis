@@ -423,6 +423,11 @@ img { max-width: 100%; }
 @media (max-width: 760px) { .kr-duo { height: 400px; } .kr-arch { left: 8%; right: 8%; top: 12%; } .kr-pp { width: 54%; } .kr-pp img { transform: scale(1.14); } .kr-names { gap: 8px; } .kr-names div { flex: 1; padding: 9px 12px; } .kr-names strong { font-size: 18px; white-space: nowrap; } .kr-names span { font-size: 9px; letter-spacing: 1.1px; } }
 @media (prefers-reduced-motion: reduce) { .kr-pp { opacity: 1 !important; transform: none !important; animation: none !important; } }
 </style>
+<script>
+(function(){var i=false;try{var q=location.search;if(/[?&]interno=1\b/.test(q))localStorage.setItem('kr_interno','1');if(/[?&]interno=0\b/.test(q))localStorage.removeItem('kr_interno');i=localStorage.getItem('kr_interno')==='1';}catch(e){}
+window.krTrack=/(^|\.)krimoveissm\.com\.br$/.test(location.hostname)&&!i;
+if(!window.krTrack){window['ga-disable-G-M7E90J24DT']=true;window['ga-disable-AW-18162751528']=true;}})();
+</script>
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -433,8 +438,10 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
+if (window.krTrack) {
 fbq('init', '1511246240665666');
 fbq('track', 'PageView');
+}
 </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-M7E90J24DT"></script>

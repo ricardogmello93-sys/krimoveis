@@ -228,6 +228,11 @@ a.inline:hover { color: var(--white); }
 .t-links a { font-size: 13px; color: #e2c77e; border: 1px solid rgba(201,168,76,0.35); border-radius: 100px; padding: 8px 14px; text-decoration: none; }
 @media (max-width: 700px) { .t-grid { grid-template-columns: 1fr; } }
 </style>
+<script>
+(function(){var i=false;try{var q=location.search;if(/[?&]interno=1\b/.test(q))localStorage.setItem('kr_interno','1');if(/[?&]interno=0\b/.test(q))localStorage.removeItem('kr_interno');i=localStorage.getItem('kr_interno')==='1';}catch(e){}
+window.krTrack=/(^|\.)krimoveissm\.com\.br$/.test(location.hostname)&&!i;
+if(!window.krTrack){window['ga-disable-G-M7E90J24DT']=true;window['ga-disable-AW-18162751528']=true;}})();
+</script>
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -238,8 +243,10 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
+if (window.krTrack) {
 fbq('init', '1511246240665666');
 fbq('track', 'PageView');
+}
 </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-M7E90J24DT"></script>

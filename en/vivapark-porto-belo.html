@@ -400,6 +400,11 @@ img { max-width: 100%; }
 @media (max-width: 760px) { .em-sec { padding: 70px 16px 0; } .em-3d { grid-template-columns: 1fr; } .em-3d a { min-height: 200px; } .em-arr { display: none; } .em-card { flex-basis: 78%; } }
 .em-hub { display: inline-block; margin-top: 18px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; color: var(--sand2); text-decoration: none; border-bottom: 1px solid rgba(226,199,126,0.5); padding-bottom: 2px; }.vp-soon { color: #e2c77e !important; border-color: rgba(226,199,126,0.55) !important; background: rgba(226,199,126,0.08) !important; }
 </style>
+<script>
+(function(){var i=false;try{var q=location.search;if(/[?&]interno=1\b/.test(q))localStorage.setItem('kr_interno','1');if(/[?&]interno=0\b/.test(q))localStorage.removeItem('kr_interno');i=localStorage.getItem('kr_interno')==='1';}catch(e){}
+window.krTrack=/(^|\.)krimoveissm\.com\.br$/.test(location.hostname)&&!i;
+if(!window.krTrack){window['ga-disable-G-M7E90J24DT']=true;window['ga-disable-AW-18162751528']=true;}})();
+</script>
 <!-- Meta Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -410,8 +415,10 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
+if (window.krTrack) {
 fbq('init', '1511246240665666');
 fbq('track', 'PageView');
+}
 </script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-M7E90J24DT"></script>
