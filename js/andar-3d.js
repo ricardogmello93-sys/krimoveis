@@ -128,9 +128,11 @@ export async function abrir(cfg) {
   function dispose(g) { g.traverse((x) => { if (x.geometry) x.geometry.dispose(); if (x.material) [].concat(x.material).forEach((m) => { if (m.map) m.map.dispose(); m.dispose(); }); }); }
 
   // piso com a imagem + laje + sombra + paredes (retângulos escuros da planta viram blocos de topo escuro e lados claros)
-  function laje(g, tex, Wm, Hm, slabCol) {
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(Wm, Hm), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.82 })); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; g.add(floor);
-    const slab = new THREE.Mesh(new THREE.BoxGeometry(Wm + Math.max(Wm, Hm) * 0.02, 0.3, Hm + Math.max(Wm, Hm) * 0.02), new THREE.MeshStandardMaterial({ color: slabCol || 0xe9e3d9, roughness: 0.9 })); slab.position.y = -0.155; slab.receiveShadow = true; g.add(slab);
+  function laje(g, tex, Wm, Hm, slabCol, recorte) {
+    // recorte: a imagem já vem só com o contorno do prédio (transparente em volta); sem a laje retangular
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(Wm, Hm), new THREE.MeshStandardMaterial(Object.assign({ map: tex, roughness: 0.82 }, recorte ? { transparent: true, alphaTest: 0.45 } : {}))); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; g.add(floor);
+    if (recorte) { const under = new THREE.Mesh(new THREE.PlaneGeometry(Wm, Hm), new THREE.MeshStandardMaterial({ map: tex, color: 0x8d8579, transparent: true, alphaTest: 0.45, roughness: 1 })); under.rotation.x = -Math.PI / 2; under.position.y = -0.32; g.add(under); }
+    else { const slab = new THREE.Mesh(new THREE.BoxGeometry(Wm + Math.max(Wm, Hm) * 0.02, 0.3, Hm + Math.max(Wm, Hm) * 0.02), new THREE.MeshStandardMaterial({ color: slabCol || 0xe9e3d9, roughness: 0.9 })); slab.position.y = -0.155; slab.receiveShadow = true; g.add(slab); }
     const sc = document.createElement('canvas'); sc.width = sc.height = 128; const sx = sc.getContext('2d'), gr = sx.createRadialGradient(64, 64, 10, 64, 64, 64); gr.addColorStop(0, 'rgba(0,0,0,.55)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); sx.fillStyle = gr; sx.fillRect(0, 0, 128, 128);
     const sh = new THREE.Mesh(new THREE.PlaneGeometry(Wm * 1.9, Hm * 1.9), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false })); sh.rotation.x = -Math.PI / 2; sh.position.y = -Math.max(Wm, Hm) * 0.09; g.add(sh);
   }
@@ -157,15 +159,15 @@ export async function abrir(cfg) {
   async function monta(pk) {
     if (P) { world.remove(P.g); dispose(P.g); } pinBox.innerHTML = ''; pavAtual = pk;
     const pv = D.pav[pk], ppm = pv.ppm, Wm = pv.W / ppm, Hm = pv.H / ppm, X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2;
-    const g = new THREE.Group(); world.add(g); laje(g, await loadTex(pv.img), Wm, Hm, pv.laje); sombra(Math.max(Wm, Hm) * 0.75);
-    const walls = paredes(g, pv.r, ppm, Wm, Hm, WH, pv.top, pv.lado);
+    const g = new THREE.Group(); world.add(g); laje(g, await loadTex(pv.img), Wm, Hm, pv.laje, pv.recorte); sombra(Math.max(Wm, Hm) * 0.75);
+    const ph = pv.wh || WH, walls = paredes(g, pv.r, ppm, Wm, Hm, ph, pv.top, pv.lado);
     const zs = {};
     for (const [zk, pts] of Object.entries(pv.z)) {
       const shp = new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(X(x), -Z(y))));
       const hl = new THREE.Mesh(new THREE.ShapeGeometry(shp), new THREE.MeshBasicMaterial({ color: 0xf2cf7a, transparent: true, opacity: 0, depthWrite: false })); hl.rotation.x = -Math.PI / 2; hl.position.y = 0.03; g.add(hl);
-      const vl = new THREE.Mesh(new THREE.ShapeGeometry(shp), new THREE.MeshBasicMaterial({ color: 0x0b091c, transparent: true, opacity: 0, depthWrite: false })); vl.rotation.x = -Math.PI / 2; vl.position.y = WH + 0.03; g.add(vl);
+      const vl = new THREE.Mesh(new THREE.ShapeGeometry(shp), new THREE.MeshBasicMaterial({ color: 0x0b091c, transparent: true, opacity: 0, depthWrite: false })); vl.rotation.x = -Math.PI / 2; vl.position.y = ph + 0.03; g.add(vl);
       const c = centro(pts), xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
-      zs[zk] = { zk, pts, hl, vl, c: new THREE.Vector3(X(c[0]), WH + 0.4, Z(c[1])), size: Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / ppm, hlT: 0, vlT: 0, pin: null, num: null };
+      zs[zk] = { zk, pts, hl, vl, c: new THREE.Vector3(X(c[0]), ph + 0.4, Z(c[1])), size: Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / ppm, hlT: 0, vlT: 0, pin: null, num: null };
     }
     P = { pk, pv, Wm, Hm, g, walls, zs, rise: performance.now() };
     rotulos();
@@ -220,7 +222,7 @@ export async function abrir(cfg) {
   canvas.addEventListener('pointerup', (e) => { if (!down || U) { down = null; return; } const mv = Math.hypot(e.clientX - down[0], e.clientY - down[1]), dt = performance.now() - down[2]; down = null; if (mv > 7 || dt > 600 || tp.size) return; const z = zonaSob(e.clientX, e.clientY); if (z) escolhe(z.num); else if (sel) solta(); });
 
   function foca(z, dur = 1300) {
-    const tg = new THREE.Vector3(z.c.x, 0, z.c.z), r = cabe(z.size, z.size) * 1.25 + 2;
+    const tg = new THREE.Vector3(z.c.x, 0, z.c.z), r = cabe(z.size, z.size) * 1.6 + 4;
     if (camera.aspect < 0.8) tg.z += z.size * 0.45; // no celular a ficha cobre a parte de baixo
     go(tg, sph(tg, r, 0.6, az()), dur);
   }
