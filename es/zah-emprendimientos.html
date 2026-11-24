@@ -216,6 +216,8 @@ img { max-width: 100%; }
 .zh-specs span { font-size: 12.5px; padding: 6px 11px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--white); }
 .zh-txt { font-size: 14.5px; color: var(--muted); line-height: 1.7; margin-bottom: 18px; }
 .zh-acts { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.zh-prop { flex: 0 0 100%; font-size: 13.5px; color: var(--gold2, #e2c77e); text-decoration: underline; text-decoration-color: rgba(226,199,126,.4); text-underline-offset: 4px; }
+.zh-prop:hover { text-decoration-color: currentColor; }
 .zh-acts .lt-btn { padding: 13px 20px; font-size: 12px; }
 .zh-more { font: 500 12px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; padding: 13px 20px; border-radius: 100px; border: 1px solid rgba(226,199,126,0.55); background: transparent; color: var(--sand2); cursor: pointer; transition: background 0.25s; }
 .zh-more:hover { background: rgba(226,199,126,0.12); }
@@ -455,6 +457,7 @@ fbq('track', 'PageView');
   gtag('config', 'G-M7E90J24DT');
   gtag('config', 'AW-18162751528');
 </script>
+<style id="krsub">.kr-lg{display:inline-flex;flex-direction:column;align-items:center;gap:3px;line-height:1}.kr-sub{display:block;font:500 9.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:.9px;color:#e8d9b0;white-space:nowrap;opacity:.92}.sm-nav,.lt-nav{padding-top:11px!important;padding-bottom:11px!important}@media (max-width:760px){.kr-sub{font-size:8.5px;letter-spacing:.6px}.sm-nav,.lt-nav{padding-top:8px!important;padding-bottom:8px!important}}</style>
 <style id="krsub">.kr-lg{display:inline-flex;flex-direction:column;align-items:center;gap:3px;line-height:1}.kr-sub{display:block;font:500 9.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:.9px;color:#e8d9b0;white-space:nowrap;opacity:.92}.sm-nav,.lt-nav{padding-top:11px!important;padding-bottom:11px!important}@media (max-width:760px){.kr-sub{font-size:8.5px;letter-spacing:.6px}.sm-nav,.lt-nav{padding-top:8px!important;padding-bottom:8px!important}}</style>
 </head>
 <body>
@@ -757,7 +760,7 @@ fbq('track', 'PageView');
     q('.zh-bars').innerHTML = d.obra.map(function (b) { return '<div><span>' + b[0] + '<b>' + b[1] + '%</b></span><i><b data-w="' + b[1] + '"></b></i></div>'; }).join('');
     q('.zh-ficha').innerHTML = d.ficha.map(function (f) { return '<li>' + f + '</li>'; }).join('');
     q('.zh-lazer').innerHTML = d.lazer.map(function (f) { return '<span>' + f + '</span>'; }).join('');
-    q('.zh-mcta').innerHTML = waLink(d.cta || ('¡Hola Ricardo! Vi el ' + d.nome + ' de ZAH en el sitio y quiero saber más detalles.'), id + '_detalhe', d.ctaL || 'Quiero más detalles', 'lt-btn lt-btn-gold') + waLink('¡Hola Ricardo! Quiero agendar una visita al ' + d.nome + ' da ZAH.', id + '_visita', 'Agendar visita', 'lt-btn lt-btn-ghost');
+    q('.zh-mcta').innerHTML = waLink(d.cta || ('¡Hola Ricardo! Vi el ' + d.nome + ' de ZAH en el sitio y quiero saber más detalles.'), id + '_detalhe', d.ctaL || 'Quiero más detalles', 'lt-btn lt-btn-gold') + waLink('¡Hola Ricardo! Quiero agendar una visita al ' + d.nome + ' da ZAH.', id + '_visita', 'Agendar visita', 'lt-btn lt-btn-ghost') + (d.st !== 'pronto' && id !== 'tenet' && /^pt/i.test(document.documentElement.lang) ? '' : '');
     var isT = id === 'tenet' || id === 'tenet2'; q('.zh-extra').style.display = isT ? '' : 'none';
     if (isT) setTimeout(function () { if (window.zhPanoShow) window.zhPanoShow('f2'); }, 700);
     modal.classList.add('open'); document.documentElement.style.overflow = 'hidden'; q('.zh-panel').scrollTop = 0; q('.zh-x').focus({ preventScroll: true });
@@ -768,7 +771,7 @@ fbq('track', 'PageView');
   var z3 = document.getElementById('zh3d');
   if (z3) {
     var openFromMap = function (id) { openDet(id === 'tenet' ? 'tenet2' : id); };
-    var loadZ3 = function () { import('../js/zah-3d.js?v=mwtqfqkl').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
+    var loadZ3 = function () { import('../js/zah-3d.js?v=mwv4tspk').then(function (m) { return m.init(z3, { open: openFromMap }); }).catch(function () { z3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var oz = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { oz.disconnect(); loadZ3(); } }, { rootMargin: '500px 0px' }); oz.observe(z3); } else loadZ3();
   }
   var vbox = modal.querySelector('.vp-video[data-yt]'), vcover = vbox ? vbox.innerHTML : '';

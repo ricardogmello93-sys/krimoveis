@@ -425,6 +425,11 @@ a.inline { color: var(--sand); text-underline-offset: 3px; }
 .finlit .fnote { font-size: 12.5px; color: var(--soft); line-height: 1.6; margin-top: 4px; }
 .finlit .lf .lt-btn { border: 0; cursor: pointer; padding: 15px 24px; }
 @media (max-width: 900px) { .finlit .lf .lt-btn { width: 100%; } }
+
+.pl-i { margin: 0 0 16px; padding: 16px 18px; border-radius: 20px; border: 1px solid rgba(226,199,126,.45); background: linear-gradient(135deg, rgba(201,168,76,.14), rgba(201,168,76,.03)); font-size: 14.5px; line-height: 1.6; }
+.pl-i b { color: var(--gold2, #e2c77e); font-weight: 500; } .pl-i small { display: block; margin-top: 4px; font-size: 12.5px; opacity: .75; }
+.pl-s { margin-top: 12px; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(226,199,126,.35); background: rgba(201,168,76,.07); font-size: 13.5px; line-height: 1.5; }
+.pl-s b { display: block; font-weight: 500; color: var(--gold2, #e2c77e); } .pl-s span { font-size: 12.5px; opacity: .78; }
 .wrap { --mdl: rgba(169,221,227,0.22); --mdbg: rgba(14,51,64,0.45); } .md-b.on i { color: #061820; } .cond-litoral { margin: 0 0 22px; font-size: 14.5px; line-height: 1.65; color: var(--muted); border-left: 2px solid var(--gold2); padding: 4px 0 4px 16px; } .cond-litoral b { color: var(--white); font-weight: 500; }</style>
 <script>
 (function(){var i=false;try{var q=location.search;if(/[?&]interno=1\b/.test(q))localStorage.setItem('kr_interno','1');if(/[?&]interno=0\b/.test(q))localStorage.removeItem('kr_interno');i=localStorage.getItem('kr_interno')==='1';}catch(e){}
@@ -682,7 +687,7 @@ fbq('track', 'PageView');
 <script>
 (function () {
   var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para o Ricardo receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Itapema e Porto Belo · SC","imgNote":"Valores sem correção. Durante a obra, a maioria das construtoras corrige as parcelas pelo CUB/SC; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-ricardo-mello.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo de {m}%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos {m}% até as chaves.","ruleBad":"Com esses valores não dá para chegar a {m}% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","minL":"Pago até as chaves (mínimo)","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
-  var MSG = (d) => `[Simulador Litoral] Olá Ricardo! Fiz a simulação de fluxo no site.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses · ${d.pctObra}% pago até as chaves\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber 3 lançamentos reais em Itapema e Porto Belo que cabem nessa parcela.`;
+  var MSG = (d) => d.prop ? `[Simulador Litoral · proposta] Olá Ricardo! Montei uma proposta no site para o ${d.emp}.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nValor de referência: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty ? d.boostQty + 'x de ' + d.boost + ' (' + d.every.toLowerCase() + ')' : 'sem reforços'}\n${d.keysPct ? 'Chaves (' + d.keysPct + '%): ' + d.keys : 'Sem parcela nas chaves'}\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\nTotal: ${d.months} parcelas, de ${d.de} a ${d.ate} (chaves em ${d.chaves})\n\nQuero saber se a construtora aceita essa proposta.` : `[Simulador Litoral] Olá Ricardo! Fiz a simulação de fluxo no site.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses · ${d.pctObra}% pago até as chaves\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber 3 lançamentos reais em Itapema e Porto Belo que cabem nessa parcela.`;
   var lang = "pt", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
   var brl = new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
@@ -728,6 +733,7 @@ fbq('track', 'PageView');
     var parts = [[d, '#e2c77e'], [bq * bp, '#79c2cd'], [k, '#9d93ed'], [pA * mA, '#e9dcc3'], [pB * mB, '#8a8476']], sum = parts.reduce(function (a, p) { return a + p[0]; }, 0) || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
     last = { parts: parts, price: money(price), alt: cur === 'USD' && rate ? '≈ ' + brl.format(price * rate) : '', downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
+    try { document.dispatchEvent(new CustomEvent('sim:calc', { detail: Object.assign({ d: d, bq: bq, bp: bp, k: k, pA: pA, pB: pB }, last) })); } catch (_) {}
   }
   ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra', 'sMin'].forEach(function (id) { if ($(id)) $(id).addEventListener('input', calc); });
   // páginas em inglês e espanhol: busca a cotação do dia e passa para dólar; sem cotação, segue em reais
@@ -755,6 +761,7 @@ fbq('track', 'PageView');
     if (!okPhone) { err.textContent = L.bad; err.style.display = 'block'; $('sPhone').focus(); return; }
     err.style.display = 'none';
     var c = $('sCountry'); var d = Object.assign({}, last, { name: name, phone: phone, country: c ? c.value : '', emp: ($('sEmp') || {}).value || '' });
+    if (window.__simExtra) Object.assign(d, window.__simExtra(d));
     var url = 'https://wa.me/5555999147822?text=' + encodeURIComponent(MSG(d));
     try {
       gtag('event', 'generate_lead', { simulador: 'fluxo_construtora', idioma: lang, valor_imovel: cur === 'USD' ? Math.round(num($('sPrice').value) * rate) : num($('sPrice').value) });
@@ -809,7 +816,7 @@ fbq('track', 'PageView');
       c.strokeStyle = 'rgba(226,199,126,0.55)'; c.lineWidth = 2; rr(c, 40, 40, W - 80, H - 80, 36); c.stroke();
       if (logo.naturalWidth) c.drawImage(logo, 90, 92, 140, 140 * 258 / 504);
       c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.textAlign = 'right'; c.fillText(L.imgSub.toUpperCase(), W - 90, 136); c.textAlign = 'left';
-      c.fillStyle = '#f4f2ee'; c.font = '300 66px "Cormorant Garamond"'; wrap(c, L.imgTitle, 90, 300, W - 180, 72);
+      c.fillStyle = '#f4f2ee'; c.font = '300 66px "Cormorant Garamond"'; wrap(c, d.imgTitle || L.imgTitle, 90, 300, W - 180, 72);
       c.fillStyle = 'rgba(230,244,245,0.7)'; c.font = '400 26px "DM Sans"'; c.fillText(L.imgFor + ' ' + d.name + ' · ' + new Date().toLocaleDateString(L.locale), 90, 360);
       c.fillStyle = 'rgba(6,24,32,0.55)'; rr(c, 90, 400, W - 180, 230, 28); c.fill(); c.strokeStyle = 'rgba(169,221,227,0.25)'; c.stroke();
       c.fillStyle = '#a9dde3'; c.font = '500 22px "DM Sans"'; c.fillText(L.monthlyA.toUpperCase(), 130, 456); c.textAlign = 'right'; c.fillText(L.imgPrice + ': ' + d.price, W - 130, 456); c.fillStyle = '#e2c77e'; c.font = '500 26px "DM Sans"'; c.fillText('✓ ' + d.pctObra + '% ' + L.imgPct, W - 130, 600); c.textAlign = 'left';
@@ -824,7 +831,7 @@ fbq('track', 'PageView');
         c.fillStyle = '#ffffff'; c.font = '500 30px "DM Sans"'; c.textAlign = 'right'; c.fillText(r[1], W - 90, y); c.textAlign = 'left';
         c.strokeStyle = 'rgba(169,221,227,0.14)'; c.lineWidth = 1; c.beginPath(); c.moveTo(90, y + 26); c.lineTo(W - 90, y + 24); c.stroke(); y += 66;
       });
-      c.fillStyle = 'rgba(230,244,245,0.55)'; c.font = '400 21px "DM Sans"'; wrap(c, L.imgNote, 90, y + 22, W - 180, 30);
+      c.fillStyle = 'rgba(230,244,245,0.55)'; c.font = '400 21px "DM Sans"'; wrap(c, d.imgNote || L.imgNote, 90, y + 22, W - 180, 30);
       c.strokeStyle = 'rgba(226,199,126,0.4)'; c.beginPath(); c.moveTo(90, 1176); c.lineTo(W - 90, 1176); c.stroke();
       c.fillStyle = '#f4f2ee'; c.font = '600 34px "Cormorant Garamond"'; c.fillText('Ricardo Mello', 90, 1226); var nw = c.measureText('Ricardo Mello').width; c.fillStyle = 'rgba(230,244,245,0.7)'; c.font = '400 22px "DM Sans"'; c.fillText('·  CRECI/RS 082996', 104 + nw, 1225);
       c.fillStyle = '#e2c77e'; c.font = '500 23px "DM Sans"'; c.fillText('WhatsApp +55 55 99914-7822 · krimoveissm.com.br', 90, 1266);
@@ -923,7 +930,7 @@ fbq('track', 'PageView');
     document.getElementById('sEmp').value = emp;
     var sN = document.getElementById('sN');
     if (sN && n > 0 && n <= 240) {
-      if (![].some.call(sN.options, function (o) { return +o.value === n; })) { var o = document.createElement('option'); o.value = n; o.textContent = n + 'x'; sN.appendChild(o); }
+      if (sN.options && ![].some.call(sN.options, function (o) { return +o.value === n; })) { var o = document.createElement('option'); o.value = n; o.textContent = n + 'x'; sN.appendChild(o); }
       sN.value = String(n); sN.dispatchEvent(new Event('input'));
     }
     if (fl) [['sDown', fl.d], ['sBq', fl.bq], ['sKeys', fl.k]].forEach(function (x) { var el = document.getElementById(x[0]); if (el && x[1] != null) { el.value = x[1]; el.dispatchEvent(new Event('input')); } });
@@ -934,6 +941,27 @@ fbq('track', 'PageView');
     document.querySelectorAll('.cc').forEach(function (c) { c.classList.toggle('on', c === b); }); var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { gtag('event', 'simulador_emp', { emp: b.getAttribute('data-sim-emp') }); } catch (_) {}
   }); });
+})();
+</script>
+<script>
+(function () {
+  var emp = (new URLSearchParams(location.search).get('emp') || '').replace(/[<>]/g, '').slice(0, 60), sim = document.getElementById('sim'); if (!emp || !sim) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'], now = new Date(), y0 = now.getFullYear(), m0 = now.getMonth() + 1;
+  var mes = function (k) { var t = y0 * 12 + m0 + k; return MES[t % 12] + '/' + Math.floor(t / 12); };
+  var e = $('mdEmp'); if (e) e.hidden = true;
+  var box = document.createElement('p'); box.className = 'pl-i'; box.innerHTML = '<b>Gostou do ' + emp + '? Monte a sua proposta.</b> Mais entrada, mais reforços ou mais parcelas: monte do seu jeito e mande para o Ricardo.<small>Durante a obra, as construtoras avaliam propostas. Proposta sujeita à aprovação da construtora, sem compromisso.</small>';
+  sim.parentNode.insertBefore(box, sim);
+  var lead = sim.querySelector('.sim-lead'), h3 = lead.querySelector('h3'), lp = lead.querySelector('p'), btn = lead.querySelector('button[type=submit]'), lv = $('sLeadV'), pk = lead.querySelector('.sim-perks li');
+  h3.firstChild.nodeValue = 'Envie sua proposta para o ' + emp + ' '; if (lv) lv.hidden = true;
+  lp.textContent = 'O Ricardo recebe a sua proposta pelo WhatsApp e leva à construtora.'; btn.lastChild.nodeValue = 'Enviar minha proposta';
+  if (pk) pk.textContent = 'A resposta do Ricardo sobre a sua proposta';
+  var st = document.createElement('div'); st.className = 'pl-s'; $('sRule').after(st);
+  var last = null;
+  document.addEventListener('sim:calc', function (ev) { var d = last = ev.detail; st.hidden = !d.ok; if (!d.ok) return; st.innerHTML = '<b>Proposta para o ' + emp + ': ' + d.months + ' parcelas no total</b><span>Primeira parcela em ' + mes(0) + ' · chaves em ' + mes(d.obra) + ' · última parcela em ' + mes(d.months - 1) + '.</span>'; });
+  window.__simExtra = function (d) { return { emp: emp, prop: true, de: mes(0), ate: mes(d.months - 1), chaves: mes(d.obra), imgTitle: 'Proposta para o ' + emp, imgNote: 'Primeira parcela em ' + mes(0) + ', chaves em ' + mes(d.obra) + ', última parcela em ' + mes(d.months - 1) + '. Valores sem correção. Proposta sujeita à aprovação da construtora.' }; };
+  var sN = $('sN'); if (sN) sN.dispatchEvent(new Event('input'));
+  try { gtag('event', 'simulador_proposta_emp', { emp: emp, regiao: 'litoral' }); } catch (_) {}
 })();
 </script>
 </body>

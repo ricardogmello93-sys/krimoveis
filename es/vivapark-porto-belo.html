@@ -172,6 +172,8 @@ img { max-width: 100%; }
 .vp-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
 .vp-chips span { font-size: 12px; letter-spacing: 1.2px; padding: 8px 14px; border-radius: 100px; border: 1px solid rgba(226,199,126,0.45); background: rgba(6,24,32,0.45); backdrop-filter: blur(6px); color: var(--sand2); }
 .vp-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.vp-prop { flex: 0 0 100%; font-size: 14px; color: var(--gold2, #e2c77e); text-decoration: underline; text-decoration-color: rgba(226,199,126,.4); text-underline-offset: 4px; }
+.vp-final .vp-cta { justify-content: center; } .vp-final .vp-prop { text-align: center; }
 .vp-cap-h { position: absolute; z-index: 2; right: 24px; top: 92px; font-size: 11px; letter-spacing: 1px; color: rgba(230,244,245,0.6); }
 .vp-scroll { position: absolute; z-index: 3; left: 50%; bottom: 52px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: var(--sand2); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-align: center; white-space: nowrap; }
 .vp-scroll b { color: var(--gold2); font-weight: 500; }
@@ -430,6 +432,7 @@ fbq('track', 'PageView');
   gtag('config', 'AW-18162751528');
 </script>
 <style id="krsub">.kr-lg{display:inline-flex;flex-direction:column;align-items:center;gap:3px;line-height:1}.kr-sub{display:block;font:500 9.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:.9px;color:#e8d9b0;white-space:nowrap;opacity:.92}.sm-nav,.lt-nav{padding-top:11px!important;padding-bottom:11px!important}@media (max-width:760px){.kr-sub{font-size:8.5px;letter-spacing:.6px}.sm-nav,.lt-nav{padding-top:8px!important;padding-bottom:8px!important}}</style>
+<style id="krsub">.kr-lg{display:inline-flex;flex-direction:column;align-items:center;gap:3px;line-height:1}.kr-sub{display:block;font:500 9.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:.9px;color:#e8d9b0;white-space:nowrap;opacity:.92}.sm-nav,.lt-nav{padding-top:11px!important;padding-bottom:11px!important}@media (max-width:760px){.kr-sub{font-size:8.5px;letter-spacing:.6px}.sm-nav,.lt-nav{padding-top:8px!important;padding-bottom:8px!important}}</style>
 </head>
 <body>
 <div class="vp-bar" id="vpBar" aria-hidden="true"></div>
@@ -525,7 +528,7 @@ fbq('track', 'PageView');
     <p class="vp-p rv">Gire, acerque y toque los puntos. Vea los edificios del barrio subiendo, cada uno en su lote, del Vértice al Vision, los lagos, el boulevard y las calles de casas, como si sobrevolara el barrio.</p>
   </div>
   <div class="vp-3d-wrap rv">
-    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwtqfqe1">
+    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwv4tswi">
       <img class="vp-3d-fb" src="../images/vivapark/vision-aereo.webp" alt="Vista aérea do Vision Home Club no Vivapark (imagem ilustrativa)" loading="lazy">
       <canvas aria-label="Maqueta 3D interactiva del Vivapark"></canvas>
       <div class="vp-3d-pins"></div>
@@ -763,7 +766,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwtqfqe2').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwv4tswj').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();

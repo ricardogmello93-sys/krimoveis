@@ -172,6 +172,8 @@ img { max-width: 100%; }
 .vp-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
 .vp-chips span { font-size: 12px; letter-spacing: 1.2px; padding: 8px 14px; border-radius: 100px; border: 1px solid rgba(226,199,126,0.45); background: rgba(6,24,32,0.45); backdrop-filter: blur(6px); color: var(--sand2); }
 .vp-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.vp-prop { flex: 0 0 100%; font-size: 14px; color: var(--gold2, #e2c77e); text-decoration: underline; text-decoration-color: rgba(226,199,126,.4); text-underline-offset: 4px; }
+.vp-final .vp-cta { justify-content: center; } .vp-final .vp-prop { text-align: center; }
 .vp-cap-h { position: absolute; z-index: 2; right: 24px; top: 92px; font-size: 11px; letter-spacing: 1px; color: rgba(230,244,245,0.6); }
 .vp-scroll { position: absolute; z-index: 3; left: 50%; bottom: 52px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: var(--sand2); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-align: center; white-space: nowrap; }
 .vp-scroll b { color: var(--gold2); font-weight: 500; }
@@ -528,7 +530,7 @@ fbq('track', 'PageView');
     <p class="vp-p rv">Gire, aproxime e toque nos pontos. Veja os prédios do bairro subindo cada um no seu lote, do Vértice ao Vision, os lagos, o boulevard e as ruas de casas, como se você estivesse sobrevoando o bairro.</p>
   </div>
   <div class="vp-3d-wrap rv">
-    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwtqfqe1">
+    <div class="vp-3d-stage" id="vp3d" data-mapa="../js/vivapark-mapa.json?v=mwv4tswi">
       <img class="vp-3d-fb" src="../images/vivapark/vision-aereo.webp" alt="Vista aérea do Vision Home Club no Vivapark (imagem ilustrativa)" loading="lazy">
       <canvas aria-label="Maquete 3D interativa do Vivapark"></canvas>
       <div class="vp-3d-pins"></div>
@@ -678,7 +680,7 @@ fbq('track', 'PageView');
   <span class="lt-tag rv">Próximo passo</span>
   <h2 class="vp-h2 rv">Venha conhecer o <em>Vivapark</em> e o Vision de perto</h2>
   <p class="vp-p rv" style="margin-left:auto;margin-right:auto">Conte o que você procura e eu mostro as unidades disponíveis, as condições atuais e agendo a sua visita ao bairro.</p>
-  <div class="vp-cta rv"><a href="https://wa.me/5555999147822?text=Ol%C3%A1%20Ricardo!%20Vi%20a%20p%C3%A1gina%20do%20Vivapark%20e%20do%20Vision%20e%20quero%20conhecer%20o%20bairro%20e%20o%20empreendimento." target="_blank" rel="noopener" class="lt-btn lt-btn-gold" data-corretor="Ricardo" data-origem="litoral_vivapark_final"><span class="lt-dot"></span>Falar com Ricardo Mello</a></div>
+  <div class="vp-cta rv"><a href="https://wa.me/5555999147822?text=Ol%C3%A1%20Ricardo!%20Vi%20a%20p%C3%A1gina%20do%20Vivapark%20e%20do%20Vision%20e%20quero%20conhecer%20o%20bairro%20e%20o%20empreendimento." target="_blank" rel="noopener" class="lt-btn lt-btn-gold" data-corretor="Ricardo" data-origem="litoral_vivapark_final"><span class="lt-dot"></span>Falar com Ricardo Mello</a><a class="vp-prop" href="simulador-imovel-na-planta.html?modo=direto&amp;emp=Vision%20Home%20Club#direto">Montar minha proposta para o Vision Home Club →</a></div>
 </section>
 <p class="vp-note">As informações sobre o Vivapark e o Vision vêm da incorporadora e da imprensa regional, e podem mudar. Imagens ilustrativas. Valores, áreas, prazos e disponibilidade devem ser confirmados antes de qualquer decisão.</p>
 
@@ -767,7 +769,7 @@ fbq('track', 'PageView');
   // maquete 3D: só carrega quando a pessoa chega perto dela
   var st3 = document.getElementById('vp3d');
   if (st3) {
-    var load3 = function () { import('../js/vivapark-3d.js?v=mwtqfqe2').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
+    var load3 = function () { import('../js/vivapark-3d.js?v=mwv4tswj').then(function (m) { m.init(st3); }).catch(function () { st3.classList.add('nogl'); }); };
     if ('IntersectionObserver' in window) { var o3 = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { o3.disconnect(); load3(); } }, { rootMargin: '500px 0px' }); o3.observe(st3); } else load3();
   }
 })();
