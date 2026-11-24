@@ -448,6 +448,37 @@ a.inline:hover { color: var(--white); }
 
 .smflux .sim-form .sm-btn { border: 0; cursor: pointer; padding: 15px 24px; }
 @media (max-width: 900px) { .smflux .sim-form .sm-btn { width: 100%; } }
+
+.pp { margin: 0 0 18px; border-radius: 24px; border: 1px solid var(--mdl, rgba(255,255,255,0.14)); background: var(--mdbg, rgba(255,255,255,0.03)); padding: 22px 24px 20px; }
+.pp-k { font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold2); }
+.pp h3 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; line-height: 1.15; margin: 6px 0 0; }
+.pp h3 em { font-style: italic; color: var(--gold2); }
+.pp > p { font-size: 14px; line-height: 1.6; opacity: .8; margin: 8px 0 14px; max-width: 760px; }
+.pp-l { display: flex; flex-wrap: wrap; gap: 8px; }
+.pp-c { display: inline-flex; align-items: baseline; gap: 7px; padding: 9px 15px; border-radius: 100px; border: 1px solid var(--mdl, rgba(255,255,255,0.18)); background: rgba(0,0,0,0.18); color: inherit; font: 400 14px 'DM Sans', sans-serif; cursor: pointer; transition: border-color .25s, background .25s, transform .25s; }
+.pp-c:hover { border-color: var(--gold2); transform: translateY(-1px); }
+.pp-c small { font-size: 11.5px; opacity: .65; }
+.pp-c.on { border-color: var(--gold2); background: linear-gradient(135deg, rgba(201,168,76,0.22), rgba(201,168,76,0.06)); box-shadow: inset 0 0 0 1px rgba(226,199,126,0.25); }
+.pp-c.on small { opacity: .9; color: var(--gold2); }
+.pp-i { margin: 14px 0 0; padding: 12px 14px; border-radius: 14px; background: rgba(0,0,0,0.2); font-size: 13.5px; line-height: 1.55; }
+.pp-i b { color: var(--gold2); font-weight: 500; }
+.pp-i[hidden], .pp-v[hidden], .pp-s[hidden] { display: none !important; }
+.pp-v { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; }
+.pp-v span { font-size: 12px; opacity: .7; margin-right: 2px; }
+.pp-v button { border: 1px solid rgba(226,199,126,0.45); background: rgba(201,168,76,0.08); color: inherit; font: 400 12.5px 'DM Sans', sans-serif; padding: 6px 11px; border-radius: 100px; cursor: pointer; }
+.pp-v button.on, .pp-v button:hover { background: rgba(201,168,76,0.25); border-color: var(--gold2); }
+.sim-f .pp-fx { display: block; margin-top: 6px; font-size: 12.5px; line-height: 1.5; opacity: .75; }
+.pp-s { margin-top: 12px; padding: 14px 16px; border-radius: 16px; border: 1px solid rgba(226,199,126,0.35); background: rgba(201,168,76,0.07); font-size: 13.5px; line-height: 1.55; }
+.pp-s.no { border-color: rgba(240,170,120,0.45); background: rgba(240,150,100,0.07); }
+.pp-s .t { display: block; font-weight: 500; font-size: 14.5px; margin-bottom: 4px; }
+.pp-s.ok .t { color: var(--gold2); }
+.pp-s .dt { display: block; margin-top: 8px; font-size: 12.5px; opacity: .75; }
+.pp-s .alt { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.pp-s .alt button { border: 1px solid var(--mdl, rgba(255,255,255,0.2)); background: rgba(0,0,0,0.2); color: inherit; font: 400 12.5px 'DM Sans', sans-serif; padding: 6px 12px; border-radius: 100px; cursor: pointer; }
+.pp-s .alt button:hover { border-color: var(--gold2); }
+.pp-s .alt button.fix { border-color: var(--gold2); color: var(--gold2); }
+.smflux .sim-list b small { font-size: 11.5px; font-weight: 400; opacity: .6; margin-left: 6px; }
+@media (max-width: 760px) { .pp { padding: 18px 16px 16px; } .pp h3 { font-size: 23px; } .pp-c { font-size: 13px; padding: 8px 12px; } }
 .sw { --mdl: rgba(196,184,247,0.2); --mdbg: rgba(27,20,66,0.45); }</style>
 <script>
 (function(){var i=false;try{var q=location.search;if(/[?&]interno=1\b/.test(q))localStorage.setItem('kr_interno','1');if(/[?&]interno=0\b/.test(q))localStorage.removeItem('kr_interno');i=localStorage.getItem('kr_interno')==='1';}catch(e){}
@@ -542,8 +573,14 @@ fbq('track', 'PageView');
     <p class="consent">Ao enviar, você concorda em receber o contato da Kamila pelo WhatsApp. Seus dados não são compartilhados.</p>
   </div>
 </div></div>
-  <div class="md-p" data-m="dir" id="direto" hidden><p class="d-intro"><b>Monte do seu jeito:</b> mais entrada, mais ou menos reforços, ou tudo em parcelas. O fluxo é negociável, desde que chegue ao percentual pago até as chaves que a construtora pede, em geral perto de 60%.<small>Exemplo: no Eclipse, 10% de entrada, 3 reforços e 10% nas chaves, em até 132 parcelas.</small></p>
-  <div class="smflux"><div class="sim" id="sim" data-lang="smpt" data-origem="sm_simulador_direto">
+  <div class="md-p" data-m="dir" id="direto" hidden><p class="d-intro"><b>Monte do seu jeito:</b> mais entrada, mais ou menos reforços, ou tudo em parcelas. O fluxo é negociável, desde que chegue ao percentual pago até as chaves que a construtora pede, em geral perto de 60%.</p>
+  <div class="pp" id="pp">
+    <span class="pp-k">Monte sua proposta</span>
+    <h3>Gostou de um lançamento? <em>Monte a sua proposta.</em></h3>
+    <p>Escolha o empreendimento, ajuste entrada, reforços e parcelas do seu jeito e mande a proposta para a Kamila. Durante a obra, as construtoras avaliam propostas.</p>
+    <div class="pp-l" role="radiogroup" aria-label="Empreendimento"><button type="button" class="pp-c on" data-pp="" role="radio" aria-checked="true">Ainda não sei</button><button type="button" class="pp-c" data-pp="eclipse" role="radio" aria-checked="false">Eclipse<small>até 132x</small></button><button type="button" class="pp-c" data-pp="next-323" role="radio" aria-checked="false">NEXT 323<small>até 120x</small></button><button type="button" class="pp-c" data-pp="levve" role="radio" aria-checked="false">Levve Garden Living<small>até 120x</small></button><button type="button" class="pp-c" data-pp="gran-progresso" role="radio" aria-checked="false">Gran Progresso<small>até 120x</small></button><button type="button" class="pp-c" data-pp="atrium" role="radio" aria-checked="false">Atrium 225 Residence<small>até 80x</small></button><button type="button" class="pp-c" data-pp="giardino-di-napoli" role="radio" aria-checked="false">Giardino Di Napoli<small>até 80x</small></button><button type="button" class="pp-c" data-pp="singular" role="radio" aria-checked="false">Singular<small>parcelado</small></button></div>
+    <p class="pp-i" id="ppI" hidden></p>
+  </div><div class="smflux"><div class="sim" id="sim" data-lang="smpt" data-origem="sm_simulador_direto">
   <div class="sim-in">
     <div class="sim-f"><label for="sPrice">Valor do imóvel</label><input class="sim-money" id="sPrice" inputmode="numeric" value="350.000" aria-label="Valor do imóvel"><small class="sim-fx">Coloque o valor que você imagina (200 mil, 300 mil...) e monte o fluxo do seu jeito.</small></div>
     <div class="sim-f"><label for="sDown">Entrada <b id="sDownV"></b></label><input type="range" id="sDown" min="0" max="50" step="1" value="10"></div>
@@ -556,7 +593,7 @@ fbq('track', 'PageView');
       <div class="sim-f"><label for="sKeys">Parcela nas chaves <b id="sKeysV"></b></label><input type="range" id="sKeys" min="0" max="40" step="1" value="10"></div>
     </div>
     <div class="sim-row">
-      <div class="sim-f"><label for="sN">Parcelas mensais</label><select class="sim-sel" id="sN"><option value="36">36x</option><option value="48">48x</option><option value="60">60x</option><option value="72">72x</option><option value="80">80x</option><option value="84">84x</option><option value="96">96x</option><option value="100">100x</option><option value="120" selected>120x</option><option value="132">132x</option><option value="150">150x</option><option value="180">180x</option></select></div>
+      <div class="sim-f"><label for="sN">Parcelas no total <b id="sNV">120x</b></label><input type="range" id="sN" min="12" max="180" step="1" value="120"></div>
       <div class="sim-f"><label for="sObra">Prazo da obra (até as chaves) <b id="sObraV"></b></label><input type="range" id="sObra" min="12" max="60" step="1" value="48"></div>
     </div>
     <div class="sim-f"><label for="sMin">Pago até as chaves (mínimo) <b id="sMinV"></b></label><input type="range" id="sMin" min="0" max="90" step="5" value="60"></div>
@@ -719,7 +756,7 @@ fbq('track', 'PageView');
 <script>
 (function () {
   var L = {"locale":"pt-BR","yearly":"Anual","half":"Semestral","bad":"Confira o WhatsApp: precisa ter DDD e número.","badName":"Escreva seu nome.","ok":"Abrimos o seu WhatsApp com a simulação pronta. É só tocar em enviar para a Kamila receber.","okLink":"Não abriu? Toque aqui","app":"Usa o app do WhatsApp no computador? Abrir no app","leadOf":"de","dl":"Baixar simulação (PDF)","hold":"Se o download não começar, toque e segure na imagem para salvar.","imgTitle":"Simulação de pagamento na planta","imgFor":"Preparada para","imgSub":"Santa Maria · RS","imgNote":"Valores sem correção. Durante a obra as parcelas costumam ser corrigidas por um índice da construção; depois das chaves, conforme o contrato.","imgPrice":"Valor do imóvel","file":"simulacao-kamila-xavier.pdf","monthly":"Parcela mensal","monthlyA":"Parcela mensal durante a obra","durObra":"durante a obra","afterKeys":"Depois das chaves","obraU":"meses","ruleOk":"% pago até as chaves (mínimo de {m}%)","ruleAuto":"As parcelas da obra foram ajustadas para chegar aos {m}% até as chaves.","ruleBad":"Com esses valores não dá para chegar a {m}% até as chaves. Aumente a entrada, os reforços durante a obra ou a parcela nas chaves.","minL":"Pago até as chaves (mínimo)","instA":"Parcelas durante a obra","instB":"Parcelas depois das chaves","imgPct":"até as chaves","downL":"Entrada","boostL":"Reforços","keysL":"Nas chaves","instL":"Parcelas"};
-  var MSG = (d) => `[Simulador SM · direto com a construtora] Olá Kamila! Fiz a simulação de pagamento direto com a construtora no site.${d.emp ? '\nEmpreendimento: ' + d.emp : ''}\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber ${d.emp ? 'as condições do ' + d.emp + ' e ' : ''}os lançamentos de Santa Maria que cabem nessa parcela.`;
+  var MSG = (d) => d.prop ? `[Simulador SM · proposta] Olá Kamila! Montei uma proposta no site para o ${d.emp}.\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nValor de referência: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty ? d.boostQty + 'x de ' + d.boost + ' (' + d.every.toLowerCase() + ')' : 'sem reforços'}\n${d.keysPct ? 'Chaves (' + d.keysPct + '%): ' + d.keys : 'Sem parcela nas chaves'}\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\nTotal: ${d.months} parcelas, de ${d.de} a ${d.ate}${d.chaves ? ' (chaves em ' + d.chaves + ')' : ''}${d.status ? '\n' + d.status : ''}\n\nQuero saber se a construtora aceita essa proposta.` : `[Simulador SM · direto com a construtora] Olá Kamila! Fiz a simulação de pagamento direto com a construtora no site.${d.emp ? '\nEmpreendimento: ' + d.emp : ''}\nNome: ${d.name}\nWhatsApp: ${d.phone}\n\nImóvel: ${d.price}\nEntrada (${d.downPct}%): ${d.down}\nReforços: ${d.boostQty}x de ${d.boost} (${d.every.toLowerCase()})\nChaves (${d.keysPct}%): ${d.keys}\nObra: ${d.obra} meses\nParcelas durante a obra: ${d.mA}x de ${d.monthly}${d.mB ? '\nParcelas depois das chaves: ' + d.mB + 'x de ' + d.monthlyB : ''}\n\nQuero receber ${d.emp ? 'as condições do ' + d.emp + ' e ' : ''}os lançamentos de Santa Maria que cabem nessa parcela.`;
   var lang = "smpt", root = document.getElementById('sim'); if (!root) return;
   var $ = function (id) { return document.getElementById(id); };
   var brl = new Intl.NumberFormat(L.locale, { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
@@ -765,6 +802,7 @@ fbq('track', 'PageView');
     var parts = [[d, '#e2c77e'], [bq * bp, '#c4b8f7'], [k, '#9d93ed'], [pA * mA, '#e9dcc3'], [pB * mB, '#8a8476']], sum = parts.reduce(function (a, p) { return a + p[0]; }, 0) || 1;
     $('sBar').innerHTML = parts.map(function (p) { return '<i style="width:' + (p[0] / sum * 100) + '%;background:' + p[1] + '"></i>'; }).join('');
     last = { parts: parts, price: money(price), alt: cur === 'USD' && rate ? '≈ ' + brl.format(price * rate) : '', downPct: d, down: f(d), boostQty: bq, boost: f(bp), every: every === 12 ? L.yearly : L.half, keysPct: k, keys: f(k), months: n, obra: M, mA: mA, mB: hasB ? mB : 0, monthly: f(pA), monthlyB: f(pB), pctObra: Math.round(pct), ok: S >= 0 };
+    try { document.dispatchEvent(new CustomEvent('sim:calc', { detail: Object.assign({ d: d, bq: bq, bp: bp, k: k, pA: pA, pB: pB }, last) })); } catch (_) {}
   }
   ['sDown', 'sBq', 'sBp', 'sKeys', 'sN', 'sObra', 'sMin'].forEach(function (id) { if ($(id)) $(id).addEventListener('input', calc); });
   // páginas em inglês e espanhol: busca a cotação do dia e passa para dólar; sem cotação, segue em reais
@@ -792,6 +830,7 @@ fbq('track', 'PageView');
     if (!okPhone) { err.textContent = L.bad; err.style.display = 'block'; $('sPhone').focus(); return; }
     err.style.display = 'none';
     var c = $('sCountry'); var d = Object.assign({}, last, { name: name, phone: phone, country: c ? c.value : '', emp: ($('sEmp') || {}).value || '' });
+    if (window.__simExtra) Object.assign(d, window.__simExtra(d));
     var url = 'https://wa.me/5555991346393?text=' + encodeURIComponent(MSG(d));
     try {
       gtag('event', 'generate_lead', { simulador: 'fluxo_construtora', idioma: lang, valor_imovel: cur === 'USD' ? Math.round(num($('sPrice').value) * rate) : num($('sPrice').value) });
@@ -846,7 +885,7 @@ fbq('track', 'PageView');
       c.strokeStyle = 'rgba(226,199,126,0.55)'; c.lineWidth = 2; rr(c, 40, 40, W - 80, H - 80, 36); c.stroke();
       if (logo.naturalWidth) c.drawImage(logo, 90, 92, 140, 140 * 258 / 504);
       c.fillStyle = '#c4b8f7'; c.font = '500 22px "DM Sans"'; c.textAlign = 'right'; c.fillText(L.imgSub.toUpperCase(), W - 90, 136); c.textAlign = 'left';
-      c.fillStyle = '#f4f2ee'; c.font = '300 66px "Cormorant Garamond"'; wrap(c, L.imgTitle, 90, 300, W - 180, 72);
+      c.fillStyle = '#f4f2ee'; c.font = '300 66px "Cormorant Garamond"'; wrap(c, d.imgTitle || L.imgTitle, 90, 300, W - 180, 72);
       c.fillStyle = 'rgba(244,242,238,0.7)'; c.font = '400 26px "DM Sans"'; c.fillText(L.imgFor + ' ' + d.name + ' · ' + new Date().toLocaleDateString(L.locale), 90, 360);
       c.fillStyle = 'rgba(11,9,28,0.55)'; rr(c, 90, 400, W - 180, 230, 28); c.fill(); c.strokeStyle = 'rgba(196,184,247,0.25)'; c.stroke();
       c.fillStyle = '#c4b8f7'; c.font = '500 22px "DM Sans"'; c.fillText(L.monthlyA.toUpperCase(), 130, 456); c.textAlign = 'right'; c.fillText(L.imgPrice + ': ' + d.price, W - 130, 456); c.fillStyle = '#e2c77e'; c.font = '500 26px "DM Sans"'; c.fillText('✓ ' + d.pctObra + '% ' + L.imgPct, W - 130, 600); c.textAlign = 'left';
@@ -861,7 +900,7 @@ fbq('track', 'PageView');
         c.fillStyle = '#ffffff'; c.font = '500 30px "DM Sans"'; c.textAlign = 'right'; c.fillText(r[1], W - 90, y); c.textAlign = 'left';
         c.strokeStyle = 'rgba(196,184,247,0.14)'; c.lineWidth = 1; c.beginPath(); c.moveTo(90, y + 26); c.lineTo(W - 90, y + 24); c.stroke(); y += 66;
       });
-      c.fillStyle = 'rgba(244,242,238,0.55)'; c.font = '400 21px "DM Sans"'; wrap(c, L.imgNote, 90, y + 22, W - 180, 30);
+      c.fillStyle = 'rgba(244,242,238,0.55)'; c.font = '400 21px "DM Sans"'; wrap(c, d.imgNote || L.imgNote, 90, y + 22, W - 180, 30);
       c.strokeStyle = 'rgba(226,199,126,0.4)'; c.beginPath(); c.moveTo(90, 1176); c.lineTo(W - 90, 1176); c.stroke();
       c.fillStyle = '#f4f2ee'; c.font = '600 34px "Cormorant Garamond"'; c.fillText('Kamila Xavier', 90, 1226); var nw = c.measureText('Ricardo Mello').width; c.fillStyle = 'rgba(244,242,238,0.7)'; c.font = '400 22px "DM Sans"'; c.fillText('·  CRECI/RS 78710', 104 + nw, 1225);
       c.fillStyle = '#e2c77e'; c.font = '500 23px "DM Sans"'; c.fillText('WhatsApp +55 55 99134-6393 · krimoveissm.com.br', 90, 1266);
@@ -893,7 +932,7 @@ fbq('track', 'PageView');
     document.getElementById('sEmp').value = emp;
     var sN = document.getElementById('sN');
     if (sN && n > 0 && n <= 240) {
-      if (![].some.call(sN.options, function (o) { return +o.value === n; })) { var o = document.createElement('option'); o.value = n; o.textContent = n + 'x'; sN.appendChild(o); }
+      if (sN.options && ![].some.call(sN.options, function (o) { return +o.value === n; })) { var o = document.createElement('option'); o.value = n; o.textContent = n + 'x'; sN.appendChild(o); }
       sN.value = String(n); sN.dispatchEvent(new Event('input'));
     }
     if (fl) [['sDown', fl.d], ['sBq', fl.bq], ['sKeys', fl.k]].forEach(function (x) { var el = document.getElementById(x[0]); if (el && x[1] != null) { el.value = x[1]; el.dispatchEvent(new Event('input')); } });
@@ -904,6 +943,93 @@ fbq('track', 'PageView');
     document.querySelectorAll('.cc').forEach(function (c) { c.classList.toggle('on', c === b); }); var s = document.getElementById('sim'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' });
     try { gtag('event', 'simulador_emp', { emp: b.getAttribute('data-sim-emp') }); } catch (_) {}
   }); });
+})();
+</script>
+<script>
+(function () {
+  var R = [{"id":"eclipse","c":"COASE","max":132,"fl":{"d":10,"bq":3,"bp":5,"ev":12,"k":10},"cond":"até 132 parcelas direto com a construtora","n":"Eclipse"},{"id":"next-323","c":"MRU","max":120,"cond":"até 120 parcelas direto com a MRU","n":"NEXT 323"},{"id":"levve","c":"Satre","max":120,"entrega":"2030-11","obra":48,"min":55,"dmin":10,"fl":{"d":10,"bq":8,"bp":2.5,"ev":6,"k":0},"cond":"10% de entrada e até 120 parcelas direto com a Satre (48 na obra e 72 depois das chaves)","de":[["Studio",199000],["1 dormitório",269000],["2 dormitórios",472000]],"n":"Levve Garden Living"},{"id":"gran-progresso","c":"COASE","max":120,"entrega":"2027-09","cond":"Torre B em até 120 parcelas e Torre A em até 60","n":"Gran Progresso"},{"id":"atrium","c":"COASE","max":80,"cond":"até 80 parcelas direto com a construtora","n":"Atrium 225 Residence"},{"id":"giardino-di-napoli","c":"COASE","max":80,"cond":"até 80 parcelas direto ou pelo Minha Casa Minha Vida","n":"Giardino Di Napoli"},{"id":"singular","c":"MRU","max":0,"entrega":"2029-12","cond":"parcelado direto com a MRU; como a obra já começou, o número de parcelas diminui a cada mês","n":"Singular"}], root = document.getElementById('pp'), sim = document.getElementById('sim'); if (!root || !sim) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var MES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  var pc = function (v) { return (Math.round(v * 10) / 10).toString().replace('.', ',') + '%'; };
+  var cur = null, last = null, fromDe = false, now = new Date(), y0 = now.getFullYear(), m0 = now.getMonth() + 1; // 1ª parcela no mês que vem
+  var mes = function (k) { var t = y0 * 12 + m0 + k; return MES[t % 12] + '/' + Math.floor(t / 12); };
+  function set(id, v) { var el = $(id); if (!el || v == null) return; el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); }
+  // textos originais (para voltar em "Ainda não sei")
+  var lead = sim.querySelector('.sim-lead'), h3 = lead.querySelector('h3'), lp = lead.querySelector('p'), btn = lead.querySelector('button[type=submit]');
+  var lv = $('sLeadV'), pk = lead.querySelector('.sim-perks li');
+  var O = { h: h3.firstChild.nodeValue, p: lp.textContent, b: btn.lastChild.nodeValue, k: pk ? pk.textContent : '' };
+  var fx = sim.querySelector('#sPrice + .sim-fx'), O_FX = fx ? fx.textContent : '';
+  if (fx) fx.classList.add('pp-fx');
+  // faixa "a partir de" (só quando a construtora já liberou)
+  var pv = document.createElement('div'); pv.className = 'pp-v'; pv.hidden = true; if (fx) fx.after(pv);
+  $('sPrice').addEventListener('keydown', function () { fromDe = false; });
+  // resultado da proposta, logo abaixo da regra dos 60%
+  var st = document.createElement('div'); st.className = 'pp-s'; st.id = 'ppS'; $('sRule').after(st);
+  var nv = $('sNV');
+  function pick(id, keepN) {
+    cur = null; R.forEach(function (p) { if (p.id === id) cur = p; });
+    [].forEach.call(root.querySelectorAll('.pp-c'), function (b) { var on = b.getAttribute('data-pp') === (cur ? cur.id : ''); b.classList.toggle('on', on); b.setAttribute('aria-checked', on); });
+    var e = $('mdEmp'); if (e) e.hidden = true;
+    if ($('sEmp')) $('sEmp').value = cur ? cur.n : '';
+    var info = $('ppI');
+    if (!cur) {
+      info.hidden = true; pv.hidden = true; if (fx) fx.textContent = O_FX;
+      h3.firstChild.nodeValue = O.h; lp.textContent = O.p; btn.lastChild.nodeValue = O.b; if (lv) lv.hidden = false; if (pk) pk.textContent = O.k;
+      if (last) render(last); return;
+    }
+    info.hidden = false; info.innerHTML = '<b>' + cur.n + '</b> · ' + cur.c + ': ' + cur.cond + '. Mude o que quiser: a proposta é sua.';
+    var f = cur.fl;
+    if (f) { set('sDown', f.d); set('sBq', f.bq); set('sBp', f.bp); set('sKeys', f.k); var eb = $('sEvery').querySelector('[data-v="' + f.ev + '"]'); if (eb) eb.click(); }
+    if (!keepN && cur.max) set('sN', cur.max);
+    set('sMin', cur.min || 60);
+    if (cur.obra) set('sObra', cur.obra); else if (cur.entrega) { var p = cur.entrega.split('-'), mm = (+p[0]) * 12 + (+p[1]) - 1 - (y0 * 12 + m0); set('sObra', Math.max(12, Math.min(60, mm))); }
+    if (cur.de) {
+      pv.hidden = false; pv.innerHTML = '<span>A partir de</span>' + cur.de.map(function (x) { return '<button type="button" data-v="' + x[1] + '">' + x[0] + ' · ' + brl.format(x[1]).replace(/\.000$/, ' mil').replace(/,00$/, '') + '</button>'; }).join('');
+      var b0 = pv.querySelector('button'); if (b0) b0.click(); fromDe = true;
+      if (fx) fx.textContent = 'Comece por um valor de partida e monte o fluxo. A Kamila confirma o valor da unidade que você escolher.';
+    } else { pv.hidden = true; if (fromDe) set('sPrice', '350.000'); fromDe = false; if (fx) fx.textContent = 'Valor de exemplo para montar o fluxo: o que importa é como você quer pagar. A Kamila confirma o valor da unidade que você escolher.'; }
+    h3.firstChild.nodeValue = 'Envie sua proposta para o ' + cur.n + ' ';
+    lp.textContent = 'A Kamila recebe a sua proposta pelo WhatsApp e leva à ' + cur.c + '. Proposta sujeita à aprovação da construtora, sem compromisso.';
+    btn.lastChild.nodeValue = 'Enviar minha proposta'; if (lv) lv.hidden = true; if (pk) pk.textContent = 'A resposta da Kamila sobre a sua proposta';
+    if (last) render(last);
+  }
+  pv.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; [].forEach.call(pv.children, function (x) { x.classList && x.classList.toggle('on', x === b); }); set('sPrice', (+b.getAttribute('data-v')).toLocaleString('pt-BR')); });
+  root.addEventListener('click', function (e) { var b = e.target.closest('.pp-c'); if (!b) return; pick(b.getAttribute('data-pp')); try { gtag('event', 'simulador_proposta_emp', { emp: b.getAttribute('data-pp') || 'nenhum' }); } catch (_) {} });
+  function aceitam(n) { return R.filter(function (p) { return p.max && p.max >= n && (!cur || p.id !== cur.id); }); }
+  function render(d) {
+    last = d; if (nv) nv.textContent = d.months + 'x';
+    // porcentagem ao lado de cada valor: o que importa é o fluxo
+    var add = function (id, p) { var el = $(id); if (el && el.textContent && el.textContent !== '-' && !el.querySelector('small')) el.innerHTML = el.textContent + '<small>' + pc(p) + '</small>'; };
+    add('oDown', d.d); add('oBoost', d.bq * d.bp); add('oKeys', d.k); add('oInst', d.pA * d.mA); if (d.mB) add('oInstB', d.pB * d.mB);
+    if (!d.ok) { st.hidden = true; return; } st.hidden = false;
+    var semCh = cur && !cur.entrega && !cur.obra, dt = 'Primeira parcela em ' + mes(0) + (semCh ? '' : ' · chaves em ' + mes(d.obra)) + ' · última parcela em ' + mes(d.months - 1) + '.';
+    var alt = aceitam(d.months), altH = alt.length ? '<span class="alt">' + alt.map(function (p) { return '<button type="button" data-go="' + p.id + '">' + p.n + ' · até ' + p.max + 'x</button>'; }).join('') + '</span>' : '';
+    var t, cls = 'ok', fix = '';
+    if (!cur) { t = d.months + ' parcelas no total'; st.className = 'pp-s'; st.innerHTML = '<span class="t">' + t + '</span>' + (alt.length ? 'Lançamentos de Santa Maria que aceitam esse prazo hoje:' + altH : 'Nenhum lançamento que acompanhamos chega a esse prazo hoje. A Kamila pode levar a proposta mesmo assim.') + '<span class="dt">' + dt + '</span>'; return; }
+    var prob = [];
+    if (cur.max && d.months > cur.max) { prob.push('O ' + cur.n + ' aceita até ' + cur.max + ' parcelas e a sua proposta usa ' + d.months + '.'); fix = '<button type="button" class="fix" data-n="' + cur.max + '">Ajustar para ' + cur.max + 'x</button>'; }
+    if (cur.dmin && d.d < cur.dmin) prob.push('A entrada do ' + cur.n + ' é de ' + cur.dmin + '%; a sua proposta usa ' + d.d + '%.');
+    if (!cur.max) { cls = 'ok'; t = 'Proposta para o ' + cur.n + ': ' + d.months + ' parcelas no total'; st.className = 'pp-s ok'; st.innerHTML = '<span class="t">' + t + '</span>No ' + cur.n + ' a obra já começou e o número de parcelas diminui a cada mês. A Kamila confirma quantas ainda cabem.<span class="dt">' + dt + '</span>'; return; }
+    if (!prob.length) { st.className = 'pp-s ok'; st.innerHTML = '<span class="t">✓ Dentro da condição do ' + cur.n + '</span>' + d.months + ' parcelas no total, ' + cur.cond + '.<span class="dt">' + dt + '</span>'; return; }
+    st.className = 'pp-s no';
+    st.innerHTML = '<span class="t">Fora da condição de hoje do ' + cur.n + '</span>' + prob.join(' ') + ' Você pode enviar assim mesmo: a Kamila leva a proposta à construtora.' + (fix || alt.length ? '<span class="alt">' + fix + alt.map(function (p) { return '<button type="button" data-go="' + p.id + '">' + p.n + ' aceita ' + p.max + 'x</button>'; }).join('') + '</span>' : '') + '<span class="dt">' + dt + '</span>';
+  }
+  st.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.getAttribute('data-n')) set('sN', +b.getAttribute('data-n'));
+    if (b.getAttribute('data-go')) { pick(b.getAttribute('data-go'), true); try { root.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (_) {} }
+  });
+  document.addEventListener('sim:calc', function (e) { render(e.detail); });
+  // o que vai junto na proposta (WhatsApp e PDF)
+  window.__simExtra = function (d) {
+    var x = { de: mes(0), ate: mes(d.months - 1), chaves: cur && !cur.entrega && !cur.obra ? '' : mes(d.obra), status: st.hidden ? '' : (st.querySelector('.t') || {}).textContent || '' };
+    if (!cur) return x;
+    return Object.assign(x, { emp: cur.n, prop: true, imgTitle: 'Proposta para o ' + cur.n,
+      imgNote: 'Primeira parcela em ' + x.de + (x.chaves ? ', chaves em ' + x.chaves : '') + ', última parcela em ' + x.ate + '. Valores sem correção. Proposta sujeita à aprovação da construtora.' });
+  };
+  // veio da ficha do empreendimento (?emp=levve)
+  var q = new URLSearchParams(location.search).get('emp'); if (q) R.forEach(function (p) { if (p.id === q || p.n === q) pick(p.id); });
 })();
 </script>
 </body>
