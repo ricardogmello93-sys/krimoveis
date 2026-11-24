@@ -69,7 +69,30 @@ function groundTex(data, px) {
   rs.forEach((a) => { if (a[0] < 4) return; path(a); g.strokeStyle = '#efebe4'; g.lineWidth = (a[0] + 4) * k; g.stroke(); });
   rs.forEach((a) => { path(a); g.strokeStyle = a[0] >= 10 ? '#5d5a63' : a[0] >= 4 ? '#6d6a72' : '#c9c1b2'; g.lineWidth = Math.max(1, a[0] * k); g.stroke(); });
   rs.forEach((a) => { if (a[0] < 9) return; path(a); g.strokeStyle = 'rgba(255,240,200,0.55)'; g.setLineDash([3 * k, 4 * k]); g.lineWidth = Math.max(1, 0.25 * k); g.stroke(); g.setLineDash([]); });
+  // só a região: um recorte redondo que se dissolve nas bordas
+  g.globalCompositeOperation = 'destination-in'; const fade = g.createRadialGradient(px / 2, px / 2, px * 0.36, px / 2, px / 2, px * 0.5); fade.addColorStop(0, 'rgba(0,0,0,1)'); fade.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = fade; g.fillRect(0, 0, px, px); g.globalCompositeOperation = 'source-over';
   const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+
+// caixas com fachada (o empreendimento e os vizinhos da vitrine)
+async function towers(group, tws, f, id, col, pool) {
+  const r = rnd(hash(id)); let top = 0;
+  for (const t of tws) {
+    const fo = Object.assign({}, f, { fl: t.fl || f.fl }), cw = Math.max(2, Math.round(t.w / 5)), cd = Math.max(2, Math.round(t.d / 5));
+    const fa = faceSvg(fo, cw, false, false, r), fs = faceSvg(fo, cd, true, false, r), la = faceSvg(fo, cw, false, true, r), ls = faceSvg(fo, cd, true, true, r);
+    const [ta, ts, tla, tls] = await Promise.all([svgTex(fa.svg), svgTex(fs.svg), svgTex(la.svg), svgTex(ls.svg)]);
+    const h = fo.fl * FH, w = t.w / U, d = t.d / U;
+    const mk = (map, em) => new THREE.MeshStandardMaterial({ map, emissiveMap: em, emissive: 0xffffff, emissiveIntensity: 0, roughness: 0.55, metalness: 0.05 });
+    const roofM = new THREE.MeshStandardMaterial({ color: new THREE.Color(f.crown || '#7a7680'), roughness: 0.8 });
+    const mats = [mk(ts, tls), mk(ts, tls), roofM, roofM, mk(ta, tla), mk(ta, tla)];
+    const geo = new THREE.BoxGeometry(w, h, d); geo.translate(0, h / 2, 0);
+    const m = new THREE.Mesh(geo, mats); m.castShadow = true; m.receiveShadow = true;
+    const pv = new THREE.Group(); pv.position.set(t.x / U, 0, t.z / U); pv.rotation.y = -t.a; pv.add(m); group.add(pv);
+    m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.55 })));
+    if (pool && t === tws[0]) { const pm = new THREE.Mesh(new THREE.BoxGeometry(w * 0.45, 0.02, d * 0.3), new THREE.MeshStandardMaterial({ color: 0x4fd0e0, emissive: 0x1a8aa0, emissiveIntensity: 0.5, roughness: 0.1 })); pm.position.y = h + 0.02; m.add(pm); }
+    pv.userData = { m, mats, h }; top = Math.max(top, h);
+  }
+  return top;
 }
 
 export async function init(stage, o) {
@@ -101,9 +124,9 @@ export async function init(stage, o) {
 
   // chão
   const gt = groundTex(data, touch ? 2048 : 3072); gt.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  const land = new THREE.Mesh(new THREE.PlaneGeometry(2 * RG, 2 * RG), new THREE.MeshStandardMaterial({ map: gt, roughness: 0.97 }));
+  const land = new THREE.Mesh(new THREE.PlaneGeometry(2 * RG, 2 * RG), new THREE.MeshStandardMaterial({ map: gt, roughness: 0.97, transparent: true, alphaTest: 0.01 }));
   land.rotation.x = -Math.PI / 2; land.receiveShadow = true; scene.add(land);
-  const under = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshStandardMaterial({ color: 0xcfc7b8, roughness: 1 })); under.rotation.x = -Math.PI / 2; under.position.y = -0.02; scene.add(under);
+  const under = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.MeshBasicMaterial({ color: 0xe7cfb0, fog: false })); under.rotation.x = -Math.PI / 2; under.position.y = -0.02; scene.add(under);
 
   // vizinhança: contorno real de cada construção, janelas por andar que acendem
   {
@@ -163,24 +186,13 @@ export async function init(stage, o) {
     const lm = new THREE.Mesh(new THREE.PlaneGeometry(24, 24), new THREE.MeshBasicMaterial({ map: lt, transparent: true, depthWrite: false })); lm.rotation.x = -Math.PI / 2; lm.position.y = 0.03; emp.add(lm);
     const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(24, 0.01, 24)), new THREE.LineBasicMaterial({ color: col })); edge.position.y = 0.05; emp.add(edge);
     topY = 1;
-  } else {
-    const r = rnd(hash(o.id));
-    for (const t of E.tw) {
-      const fo = Object.assign({}, f, { fl: t.fl || f.fl }), cw = Math.max(2, Math.round(t.w / 5)), cd = Math.max(2, Math.round(t.d / 5));
-      const fa = faceSvg(fo, cw, false, false, r), fs = faceSvg(fo, cd, true, false, r), la = faceSvg(fo, cw, false, true, r), ls = faceSvg(fo, cd, true, true, r);
-      const [ta, ts, tla, tls] = await Promise.all([svgTex(fa.svg), svgTex(fs.svg), svgTex(la.svg), svgTex(ls.svg)]);
-      const h = fo.fl * FH, w = t.w / U, d = t.d / U;
-      const mk = (map, em) => new THREE.MeshStandardMaterial({ map, emissiveMap: em, emissive: 0xffffff, emissiveIntensity: 0, roughness: 0.55, metalness: 0.05 });
-      const roofM = new THREE.MeshStandardMaterial({ color: new THREE.Color(f.crown || '#7a7680'), roughness: 0.8 });
-      const mats = [mk(ts, tls), mk(ts, tls), roofM, roofM, mk(ta, tla), mk(ta, tla)];
-      const geo = new THREE.BoxGeometry(w, h, d); geo.translate(0, h / 2, 0);
-      const m = new THREE.Mesh(geo, mats); m.castShadow = true; m.receiveShadow = true;
-      const pv = new THREE.Group(); pv.position.set(t.x / U, 0, t.z / U); pv.rotation.y = -t.a; pv.add(m); emp.add(pv);
-      // contorno na cor da fase
-      const ed = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.55 })); m.add(ed);
-      if (pool && t === E.tw[0] && !E.casa) { const pm = new THREE.Mesh(new THREE.BoxGeometry(w * 0.45, 0.02, d * 0.3), new THREE.MeshStandardMaterial({ color: 0x4fd0e0, emissive: 0x1a8aa0, emissiveIntensity: 0.5, roughness: 0.1 })); pm.position.y = h + 0.02; m.add(pm); }
-      pv.userData = { m, mats, h }; topY = Math.max(topY, h);
-    }
+  } else topY = await towers(emp, E.tw, f, o.id, col, pool && !E.casa);
+  // outros empreendimentos da vitrine ao lado (ex.: o Vibe perto do Levve), com fachada e nome
+  const oth = new THREE.Group(); scene.add(oth); const othLab = [];
+  for (const x of data.outros || []) {
+    const fx = Object.assign({ fl: 8, w: 4, d: 4, wall: '#e7e5e1', glass: '#2c323b', pod: { n: 1, c: '#d0ccc4', k: 'solid' } }, x.fac || {});
+    const g = new THREE.Group(); oth.add(g); const hx = await towers(g, x.tw, fx, x.id, ST[x.f] || 0xc4b8f7, false);
+    const c = x.tw.reduce((m, t) => [m[0] + t.x / x.tw.length, m[1] + t.z / x.tw.length], [0, 0]); othLab.push({ t: x.n, dx: c[0], dz: c[1], y: hx + 0.6 });
   }
   // anel no chão e feixe de luz, para achar o empreendimento
   const ring = new THREE.Mesh(new THREE.RingGeometry(E.lot ? 13 : 2.6, E.lot ? 13.6 : 3.0, 64), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false }));
@@ -200,7 +212,9 @@ export async function init(stage, o) {
     b.addEventListener('click', () => { if (o.onNum) o.onNum(i + 1); });
     pins.push({ el: b, v: new THREE.Vector3(p.dx / U, 0.2, p.dz / U), n: i + 1 });
   });
-  (o.labels || []).forEach((l) => { const s2 = document.createElement('span'); s2.className = 'ml-lab'; s2.textContent = l.t; pinBox.appendChild(s2); pins.push({ el: s2, v: new THREE.Vector3(l.dx / U, l.y || 0.5, l.dz / U), lab: true }); });
+  othLab.concat(o.labels || []).forEach((l) => { const s2 = document.createElement('span'); s2.className = 'ml-lab'; s2.textContent = l.t; pinBox.appendChild(s2); pins.push({ el: s2, v: new THREE.Vector3(l.dx / U, l.y || 0.5, l.dz / U), lab: true }); });
+  // nomes das ruas em volta (a rua do empreendimento primeiro)
+  (data.nomes || []).forEach((r) => { const e2 = document.createElement('span'); e2.className = 'ml-rua' + (r[4] >= 130 ? ' m' : ''); e2.textContent = r[0]; pinBox.insertBefore(e2, pinBox.firstChild); const a = r[3] * Math.PI / 180; pins.push({ el: e2, v: new THREE.Vector3(r[1] / U, 0.15, r[2] / U), v2: new THREE.Vector3(r[1] / U + Math.cos(a), 0.15, r[2] / U + Math.sin(a)), rua: true }); });
   // caminho até o lugar escolhido na lista
   const pathM = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, uniforms: { t: { value: 0 }, L: { value: 1 } },
     vertexShader: 'varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
@@ -215,7 +229,7 @@ export async function init(stage, o) {
 
   // controles: como na maquete da praia (arrastar anda, botão direito/Shift/dois dedos giram, roda aproxima onde aponta)
   const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true; controls.dampingFactor = 0.08; controls.enablePan = true; controls.screenSpacePanning = false; controls.enableZoom = true; controls.zoomToCursor = true;
+  controls.enableDamping = true; controls.dampingFactor = 0.08; controls.enablePan = true; controls.screenSpacePanning = false; controls.enableZoom = false; // o zoom é nosso: suave, com limite por movimento, na direção do ponto apontado (igual à maquete da praia)
   controls.mouseButtons = { LEFT: THREE.MOUSE.PAN, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.ROTATE };
   controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
   controls.minDistance = 4; controls.maxDistance = 140; controls.minPolarAngle = 0.2; controls.maxPolarAngle = 1.38;
@@ -227,11 +241,37 @@ export async function init(stage, o) {
   let fly = null, sway = true, swayBase = null, swayT0 = 0, dirty = true;
   controls.addEventListener('start', () => { fly = null; sway = false; });
   controls.addEventListener('change', () => { dirty = true; });
+  // zoom suave: cada giro da roda ou pinça soma um pouco (com teto) e a câmera desliza até lá
+  let zq = 0; const za = new THREE.Vector3(), zray = new THREE.Raycaster(), zndc = new THREE.Vector2(), zplane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+  function zoomBy(amt, cx, cy) {
+    fly = null; sway = false; dirty = true;
+    if (cx == null) za.copy(controls.target);
+    else { const r = canvas.getBoundingClientRect(); zndc.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1); zray.setFromCamera(zndc, camera); const pt = zray.ray.intersectPlane(zplane, new THREE.Vector3()); za.copy(pt && pt.distanceTo(controls.target) < RG ? pt : controls.target); }
+    zq = Math.max(-1.6, Math.min(1.6, zq + amt));
+  }
+  function stepZoom() {
+    if (Math.abs(zq) < 1e-4) { zq = 0; return; }
+    const s = zq * 0.14; zq -= s; dirty = true;
+    const d = camera.position.distanceTo(controls.target), nd = Math.min(controls.maxDistance, Math.max(controls.minDistance, d * Math.exp(s))), f = nd / d;
+    if (Math.abs(f - 1) < 1e-6) { zq = 0; return; }
+    camera.position.sub(za).multiplyScalar(f).add(za); controls.target.sub(za).multiplyScalar(f).add(za);
+  }
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault(); const k = e.deltaMode === 1 ? 0.03 : e.deltaMode === 2 ? 0.5 : 0.0011;
+    zoomBy(Math.max(-0.35, Math.min(0.35, e.deltaY * k * (e.ctrlKey ? 2.5 : 1))), e.clientX, e.clientY);
+  }, { passive: false });
+  // pinça com dois dedos
+  const tp = new Map(); let pinch0 = 0;
+  const spread = () => { const a = [...tp.values()]; return Math.hypot(a[0][0] - a[1][0], a[0][1] - a[1][1]); };
+  canvas.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'touch') return; tp.set(e.pointerId, [e.clientX, e.clientY]); pinch0 = tp.size === 2 ? spread() : 0; });
+  canvas.addEventListener('pointermove', (e) => { if (!tp.has(e.pointerId)) return; tp.set(e.pointerId, [e.clientX, e.clientY]); if (tp.size === 2 && pinch0) { const s = spread(), a = [...tp.values()]; if (s > 0) { zoomBy(Math.max(-0.3, Math.min(0.3, Math.log(pinch0 / s))), (a[0][0] + a[1][0]) / 2, (a[0][1] + a[1][1]) / 2); pinch0 = s; } } });
+  const tpEnd = (e) => { tp.delete(e.pointerId); pinch0 = 0; };
+  canvas.addEventListener('pointerup', tpEnd); canvas.addEventListener('pointercancel', tpEnd);
 
   // enquadramento: o prédio no centro, em diagonal, com os lugares mais perto na tela
   const UP = new THREE.Vector3(0, 1, 0);
   function home() {
-    const pts = [new THREE.Vector3(0, topY, 0)], pn = pins.filter((p) => p.n).sort((p, q) => Math.hypot(p.v.x, p.v.z) - Math.hypot(q.v.x, q.v.z)); pn.forEach((p, i) => { const dd = Math.hypot(p.v.x, p.v.z); if (dd < 26 || (i < 3 && dd < 40)) pts.push(p.v); });
+    const pts = [new THREE.Vector3(0, topY, 0)], pn = pins.filter((p) => p.n).sort((p, q) => Math.hypot(p.v.x, p.v.z) - Math.hypot(q.v.x, q.v.z)); pn.forEach((p, i) => { const dd = Math.hypot(p.v.x, p.v.z); if (dd < 26 || (i < 3 && dd < 85)) pts.push(p.v); });
     const tg = new THREE.Vector3(0, Math.min(topY * 0.4, 2.5), 0), dir = new THREE.Vector3(0.62, 0.62, 0.48).normalize(), cam = camera.clone(), pv = new THREE.Vector3();
     let d = Math.max(pts.length > 1 ? 16 : 34, topY * 2.6);
     for (let i = 0; i < 60; i++) { cam.position.copy(dir).multiplyScalar(d).add(tg); cam.lookAt(tg); cam.updateMatrixWorld(); if (pts.every((p) => { pv.copy(p).project(cam); return Math.abs(pv.x) < 0.86 && Math.abs(pv.y) < 0.8; })) break; d *= 1.06; }
@@ -244,7 +284,7 @@ export async function init(stage, o) {
   function resize() { dirty = true; const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
   const ro = new ResizeObserver(resize); ro.observe(stage); resize();
   const H0 = home(); controls.target.copy(H0.tg); camera.position.copy(H0.tg).add(H0.p.clone().sub(H0.tg).multiplyScalar(2.2).setY(H0.p.y * 2.6));
-  controls.maxDistance = Math.max(60, H0.p.distanceTo(H0.tg) * 2.2);
+  controls.maxDistance = Math.min(RG * 1.15, Math.max(40, H0.p.distanceTo(H0.tg) * 1.6));
 
   let t0 = null, alive = true, visible = true, raf = 0;
   const io = new IntersectionObserver((es) => { visible = es[0].isIntersecting; }); io.observe(stage);
@@ -254,17 +294,18 @@ export async function init(stage, o) {
     if (!alive) return; raf = requestAnimationFrame(frame); if (!visible) return;
     const now = performance.now(), dt = Math.min(clock.getDelta(), 0.05); pathM.uniforms.t.value += dt;
     if (sway && t0 && now - t0 > 14000) sway = false; // gira devagar só no começo; depois fica parada até mexer
-    const anim = (t0 && now - t0 < 4200) || fly || (sway && t0) || pathMesh.visible;
+    const anim = (t0 && now - t0 < 4200) || fly || (sway && t0) || pathMesh.visible || Math.abs(zq) > 1e-4;
     if (!anim && !dirty) { controls.update(); if (!dirty) return; }
     dirty = false;
     // sobe andar por andar e as janelas acendem
     const k = t0 ? Math.max(0, Math.min(1, (now - t0 - 900) / 1800)) : 0, e = 1 - Math.pow(1 - k, 3), lk = t0 ? Math.max(0, Math.min(1, (now - t0 - 2600) / 1200)) : 0;
     emp.children.forEach((ch) => { if (ch.userData.m) { ch.scale.y = Math.max(0.001, e); ch.userData.mats.forEach((m) => { if (m.emissiveMap) m.emissiveIntensity = 0.9 * lk; }); } });
+    oth.children.forEach((g) => g.children.forEach((ch) => { if (ch.userData.mats) ch.userData.mats.forEach((m) => { if (m.emissiveMap) m.emissiveIntensity = 0.9 * lk; }); }));
     beam.visible = e > 0.95; ring.material.opacity = 0.5 + 0.35 * Math.sin(now / 500);
     if (fly) { const kk = Math.min(1, (now - fly.t0) / fly.d), ee = ease(kk); camera.position.lerpVectors(fly.p0, fly.p1, ee); controls.target.lerpVectors(fly.q0, fly.q1, ee); if (kk >= 1) { fly = null; swayBase = null; } }
     else if (sway && t0) { if (!swayBase) { swayBase = camera.position.clone().sub(controls.target); swayT0 = now; } camera.position.copy(swayBase).applyAxisAngle(UP, 0.22 * Math.sin((now - swayT0) / 5200)).add(controls.target); }
-    controls.update();
-    const tt = controls.target; tt.x = Math.max(-RG * 0.9, Math.min(RG * 0.9, tt.x)); tt.z = Math.max(-RG * 0.9, Math.min(RG * 0.9, tt.z)); tt.y = Math.max(0, Math.min(12, tt.y));
+    stepZoom(); controls.update();
+    const tt = controls.target; const tr = Math.hypot(tt.x, tt.z), tm = RG * 0.55; if (tr > tm) { tt.x *= tm / tr; tt.z *= tm / tr; } tt.y = Math.max(0, Math.min(12, tt.y));
     const cd = camera.position.distanceTo(tt); scene.fog.near = cd + 25; scene.fog.far = cd + 110;
     sun.position.copy(tt).add(sunOff); sun.target.position.copy(tt); const sr = Math.max(25, Math.min(90, cd * 1.2)); const sc = sun.shadow.camera; sc.left = sc.bottom = -sr; sc.right = sc.top = sr; sc.updateProjectionMatrix();
     sky.position.copy(camera.position);
@@ -273,6 +314,7 @@ export async function init(stage, o) {
     pins.forEach((p) => {
       v.copy(p.v).project(camera); const on = v.z < 1 && Math.abs(v.x) < 1.02 && Math.abs(v.y) < 1.02;
       let x = (v.x + 1) / 2 * w, y = (1 - v.y) / 2 * h;
+      if (p.rua) { const v2 = p.v2.clone().project(camera); let an = Math.atan2(-(v2.y - v.y) * h, (v2.x - v.x) * w); if (an > Math.PI / 2) an -= Math.PI; if (an < -Math.PI / 2) an += Math.PI; const dcam = camera.position.distanceTo(p.v); p.el.style.opacity = on && t0 && now - t0 > 2600 && dcam < 75 ? '1' : '0'; p.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + an.toFixed(3) + 'rad) translate(-50%,-50%)'; return; }
       if (!p.tag && !p.lab) { used.forEach((u) => { if (Math.abs(u[0] - x) < 24 && Math.abs(u[1] - y) < 26) y = u[1] - 26; }); used.push([x, y]); }
       let ok = on && (p.tag ? e > 0.9 : t0 && now - t0 > 2200); if (p.lab && tagXY && Math.abs(x - tagXY[0]) < 110 && Math.abs(y - tagXY[1]) < 40) ok = false; if (p.tag) tagXY = [x, y];
       p.el.style.opacity = ok ? '1' : '0'; p.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
@@ -283,6 +325,7 @@ export async function init(stage, o) {
   return {
     start, hi, zoom: () => { const near = camera.position.distanceTo(controls.target) < H0.p.distanceTo(H0.tg) * 0.7; if (near) go(H0, 1400); else zoomIn(); return !near; },
     home: () => go(H0, 1400),
+    dist: () => camera.position.distanceTo(controls.target),
     destroy() { alive = false; cancelAnimationFrame(raf); io.disconnect(); ro.disconnect(); controls.dispose(); scene.traverse((x) => { if (x.geometry) x.geometry.dispose(); if (x.material) [].concat(x.material).forEach((m) => { if (m.map) m.map.dispose(); if (m.emissiveMap) m.emissiveMap.dispose(); m.dispose(); }); }); renderer.dispose(); try { renderer.forceContextLoss(); } catch (_) {} pinBox.innerHTML = ''; stage.classList.remove('gl', 'on'); },
   };
 }
