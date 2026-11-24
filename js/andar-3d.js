@@ -47,7 +47,16 @@ const CSS = `
 .ea-st small { font-size: 11.5px; opacity: .7; }
 .ea-face { font-size: 13px; line-height: 1.5; padding: 9px 12px; border-radius: 12px; background: rgba(226,199,126,.08); border: 1px solid rgba(226,199,126,.2); margin: 0 0 14px; }
 .ea-face small { opacity: .6; }
-.ea-go { width: 100%; border: 0; cursor: pointer; padding: 15px 18px; border-radius: 100px; font: 600 12.5px 'DM Sans', sans-serif; letter-spacing: 1.6px; text-transform: uppercase; color: #0b091c; background: linear-gradient(135deg, #f3eadb, #e2c77e 60%, #c9a84c); box-shadow: 0 14px 34px rgba(201,168,76,.28); }
+.ea-go { width: 100%; cursor: pointer; padding: 13px 18px; border-radius: 100px; font: 600 12px 'DM Sans', sans-serif; letter-spacing: 1.4px; text-transform: uppercase; color: #f3eadb; border: 1px solid rgba(226,199,126,.55); background: rgba(226,199,126,.12); }
+.ea-go:hover { background: rgba(226,199,126,.22); }
+.ea-cta { position: sticky; bottom: -18px; z-index: 2; display: grid; gap: 8px; margin: 14px -22px -18px; padding: 16px 22px 18px; background: linear-gradient(180deg, rgba(13,10,34,0), rgba(13,10,34,.97) 24%); }
+.ea-cta a { display: flex; align-items: center; justify-content: center; gap: 9px; padding: 15px 16px; border-radius: 100px; font: 600 12.5px 'DM Sans', sans-serif; letter-spacing: 1.3px; text-transform: uppercase; text-decoration: none; text-align: center; }
+.ea-cta .s1 { color: #0b091c; background: linear-gradient(135deg, #f3eadb, #e2c77e 60%, #c9a84c); box-shadow: 0 14px 34px rgba(201,168,76,.3); }
+.ea-cta .s2 { color: #eafff1; background: rgba(37,211,102,.16); border: 1px solid rgba(37,211,102,.6); }
+.ea-cta .wd, .ea-b.w::before { width: 8px; height: 8px; border-radius: 50%; background: #25d366; box-shadow: 0 0 0 3px rgba(37,211,102,.25); }
+.ea-b.w { display: inline-flex; align-items: center; gap: 8px; color: #eafff1; border-color: rgba(37,211,102,.6); background: rgba(37,211,102,.16); } .ea-b.w::before { content: ''; }
+a.ea-b { text-decoration: none; display: inline-flex; align-items: center; }
+.ea-in .gs { flex: none; }
 .ea-pl { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; padding: 8px; border-radius: 16px; border: 1px solid rgba(226,199,126,.3); background: rgba(255,255,255,.04); color: inherit; font: 500 13.5px 'DM Sans', sans-serif; cursor: pointer; text-align: left; }
 .ea-pl img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; background: #fff; }
 .ea-pl:hover { background: rgba(226,199,126,.12); }
@@ -79,7 +88,9 @@ const CSS = `
   .ea-p { left: 0; right: 0; top: auto; bottom: 0; width: auto; max-height: 64vh; border-radius: 22px 22px 0 0; transform: translateY(calc(100% + 20px)); padding: 18px 18px 22px; }
   .ea-p h3 { font-size: 36px; } .ea-c { grid-template-columns: 1fr; }
   .ea-hint { bottom: 16px; font-size: 12px; }
-  .ea-ub { flex-wrap: nowrap; gap: 6px; bottom: 14px; } .ea-ub .ea-b { padding: 10px 12px; font-size: 10.5px; letter-spacing: .6px; white-space: nowrap; }
+  .ea-ub { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; bottom: 12px; width: calc(100% - 24px); } .ea-ub[hidden] { display: none; } .ea-ub .ea-b { justify-content: center; padding: 11px 6px; font-size: 10.5px; letter-spacing: .4px; white-space: nowrap; } .ea-ub [data-u="sim"] { grid-column: 1 / 3; } .ea-ub [data-u="wa"] { grid-column: 3; font-size: 0; gap: 0; } .ea-ub [data-u="wa"]::after { content: 'WhatsApp'; font-size: 10.5px; margin-left: 6px; }
+  .ea-cta { margin: 14px -18px -22px; padding: 14px 18px 18px; }
+  .ea-in .gs { padding: 10px 12px; font-size: 10.5px; }
   .ea-in .cap b { font-size: 22px; } .ea-in .cap { padding: 50px 14px 18px; }
 }
 `;
@@ -102,10 +113,10 @@ export async function abrir(cfg) {
       <div class="ea-fl"><button type="button" data-d="1" aria-label="Subir um andar">▲</button><button type="button" data-d="-1" aria-label="Descer um andar">▼</button></div>
       <button type="button" class="ea-x" aria-label="Fechar">×</button></div>
     <p class="ea-hint">Toque num apartamento para ver por dentro</p>
-    <div class="ea-ub" hidden><button type="button" class="ea-b g" data-u="dec">Ver o decorado</button><button type="button" class="ea-b" data-u="fic">Ficha</button><button type="button" class="ea-b" data-u="vol">← Andar</button></div>
+    <div class="ea-ub" hidden><a class="ea-b g" data-u="sim" href="#">Simular o fluxo</a><a class="ea-b w" data-u="wa" href="#" target="_blank" rel="noopener" data-corretor="${esc(D.corretor || 'Kamila')}" data-origem="sm_${D.id}_apto_3d">Falar com a ${esc(D.corretor || 'Kamila')}</a><button type="button" class="ea-b" data-u="dec">Decorado</button><button type="button" class="ea-b" data-u="fic">Ficha</button><button type="button" class="ea-b" data-u="vol">← Andar</button></div>
     <aside class="ea-p" aria-live="polite"></aside>
     <div class="ea-lb" hidden><button type="button" class="ea-b ea-cl">Fechar ×</button><div class="sc"><img alt=""></div></div>
-    <div class="ea-in" hidden><button type="button" class="ea-b ea-cl">← Voltar</button><div class="cap"><div><small></small><b></b><p>${esc(D.fotoNota || 'Decorado ilustrativo')}</p></div><button type="button" class="nv" data-d="-1" aria-label="Anterior">‹</button><button type="button" class="nv" data-d="1" aria-label="Próxima">›</button></div></div>
+    <div class="ea-in" hidden><button type="button" class="ea-b ea-cl">← Voltar</button><div class="cap"><div><small></small><b></b><p>${esc(D.fotoNota || 'Decorado ilustrativo')}</p></div><a class="ea-b g gs" href="#">Simular o fluxo</a><button type="button" class="nv" data-d="-1" aria-label="Anterior">‹</button><button type="button" class="nv" data-d="1" aria-label="Próxima">›</button></div></div>
     <div class="ea-wh"></div>`;
   document.body.appendChild(root); requestAnimationFrame(() => root.classList.add('on'));
   const q = (s) => root.querySelector(s), canvas = q('canvas'), pinBox = q('.ea-pins'), panel = q('.ea-p'), hint = q('.ea-hint'), ub = q('.ea-ub'), flb = q('.ea-fl');
@@ -131,10 +142,31 @@ export async function abrir(cfg) {
   function laje(g, tex, Wm, Hm, slabCol, recorte) {
     // recorte: a imagem já vem só com o contorno do prédio (transparente em volta); sem a laje retangular
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(Wm, Hm), new THREE.MeshStandardMaterial(Object.assign({ map: tex, roughness: 0.82 }, recorte ? { transparent: true, alphaTest: 0.45 } : {}))); floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; g.add(floor);
-    if (recorte) { const under = new THREE.Mesh(new THREE.PlaneGeometry(Wm, Hm), new THREE.MeshStandardMaterial({ map: tex, color: 0x8d8579, transparent: true, alphaTest: 0.45, roughness: 1 })); under.rotation.x = -Math.PI / 2; under.position.y = -0.32; g.add(under); }
-    else { const slab = new THREE.Mesh(new THREE.BoxGeometry(Wm + Math.max(Wm, Hm) * 0.02, 0.3, Hm + Math.max(Wm, Hm) * 0.02), new THREE.MeshStandardMaterial({ color: slabCol || 0xe9e3d9, roughness: 0.9 })); slab.position.y = -0.155; slab.receiveShadow = true; g.add(slab); }
+    if (!recorte) { const slab = new THREE.Mesh(new THREE.BoxGeometry(Wm + Math.max(Wm, Hm) * 0.02, 0.3, Hm + Math.max(Wm, Hm) * 0.02), new THREE.MeshStandardMaterial({ color: slabCol || 0xe9e3d9, roughness: 0.9 })); slab.position.y = -0.155; slab.receiveShadow = true; g.add(slab); }
     const sc = document.createElement('canvas'); sc.width = sc.height = 128; const sx = sc.getContext('2d'), gr = sx.createRadialGradient(64, 64, 10, 64, 64, 64); gr.addColorStop(0, 'rgba(0,0,0,.55)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); sx.fillStyle = gr; sx.fillRect(0, 0, 128, 128);
     const sh = new THREE.Mesh(new THREE.PlaneGeometry(Wm * 1.9, Hm * 1.9), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false })); sh.rotation.x = -Math.PI / 2; sh.position.y = -Math.max(Wm, Hm) * 0.09; g.add(sh);
+  }
+  function moveis(g, m, tex, Wpx, Hpx, ppm, Wm, Hm, cap) {
+    if (!m || !m.length || !tex) return null;
+    const X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2, T = (px, py) => [px / Wpx, 1 - py / Hpx];
+    const pos = [], nor = [], uv = [];
+    const quad = (a, b, c, d, n, ta, tb, tc, td) => { for (const [p, t] of [[a, ta], [b, tb], [c, tc], [a, ta], [c, tc], [d, td]]) { pos.push(...p); nor.push(...n); uv.push(...t); } };
+    const bloco = (x0, y0, x1, y1, yb, yt) => {
+      const a = X(x0), b = X(x1), c = Z(y0), d = Z(y1), ix = (x1 - x0) * 0.2, iy = (y1 - y0) * 0.2;
+      quad([a, yt, d], [b, yt, d], [b, yt, c], [a, yt, c], [0, 1, 0], T(x0, y1), T(x1, y1), T(x1, y0), T(x0, y0));
+      quad([a, yb, d], [b, yb, d], [b, yt, d], [a, yt, d], [0, 0, 1], T(x0, y1 - iy), T(x1, y1 - iy), T(x1, y1), T(x0, y1));
+      quad([b, yb, c], [a, yb, c], [a, yt, c], [b, yt, c], [0, 0, -1], T(x1, y0 + iy), T(x0, y0 + iy), T(x0, y0), T(x1, y0));
+      quad([b, yb, d], [b, yb, c], [b, yt, c], [b, yt, d], [1, 0, 0], T(x1 - ix, y1), T(x1 - ix, y0), T(x1, y0), T(x1, y1));
+      quad([a, yb, c], [a, yb, d], [a, yt, d], [a, yt, c], [-1, 0, 0], T(x0 + ix, y0), T(x0 + ix, y1), T(x0, y1), T(x0, y0));
+    };
+    for (const [x0, y0, x1, y1, h0, st] of m) {
+      const h = Math.min(h0, cap);
+      if (st === 1) { const lx = Math.min(0.05 * ppm, (x1 - x0) / 6), ly = Math.min(0.05 * ppm, (y1 - y0) / 6); bloco(x0, y0, x1, y1, h - 0.04, h); for (const [px, py] of [[x0 + lx, y0 + ly], [x1 - 2 * lx, y0 + ly], [x0 + lx, y1 - 2 * ly], [x1 - 2 * lx, y1 - 2 * ly]]) bloco(px, py, px + lx, py + ly, 0, h - 0.04); }
+      else bloco(x0, y0, x1, y1, 0.005, h);
+    }
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.72, side: THREE.DoubleSide })); mesh.castShadow = true; mesh.receiveShadow = true; mesh.scale.y = 0.001; g.add(mesh);
+    return mesh;
   }
   function paredes(g, r, ppm, Wm, Hm, h, topHex, sideHex) {
     const X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2;
@@ -159,8 +191,8 @@ export async function abrir(cfg) {
   async function monta(pk) {
     if (P) { world.remove(P.g); dispose(P.g); } pinBox.innerHTML = ''; pavAtual = pk;
     const pv = D.pav[pk], ppm = pv.ppm, Wm = pv.W / ppm, Hm = pv.H / ppm, X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2;
-    const g = new THREE.Group(); world.add(g); laje(g, await loadTex(pv.img), Wm, Hm, pv.laje, pv.recorte); sombra(Math.max(Wm, Hm) * 0.75);
-    const ph = pv.wh || WH, walls = paredes(g, pv.r, ppm, Wm, Hm, ph, pv.top, pv.lado);
+    const g = new THREE.Group(), ftex = await loadTex(pv.img); world.add(g); laje(g, ftex, Wm, Hm, pv.laje, pv.recorte); sombra(Math.max(Wm, Hm) * 0.75);
+    const ph = pv.wh || WH, walls = paredes(g, pv.r, ppm, Wm, Hm, ph, pv.top, pv.lado), mov = moveis(g, pv.m, ftex, pv.W, pv.H, ppm, Wm, Hm, ph - 0.05);
     const zs = {};
     for (const [zk, pts] of Object.entries(pv.z)) {
       const shp = new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(X(x), -Z(y))));
@@ -169,7 +201,7 @@ export async function abrir(cfg) {
       const c = centro(pts), xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
       zs[zk] = { zk, pts, hl, vl, c: new THREE.Vector3(X(c[0]), ph + 0.4, Z(c[1])), size: Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) / ppm, hlT: 0, vlT: 0, pin: null, num: null };
     }
-    P = { pk, pv, Wm, Hm, g, walls, zs, rise: performance.now() };
+    P = { pk, pv, Wm, Hm, g, walls, mov, zs, rise: performance.now() };
     rotulos();
   }
   function rotulos() {
@@ -221,36 +253,46 @@ export async function abrir(cfg) {
   canvas.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY, performance.now()]; });
   canvas.addEventListener('pointerup', (e) => { if (!down || U) { down = null; return; } const mv = Math.hypot(e.clientX - down[0], e.clientY - down[1]), dt = performance.now() - down[2]; down = null; if (mv > 7 || dt > 600 || tp.size) return; const z = zonaSob(e.clientX, e.clientY); if (z) escolhe(z.num); else if (sel) solta(); });
 
+  // área livre da tela com a ficha aberta: no celular a ficha cobre ~64% de baixo; no computador, 380 px à direita
+  const estreito = () => root.clientWidth < 761;
+  let desl = false;
+  function deslocar(on) {
+    desl = on; const w = root.clientWidth, h = root.clientHeight;
+    if (!on) camera.clearViewOffset(); else if (estreito()) camera.setViewOffset(w, h, 0, Math.round(h * 0.31), w, h); else camera.setViewOffset(w, h, 190, 0, w, h);
+    camera.updateProjectionMatrix(); dirty = true;
+  }
   function foca(z, dur = 1300) {
-    const tg = new THREE.Vector3(z.c.x, 0, z.c.z), r = cabe(z.size, z.size) * 1.6 + 4;
-    if (camera.aspect < 0.8) tg.z += z.size * 0.45; // no celular a ficha cobre a parte de baixo
-    go(tg, sph(tg, r, 0.6, az()), dur);
+    const tg = new THREE.Vector3(z.c.x, 0, z.c.z), vf = camera.fov * Math.PI / 180, w = root.clientWidth, h = root.clientHeight;
+    let r;
+    if (estreito()) { const hf = 2 * Math.atan(Math.tan(vf / 2) * w / h); r = Math.max(z.size * 0.62 / Math.tan(hf / 2), z.size * 0.5 / (Math.tan(vf / 2) * 0.33)) + 2; }
+    else { const wl = w - 380, hf = 2 * Math.atan(Math.tan(vf / 2) * wl / h); r = Math.max(z.size * 0.95 / Math.tan(hf / 2), z.size * 0.85 / Math.tan(vf / 2)) + 5; }
+    deslocar(true); go(tg, sph(tg, r, 0.62, az()), dur);
   }
   function escolhe(num) {
     const z = zonaDe(num); if (!z) return; sel = z; dirty = true; hint.style.opacity = '0'; foca(z); ficha(num);
     try { gtag('event', 'predio_apto', { emp: D.id, apto: num }); } catch (_) {}
   }
-  function solta() { sel = null; dirty = true; panel.classList.remove('on'); const h = geral(P.Wm, P.Hm); go(h.tg, h.p, 1200); }
+  function solta() { sel = null; dirty = true; panel.classList.remove('on'); deslocar(false); const h = geral(P.Wm, P.Hm); go(h.tg, h.p, 1200); }
 
   // ---- ficha
   const nomeAndar = () => D.andares[andar].nome || andar + 'º andar';
+  const simHref = (num) => (cfg.sim || '/simulador-financiamento-santa-maria.html') + '?modo=direto&emp=' + D.id + '&un=' + num + '#direto';
+  const waHref = (num) => { const d = info(num); return 'https://wa.me/' + cfg.K + '?text=' + encodeURIComponent('Olá ' + (D.corretor || 'Kamila') + '! Vi o apartamento ' + num + ' do ' + D.n + ' no site (' + nomeAndar().toLowerCase() + ', ' + d.t.toLowerCase() + ', ' + fm(d.a) + ' m²) e quero saber mais detalhes.'); };
   function ficha(num) {
-    const d = info(num), sim = (cfg.sim || '/simulador-financiamento-santa-maria.html') + '?modo=direto&emp=' + D.id + '&un=' + num + '#direto';
-    const msg = 'Olá ' + (D.corretor || 'Kamila') + '! Vi o apartamento ' + num + ' do ' + D.n + ' no site (' + nomeAndar().toLowerCase() + ', ' + d.t.toLowerCase() + ', ' + fm(d.a) + ' m²) e quero saber mais detalhes.';
+    const d = info(num), quem = esc(D.corretor || 'Kamila');
     const dl = !d.dorm ? ['Studio', 'integrado'] : [d.dorm, (d.su === d.dorm ? (d.su > 1 ? 'suítes' : 'suíte') : d.dorm > 1 ? 'dormitórios' : 'dormitório') + (d.su && d.su !== d.dorm ? ', 1 suíte' : '')];
     panel.innerHTML = `<button type="button" class="px" aria-label="Fechar a ficha">×</button><small class="k">Apartamento</small><h3>${esc(num)}</h3><div class="s">${esc(nomeAndar())} · ${esc(d.t)}</div>
       <div class="ea-st"><div><b>${fm(d.a)}</b><small>m² privativos</small></div><div><b>${dl[0]}</b><small>${dl[1]}</small></div><div><b>${d.ban}</b><small>${d.ban > 1 ? 'banheiros' : 'banheiro'}${d.lav ? ' + lavabo' : ''}</small></div></div>
       ${d.face ? `<p class="ea-face">☀ ${esc(d.face)} <small>(pela planta)</small></p>` : ''}
-      <button type="button" class="ea-go">${U ? 'Ver o decorado' : 'Entrar no apartamento'}</button>
+      <button type="button" class="ea-go">${U ? 'Ver o decorado' : 'Entrar no apartamento em 3D'}</button>
       <button type="button" class="ea-pl"><img src="${d.pl}" alt="" loading="lazy"><span>Ver a planta humanizada<br><small style="opacity:.6">${fm(d.a)} m² privativos</small></span></button>
       <ul class="ea-c">${(d.c || []).map(([t, a]) => `<li><span>${esc(t)}</span><b>${fm(a)} m²</b></li>`).join('')}</ul>
-      <a class="ea-a" href="${sim}">Montar minha proposta para o ${esc(num)} →</a>
-      <a class="ea-a" href="https://wa.me/${cfg.K}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" data-corretor="${esc(D.corretor || 'Kamila')}" data-origem="sm_${D.id}_apto">Falar com a ${esc(D.corretor || 'Kamila')} sobre o ${esc(num)}</a>
-      <p class="ea-n">${esc(D.aviso || 'Imagens ilustrativas.')}</p>`;
+      <p class="ea-n">${esc(D.aviso || 'Imagens ilustrativas.')}</p>
+      <div class="ea-cta"><a class="s1" href="${simHref(num)}">Simular o fluxo do ${esc(num)}</a><a class="s2" href="${waHref(num)}" target="_blank" rel="noopener" data-corretor="${quem}" data-origem="sm_${D.id}_apto"><span class="wd"></span>Falar com a ${quem}</a></div>`;
     panel.classList.add('on'); panel.scrollTop = 0;
     panel.querySelector('.ea-go').addEventListener('click', () => (U ? galeria() : entra(num)));
     panel.querySelector('.ea-pl').addEventListener('click', () => planta(d.pl));
-    panel.querySelector('.px').addEventListener('click', () => { panel.classList.remove('on'); if (!U) solta(); });
+    panel.querySelector('.px').addEventListener('click', () => { panel.classList.remove('on'); if (!U) solta(); else deslocar(false); });
   }
   const lb = q('.ea-lb'), lbi = lb.querySelector('img');
   function planta(src) { lbi.src = src; lbi.classList.remove('z'); lb.hidden = false; requestAnimationFrame(() => lb.classList.add('on')); }
@@ -260,7 +302,7 @@ export async function abrir(cfg) {
   // ---- entrar: desce até o piso do apartamento e troca para a planta humanizada dele em 3D
   const wh = q('.ea-wh');
   function entra(num) {
-    const z = zonaDe(num), d = info(num); panel.classList.remove('on');
+    const z = zonaDe(num), d = info(num); panel.classList.remove('on'); deslocar(false);
     const tg = new THREE.Vector3(z.c.x, 0.6, z.c.z);
     go(tg, sph(tg, 2.2, 1.15, az() + 0.5), 1400, async () => {
       wh.classList.add('on');
@@ -273,9 +315,10 @@ export async function abrir(cfg) {
   async function unidade(num, d) {
     const pu = d.pu; if (!pu) { galeria(); return; }
     const Wm = pu.W / pu.ppm, Hm = pu.H / pu.ppm, g = new THREE.Group();
-    laje(g, await loadTex(d.pl), Wm, Hm, 0xf4f0ea); const walls = paredes(g, pu.r, pu.ppm, Wm, Hm, Math.min(1.25, Math.max(Wm, Hm) * 0.12), 0x2f2d2b, 0xf6f2ec);
+    const utex = await loadTex(d.pl), uh = Math.min(1.25, Math.max(Wm, Hm) * 0.12); laje(g, utex, Wm, Hm, 0xf4f0ea); const walls = paredes(g, pu.r, pu.ppm, Wm, Hm, uh, 0x2f2d2b, 0xf6f2ec), mov = moveis(g, pu.m, utex, pu.W, pu.H, pu.ppm, Wm, Hm, uh - 0.05);
     P.g.visible = false; pinBox.style.display = 'none'; world.add(g); sombra(Math.max(Wm, Hm) * 0.8);
-    U = { num, d, g, walls, Wm, Hm, rise: performance.now() };
+    U = { num, d, g, walls, mov, Wm, Hm, rise: performance.now() };
+    ub.querySelector('[data-u="sim"]').href = simHref(num); ub.querySelector('[data-u="wa"]').href = waHref(num);
     flb.hidden = true; ub.hidden = false; hint.style.opacity = '0';
     q('.ea-tt b').textContent = 'Apartamento ' + num;
     const h = geral(Wm, Hm, 0.95); controls.target.set(0, 0, 0); camera.position.copy(sph(h.tg, Math.max(Wm, Hm) * 0.55, 0.35, az())); go(h.tg, h.p, 1800);
@@ -295,6 +338,7 @@ export async function abrir(cfg) {
     const num = U ? U.num : sel && sel.num; if (!num) return; const d = info(num); numF = num;
     fotos = (d.f && d.f.length ? d.f : D.fotos.map((_, i) => i)).map((i) => D.fotos[i]).filter(Boolean); fi = 0;
     inn.querySelectorAll('img').forEach((x) => x.remove());
+    inn.querySelector('.gs').href = simHref(num);
     fotos.forEach((f) => { const im = document.createElement('img'); im.alt = f[2]; im.src = touch ? f[1] : f[0]; inn.insertBefore(im, inn.firstChild); });
     inn.hidden = false; requestAnimationFrame(() => inn.classList.add('on')); mostra(0);
     try { gtag('event', 'predio_decorado', { emp: D.id, apto: num }); } catch (_) {}
@@ -313,7 +357,7 @@ export async function abrir(cfg) {
   async function vaiAndar(a) {
     if (!AND.includes(a) || a === andar || U) return;
     const sobe = a > andar, era = sel && sel.num; andar = a; panel.classList.remove('on');
-    if (D.andares[a].pav !== pavAtual) { sel = null; await monta(D.andares[a].pav); const h = geral(P.Wm, P.Hm); go(h.tg, h.p, 900); hint.style.opacity = '1'; }
+    if (D.andares[a].pav !== pavAtual) { sel = null; deslocar(false); await monta(D.andares[a].pav); const h = geral(P.Wm, P.Hm); go(h.tg, h.p, 900); hint.style.opacity = '1'; }
     else {
       rotulos(); world.position.y = sobe ? -2.4 : 2.4; P.drop = performance.now();
       const n2 = era && Object.keys(D.andares[a].un).find((n) => D.andares[a].un[n][0] === sel.zk);
@@ -334,7 +378,7 @@ export async function abrir(cfg) {
   window.addEventListener('keydown', tecla);
 
   // ---- tamanho e laço (só desenha quando algo muda)
-  function resize() { const w = root.clientWidth, h = root.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true; }
+  function resize() { const w = root.clientWidth, h = root.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; if (desl) deslocar(true); camera.updateProjectionMatrix(); dirty = true; }
   const ro = new ResizeObserver(resize); ro.observe(root); resize();
   await monta(D.andares[andar].pav);
   { // celular em pé e andar comprido: gira a vista 90° para o andar ficar na vertical
@@ -346,7 +390,7 @@ export async function abrir(cfg) {
     const now = performance.now(), riseK = P ? Math.min(1, (now - P.rise - 250) / 1300) : 1, dropK = P && P.drop ? Math.min(1, (now - P.drop) / 650) : 1, uK = U ? Math.min(1, (now - U.rise - 350) / 1400) : 1;
     let anim = fly || riseK < 1 || dropK < 1 || uK < 1 || Math.abs(zq) > 1e-4;
     if (P) {
-      P.walls.scale.y = Math.max(0.001, 1 - Math.pow(1 - Math.max(0, riseK), 3));
+      P.walls.scale.y = Math.max(0.001, 1 - Math.pow(1 - Math.max(0, riseK), 3)); if (P.mov) P.mov.scale.y = Math.max(0.001, 1 - Math.pow(1 - Math.max(0, (riseK - 0.25) / 0.75), 3));
       if (dropK < 1) world.position.y *= 0.82; else world.position.y = 0;
       Object.values(P.zs).forEach((z) => {
         const hlT = z === sel ? 0.16 : z === hov ? 0.22 : 0, vlT = sel && z !== sel ? 0.62 : 0;
@@ -355,7 +399,7 @@ export async function abrir(cfg) {
         z.hl.material.opacity = z.hlT; z.vl.material.opacity = z.vlT;
       });
     }
-    if (U) U.walls.scale.y = Math.max(0.001, 1 - Math.pow(1 - Math.max(0, uK), 3));
+    if (U) { U.walls.scale.y = Math.max(0.001, 1 - Math.pow(1 - Math.max(0, uK), 3)); if (U.mov) U.mov.scale.y = Math.max(0.001, 1 - Math.pow(1 - Math.max(0, (uK - 0.25) / 0.75), 3)); }
     if (!anim && !dirty) { controls.update(); if (!dirty) return; }
     dirty = false;
     if (fly) { const k = Math.min(1, (now - fly.t0) / fly.d), e = ease(k); camera.position.lerpVectors(fly.p0, fly.p1, e); controls.target.lerpVectors(fly.q0, fly.q1, e); if (k >= 1) { const t = fly.then; fly = null; if (t) t(); } }
