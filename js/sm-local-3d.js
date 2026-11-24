@@ -187,6 +187,34 @@ export async function init(stage, o) {
     const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(24, 0.01, 24)), new THREE.LineBasicMaterial({ color: col })); edge.position.y = 0.05; emp.add(edge);
     topY = 1;
   } else topY = await towers(emp, E.tw, f, o.id, col, pool && !E.casa);
+  // andares clicáveis (ex.: Eclipse): faixa dourada no andar, lista de andares ao lado; tocar no andar abre ele por dentro (o.andares.onAndar)
+  const A = o.andares; let AND = null;
+  if (A && !E.lot) {
+    const pv0 = emp.children.find((c) => c.userData && c.userData.m), t0w = E.tw[0];
+    if (pv0) {
+      const bm = new THREE.MeshBasicMaterial({ color: 0xffd98a, transparent: true, opacity: 0, depthWrite: false });
+      const band = new THREE.Mesh(new THREE.BoxGeometry(t0w.w / U + 0.1, FH * 0.9, t0w.d / U + 0.1), bm); band.renderOrder = 3; band.visible = false; pv0.add(band);
+      const rail = document.createElement('div'); rail.className = 'ml-af';
+      let hb = '<small>Andares</small>'; for (let k = A.ate; k >= A.de; k--) hb += '<button type="button" data-k="' + k + '">' + ((A.nomes && A.nomes[k]) || k + 'º') + '</button>';
+      rail.innerHTML = hb; stage.appendChild(rail);
+      const tip = document.createElement('span'); tip.className = 'ml-at'; stage.appendChild(tip);
+      const ah = document.createElement('span'); ah.className = 'ml-ah'; ah.textContent = A.hint || 'Escolha um andar e veja os apartamentos por dentro'; stage.appendChild(ah);
+      AND = { pv: pv0, band, bm, k: 0, rail, tip, ah, picked: 0, done: false, hov: false };
+      rail.addEventListener('mouseover', (e) => { const b = e.target.closest('button'); if (b) { AND.hov = true; setBand(+b.getAttribute('data-k')); } });
+      rail.addEventListener('mouseleave', () => { AND.hov = false; if (!AND.picked) setBand(0); });
+      rail.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) pickAndar(+b.getAttribute('data-k')); });
+    }
+  }
+  function setBand(k) {
+    if (!AND) return; AND.k = k; dirty = true; AND.band.visible = !!k; if (k) AND.band.position.y = (k - 0.5) * FH;
+    AND.rail.querySelectorAll('button').forEach((b) => b.classList.toggle('on', +b.getAttribute('data-k') === k));
+  }
+  function pickAndar(k) {
+    if (!AND || !k) return; AND.picked = k; AND.done = true; setBand(k); fly = null; sway = false;
+    const p0 = AND.pv.position, tg = new THREE.Vector3(p0.x, (k - 0.5) * FH, p0.z), off = camera.position.clone().sub(controls.target).setY(0).normalize();
+    go({ tg, p: tg.clone().add(off.multiplyScalar(3.4)).add(new THREE.Vector3(0, 0.9, 0)) }, 1000);
+    setTimeout(() => { if (alive && A.onAndar) A.onAndar(k); }, 760);
+  }
   // outros empreendimentos da vitrine ao lado (ex.: o Vibe perto do Levve), com fachada e nome
   const oth = new THREE.Group(); scene.add(oth); const othLab = [];
   for (const x of data.outros || []) {
@@ -267,10 +295,25 @@ export async function init(stage, o) {
   canvas.addEventListener('pointermove', (e) => { if (!tp.has(e.pointerId)) return; tp.set(e.pointerId, [e.clientX, e.clientY]); if (tp.size === 2 && pinch0) { const s = spread(), a = [...tp.values()]; if (s > 0) { zoomBy(Math.max(-0.3, Math.min(0.3, Math.log(pinch0 / s))), (a[0][0] + a[1][0]) / 2, (a[0][1] + a[1][1]) / 2); pinch0 = s; } } });
   const tpEnd = (e) => { tp.delete(e.pointerId); pinch0 = 0; };
   canvas.addEventListener('pointerup', tpEnd); canvas.addEventListener('pointercancel', tpEnd);
+  // andares: passar o mouse no prédio acende o andar; clicar/tocar abre
+  if (AND) {
+    const ar = new THREE.Raycaster(), an = new THREE.Vector2(); let dn = null;
+    const andarSob = (cx, cy) => { const r = canvas.getBoundingClientRect(); an.set((cx - r.left) / r.width * 2 - 1, -(cy - r.top) / r.height * 2 + 1); ar.setFromCamera(an, camera); const hit = ar.intersectObject(AND.pv.userData.m, false)[0]; if (!hit) return 0; const lp = AND.pv.worldToLocal(hit.point.clone()), k = Math.floor(lp.y / FH) + 1; return k >= A.de && k <= A.ate ? k : 0; };
+    canvas.addEventListener('pointermove', (e) => {
+      if (e.pointerType === 'touch' || AND.picked) return; const k = andarSob(e.clientX, e.clientY), r = stage.getBoundingClientRect();
+      if (k !== AND.k && !AND.hov) setBand(k); canvas.style.cursor = k ? 'pointer' : '';
+      AND.tip.style.opacity = k ? '1' : '0'; if (k) { AND.tip.textContent = ((A.nomes && A.nomes[k]) || k + 'º andar') + ' · clique para ver por dentro'; AND.tip.style.transform = 'translate(' + (e.clientX - r.left + 14) + 'px,' + (e.clientY - r.top - 30) + 'px)'; }
+    });
+    canvas.addEventListener('pointerleave', () => { AND.tip.style.opacity = '0'; if (!AND.picked && !AND.hov) setBand(0); });
+    canvas.addEventListener('pointerdown', (e) => { dn = [e.clientX, e.clientY, performance.now()]; });
+    canvas.addEventListener('pointerup', (e) => { if (!dn) return; const mv = Math.hypot(e.clientX - dn[0], e.clientY - dn[1]), dt = performance.now() - dn[2]; dn = null; if (mv > 7 || dt > 600 || tp.size) return; const k = andarSob(e.clientX, e.clientY); if (k) pickAndar(k); });
+  }
 
   // enquadramento: o prédio no centro, em diagonal, com os lugares mais perto na tela
   const UP = new THREE.Vector3(0, 1, 0);
   function home() {
+    // prédio com andares para escolher: abre já perto dele, de corpo inteiro
+    if (AND) { const p0 = AND.pv.position, tg = new THREE.Vector3(p0.x, topY * 0.48, p0.z), dir = new THREE.Vector3(0.62, 0.42, 0.48).normalize(); const lg = Math.max(E.tw[0].w, E.tw[0].d) / U; return { tg, p: dir.multiplyScalar(Math.max(6.5, topY * 2.25, lg * 2.2) * (camera.aspect < 0.8 ? 1.6 : 1)).add(tg) }; }
     const pts = [new THREE.Vector3(0, topY, 0)], pn = pins.filter((p) => p.n).sort((p, q) => Math.hypot(p.v.x, p.v.z) - Math.hypot(q.v.x, q.v.z)); pn.forEach((p, i) => { const dd = Math.hypot(p.v.x, p.v.z); if (dd < 26 || (i < 3 && dd < 85)) pts.push(p.v); });
     const tg = new THREE.Vector3(0, Math.min(topY * 0.4, 2.5), 0), dir = new THREE.Vector3(0.62, 0.62, 0.48).normalize(), cam = camera.clone(), pv = new THREE.Vector3();
     let d = Math.max(pts.length > 1 ? 16 : 34, topY * 2.6);
@@ -294,7 +337,10 @@ export async function init(stage, o) {
     if (!alive) return; raf = requestAnimationFrame(frame); if (!visible) return;
     const now = performance.now(), dt = Math.min(clock.getDelta(), 0.05); pathM.uniforms.t.value += dt;
     if (sway && t0 && now - t0 > 14000) sway = false; // gira devagar só no começo; depois fica parada até mexer
-    const anim = (t0 && now - t0 < 4200) || fly || (sway && t0) || pathMesh.visible || Math.abs(zq) > 1e-4;
+    // andares: depois que o prédio sobe, a faixa percorre os andares uma vez (mostra que dá para escolher) e pulsa no andar aceso
+    if (AND && t0 && !AND.done) { const s = (now - t0 - 3300) / 1900; if (s >= 1) { AND.done = true; if (!AND.hov && !AND.picked) setBand(0); } else if (s > 0) { const k = Math.round(A.de + s * (A.ate - A.de)); if (k !== AND.k && !AND.hov) setBand(k); } }
+    if (AND) AND.bm.opacity = AND.k ? 0.34 + 0.16 * Math.sin(now / 240) : 0;
+    const anim = (t0 && now - t0 < 4200) || fly || (sway && t0) || pathMesh.visible || Math.abs(zq) > 1e-4 || (AND && (AND.k || (t0 && !AND.done)));
     if (!anim && !dirty) { controls.update(); if (!dirty) return; }
     dirty = false;
     // sobe andar por andar e as janelas acendem
@@ -325,7 +371,8 @@ export async function init(stage, o) {
   return {
     start, hi, zoom: () => { const near = camera.position.distanceTo(controls.target) < H0.p.distanceTo(H0.tg) * 0.7; if (near) go(H0, 1400); else zoomIn(); return !near; },
     home: () => go(H0, 1400),
+    volta: () => { if (!AND) return; AND.picked = 0; setBand(0); go(H0, 1400); },
     dist: () => camera.position.distanceTo(controls.target),
-    destroy() { alive = false; cancelAnimationFrame(raf); io.disconnect(); ro.disconnect(); controls.dispose(); scene.traverse((x) => { if (x.geometry) x.geometry.dispose(); if (x.material) [].concat(x.material).forEach((m) => { if (m.map) m.map.dispose(); if (m.emissiveMap) m.emissiveMap.dispose(); m.dispose(); }); }); renderer.dispose(); try { renderer.forceContextLoss(); } catch (_) {} const nc = document.createElement('canvas'); canvas.replaceWith(nc); /* tela nova: a antiga perdeu o contexto */ pinBox.innerHTML = ''; stage.classList.remove('gl', 'on'); },
+    destroy() { alive = false; cancelAnimationFrame(raf); io.disconnect(); ro.disconnect(); controls.dispose(); scene.traverse((x) => { if (x.geometry) x.geometry.dispose(); if (x.material) [].concat(x.material).forEach((m) => { if (m.map) m.map.dispose(); if (m.emissiveMap) m.emissiveMap.dispose(); m.dispose(); }); }); renderer.dispose(); try { renderer.forceContextLoss(); } catch (_) {} const nc = document.createElement('canvas'); canvas.replaceWith(nc); /* tela nova: a antiga perdeu o contexto */ pinBox.innerHTML = ''; stage.querySelectorAll('.ml-af, .ml-at, .ml-ah').forEach((x) => x.remove()); stage.classList.remove('gl', 'on'); },
   };
 }
