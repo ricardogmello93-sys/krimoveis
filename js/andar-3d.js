@@ -57,6 +57,9 @@ const CSS = `
 .ea-b.w { display: inline-flex; align-items: center; gap: 8px; color: #eafff1; border-color: rgba(37,211,102,.6); background: rgba(37,211,102,.16); } .ea-b.w::before { content: ''; }
 a.ea-b { text-decoration: none; display: inline-flex; align-items: center; }
 .ea-in .gs { flex: none; }
+.ea-lz { position: relative; display: block; width: 100%; margin: 14px 0 0; padding: 0; border: 1px solid rgba(226,199,126,.35); border-radius: 18px; overflow: hidden; cursor: pointer; background: none; }
+.ea-lz img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.ea-lz span { position: absolute; right: 10px; bottom: 10px; padding: 7px 12px; border-radius: 100px; font: 600 11px 'DM Sans', sans-serif; letter-spacing: 1px; text-transform: uppercase; color: #0b091c; background: linear-gradient(135deg, #f3eadb, #e2c77e); }
 .ea-pl { display: flex; align-items: center; gap: 12px; width: 100%; margin-top: 10px; padding: 8px; border-radius: 16px; border: 1px solid rgba(226,199,126,.3); background: rgba(255,255,255,.04); color: inherit; font: 500 13.5px 'DM Sans', sans-serif; cursor: pointer; text-align: left; }
 .ea-pl img { width: 64px; height: 64px; object-fit: cover; border-radius: 10px; background: #fff; }
 .ea-pl:hover { background: rgba(226,199,126,.12); }
@@ -208,11 +211,12 @@ export async function abrir(cfg) {
     pinBox.innerHTML = ''; const un = D.andares[andar].un;
     Object.values(P.zs).forEach((z) => { z.num = null; z.pin = null; });
     for (const num of Object.keys(un)) {
-      const z = P.zs[un[num][0]]; if (!z) continue; const d = info(num);
-      const pin = document.createElement('button'); pin.type = 'button'; pin.className = 'ea-pin'; pin.innerHTML = num + '<small>' + curto(d) + '</small>'; pin.addEventListener('click', () => escolhe(num)); pinBox.appendChild(pin);
+      const z = P.zs[un[num][0]]; if (!z) continue; const lz = D.andares[andar].lazer;
+      const pin = document.createElement('button'); pin.type = 'button'; pin.className = 'ea-pin'; pin.innerHTML = lz ? esc(lz[num][0]) : num + '<small>' + curto(info(num)) + '</small>'; pin.addEventListener('click', () => escolhe(num)); pinBox.appendChild(pin);
       z.num = num; z.pin = pin;
     }
-    pinBox.classList.toggle('mini', Object.keys(un).length > 12);
+    pinBox.classList.toggle('mini', Object.keys(un).length > 12 && !D.andares[andar].lazer);
+    hint.textContent = D.andares[andar].lazer ? 'Toque num espaço para ver a foto' : 'Toque num apartamento para ver por dentro';
     q('.ea-tt b').textContent = D.andares[andar].nome || andar + 'º andar';
     q('[data-d="1"]').disabled = andar >= A1; q('[data-d="-1"]').disabled = andar <= A0;
   }
@@ -269,7 +273,7 @@ export async function abrir(cfg) {
     deslocar(true); go(tg, sph(tg, r, 0.62, az()), dur);
   }
   function escolhe(num) {
-    const z = zonaDe(num); if (!z) return; sel = z; dirty = true; hint.style.opacity = '0'; foca(z); ficha(num);
+    const z = zonaDe(num); if (!z) return; sel = z; dirty = true; hint.style.opacity = '0'; foca(z); if (D.andares[andar].lazer) fichaLazer(num); else ficha(num);
     try { gtag('event', 'predio_apto', { emp: D.id, apto: num }); } catch (_) {}
   }
   function solta() { sel = null; dirty = true; panel.classList.remove('on'); deslocar(false); const h = geral(P.Wm, P.Hm); go(h.tg, h.p, 1200); }
@@ -285,14 +289,24 @@ export async function abrir(cfg) {
       <div class="ea-st"><div><b>${fm(d.a)}</b><small>m² privativos</small></div><div><b>${dl[0]}</b><small>${dl[1]}</small></div><div><b>${d.ban}</b><small>${d.ban > 1 ? 'banheiros' : 'banheiro'}${d.lav ? ' + lavabo' : ''}</small></div></div>
       ${d.face ? `<p class="ea-face">☀ ${esc(d.face)} <small>(pela planta)</small></p>` : ''}
       <button type="button" class="ea-go">${U ? 'Ver o decorado' : 'Entrar no apartamento em 3D'}</button>
-      <button type="button" class="ea-pl"><img src="${d.pl}" alt="" loading="lazy"><span>Ver a planta humanizada<br><small style="opacity:.6">${fm(d.a)} m² privativos</small></span></button>
       <ul class="ea-c">${(d.c || []).map(([t, a]) => `<li><span>${esc(t)}</span><b>${fm(a)} m²</b></li>`).join('')}</ul>
       <p class="ea-n">${esc(D.aviso || 'Imagens ilustrativas.')}</p>
       <div class="ea-cta"><a class="s1" href="${simHref(num)}">Simular o fluxo do ${esc(num)}</a><a class="s2" href="${waHref(num)}" target="_blank" rel="noopener" data-corretor="${quem}" data-origem="sm_${D.id}_apto"><span class="wd"></span>Falar com a ${quem}</a></div>`;
     panel.classList.add('on'); panel.scrollTop = 0;
     panel.querySelector('.ea-go').addEventListener('click', () => (U ? galeria() : entra(num)));
-    panel.querySelector('.ea-pl').addEventListener('click', () => planta(d.pl));
     panel.querySelector('.px').addEventListener('click', () => { panel.classList.remove('on'); if (!U) solta(); else deslocar(false); });
+  }
+  function fichaLazer(k) {
+    const L = D.andares[andar].lazer[k], quem = esc(D.corretor || 'Kamila'), f0 = D.fotos[L[1][0]];
+    const sim = (cfg.sim || '/simulador-financiamento-santa-maria.html') + '?modo=direto&emp=' + D.id + '#direto';
+    const wa = 'https://wa.me/' + cfg.K + '?text=' + encodeURIComponent('Olá ' + (D.corretor || 'Kamila') + '! Vi o rooftop do ' + D.n + ' no site (' + L[0].toLowerCase() + ') e quero saber mais detalhes dos apartamentos.');
+    panel.innerHTML = `<button type="button" class="px" aria-label="Fechar">×</button><small class="k">${esc(nomeAndar())}</small><h3 style="font-size:36px">${esc(L[0])}</h3><div class="s">${esc(L[2])}</div>
+      ${f0 ? `<button type="button" class="ea-lz"><img src="${f0[1]}" alt="${esc(L[0])}"><span>Ver as fotos</span></button>` : ''}
+      <p class="ea-n">Área comum do condomínio. Imagens ilustrativas da construtora.</p>
+      <div class="ea-cta"><a class="s1" href="${sim}">Simular o fluxo do ${esc(D.n.split(' ')[0])}</a><a class="s2" href="${wa}" target="_blank" rel="noopener" data-corretor="${quem}" data-origem="sm_${D.id}_lazer"><span class="wd"></span>Falar com a ${quem}</a></div>`;
+    panel.classList.add('on'); panel.scrollTop = 0;
+    const b = panel.querySelector('.ea-lz'); if (b) b.addEventListener('click', () => galeria(L[1], L[0]));
+    panel.querySelector('.px').addEventListener('click', () => { panel.classList.remove('on'); solta(); });
   }
   const lb = q('.ea-lb'), lbi = lb.querySelector('img');
   function planta(src) { lbi.src = src; lbi.classList.remove('z'); lb.hidden = false; requestAnimationFrame(() => lb.classList.add('on')); }
@@ -334,11 +348,12 @@ export async function abrir(cfg) {
 
   // ---- decorado (fotos)
   const inn = q('.ea-in'); let fi = 0, fT = 0, fotos = [], numF = '';
-  function galeria() {
-    const num = U ? U.num : sel && sel.num; if (!num) return; const d = info(num); numF = num;
-    fotos = (d.f && d.f.length ? d.f : D.fotos.map((_, i) => i)).map((i) => D.fotos[i]).filter(Boolean); fi = 0;
+  function galeria(lista, titulo) {
+    const num = lista ? '' : U ? U.num : sel && sel.num; if (!lista && !num) return; numF = lista ? titulo : 'Apartamento ' + num;
+    const idx = lista || (info(num).f && info(num).f.length ? info(num).f : D.fotos.map((_, i) => i));
+    fotos = idx.map((i) => D.fotos[i]).filter(Boolean); fi = 0;
     inn.querySelectorAll('img').forEach((x) => x.remove());
-    inn.querySelector('.gs').href = simHref(num);
+    inn.querySelector('.gs').href = num ? simHref(num) : (cfg.sim || '/simulador-financiamento-santa-maria.html') + '?modo=direto&emp=' + D.id + '#direto';
     fotos.forEach((f) => { const im = document.createElement('img'); im.alt = f[2]; im.src = touch ? f[1] : f[0]; inn.insertBefore(im, inn.firstChild); });
     inn.hidden = false; requestAnimationFrame(() => inn.classList.add('on')); mostra(0);
     try { gtag('event', 'predio_decorado', { emp: D.id, apto: num }); } catch (_) {}
@@ -346,7 +361,7 @@ export async function abrir(cfg) {
   function mostra(i) {
     fi = (i + fotos.length) % fotos.length; const ims = [...inn.querySelectorAll('img')].reverse();
     ims.forEach((im, j) => { im.classList.remove('on'); if (j === fi) { void im.offsetWidth; im.classList.add('on'); } });
-    inn.querySelector('.cap small').textContent = 'Apartamento ' + numF + ' · ' + (fi + 1) + ' de ' + fotos.length; inn.querySelector('.cap b').textContent = fotos[fi][2];
+    inn.querySelector('.cap small').textContent = numF + ' · ' + (fi + 1) + ' de ' + fotos.length; inn.querySelector('.cap b').textContent = fotos[fi][2];
     clearTimeout(fT); fT = setTimeout(() => mostra(fi + 1), 6500);
   }
   inn.querySelectorAll('.nv').forEach((b) => b.addEventListener('click', () => mostra(fi + +b.getAttribute('data-d'))));

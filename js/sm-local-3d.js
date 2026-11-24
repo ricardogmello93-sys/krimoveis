@@ -235,10 +235,11 @@ export async function init(stage, o) {
   const tag = document.createElement('span'); tag.className = 'ml-tag'; tag.innerHTML = '<i></i>' + o.d.n.replace(/</g, '&lt;'); tag.style.setProperty('--tc', '#' + col.toString(16).padStart(6, '0')); pinBox.appendChild(tag);
   pins.push({ el: tag, v: new THREE.Vector3(0, topY + 0.8, 0), tag: true });
   (o.perto || []).forEach((p, i) => {
-    if (Math.abs(p.dx) > data.RG || Math.abs(p.dz) > data.RG) return;
-    const b = document.createElement('b'); b.className = 'ml-n' + (p.fix ? ' u' : ''); b.textContent = i + 1; b.title = p.n; pinBox.appendChild(b);
+    // longe demais para a região: fica na borda, na direção certa, com a distância
+    const dd = Math.hypot(p.dx, p.dz), lim = data.RG * 0.34, far = dd > lim, kf = far ? lim / dd : 1;
+    const b = document.createElement('b'); b.className = 'ml-n' + (p.fix ? ' u' : '') + (far ? ' far' : ''); b.innerHTML = (i + 1) + (far ? '<em>' + (dd >= 1000 ? (dd / 1000).toFixed(1).replace('.', ',') + ' km' : Math.round(dd / 10) * 10 + ' m') + '</em>' : ''); b.title = p.n; pinBox.appendChild(b);
     b.addEventListener('click', () => { if (o.onNum) o.onNum(i + 1); });
-    pins.push({ el: b, v: new THREE.Vector3(p.dx / U, 0.2, p.dz / U), n: i + 1 });
+    pins.push({ el: b, v: new THREE.Vector3(p.dx * kf / U, 0.2, p.dz * kf / U), n: i + 1 });
   });
   othLab.concat(o.labels || []).forEach((l) => { const s2 = document.createElement('span'); s2.className = 'ml-lab'; s2.textContent = l.t; pinBox.appendChild(s2); pins.push({ el: s2, v: new THREE.Vector3(l.dx / U, l.y || 0.5, l.dz / U), lab: true }); });
   // nomes das ruas em volta (a rua do empreendimento primeiro)
@@ -311,13 +312,14 @@ export async function init(stage, o) {
 
   // enquadramento: o prédio no centro, em diagonal, com os lugares mais perto na tela
   const UP = new THREE.Vector3(0, 1, 0);
-  function home() {
-    // prédio com andares para escolher: abre já perto dele, de corpo inteiro
-    if (AND) { const p0 = AND.pv.position, tg = new THREE.Vector3(p0.x, topY * 0.48, p0.z), dir = new THREE.Vector3(0.62, 0.42, 0.48).normalize(); const lg = Math.max(E.tw[0].w, E.tw[0].d) / U; return { tg, p: dir.multiplyScalar(Math.max(6.5, topY * 2.25, lg * 2.2) * (camera.aspect < 0.8 ? 1.6 : 1)).add(tg) }; }
-    const pts = [new THREE.Vector3(0, topY, 0)], pn = pins.filter((p) => p.n).sort((p, q) => Math.hypot(p.v.x, p.v.z) - Math.hypot(q.v.x, q.v.z)); pn.forEach((p, i) => { const dd = Math.hypot(p.v.x, p.v.z); if (dd < 26 || (i < 3 && dd < 85)) pts.push(p.v); });
-    const tg = new THREE.Vector3(0, Math.min(topY * 0.4, 2.5), 0), dir = new THREE.Vector3(0.62, 0.62, 0.48).normalize(), cam = camera.clone(), pv = new THREE.Vector3();
+  function home(regiao) {
+    // prédio com andares para escolher: abre já perto dele, de corpo inteiro (a região é o outro botão)
+    if (AND && !regiao) { const p0 = AND.pv.position, tg = new THREE.Vector3(p0.x, topY * 0.48, p0.z), dir = new THREE.Vector3(0.62, 0.42, 0.48).normalize(); const lg = Math.max(E.tw[0].w, E.tw[0].d) / U; return { tg, p: dir.multiplyScalar(Math.max(6.5, topY * 2.25, lg * 2.2) * (camera.aspect < 0.8 ? 1.6 : 1)).add(tg) }; }
+    const pts = [new THREE.Vector3(0, topY, 0)], pn = pins.filter((p) => p.n).sort((p, q) => Math.hypot(p.v.x, p.v.z) - Math.hypot(q.v.x, q.v.z)); pn.forEach((p, i) => { const dd = Math.hypot(p.v.x, p.v.z); if (regiao || dd < 26 || (i < 3 && dd < 85)) pts.push(p.v); });
+    const tg = new THREE.Vector3(0, Math.min(topY * 0.4, 2.5), 0), dir = (regiao ? new THREE.Vector3(0.42, 0.86, 0.33) : new THREE.Vector3(0.62, 0.62, 0.48)).normalize(), cam = camera.clone(), pv = new THREE.Vector3();
     let d = Math.max(pts.length > 1 ? 16 : 34, topY * 2.6);
     for (let i = 0; i < 60; i++) { cam.position.copy(dir).multiplyScalar(d).add(tg); cam.lookAt(tg); cam.updateMatrixWorld(); if (pts.every((p) => { pv.copy(p).project(cam); return Math.abs(pv.x) < 0.86 && Math.abs(pv.y) < 0.8; })) break; d *= 1.06; }
+    d = Math.min(d, RG * 1.1); // nunca além do limite da câmera
     return { tg, p: dir.multiplyScalar(d).add(tg) };
   }
   function go(to, dur = 1800) { fly = { t0: performance.now(), d: dur, p0: camera.position.clone(), q0: controls.target.clone(), p1: to.p, q1: to.tg }; }
@@ -326,8 +328,8 @@ export async function init(stage, o) {
   // tamanho
   function resize() { dirty = true; const w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
   const ro = new ResizeObserver(resize); ro.observe(stage); resize();
-  const H0 = home(); controls.target.copy(H0.tg); camera.position.copy(H0.tg).add(H0.p.clone().sub(H0.tg).multiplyScalar(2.2).setY(H0.p.y * 2.6));
-  controls.maxDistance = Math.min(RG * 1.15, Math.max(40, H0.p.distanceTo(H0.tg) * 1.6));
+  const H0 = home(), HR = AND ? home(true) : H0; controls.target.copy(H0.tg); camera.position.copy(H0.tg).add(H0.p.clone().sub(H0.tg).multiplyScalar(2.2).setY(H0.p.y * 2.6));
+  controls.maxDistance = Math.min(RG * 1.15, Math.max(40, Math.max(H0.p.distanceTo(H0.tg), HR.p.distanceTo(HR.tg)) * 1.6));
 
   let t0 = null, alive = true, visible = true, raf = 0;
   const io = new IntersectionObserver((es) => { visible = es[0].isIntersecting; }); io.observe(stage);
@@ -371,6 +373,8 @@ export async function init(stage, o) {
   return {
     start, hi, zoom: () => { const near = camera.position.distanceTo(controls.target) < H0.p.distanceTo(H0.tg) * 0.7; if (near) go(H0, 1400); else zoomIn(); return !near; },
     home: () => go(H0, 1400),
+    // os dois botões: região (vista larga, com os lugares) e prédio (perto, para escolher o andar)
+    vista: (v) => { fly = null; sway = false; if (v === 'regiao') go(HR === H0 ? H0 : HR, 1500); else if (AND) go(H0, 1400); else zoomIn(); },
     volta: () => { if (!AND) return; AND.picked = 0; setBand(0); go(H0, 1400); },
     dist: () => camera.position.distanceTo(controls.target),
     destroy() { alive = false; cancelAnimationFrame(raf); io.disconnect(); ro.disconnect(); controls.dispose(); scene.traverse((x) => { if (x.geometry) x.geometry.dispose(); if (x.material) [].concat(x.material).forEach((m) => { if (m.map) m.map.dispose(); if (m.emissiveMap) m.emissiveMap.dispose(); m.dispose(); }); }); renderer.dispose(); try { renderer.forceContextLoss(); } catch (_) {} const nc = document.createElement('canvas'); canvas.replaceWith(nc); /* tela nova: a antiga perdeu o contexto */ pinBox.innerHTML = ''; stage.querySelectorAll('.ml-af, .ml-at, .ml-ah').forEach((x) => x.remove()); stage.classList.remove('gl', 'on'); },
