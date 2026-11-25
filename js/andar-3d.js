@@ -5,6 +5,7 @@
 // situação de venda (regra: tabela não entra no site).
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/+esm';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js/+esm';
+import { mergeGeometries } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/utils/BufferGeometryUtils.js/+esm';
 
 const WH = 1.5; // paredes cortadas a 1,5 m (como planta 3D: dá para ver dentro dos cômodos)
 const CSS = `
@@ -149,27 +150,66 @@ export async function abrir(cfg) {
     const sc = document.createElement('canvas'); sc.width = sc.height = 128; const sx = sc.getContext('2d'), gr = sx.createRadialGradient(64, 64, 10, 64, 64, 64); gr.addColorStop(0, 'rgba(0,0,0,.55)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); sx.fillStyle = gr; sx.fillRect(0, 0, 128, 128);
     const sh = new THREE.Mesh(new THREE.PlaneGeometry(Wm * 1.9, Hm * 1.9), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false })); sh.rotation.x = -Math.PI / 2; sh.position.y = -Math.max(Wm, Hm) * 0.09; g.add(sh);
   }
-  function moveis(g, m, tex, Wpx, Hpx, ppm, Wm, Hm, cap) {
-    if (!m || !m.length || !tex) return null;
-    const X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2, T = (px, py) => [px / Wpx, 1 - py / Hpx];
-    const pos = [], nor = [], uv = [];
-    const quad = (a, b, c, d, n, ta, tb, tc, td) => { for (const [p, t] of [[a, ta], [b, tb], [c, tc], [a, ta], [c, tc], [d, td]]) { pos.push(...p); nor.push(...n); uv.push(...t); } };
-    const bloco = (x0, y0, x1, y1, yb, yt) => {
-      const a = X(x0), b = X(x1), c = Z(y0), d = Z(y1), ix = (x1 - x0) * 0.2, iy = (y1 - y0) * 0.2;
-      quad([a, yt, d], [b, yt, d], [b, yt, c], [a, yt, c], [0, 1, 0], T(x0, y1), T(x1, y1), T(x1, y0), T(x0, y0));
-      quad([a, yb, d], [b, yb, d], [b, yt, d], [a, yt, d], [0, 0, 1], T(x0, y1 - iy), T(x1, y1 - iy), T(x1, y1), T(x0, y1));
-      quad([b, yb, c], [a, yb, c], [a, yt, c], [b, yt, c], [0, 0, -1], T(x1, y0 + iy), T(x0, y0 + iy), T(x0, y0), T(x1, y0));
-      quad([b, yb, d], [b, yb, c], [b, yt, c], [b, yt, d], [1, 0, 0], T(x1 - ix, y1), T(x1 - ix, y0), T(x1, y0), T(x1, y1));
-      quad([a, yb, c], [a, yb, d], [a, yt, d], [a, yt, c], [-1, 0, 0], T(x0 + ix, y0), T(x0 + ix, y1), T(x0, y1), T(x0, y0));
-    };
-    for (const [x0, y0, x1, y1, h0, st] of m) {
-      const h = Math.min(h0, cap);
-      if (st === 1) { const lx = Math.min(0.05 * ppm, (x1 - x0) / 6), ly = Math.min(0.05 * ppm, (y1 - y0) / 6); bloco(x0, y0, x1, y1, h - 0.04, h); for (const [px, py] of [[x0 + lx, y0 + ly], [x1 - 2 * lx, y0 + ly], [x0 + lx, y1 - 2 * ly], [x1 - 2 * lx, y1 - 2 * ly]]) bloco(px, py, px + lx, py + ly, 0, h - 0.04); }
-      else bloco(x0, y0, x1, y1, 0.005, h);
+  // ---- móveis modelados: m = [[x0,y0,x1,y1,tipo]] em px; paredes (px) dizem para onde cada móvel encosta
+  const MT = (c, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: 0.8 }, o));
+  function moveis(g, m, ppm, Wm, Hm, cap, wr) {
+    if (!m || !m.length) return null;
+    const MAT = { wood: MT(0xa77a53, { roughness: 0.55 }), woodD: MT(0x6c4b34, { roughness: 0.6 }), fab: MT(0xbdb3a5, { roughness: 0.95 }), fab2: MT(0x8f9c8b, { roughness: 0.95 }),
+      lin: MT(0xeee8de, { roughness: 0.92 }), white: MT(0xf3f1ec, { roughness: 0.4 }), stone: MT(0xe4e0da, { roughness: 0.28 }), metal: MT(0xc4c7ca, { metalness: 0.55, roughness: 0.35 }),
+      dark: MT(0x2f2e2c, { roughness: 0.45 }), green: MT(0x5f8c4b, { roughness: 0.9, flatShading: true }), green2: MT(0x4a7a3c, { roughness: 0.9, flatShading: true }), pot: MT(0xb5896a, { roughness: 0.85 }), rug: MT(0xd9cdb8, { roughness: 1 }) };
+    const B = {}, put = (k, geo) => { (B[k] = B[k] || []).push(geo.index ? geo.toNonIndexed() : geo); };
+    const X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2, UP = new THREE.Vector3(0, 1, 0);
+    // de que lado está a parede: faixa de 30 cm em volta de cada lado, quanto dela é parede
+    const enc = (x0, y0, x1, y1) => { const t = 0.3 * ppm, st = [[x0, y0 - t, x1, y0], [x1, y0, x1 + t, y1], [x0, y1, x1, y1 + t], [x0 - t, y0, x0, y1]]; let best = 0, bv = -1;
+      st.forEach((q, i) => { let a2 = 0; for (const [wx, wy, ww, wh] of wr || []) { const ix = Math.min(q[2], wx + ww) - Math.max(q[0], wx), iy = Math.min(q[3], wy + wh) - Math.max(q[1], wy); if (ix > 0 && iy > 0) a2 += ix * iy; } const v = a2 / ((q[2] - q[0]) * (q[3] - q[1])); if (v > bv) { bv = v; best = i; } }); return best; };
+    const mesas = m.filter((q) => q[4] === 'm').map((q) => [(q[0] + q[2]) / 2, (q[1] + q[3]) / 2]);
+    for (const [x0, y0, x1, y1, t] of m) {
+      let side = enc(x0, y0, x1, y1);
+      if ((t === 'ca' || t === 'po' && mesas.length) && mesas.length) { const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2; let mn = null, md = 1e9; for (const q of mesas) { const d2 = Math.hypot(q[0] - cx, q[1] - cy); if (d2 < md) { md = d2; mn = q; } }
+        if (t === 'ca' || md < 1.6 * ppm) { const dx = mn[0] - cx, dy = mn[1] - cy; side = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 3 : 1) : (dy > 0 ? 0 : 2); } }
+      const a0 = X(x0), a1 = X(x1), c0 = Z(y0), c1 = Z(y1), cx = (a0 + a1) / 2, cz = (c0 + c1) / 2;
+      const F = [[[cx, c0], [1, 0], [0, 1], a1 - a0, c1 - c0], [[a1, cz], [0, 1], [-1, 0], c1 - c0, a1 - a0], [[cx, c1], [-1, 0], [0, -1], a1 - a0, c1 - c0], [[a0, cz], [0, -1], [1, 0], c1 - c0, a1 - a0]][side];
+      const M = new THREE.Matrix4().makeBasis(new THREE.Vector3(F[1][0], 0, F[1][1]), UP, new THREE.Vector3(F[2][0], 0, F[2][1])).setPosition(F[0][0], 0, F[0][1]);
+      const W = F[3], D = F[4], hw = W / 2;
+      const box = (k, u0, u1, v0, v1, y0, y1) => { if (u1 - u0 < 0.004 || v1 - v0 < 0.004 || y1 - y0 < 0.004) return; const geo = new THREE.BoxGeometry(u1 - u0, y1 - y0, v1 - v0); geo.translate((u0 + u1) / 2, (y0 + y1) / 2, (v0 + v1) / 2); geo.applyMatrix4(M); put(k, geo); };
+      const cyl = (k, u, v, rr, y0, y1, r2) => { const geo = new THREE.CylinderGeometry(r2 == null ? rr : r2, rr, y1 - y0, 22); geo.translate(u, (y0 + y1) / 2, v); geo.applyMatrix4(M); put(k, geo); };
+      const sph = (k, u, v, y, rr, sy = 1) => { const geo = new THREE.IcosahedronGeometry(rr, 1); geo.scale(1, sy, 1); geo.translate(u, y, v); geo.applyMatrix4(M); put(k, geo); };
+      const hc = (h) => Math.min(h, cap);
+      switch (t) {
+        case 'c': { box('woodD', -hw - 0.03, hw + 0.03, 0, 0.07, 0, hc(1.0)); box('fab', -hw + 0.02, hw - 0.02, 0.07, D, 0.1, 0.34); box('dark', -hw + 0.1, hw - 0.1, 0.12, D - 0.08, 0, 0.1);
+          box('white', -hw + 0.05, hw - 0.05, 0.09, D - 0.03, 0.34, 0.55); box('lin', -hw + 0.02, hw - 0.02, D * 0.4, D - 0.01, 0.5, 0.585); box('fab2', -hw + 0.03, hw - 0.03, D - 0.52, D - 0.2, 0.585, 0.6);
+          const n = W > 1.25 ? 2 : 1, pw = (W - 0.18) / n; for (let i = 0; i < n; i++) { const u = -hw + 0.09 + pw * i; box('white', u + 0.03, u + pw - 0.03, 0.12, 0.46, 0.55, 0.67); } break; }
+        case 'cr': box('wood', -hw, hw, 0, D, 0, 0.48); box('woodD', -hw + 0.02, hw - 0.02, D - 0.005, D, 0.24, 0.25); cyl('metal', 0, D * 0.45, 0.012, 0.48, 0.62); cyl('lin', 0, D * 0.45, 0.12, 0.6, 0.78, 0.09); break;
+        case 'a': { const h = hc(2.1); box('wood', -hw, hw, 0, D, 0, h); const n = Math.max(1, Math.round(W / 0.5)); for (let i = 1; i < n; i++) { const u = -hw + i * W / n; box('dark', u - 0.005, u + 0.005, D, D + 0.006, 0.04, h - 0.04); box('metal', u - 0.03, u - 0.012, D, D + 0.02, h * 0.45, h * 0.62); } break; }
+        case 'p': box('wood', -hw, hw, 0, D, 0.12, 0.82); box('stone', -hw, hw, 0, D + 0.01, 0.82, 0.86); cyl('white', 0, D * 0.52, Math.min(W, D) * 0.28, 0.86, 0.95, Math.min(W, D) * 0.3); cyl('metal', 0, 0.07, 0.015, 0.86, 1.02); break;
+        case 'v': { const rr = Math.min(W * 0.42, 0.21); cyl('white', 0, Math.max(D * 0.62, 0.36), rr, 0, 0.38, rr * 0.85); cyl('white', 0, Math.max(D * 0.62, 0.36), rr * 1.03, 0.38, 0.41); box('white', -0.18, 0.18, 0, 0.17, 0.3, hc(0.76)); break; }
+        case 's': case 'po': { box('dark', -hw + 0.05, hw - 0.05, 0.06, D - 0.05, 0, 0.1); box('fab', -hw, hw, 0, 0.22, 0.1, hc(0.82)); box('fab', -hw, hw, 0.22, D, 0.1, 0.4);
+          box('fab', -hw, -hw + 0.15, 0.22, D, 0.1, 0.6); box('fab', hw - 0.15, hw, 0.22, D, 0.1, 0.6);
+          const n = Math.max(1, Math.round((W - 0.3) / 0.7)), cw = (W - 0.3) / n; for (let i = 0; i < n; i++) { const u = -hw + 0.15 + cw * i; box('lin', u + 0.01, u + cw - 0.01, 0.24, D - 0.02, 0.4, 0.53); box('lin', u + 0.02, u + cw - 0.02, 0.2, 0.36, 0.45, hc(0.8)); }
+          if (t === 's') { box('fab2', -hw + 0.2, -hw + 0.6, 0.3, 0.44, 0.52, 0.82); box('fab2', hw - 0.6, hw - 0.2, 0.3, 0.44, 0.52, 0.82); } break; }
+        case 'r': box('wood', -hw, hw, 0, D, 0.14, 0.5); box('woodD', -hw, hw, D - 0.005, D, 0.3, 0.31); if (W > 1 && cap > 1.05) box('dark', -Math.min(hw * 0.8, 0.75), Math.min(hw * 0.8, 0.75), 0, 0.04, 0.82, hc(1.42)); break;
+        case 'm': { const mx = Math.max(W, D), mn = Math.min(W, D);
+          if (mn / mx > 0.85 && mx < 1.35) { cyl('wood', 0, D / 2, mn / 2, 0.72, 0.76); cyl('dark', 0, D / 2, 0.05, 0.02, 0.72); cyl('dark', 0, D / 2, 0.24, 0, 0.02); }
+          else { box('wood', -hw, hw, 0, D, 0.72, 0.76); for (const [u, v] of [[-hw + 0.06, 0.06], [hw - 0.06, 0.06], [-hw + 0.06, D - 0.06], [hw - 0.06, D - 0.06]]) cyl('dark', u, v, 0.022, 0, 0.72); }
+          cyl('white', 0, D / 2, 0.05, 0.76, 0.9, 0.04); sph('green', 0, D / 2, 0.96, 0.09); break; }
+        case 'ca': box('fab', -hw + 0.02, hw - 0.02, 0.02, D - 0.02, 0.43, 0.48); box('wood', -hw + 0.03, hw - 0.03, 0, 0.04, 0.48, hc(0.86)); for (const [u, v] of [[-hw + 0.05, 0.04], [hw - 0.05, 0.04], [-hw + 0.05, D - 0.04], [hw - 0.05, D - 0.04]]) cyl('dark', u, v, 0.014, 0, 0.43); break;
+        case 'e': box('wood', -hw, hw, 0, D, 0.72, 0.75); box('woodD', -hw, -hw + 0.03, 0, D, 0, 0.72); box('woodD', hw - 0.03, hw, 0, D, 0, 0.72); break;
+        case 'b': case 'bl': { const top = t === 'b' ? 0.88 : 0.9; box(t === 'b' ? 'white' : 'wood', -hw, hw, 0, D - 0.02, 0, top - 0.04); box('stone', -hw, hw, 0, D, top - 0.04, top);
+          if (t === 'b' && W > 1.2 && D > 0.4) { box('metal', -hw + W * 0.2, -hw + W * 0.2 + 0.5, D * 0.2, D * 0.8, top - 0.01, top + 0.004); cyl('metal', -hw + W * 0.2 + 0.25, 0.08, 0.015, top, top + 0.28); box('dark', hw - W * 0.25 - 0.3, hw - W * 0.25 + 0.3, D * 0.15, D * 0.85, top, top + 0.012); } break; }
+        case 'g': box('metal', -hw, hw, 0, D, 0, hc(1.8)); box('dark', -hw, hw, D, D + 0.004, hc(1.8) * 0.62, hc(1.8) * 0.62 + 0.01); box('dark', hw - 0.08, hw - 0.06, D, D + 0.03, 0.9, hc(1.5)); break;
+        case 'bq': cyl('fab2', 0, D / 2, Math.min(W, D) * 0.45, 0.62, 0.67); cyl('metal', 0, D / 2, 0.022, 0, 0.62); cyl('metal', 0, D / 2, Math.min(W, D) * 0.4, 0, 0.015); break;
+        case 'pl': { box('pot', -hw, hw, 0, D, 0, 0.36); const L = Math.max(W, D), rr = Math.min(W, D) * 0.55, n = Math.max(1, Math.round(L / 0.45));
+          for (let i = 0; i < n; i++) { const k = (i + 0.5) / n; const u = W >= D ? -hw + W * k : 0, v = W >= D ? D / 2 : D * k; sph(i % 2 ? 'green2' : 'green', u, v, 0.4 + rr * 0.45, rr, 0.85); } break; }
+        case 'ch': box('stone', -hw, hw, 0, D, 0, 0.9); box('dark', -hw + 0.05, hw - 0.05, 0.05, D - 0.05, 0.9, 0.93); break;
+        case 'av': cyl('pot', 0, D / 2, 0.24, 0, 0.42, 0.2); cyl('woodD', 0, D / 2, 0.05, 0.42, 1.25, 0.04); sph('green', 0, D / 2, 1.55, 0.55, 0.9); sph('green2', 0.18, D / 2 - 0.1, 1.3, 0.38); break;
+        case 'ep': box('white', -hw, hw, 0, D, 0.08, 0.28); box('lin', -hw + 0.03, hw - 0.03, 0.02, D - 0.02, 0.28, 0.34); box('lin', -hw + 0.03, hw - 0.03, 0.02, Math.min(D, W) * 0.35, 0.34, 0.6); break;
+        case 'dg': box('wood', -hw, hw, 0, D, 0, 0.45); box('lin', -hw + 0.1, -hw + 0.6, D * 0.3, D * 0.7, 0.45, 0.55); box('lin', hw - 0.6, hw - 0.1, D * 0.3, D * 0.7, 0.45, 0.55); break;
+        default: box('fab', -hw, hw, 0, D, 0, hc(0.5));
+      }
     }
-    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-    const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.72, side: THREE.DoubleSide })); mesh.castShadow = true; mesh.receiveShadow = true; mesh.scale.y = 0.001; g.add(mesh);
-    return mesh;
+    const grp = new THREE.Group();
+    for (const [k, list] of Object.entries(B)) { const geo = mergeGeometries(list, false); list.forEach((q) => q.dispose()); const mesh = new THREE.Mesh(geo, MAT[k]); mesh.castShadow = true; mesh.receiveShadow = true; grp.add(mesh); }
+    grp.scale.y = 0.001; g.add(grp); return grp;
   }
   function paredes(g, r, ppm, Wm, Hm, h, topHex, sideHex) {
     const X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2;
@@ -195,7 +235,7 @@ export async function abrir(cfg) {
     if (P) { world.remove(P.g); dispose(P.g); } pinBox.innerHTML = ''; pavAtual = pk;
     const pv = D.pav[pk], ppm = pv.ppm, Wm = pv.W / ppm, Hm = pv.H / ppm, X = (px) => px / ppm - Wm / 2, Z = (py) => py / ppm - Hm / 2;
     const g = new THREE.Group(), ftex = await loadTex(pv.img); world.add(g); laje(g, ftex, Wm, Hm, pv.laje, pv.recorte); sombra(Math.max(Wm, Hm) * 0.75);
-    const ph = pv.wh || WH, walls = paredes(g, pv.r, ppm, Wm, Hm, ph, pv.top, pv.lado), mov = moveis(g, pv.m, ftex, pv.W, pv.H, ppm, Wm, Hm, ph - 0.05);
+    const ph = pv.wh || WH, walls = paredes(g, pv.r, ppm, Wm, Hm, ph, 0xdcd6cc, 0xf4f1ec), mov = moveis(g, pv.m, ppm, Wm, Hm, Math.max(ph + 0.35, 1.2), pv.r);
     const zs = {};
     for (const [zk, pts] of Object.entries(pv.z)) {
       const shp = new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(X(x), -Z(y))));
@@ -329,7 +369,7 @@ export async function abrir(cfg) {
   async function unidade(num, d) {
     const pu = d.pu; if (!pu) { galeria(); return; }
     const Wm = pu.W / pu.ppm, Hm = pu.H / pu.ppm, g = new THREE.Group();
-    const utex = await loadTex(d.pl), uh = Math.min(1.25, Math.max(Wm, Hm) * 0.12); laje(g, utex, Wm, Hm, 0xf4f0ea); const walls = paredes(g, pu.r, pu.ppm, Wm, Hm, uh, 0x2f2d2b, 0xf6f2ec), mov = moveis(g, pu.m, utex, pu.W, pu.H, pu.ppm, Wm, Hm, uh - 0.05);
+    const utex = await loadTex(d.pl), uh = Math.min(1.25, Math.max(Wm, Hm) * 0.12); laje(g, utex, Wm, Hm, 0xf4f0ea); const walls = paredes(g, pu.r, pu.ppm, Wm, Hm, uh, 0xdcd6cc, 0xf6f2ec), mov = moveis(g, pu.m, pu.ppm, Wm, Hm, Math.max(uh + 0.35, 1.3), pu.r);
     P.g.visible = false; pinBox.style.display = 'none'; world.add(g); sombra(Math.max(Wm, Hm) * 0.8);
     U = { num, d, g, walls, mov, Wm, Hm, rise: performance.now() };
     ub.querySelector('[data-u="sim"]').href = simHref(num); ub.querySelector('[data-u="wa"]').href = waHref(num);

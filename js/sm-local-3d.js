@@ -236,7 +236,8 @@ export async function init(stage, o) {
   pins.push({ el: tag, v: new THREE.Vector3(0, topY + 0.8, 0), tag: true });
   (o.perto || []).forEach((p, i) => {
     // longe demais para a região: fica na borda, na direção certa, com a distância
-    const dd = Math.hypot(p.dx, p.dz), lim = data.RG * 0.34, far = dd > lim, kf = far ? lim / dd : 1;
+    const dd = Math.hypot(p.dx, p.dz); if (dd > 1500) return; // longe de verdade (outro bairro): só na lista, nunca no mapa
+    const lim = data.RG * 0.34, far = dd > lim, kf = far ? lim / dd : 1;
     const b = document.createElement('b'); b.className = 'ml-n' + (p.fix ? ' u' : '') + (far ? ' far' : ''); b.innerHTML = (i + 1) + (far ? '<em>' + (dd >= 1000 ? (dd / 1000).toFixed(1).replace('.', ',') + ' km' : Math.round(dd / 10) * 10 + ' m') + '</em>' : ''); b.title = p.n; pinBox.appendChild(b);
     b.addEventListener('click', () => { if (o.onNum) o.onNum(i + 1); });
     pins.push({ el: b, v: new THREE.Vector3(p.dx * kf / U, 0.2, p.dz * kf / U), n: i + 1 });
