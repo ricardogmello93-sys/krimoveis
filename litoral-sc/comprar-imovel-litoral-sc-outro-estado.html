@@ -398,10 +398,30 @@ fbq('track', 'PageView');
   gtag('config', 'AW-18162751528');
 </script>
 <style id="krsub">.kr-lg{display:inline-flex;flex-direction:column;align-items:center;gap:3px;line-height:1}.kr-sub{display:block;font:500 9.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:.9px;color:#e8d9b0;white-space:nowrap;opacity:.92}.sm-nav,.lt-nav{padding-top:11px!important;padding-bottom:11px!important}@media (max-width:760px){.kr-sub{font-size:8.5px;letter-spacing:.6px}.sm-nav,.lt-nav{padding-top:8px!important;padding-bottom:8px!important}}</style>
+<style id="krsanta">
+.kr-pm{display:inline-flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;margin-left:18px;padding:2px 0 2px 18px;border-left:1px solid rgba(201,168,76,.34);line-height:1;flex:none}
+.kr-pm small{font:500 8.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:2.2px;text-transform:uppercase;color:#d8cba6;opacity:.85}
+.kr-pm img{display:block;height:27px;width:auto;opacity:.95}
+.kr-pf{display:flex;flex-direction:column;align-items:center;gap:12px;margin:26px auto 30px}
+.kr-pf small{display:flex;align-items:center;gap:14px;font:500 10px/1 'DM Sans',system-ui,sans-serif;letter-spacing:3.2px;text-transform:uppercase;color:#d8cba6;opacity:.85}
+.kr-pf small::before,.kr-pf small::after{content:'';width:38px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0),rgba(201,168,76,.65))}
+.kr-pf small::after{transform:scaleX(-1)}
+.kr-pf img{display:block;height:46px;width:auto;opacity:.93}
+.g-pm{display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;margin-left:18px;padding-left:18px;border-left:1px solid rgba(201,168,76,.34)}
+.g-pm small{font-size:8.5px;letter-spacing:2.2px;text-transform:uppercase;color:var(--soft);line-height:1}
+.g-pm img{height:27px;width:auto;opacity:.95}
+.g-partner,.g-santa{display:none!important}
+.kr-pm.off{display:none}
+@media (max-width:760px){.kr-pm:not(.ok){display:none}.kr-pm{margin-left:9px;padding-left:9px;gap:3px}
+.sm-back,.lt-back{padding:7px 9px!important;gap:0!important}.sm-back span,.lt-back span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.kr-pm small{font-size:7.5px;letter-spacing:1.6px}.kr-pm img{height:20px}
+.kr-pf{margin:20px auto 24px}.kr-pf img{height:40px}
+.g-pm{margin-left:0;gap:3px;padding-left:11px}.g-pm small{font-size:8px;letter-spacing:1.8px}.g-pm img{height:22px}}
+</style>
+<script id="krsanta-js">addEventListener('DOMContentLoaded',function(){var p=document.querySelector('.kr-pm');if(!p)return;var n=p.parentNode;function f(){p.classList.add('ok');p.classList.remove('off');if(n.scrollWidth>n.clientWidth+1){p.classList.remove('ok');p.classList.add('off');}}f();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);addEventListener('load',f);setTimeout(f,1500);addEventListener('resize',f);});</script>
 </head>
 <body>
 <nav class="lt-nav sub" id="ltNav">
-  <a href="../index.html" class="kr-lg lt-brand" aria-label="Kamila &amp; Ricardo · início"><img src="../images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"><span class="kr-sub">Corretores de Imóveis</span></a>
+  <a href="../index.html" class="kr-lg lt-brand" aria-label="Kamila &amp; Ricardo · início"><img src="../images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"><span class="kr-sub">Corretores de Imóveis</span></a><span class="kr-pm"><small>Parceiros</small><img src="../images/logo-santa-branca.webp" alt="Santa Imóveis" width="64" height="27"></span>
   <a href="./" class="lt-back" id="ltBack"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Voltar</span></a>
   <div class="lt-nav-sp"></div>
   <a href="imoveis-itapema.html" class="lt-nav-link">Itapema</a>
@@ -410,7 +430,6 @@ fbq('track', 'PageView');
   <div class="lt-reg"><a href="../santa-maria/" class="sm">Santa Maria</a><a href="./" class="on"><i></i>Litoral SC</a></div>
   <a href="https://wa.me/5555999147822?text=Ol%C3%A1%20Ricardo!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20im%C3%B3veis%20em%20Itapema%20e%20Porto%20Belo." target="_blank" rel="noopener" class="lt-nav-cta" data-corretor="Ricardo" data-origem="litoral_comprar-imovel-litoral-sc-outro-estado_nav"><span class="lt-dot"></span>WhatsApp</a>
   <div class="lang" role="navigation" aria-label="Idioma / Language"><a href="./" hreflang="pt-BR" lang="pt-BR" class="on" title="Português" aria-label="Português" aria-current="true"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#229e45"/><path d="M14 2.6 25.4 10 14 17.4 2.6 10z" fill="#f8e509"/><circle cx="14" cy="10" r="4.6" fill="#2b49a3"/><path d="M9.5 9.2c3-.9 6.4-.5 9 1" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a><a href="../en/" hreflang="en" lang="en" class="" title="English" aria-label="English"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#fff"/><rect y="0" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="3.076923076923077" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="6.153846153846154" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="9.23076923076923" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="12.307692307692308" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="15.384615384615385" width="28" height="1.5384615384615385" fill="#b22234"/><rect y="18.46153846153846" width="28" height="1.5384615384615385" fill="#b22234"/><rect width="12" height="10.76923076923077" fill="#3c3b6e"/></svg><span>EN</span></a><a href="../es/" hreflang="es" lang="es" class="" title="Español" aria-label="Español"><svg viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" fill="#c60b1e"/><rect y="5" width="28" height="10" fill="#ffc400"/></svg><span>ES</span></a></div>
-  <img src="../images/logo-santa-branca.webp" alt="Santa Imóveis" class="lt-santa" loading="lazy">
   <button type="button" class="lt-menu-btn" id="ltMenuBtn" aria-controls="ltMenu" aria-expanded="false" aria-label="Menu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg><span>Menu</span></button>
 </nav>
 <!--LTMENU--><div class="ltm" id="ltMenu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
@@ -527,7 +546,8 @@ fbq('track', 'PageView');
 
 <footer class="lt-footer">
   <div class="lt-footer-brand">Kamila &amp; Ricardo</div>
-  <div class="lt-footer-sub">Imóveis em Itapema e Porto Belo, litoral de Santa Catarina · Parceiros Santa Imóveis</div>
+  <div class="lt-footer-sub">Imóveis em Itapema e Porto Belo, litoral de Santa Catarina</div>
+  <div class="kr-pf"><small>Parceiros</small><img src="../images/logo-santa-branca.webp" alt="Santa Imóveis" width="108" height="46" loading="lazy"></div>
   <div class="lt-footer-links"><a href="./">Litoral SC</a><a href="imoveis-itapema.html">Imóveis em Itapema</a><a href="imoveis-meia-praia-itapema.html">Imóveis na Meia Praia</a><a href="imoveis-porto-belo.html">Imóveis em Porto Belo</a><a href="lancamentos-itapema-porto-belo.html">Lançamentos na planta</a><a href="apartamento-frente-mar-itapema.html">Frente mar e alto padrão</a><a href="apartamento-3-suites-itapema-porto-belo.html">Apartamento 3 e 4 suítes</a><a href="apartamento-compacto-itapema.html">Apartamento compacto em Itapema</a><a href="investir-em-itapema-porto-belo.html">Investir no litoral de SC</a><a href="comprar-imovel-litoral-sc-outro-estado.html">Comprar morando em outro estado</a><a href="simulador-imovel-na-planta.html">Simulador de fluxo na planta</a></div>
   <div class="lt-footer-links main"><a href="../index.html">Início</a><a href="../santa-maria/">Santa Maria</a><a href="../sobre.html">Sobre nós</a><a href="../investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="../imoveis-na-planta-santa-maria.html">Na planta em Santa Maria</a></div>
   <small>© 2026 · krimoveissm.com.br</small>

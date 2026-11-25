@@ -266,14 +266,33 @@ fbq('track', 'PageView');
   gtag('config', 'AW-18162751528');
 </script>
 <style id="krsub">.kr-lg{display:inline-flex;flex-direction:column;align-items:center;gap:3px;line-height:1}.kr-sub{display:block;font:500 9.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:.9px;color:#e8d9b0;white-space:nowrap;opacity:.92}.sm-nav,.lt-nav{padding-top:11px!important;padding-bottom:11px!important}@media (max-width:760px){.kr-sub{font-size:8.5px;letter-spacing:.6px}.sm-nav,.lt-nav{padding-top:8px!important;padding-bottom:8px!important}}</style>
+<style id="krsanta">
+.kr-pm{display:inline-flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;margin-left:18px;padding:2px 0 2px 18px;border-left:1px solid rgba(201,168,76,.34);line-height:1;flex:none}
+.kr-pm small{font:500 8.5px/1 'DM Sans',system-ui,sans-serif;letter-spacing:2.2px;text-transform:uppercase;color:#d8cba6;opacity:.85}
+.kr-pm img{display:block;height:27px;width:auto;opacity:.95}
+.kr-pf{display:flex;flex-direction:column;align-items:center;gap:12px;margin:26px auto 30px}
+.kr-pf small{display:flex;align-items:center;gap:14px;font:500 10px/1 'DM Sans',system-ui,sans-serif;letter-spacing:3.2px;text-transform:uppercase;color:#d8cba6;opacity:.85}
+.kr-pf small::before,.kr-pf small::after{content:'';width:38px;height:1px;background:linear-gradient(90deg,rgba(201,168,76,0),rgba(201,168,76,.65))}
+.kr-pf small::after{transform:scaleX(-1)}
+.kr-pf img{display:block;height:46px;width:auto;opacity:.93}
+.g-pm{display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;margin-left:18px;padding-left:18px;border-left:1px solid rgba(201,168,76,.34)}
+.g-pm small{font-size:8.5px;letter-spacing:2.2px;text-transform:uppercase;color:var(--soft);line-height:1}
+.g-pm img{height:27px;width:auto;opacity:.95}
+.g-partner,.g-santa{display:none!important}
+.kr-pm.off{display:none}
+@media (max-width:760px){.kr-pm:not(.ok){display:none}.kr-pm{margin-left:9px;padding-left:9px;gap:3px}
+.sm-back,.lt-back{padding:7px 9px!important;gap:0!important}.sm-back span,.lt-back span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.kr-pm small{font-size:7.5px;letter-spacing:1.6px}.kr-pm img{height:20px}
+.kr-pf{margin:20px auto 24px}.kr-pf img{height:40px}
+.g-pm{margin-left:0;gap:3px;padding-left:11px}.g-pm small{font-size:8px;letter-spacing:1.8px}.g-pm img{height:22px}}
+</style>
+<script id="krsanta-js">addEventListener('DOMContentLoaded',function(){var p=document.querySelector('.kr-pm');if(!p)return;var n=p.parentNode;function f(){p.classList.add('ok');p.classList.remove('off');if(n.scrollWidth>n.clientWidth+1){p.classList.remove('ok');p.classList.add('off');}}f();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(f);addEventListener('load',f);setTimeout(f,1500);addEventListener('resize',f);});</script>
 </head>
 <body>
 <nav class="sm-nav" id="smNav">
-  <a href="index.html" class="kr-lg sm-brand" aria-label="Kamila &amp; Ricardo · início"><img src="images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"><span class="kr-sub">Corretores de Imóveis</span></a>
+  <a href="index.html" class="kr-lg sm-brand" aria-label="Kamila &amp; Ricardo · início"><img src="images/logo-kr.svg" alt="KR · Kamila &amp; Ricardo" width="66" height="34"><span class="kr-sub">Corretores de Imóveis</span></a><span class="kr-pm"><small>Parceiros</small><img src="images/logo-santa-branca.webp" alt="Santa Imóveis" width="64" height="27"></span>
   <a href="santa-maria/" class="sm-back" id="smBack"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Voltar</span></a>
   <div class="sm-sp"></div>
   <div class="sm-reg"><a href="santa-maria/" class="on">Santa Maria</a><a href="litoral-sc/" class="sc"><i></i>Litoral SC</a></div>
-  <img src="images/logo-santa-branca.webp" alt="Santa Imóveis" class="sm-santa" loading="lazy">
 </nav>
 <main class="lv3">
   <span class="k">Levve Garden Living · Satre · Bela Vista, Camobi</span>
@@ -295,7 +314,8 @@ fbq('track', 'PageView');
 </main>
 <footer class="foot">
   <div class="foot-brand">Kamila &amp; Ricardo</div>
-  <div class="foot-sub">Corretores de imóveis em Santa Maria, RS · Parceiros Santa Imóveis</div>
+  <div class="foot-sub">Corretores de imóveis em Santa Maria, RS</div>
+  <div class="kr-pf"><small>Parceiros</small><img src="images/logo-santa-branca.webp" alt="Santa Imóveis" width="108" height="46" loading="lazy"></div>
   <div class="foot-links"><a href="index.html">Início</a><a href="santa-maria/">Santa Maria</a><a href="mcmv-santa-maria.html">Minha Casa Minha Vida</a><a href="financiamento-santa-maria.html">Financiamento e FGTS</a><a href="imoveis-na-planta-santa-maria.html">Imóveis na planta</a><a href="investir-em-imoveis-santa-maria.html">Investir em Santa Maria</a><a href="comprar-imovel-santa-maria-morando-fora.html">Comprar morando em outra cidade</a><a href="imoveis-centro-santa-maria.html">Imóveis no Centro</a><a href="imoveis-camobi-santa-maria.html">Imóveis em Camobi</a><a href="documentos-financiar-imovel-santa-maria.html">Documentos para financiar</a><a href="aluguel-ou-financiamento-santa-maria.html">Aluguel ou financiamento</a><a href="simulador-financiamento-santa-maria.html">Simulador de financiamento</a><a href="vender-imovel-santa-maria.html">Vender seu imóvel</a><a href="apartamento-1-dormitorio-camobi-santa-maria.html">Apartamento 1 dormitório em Camobi</a><a href="apartamento-1-dormitorio-centro-santa-maria.html">1 dormitório no Centro, perto da UFN</a><a href="studio-kitnet-santa-maria.html">Studio e kitnet</a><a href="apartamento-2-dormitorios-santa-maria.html">Apartamento 2 dormitórios</a><a href="apartamento-3-dormitorios-santa-maria.html">Apartamento 3 dormitórios</a><a href="terreno-lote-santa-maria.html">Terrenos e lotes</a><a href="sobre.html">Sobre nós</a><a href="litoral-sc/">Litoral SC</a></div>
   <small>© 2026 · krimoveissm.com.br</small>
 </footer>
